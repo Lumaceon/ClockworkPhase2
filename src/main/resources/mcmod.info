@@ -1,0 +1,21 @@
+[
+{
+  "modid": "clockworkphase2",
+  "name": "Clockwork Phase 2",
+  "description": "Adding time magic to Minecraft since tomorrow.",
+  "version": "1.7.10-1",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "Lumaceon"
+  ],
+  "credits": "Pahimar",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

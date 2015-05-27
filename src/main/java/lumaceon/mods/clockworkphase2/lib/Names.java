@@ -9,6 +9,8 @@ public class Names
     {
         public static final String TIME_SAND = "time_sand";
         public static final String ASSEMBLY_TABLE = "assembly_table";
+        public static final String CELESTIAL_COMPASS = "celestial_compass";
+        public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
     }
 
     public class ITEM

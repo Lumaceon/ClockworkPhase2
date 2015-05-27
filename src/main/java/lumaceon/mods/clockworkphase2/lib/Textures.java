@@ -10,4 +10,9 @@ public class Textures
     {
         public static ResourceLocation DEFAULT_ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
     }
+
+    public static class GLYPH
+    {
+        public static ResourceLocation BASE_GLYPH = new ResourceLocation(Reference.MOD_ID, "textures/glyph/base.png");
+    }
 }

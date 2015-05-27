@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.api;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -99,17 +100,10 @@ public class TemporalHarvestRegistry
                 }
             }
 
-            if(name.contains("gravel") || name.contains("sand") || name.contains("grass") || name.contains("dirt"))
-            {
-                ores = OreDictionary.getOres(name);
-                for(ItemStack ore : ores)
-                {
-                    if(Block.getBlockFromItem(ore.getItem()) != null)
-                    {
-                        SHOVELERS.registerValidShoveler(Block.getBlockFromItem(ore.getItem()));
-                    }
-                }
-            }
+            SHOVELERS.registerValidShoveler(Blocks.grass);
+            SHOVELERS.registerValidShoveler(Blocks.dirt);
+            SHOVELERS.registerValidShoveler(Blocks.sand);
+            SHOVELERS.registerValidShoveler(Blocks.gravel);
         }
     }
 }

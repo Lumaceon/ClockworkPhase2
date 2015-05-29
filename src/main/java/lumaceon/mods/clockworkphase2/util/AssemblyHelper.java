@@ -1,8 +1,9 @@
 package lumaceon.mods.clockworkphase2.util;
 
-import lumaceon.mods.clockworkphase2.api.IClockworkComponent;
+import lumaceon.mods.clockworkphase2.api.item.IClockworkComponent;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.lib.NBTTags;
 import net.minecraft.item.ItemStack;
 

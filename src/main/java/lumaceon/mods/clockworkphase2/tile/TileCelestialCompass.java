@@ -4,6 +4,7 @@ import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.api.crafting.ITimestreamCraftingRecipe;
 import lumaceon.mods.clockworkphase2.api.crafting.TimestreamCraftingRegistry;
+import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +27,7 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
     private long timeSand = 0;
 
 
-    public boolean isAvailable()
-    {
+    public boolean isAvailable() {
         return blocksToPlace < 0;
     }
 
@@ -118,8 +118,7 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
         }
     }
 
-    public ItemStack getCenterItem()
-    {
+    public ItemStack getCenterItem() {
         return this.craftingItems[8];
     }
 
@@ -128,8 +127,7 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
      * @param index The circle index.
      * @return The item currently in that circle.
      */
-    public ItemStack getCraftingItem(int index)
-    {
+    public ItemStack getCraftingItem(int index) {
         return this.craftingItems[index];
     }
 
@@ -235,8 +233,70 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
     }
 
     @Override
-    public float getRange()
-    {
+    public float getRange() {
         return 128;
+    }
+
+    @Override
+    public ItemStack getTimezoneModule(int index) {
+        return getCraftingItem(index);
+    }
+
+    @Override
+    public long getMaxTimeSand() {
+        return TimeConverter.EXASECOND * 9;
+    }
+
+    @Override
+    public long getTimeSand() {
+        return this.timeSand;
+    }
+
+    @Override
+    public void setTimeSand(long timeSand) {
+        this.timeSand = timeSand;
+        markDirty();
+    }
+
+    @Override
+    public long addTimeSand(long timeSand)
+    {
+        long timeSandAdded;
+        if(this.timeSand + timeSand > getMaxTimeSand()) //Amount to be added exceeds max.
+        {
+            timeSandAdded = getMaxTimeSand() - this.timeSand;
+            setTimeSand(getMaxTimeSand());
+        }
+        else
+        {
+            timeSandAdded = timeSand;
+            setTimeSand(this.timeSand + timeSand);
+        }
+
+        if(timeSandAdded > 0)
+            markDirty();
+
+        return timeSandAdded;
+    }
+
+    @Override
+    public long consumeTimeSand(long timeSand)
+    {
+        long timeSandConsumed;
+        if(this.timeSand - timeSand < 0) //Could not consume everything.
+        {
+            timeSandConsumed = this.timeSand;
+            setTimeSand(0);
+        }
+        else
+        {
+            timeSandConsumed = timeSand;
+            setTimeSand(this.timeSand - timeSand);
+        }
+
+        if(timeSandConsumed > 0)
+            markDirty();
+
+        return timeSandConsumed;
     }
 }

@@ -22,15 +22,18 @@ public class ModBlocks
         GameRegistry.registerBlock(timeSand, Names.BLOCK.TIME_SAND);
     }
 
+    public static Block basicWindingBox;
     public static Block assemblyTable;
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     public static void initMisc()
     {
+        basicWindingBox = new BlockBasicWindingBox(Material.iron, Names.BLOCK.BASIC_WINDING_BOX);
         assemblyTable = new BlockAssemblyTable(Material.iron, Names.BLOCK.ASSEMBLY_TABLE);
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
         celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
 
+        GameRegistry.registerBlock(basicWindingBox, Names.BLOCK.BASIC_WINDING_BOX);
         GameRegistry.registerBlock(assemblyTable, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);

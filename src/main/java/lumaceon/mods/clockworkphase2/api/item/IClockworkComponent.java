@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.api;
+package lumaceon.mods.clockworkphase2.api.item;
 
 import net.minecraft.item.ItemStack;
 

@@ -1,5 +1,6 @@
-package lumaceon.mods.clockworkphase2.util;
+package lumaceon.mods.clockworkphase2.api.util.internal;
 
+import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

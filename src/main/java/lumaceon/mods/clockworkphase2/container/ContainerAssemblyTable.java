@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.container;
 
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
 import lumaceon.mods.clockworkphase2.inventory.InventoryUpdated;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

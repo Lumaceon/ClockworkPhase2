@@ -1,5 +1,7 @@
-package lumaceon.mods.clockworkphase2.api.assembly;
+package lumaceon.mods.clockworkphase2.api.item;
 
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
+import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;

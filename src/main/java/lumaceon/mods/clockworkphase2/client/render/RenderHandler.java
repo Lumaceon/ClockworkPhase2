@@ -72,6 +72,7 @@ public class RenderHandler
             GL11.glPushMatrix();
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glTranslated(x, y + 257 - area[1], z);
+            GL11.glRotatef((Minecraft.getSystemTime() % 115200.0F) / 320, 0, 1, 0);
             tessy.startDrawingQuads();
             tessy.setColorRGBA_F(1, 1, 1, 1);
             tessy.addVertexWithUV(low, 0, low, 0, 0);

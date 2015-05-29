@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.gui;
 
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.container.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.lib.Textures;

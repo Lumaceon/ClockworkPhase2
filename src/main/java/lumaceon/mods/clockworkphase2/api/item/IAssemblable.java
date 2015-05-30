@@ -24,7 +24,7 @@ public interface IAssemblable
      * 0 - Mainspring.
      * 1 - Clockwork.
      */
-    public Slot[] getContainerSlots(IInventory inventory);
+    public Slot[] getContainerSlots(IAssemblyContainer container, IInventory inventory);
 
     /**
      * Called when one (or more) of the itemstacks in the component inventory are changed. This should

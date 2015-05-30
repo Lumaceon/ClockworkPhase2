@@ -30,6 +30,11 @@ public class Names
         public static final String GEAR_EMERALD = "emerald_gear";
         public static final String GEAR_QUARTZ = "quartz_gear";
         public static final String PRECIOUS_CHARM = "precious_charm";
+        public static final String TEMPORAL_CORE = "temporal_core";
+
+        public static final String TEMPORAL_FUNCTION_RELOCATION = "temporal_function_relocation";
+        public static final String TEMPORAL_FUNCTION_SILKY_HARVEST = "temporal_function_silky_harvest";
+        public static final String TEMPORAL_FUNCTION_SMELT = "temporal_function_smelt";
     }
 
     public class FLUID

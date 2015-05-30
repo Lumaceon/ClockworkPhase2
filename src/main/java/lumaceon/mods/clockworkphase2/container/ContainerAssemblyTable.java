@@ -138,7 +138,7 @@ public class ContainerAssemblyTable extends Container implements IAssemblyContai
         IAssemblable template = (IAssemblable) item.getItem();
         componentInventory = template.createComponentInventory(this);
         template.saveComponentInventory(this);
-        Slot[] slots = template.getContainerSlots(componentInventory);
+        Slot[] slots = template.getContainerSlots(this, componentInventory);
         for(Slot slot : slots)
         {
             this.addSlotToContainer(slot);

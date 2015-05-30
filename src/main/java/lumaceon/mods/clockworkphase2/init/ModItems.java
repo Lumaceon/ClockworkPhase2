@@ -1,10 +1,14 @@
 package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import lumaceon.mods.clockworkphase2.item.components.ItemClockworkCore;
-import lumaceon.mods.clockworkphase2.item.components.ItemMainspring;
-import lumaceon.mods.clockworkphase2.item.components.clockwork.ItemGear;
-import lumaceon.mods.clockworkphase2.item.components.clockwork.ItemMemoryComponent;
+import lumaceon.mods.clockworkphase2.item.components.tool.ItemClockworkCore;
+import lumaceon.mods.clockworkphase2.item.components.tool.ItemMainspring;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalCore;
+import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemGear;
+import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemMemoryComponent;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.function.passive.ItemTemporalFunctionRelocation;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.function.passive.ItemTemporalFunctionSilkyHarvest;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.function.passive.ItemTemporalFunctionSmelt;
 import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkAxe;
 import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkPickaxe;
 import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkShovel;
@@ -18,7 +22,9 @@ public class ModItems
 {
     public static void init()
     {
-        initComponents();
+        initClockworkComponents();
+        initTemporalComponents();
+        initTemporalFunctions();
         initConstructs();
         initBuckets();
     }
@@ -33,18 +39,18 @@ public class ModItems
     public static Item gearEmerald;
     public static Item gearQuartz;
     public static Item preciousCharm;
-    public static void initComponents()
+    public static void initClockworkComponents()
     {
         mainspring = new ItemMainspring(1, 20, Names.ITEM.MAINSPRING);
         clockworkCore = new ItemClockworkCore(1, 20, Names.ITEM.CLOCKWORK_CORE);
-        gearWood = new ItemGear(Names.ITEM.GEAR_WOOD, 10, 15, 0);
-        gearStone = new ItemGear(Names.ITEM.GEAR_STONE, 15, 10, 0);
-        gearIron = new ItemGear(Names.ITEM.GEAR_IRON, 25, 25, 0);
-        gearGold = new ItemGear(Names.ITEM.GEAR_GOLD, 10, 70, 0);
-        gearDiamond = new ItemGear(Names.ITEM.GEAR_DIAMOND, 40, 50, 0);
-        gearEmerald = new ItemGear(Names.ITEM.GEAR_EMERALD, 50, 40, 0);
-        gearQuartz = new ItemGear(Names.ITEM.GEAR_QUARTZ, 70, 10, 0);
-        preciousCharm = new ItemMemoryComponent(Names.ITEM.PRECIOUS_CHARM, 0, 0, 20);
+        gearWood = new ItemGear(Names.ITEM.GEAR_WOOD, 10, 15, 0, 0);
+        gearStone = new ItemGear(Names.ITEM.GEAR_STONE, 15, 10, 0, 1);
+        gearIron = new ItemGear(Names.ITEM.GEAR_IRON, 25, 25, 0, 2);
+        gearGold = new ItemGear(Names.ITEM.GEAR_GOLD, 10, 70, 0, 0);
+        gearDiamond = new ItemGear(Names.ITEM.GEAR_DIAMOND, 40, 50, 0, 3);
+        gearEmerald = new ItemGear(Names.ITEM.GEAR_EMERALD, 50, 40, 0, 3);
+        gearQuartz = new ItemGear(Names.ITEM.GEAR_QUARTZ, 70, 10, 0, 2);
+        preciousCharm = new ItemMemoryComponent(Names.ITEM.PRECIOUS_CHARM, 0, 0, 20, 0);
 
         GameRegistry.registerItem(mainspring, Names.ITEM.MAINSPRING);
         GameRegistry.registerItem(clockworkCore, Names.ITEM.CLOCKWORK_CORE);
@@ -56,6 +62,28 @@ public class ModItems
         GameRegistry.registerItem(gearEmerald, Names.ITEM.GEAR_EMERALD);
         GameRegistry.registerItem(gearQuartz, Names.ITEM.GEAR_QUARTZ);
         GameRegistry.registerItem(preciousCharm, Names.ITEM.PRECIOUS_CHARM);
+    }
+
+    public static Item temporalCore;
+    public static void initTemporalComponents()
+    {
+        temporalCore = new ItemTemporalCore(1, 50, Names.ITEM.TEMPORAL_CORE);
+
+        GameRegistry.registerItem(temporalCore, Names.ITEM.TEMPORAL_CORE);
+    }
+
+    public static ItemTemporalFunctionRelocation temporalFunctionRelocation;
+    public static ItemTemporalFunctionSilkyHarvest temporalFunctionSilkyHarvest;
+    public static ItemTemporalFunctionSmelt temporalFunctionSmelt;
+    public static void initTemporalFunctions()
+    {
+        temporalFunctionRelocation = new ItemTemporalFunctionRelocation(1, 100, Names.ITEM.TEMPORAL_FUNCTION_RELOCATION, false);
+        temporalFunctionSilkyHarvest = new ItemTemporalFunctionSilkyHarvest(1, 100, Names.ITEM.TEMPORAL_FUNCTION_SILKY_HARVEST, false);
+        temporalFunctionSmelt = new ItemTemporalFunctionSmelt(1, 100, Names.ITEM.TEMPORAL_FUNCTION_SMELT, false);
+
+        GameRegistry.registerItem(temporalFunctionRelocation, Names.ITEM.TEMPORAL_FUNCTION_RELOCATION);
+        GameRegistry.registerItem(temporalFunctionSilkyHarvest, Names.ITEM.TEMPORAL_FUNCTION_SILKY_HARVEST);
+        GameRegistry.registerItem(temporalFunctionSmelt, Names.ITEM.TEMPORAL_FUNCTION_SMELT);
     }
 
     public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, 0, 0);

@@ -1,14 +1,14 @@
-package lumaceon.mods.clockworkphase2.item.components;
+package lumaceon.mods.clockworkphase2.item.components.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
 import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.item.IClockwork;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.client.gui.slot.SlotClockworkComponent;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockworkComponent;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.AssemblyHelper;
@@ -22,8 +22,7 @@ import java.util.List;
 
 public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblable, IClockwork
 {
-    public ItemClockworkCore(int maxStack, int maxDamage, String unlocalizedName)
-    {
+    public ItemClockworkCore(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 
@@ -41,7 +40,7 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     }
 
     @Override
-    public Slot[] getContainerSlots(IInventory inventory)
+    public Slot[] getContainerSlots(IAssemblyContainer container, IInventory inventory)
     {
         return new Slot[]
                 {

@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.item.components;
+package lumaceon.mods.clockworkphase2.item.components.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -7,10 +7,10 @@ import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
 import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.item.IMainspring;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.client.gui.slot.SlotMainspringMetal;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
@@ -30,8 +30,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
 {
     public int maxTension = 1000000;
 
-    public ItemMainspring(int maxStack, int maxDamage, String unlocalizedName)
-    {
+    public ItemMainspring(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 
@@ -49,7 +48,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
     }
 
     @Override
-    public Slot[] getContainerSlots(IInventory inventory)
+    public Slot[] getContainerSlots(IAssemblyContainer container, IInventory inventory)
     {
         return new Slot[]
                 {

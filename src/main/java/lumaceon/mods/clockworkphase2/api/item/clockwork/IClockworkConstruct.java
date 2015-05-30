@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.api.item;
+package lumaceon.mods.clockworkphase2.api.item.clockwork;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,6 +13,7 @@ public interface IClockworkConstruct
     public int getSpeed(ItemStack item);
     public int getMemory(ItemStack item);
     public void setTension(ItemStack item, int tension);
+    public void setHarvestLevels(ItemStack item, int harvestLevel);
 
     /**
      * Used by a winding box and similar contraptions to add tension to this item.
@@ -33,5 +34,5 @@ public interface IClockworkConstruct
      * @param item The itemstack to add information for.
      * @param list The list of informative lines.
      */
-    public void addRelevantInformation(ItemStack item, EntityPlayer player, List list, boolean flag);
+    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list, boolean flag);
 }

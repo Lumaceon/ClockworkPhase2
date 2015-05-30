@@ -1,8 +1,8 @@
-package lumaceon.mods.clockworkphase2.item.components.clockwork;
+package lumaceon.mods.clockworkphase2.item.components.tool.clockwork;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.api.item.IClockworkComponent;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,16 +10,17 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemMemoryComponent extends ItemClockworkPhase implements IClockworkComponent
+public class ItemGear extends ItemClockworkPhase implements IClockworkComponent
 {
-    public int quality, speed, memory;
+    public int quality, speed, memory, harvestLevel;
 
-    public ItemMemoryComponent(String unlocalizedName, int quality, int speed, int memory)
+    public ItemGear(String unlocalizedName, int quality, int speed, int memory, int harvestLevel)
     {
         super(64, 100, unlocalizedName);
         this.quality = quality;
         this.speed = speed;
         this.memory = memory;
+        this.harvestLevel = harvestLevel;
     }
 
     @SideOnly(Side.CLIENT)
@@ -40,5 +41,10 @@ public class ItemMemoryComponent extends ItemClockworkPhase implements IClockwor
     @Override
     public int getMemory(ItemStack is) {
         return memory;
+    }
+
+    @Override
+    public int getHarvestLevel(ItemStack is) {
+        return harvestLevel;
     }
 }

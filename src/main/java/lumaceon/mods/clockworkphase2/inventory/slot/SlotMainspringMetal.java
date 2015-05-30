@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.client.gui.slot;
+package lumaceon.mods.clockworkphase2.inventory.slot;
 
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import net.minecraft.inventory.IInventory;

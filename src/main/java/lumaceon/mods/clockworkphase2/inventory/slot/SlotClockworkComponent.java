@@ -1,6 +1,6 @@
-package lumaceon.mods.clockworkphase2.client.gui.slot;
+package lumaceon.mods.clockworkphase2.inventory.slot;
 
-import lumaceon.mods.clockworkphase2.api.item.IClockworkComponent;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

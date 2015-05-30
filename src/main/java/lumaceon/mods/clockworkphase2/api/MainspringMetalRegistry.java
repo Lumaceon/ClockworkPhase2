@@ -16,8 +16,7 @@ public class MainspringMetalRegistry
      * @param metal A stack representing the material to check for.
      * @param baseValue The base value of this material, which will be multiplied by metalTensionMultiplier.
      */
-    public static void registerMetal(ItemStack metal, int baseValue)
-    {
+    public static void registerMetal(ItemStack metal, int baseValue) {
         MainspringMetalRegistry.METAL_DICTIONARY.add(new MainspringMetal(metal, baseValue * metalTensionMultiplier));
     }
 
@@ -26,8 +25,7 @@ public class MainspringMetalRegistry
      * @param metalName The oreDictionary name for the material, such as ingotIron or blockDiamond.
      * @param baseValue The base value of this material, which will be multiplied by metalTensionMultiplier.
      */
-    public static void registerMetal(String metalName, int baseValue)
-    {
+    public static void registerMetal(String metalName, int baseValue) {
         MainspringMetalRegistry.METAL_DICTIONARY.add(new MainspringMetal(metalName, baseValue * metalTensionMultiplier));
     }
 

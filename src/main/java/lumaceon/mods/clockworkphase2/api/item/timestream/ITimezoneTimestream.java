@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Items implementing ITimestreamTimezone can be placed into the celestial compass to modify the timezone.
  */
-public interface ITimestreamTimezone extends ITimestream
+public interface ITimezoneTimestream extends ITimestream
 {
     /**
      * Returns a ResourceLocation which will be rendered as a square on top of the celestial compass circle

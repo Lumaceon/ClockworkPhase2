@@ -12,7 +12,7 @@ import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
-import lumaceon.mods.clockworkphase2.lib.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;

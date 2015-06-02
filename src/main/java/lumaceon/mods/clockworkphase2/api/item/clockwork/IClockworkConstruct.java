@@ -34,5 +34,5 @@ public interface IClockworkConstruct
      * @param item The itemstack to add information for.
      * @param list The list of informative lines.
      */
-    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list, boolean flag);
+    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list);
 }

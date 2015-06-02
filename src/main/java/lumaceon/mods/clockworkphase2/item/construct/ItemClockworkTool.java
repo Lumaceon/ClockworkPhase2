@@ -11,13 +11,12 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.util.*;
-import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockwork;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspring;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotTemporalCore;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotTemporalFunction;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
-import lumaceon.mods.clockworkphase2.lib.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageStandardParticleSpawn;
@@ -45,7 +44,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     {
         super(var1, toolMaterial, set);
         this.setMaxStackSize(1);
-        this.setMaxDamage(20);
+        this.setMaxDamage(100);
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
         this.setUnlocalizedName(unlocalizedName);
     }
@@ -53,7 +52,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addClockworkConstructInformation(is, player, list, flag);
+        InformationDisplay.addClockworkConstructInformation(is, player, list, true);
     }
 
     @Override
@@ -258,7 +257,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
-    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list, boolean flag) {
+    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list) {
         InformationDisplay.addClockworkToolInformation(item, player, list);
     }
 
@@ -294,15 +293,25 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
+    public void setTimeSand(ItemStack item, long timeSand) {
+        setTimeSand(item, null, timeSand);
+    }
+
+    @Override
     public long addTimeSand(ItemStack item, EntityPlayer player, long amount)
     {
         long amountAdded = TimeSandHelper.addTimeSand(item, player, amount);
         if(!isTemporal(item) && getTimeSand(item) >= TimeConverter.WEEK)
         {
             setTemporal(item, true);
-            player.addChatComponentMessage(new ChatComponentText(Colors.AQUA + "Your " + getItemStackDisplayName(item) + Colors.AQUA + " is" + Colors.AQUA + " beginning" + Colors.AQUA + " to" + Colors.AQUA + " radiate" + Colors.AQUA + " a" + Colors.AQUA + " temporal" + Colors.AQUA + " energy" + Colors.AQUA + " outside" + Colors.AQUA + " it's" + Colors.AQUA + " own."));
+            player.addChatComponentMessage(new ChatComponentText("Your " + getItemStackDisplayName(item) + " is beginning to radiate a temporal energy outside it's own."));
         }
         return amountAdded;
+    }
+
+    @Override
+    public long addTimeSand(ItemStack item, long amount) {
+        return TimeSandHelper.addTimeSand(item, amount);
     }
 
     @Override
@@ -312,9 +321,14 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
         if(isTemporal(item) && !TemporalToolHelper.hasTemporalCore(item) && getTimeSand(item) < TimeConverter.WEEK)
         {
             setTemporal(item, false);
-            player.addChatComponentMessage(new ChatComponentText(Colors.AQUA + "Your " + getItemStackDisplayName(item) + "'s" + Colors.AQUA + " temporal" + Colors.AQUA + " energy" + Colors.AQUA + " begins" + Colors.AQUA + " to" + Colors.AQUA + " fade."));
+            player.addChatComponentMessage(new ChatComponentText("Your " + getItemStackDisplayName(item) + "'s temporal energy begins to fade."));
         }
         return amountConsumed;
+    }
+
+    @Override
+    public long consumeTimeSand(ItemStack item, long amount) {
+        return TimeSandHelper.consumeTimeSand(item, amount);
     }
 
     @Override
@@ -329,16 +343,16 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
 
     @Override
     public int getNumberOfPassiveTemporalFunctions(ItemStack item) {
-        return isTemporal(item) ? Math.max(NBTHelper.INT.get(item, NBTTags.FUNCTION_COUNT), 1) : 0;
+        return isTemporal(item) ? Math.max(NBTHelper.INT.get(item, NBTTags.TIMESTREAM_COUNT), 1) : 0;
     }
 
     @Override
     public void setNumberOfPassiveTemporalFunctions(ItemStack item, int numberOfFunctions) {
-        NBTHelper.INT.set(item, NBTTags.FUNCTION_COUNT, numberOfFunctions);
+        NBTHelper.INT.set(item, NBTTags.TIMESTREAM_COUNT, numberOfFunctions);
     }
 
     @Override
-    public void addTemporalInformation(ItemStack item, EntityPlayer player, List list, boolean flag) {
+    public void addTemporalInformation(ItemStack item, EntityPlayer player, List list) {
         InformationDisplay.addTemporalToolInformation(item, player, list);
     }
 }

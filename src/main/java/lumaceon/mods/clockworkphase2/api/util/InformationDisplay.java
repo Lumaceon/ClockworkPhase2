@@ -7,12 +7,11 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporal;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalToolFunction;
+import lumaceon.mods.clockworkphase2.api.item.timestream.*;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalable;
 import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
-import lumaceon.mods.clockworkphase2.lib.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
@@ -29,6 +28,8 @@ public class InformationDisplay
     public static int excellent = 70;
     public static int epic = 100;
 
+    public static int defaultTensionPerBlock = 50;
+
     public static void addClockworkComponentInformation(ItemStack component, List list)
     {
         if(component.getItem() instanceof IClockworkComponent)
@@ -37,6 +38,7 @@ public class InformationDisplay
             int quality = clockworkComponent.getQuality(component);
             int speed = clockworkComponent.getSpeed(component);
             int memory = clockworkComponent.getMemory(component);
+            int harvestLevel = clockworkComponent.getHarvestLevel(component);
             String color = getColorFromComponentStat(quality);
 
             if(quality > 0)
@@ -46,10 +48,11 @@ public class InformationDisplay
                 list.add(Colors.WHITE + "Speed: " + color + speed);
             if(memory > 0)
                 list.add(Colors.WHITE + "Memory: " + memory);
+            list.add(Colors.WHITE + "Harvest Level: " + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
         }
     }
 
-    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean flag)
+    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean isTool)
     {
         if(construct.getItem() instanceof IClockworkConstruct)
         {
@@ -82,7 +85,7 @@ public class InformationDisplay
             {
                 list.add("");
                 list.add(Colors.BLUE + "~/Construct Details\\~");
-                clockworkConstruct.addClockworkInformation(construct, player, list, flag);
+                clockworkConstruct.addClockworkInformation(construct, player, list);
                 list.add(Colors.BLUE + "~/Construct Details\\~");
                 list.add("");
             }
@@ -107,18 +110,27 @@ public class InformationDisplay
                 list.add(Colors.BLUE + "Ctrl - Clockwork Stats");
 
 
-            if(clockworkConstruct.getMemory(construct) > 0 && construct.getItem() instanceof ITemporal)
+            if(construct.getItem() instanceof ITemporal)
             {
-                if(Keyboard.isKeyDown(Keyboard.KEY_TAB)) //TODO fix this.
+                boolean temporal = true;
+                if(construct.getItem() instanceof ITemporalable)
+                    temporal = ((ITemporalable) construct.getItem()).isTemporal(construct);
+                if(isTool && memory > 0)
+                    temporal = true;
+
+                if(temporal)
                 {
-                    list.add("");
-                    list.add(Colors.BLUE + "~/Clockwork Stats\\~");
-                    ((ITemporal) construct.getItem()).addTemporalInformation(construct, player, list, flag);
-                    list.add(Colors.BLUE + "~/Clockwork Stats\\~");
-                    list.add("");
+                    if(Keyboard.isKeyDown(Keyboard.KEY_TAB))
+                    {
+                        list.add("");
+                        list.add(Colors.BLUE + "~/Temporal Stats\\~");
+                        ((ITemporal) construct.getItem()).addTemporalInformation(construct, player, list);
+                        list.add(Colors.BLUE + "~/Temporal Stats\\~");
+                        list.add("");
+                    }
+                    else
+                        list.add(Colors.BLUE + "Tab - Temporal Stats");
                 }
-                else
-                    list.add(Colors.BLUE + "Tab - Temporal Stats");
             }
         }
     }
@@ -135,7 +147,7 @@ public class InformationDisplay
 
             list.add(Colors.WHITE + "Harvest Level: " + Colors.GOLD + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
             list.add(Colors.WHITE + "Mining Speed: " + Colors.GOLD + speed / 25);
-            list.add(Colors.WHITE + "Tension Per Block: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perBlock, quality, speed));
+            list.add(Colors.WHITE + "Tension Per Block: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(defaultTensionPerBlock, quality, speed));
         }
     }
 
@@ -143,30 +155,87 @@ public class InformationDisplay
     {
         if(tool.getItem() instanceof ITemporal && tool.getItem() instanceof IClockworkConstruct)
         {
+            long timeSand = TemporalToolHelper.getTimeSand(tool);
+            boolean temporalCore = false;
             long timeSandCost = 0;
             int memory = ((IClockworkConstruct) tool.getItem()).getMemory(tool);
-            boolean temporal = true;
-            if(tool.getItem() instanceof ITemporalable)
-                temporal = ((ITemporalable) tool.getItem()).isTemporal(tool);
             if(NBTHelper.hasTag(tool, NBTTags.COMPONENT_INVENTORY))
             {
                 ItemStack[] components = NBTHelper.INVENTORY.get(tool, NBTTags.COMPONENT_INVENTORY);
                 for(ItemStack item : components)
                 {
-                    if(item.getItem() instanceof ITemporalToolFunction)
-                        timeSandCost += ((ITemporalToolFunction) item.getItem()).getTimeSandCostPerBlock(item);
+                    if(item != null && item.getItem() instanceof IToolTimestream)
+                        timeSandCost += ((IToolTimestream) item.getItem()).getTimeSandCostPerBlock(item);
+                    if(item != null && item.getItem() instanceof ITemporalCore)
+                        temporalCore = true;
                 }
             }
-            list.add(Colors.WHITE + "Temporal Significance: " + getTemporalSignificance(temporal));
-            list.add(Colors.WHITE + "Time Sand Per Block: " + Colors.GOLD + TimeConverter.parseNumber(timeSandCost, 2));
-            list.add(Colors.WHITE + "Time Sand Extraction Chance: " + Colors.GOLD + "1/" + TimeSandHelper.getTimeSandChance(player.experienceLevel));
-            list.add(Colors.WHITE + "Time Sand From Extraction: " + Colors.GOLD + TimeConverter.parseNumber(ClockworkHelper.getTimeSandFromStats(memory), 15));
+            list.add(getTemporalSignificance(temporalCore, timeSand));
+            list.add(Colors.WHITE + "Time Sand Cost Per Block: " + Colors.GOLD + TimeConverter.parseNumber(timeSandCost, 2));
+            list.add(Colors.WHITE + "Time Sand Extraction Chance: " + Colors.GOLD + "1 / " + TimeSandHelper.getTimeSandChance(player.experienceLevel));
+            list.add(Colors.WHITE + "Time Sand From Extraction: " + Colors.GOLD + TimeConverter.parseNumber(ClockworkHelper.getTimeSandFromStats(memory), 2));
         }
     }
 
-    public static void addTemporalFunctionInformation(ItemStack is, List list, float qualityMod, float speedMod, float memoryMod)
+    public static void addTimestreamInformation(ItemStack is, EntityPlayer player, List list, float qualityMod, float speedMod, float memoryMod)
     {
+        list.add("");
 
+        if(is.getItem() instanceof ITimestream)
+        {
+            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+            {
+                list.add(Colors.BLUE + "~/Valid Applications\\~");
+                if(is.getItem() instanceof ITimezoneTimestream)
+                    list.add(Colors.AQUA + "{Celestial Compass Timezones}");
+                if(is.getItem() instanceof IToolTimestream)
+                    list.add(Colors.AQUA + "{Temporal Tools}");
+                if(is.getItem() instanceof IPACTimestream)
+                    list.add(Colors.AQUA + "{Personal Assistant Cubes}");
+                if(is.getItem() instanceof IReversableTimestream)
+                    list.add(Colors.AQUA + "{Timestream Reversalizers}");
+                list.add(Colors.BLUE + "~/Valid Applications\\~");
+                list.add("");
+            }
+            else
+                list.add(Colors.BLUE + "Shift - Valid Applications");
+
+            if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
+            {
+                list.add("");
+                list.add(Colors.BLUE + "~/Timestream Details\\~");
+                ((ITimestream) is.getItem()).addTimestreamInformation(is, player, list);
+                list.add(Colors.BLUE + "~/Timestream Details\\~");
+                list.add("");
+            }
+            else
+                list.add(Colors.BLUE + "Ctrl - Timestream Details");
+        }
+
+        if(is.getItem() instanceof IToolTimestream && qualityMod != 1.0F || speedMod != 1.0F || memoryMod != 1.0F)
+        {
+            if(Keyboard.isKeyDown(Keyboard.KEY_TAB))
+            {
+                list.add("");
+                list.add(Colors.BLUE + "~/Clockwork Modifiers\\~");
+                if(qualityMod > 1.0F)
+                    list.add(Colors.GREEN + "+" + (int)((qualityMod - 1.0F) * 100) + "% Quality");
+                else if(qualityMod < 1.0F)
+                    list.add(Colors.RED + (int)((qualityMod - 1.0F) * 100) + "% Quality");
+                if(speedMod > 1.0F)
+                    list.add(Colors.GREEN + "+" + (int)((speedMod - 1.0F) * 100) + "% Speed");
+                else if(speedMod < 1.0F)
+                    list.add(Colors.RED + (int)((speedMod - 1.0F) * 100) + "% Speed");
+                if(memoryMod > 1.0F)
+                    list.add(Colors.WHITE + "+" + (int)((memoryMod - 1.0F) * 100) + "% Memory");
+                else if(memoryMod < 1.0F)
+                    list.add(Colors.RED + (int)((memoryMod - 1.0F) * 100) + "% Memory");
+                list.add(Colors.BLUE + "~/Clockwork Modifiers\\~");
+                list.add("");
+            }
+            else
+                list.add(Colors.BLUE + "Tab - Clockwork Modifiers");
+        }
     }
 
     public static void addMainspringInformation(ItemStack is, List list)
@@ -254,11 +323,48 @@ public class InformationDisplay
         }
     }
 
-    public static String getTemporalSignificance(boolean temporal)
+    /**
+     * Used primarily by temporal objects to print a temporal significance.
+     * @param temporalCore Usually represents whether or not a temporal core is present. If not, Unstable Temporality is
+     *                     returned. If used in a case where a temporal core is not needed, this should always be true.
+     * @param timeSand The time sand to query.
+     * @return A colored string representing the temporal significance of the amount of time sand.
+     */
+    public static String getTemporalSignificance(boolean temporalCore, long timeSand)
     {
-        if(temporal)
-            return Colors.AQUA + "(Temporal)";
+        if(!temporalCore)
+            return Colors.GREY + "(Unstable Temporality)";
+        if(timeSand < TimeConverter.WEEK)
+            return Colors.WHITE + "(Self Temporality)";
+        else if(timeSand <= TimeConverter.CENTURY)
+            return Colors.YELLOW + "(Local Temporality)";
+        else if(timeSand <= TimeConverter.AGE)
+            return Colors.DARK_AQUA + "(Global Temporality)";
+        else if(timeSand <= TimeConverter.EON)
+            return Colors.AQUA + "(Interstellar Temporality)";
+        else if(timeSand < TimeConverter.INFINITE)
+            return Colors.LIGHT_PURPLE + "(Galactic Temporality)";
         else
-            return Colors.GREY + "(Insignificant)";
+            return Colors.WHITE + "(" +
+                    Colors.YELLOW + "I" +
+                    Colors.LIGHT_PURPLE + "n" +
+                    Colors.AQUA + "f" +
+                    Colors.YELLOW + "i" +
+                    Colors.LIGHT_PURPLE + "n" +
+                    Colors.AQUA + "i" +
+                    Colors.YELLOW + "t" +
+                    Colors.LIGHT_PURPLE + "e " +
+                    Colors.AQUA + "T" +
+                    Colors.YELLOW + "e" +
+                    Colors.LIGHT_PURPLE + "m" +
+                    Colors.AQUA + "p" +
+                    Colors.YELLOW + "o" +
+                    Colors.LIGHT_PURPLE + "r" +
+                    Colors.AQUA + "a" +
+                    Colors.YELLOW + "l" +
+                    Colors.LIGHT_PURPLE + "i" +
+                    Colors.AQUA + "t" +
+                    Colors.YELLOW + "y" +
+                    Colors.WHITE + ")";
     }
 }

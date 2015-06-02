@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
 /**
- * The times used follow the guide here - http://en.wikipedia.org/wiki/Unit_of_time
- * Yottaseconds indeed.
+ * The times used here follow this article - http://en.wikipedia.org/wiki/Unit_of_time
+ * Yottaseconds? Ain't nobody got time for that.
  */
 public class TimeConverter
 {
@@ -23,7 +23,7 @@ public class TimeConverter
     public static final long GALACTIC_YEAR = YEAR * 230000000; //7,153,920,000,000,000 | 230 million years.
     public static final long EON = ERA * 10; //31,104,000,000,000,000 | 1 billion years.
     public static final long EXASECOND = TERASECOND * 1000000; //1,000,000,000,000,000,000 | 1 quintillion seconds
-    //Max long value for reference - 9,223,372,036,854,775,808 or a little over 9 exaseconds.
+    public static final long INFINITE = 9223372036854775807L; //Never shown: if this is acquired, do something cool.
 
     /**
      * Takes a number of time sand and parses it into a readable time, much like a clock. The field typesToParse allows

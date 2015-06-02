@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.item.construct;
 
 import com.google.common.collect.Sets;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.lib.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -14,9 +14,9 @@ public class ItemClockworkMultitool extends ItemClockworkTool
 {
     private static final Set field_150915_c = Sets.newHashSet(new Block[]{Blocks.cobblestone, Blocks.double_stone_slab, Blocks.stone_slab, Blocks.stone, Blocks.sandstone, Blocks.mossy_cobblestone, Blocks.iron_ore, Blocks.iron_block, Blocks.coal_ore, Blocks.gold_block, Blocks.gold_ore, Blocks.diamond_ore, Blocks.diamond_block, Blocks.ice, Blocks.netherrack, Blocks.lapis_ore, Blocks.lapis_block, Blocks.redstone_ore, Blocks.lit_redstone_ore, Blocks.rail, Blocks.detector_rail, Blocks.golden_rail, Blocks.activator_rail, Blocks.grass, Blocks.dirt, Blocks.sand, Blocks.gravel, Blocks.snow_layer, Blocks.snow, Blocks.clay, Blocks.farmland, Blocks.soul_sand, Blocks.mycelium, Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin});
 
-    public ItemClockworkMultitool(float var1, ToolMaterial toolMaterial, Set set, String unlocalizedName)
+    public ItemClockworkMultitool(float var1, ToolMaterial toolMaterial, String unlocalizedName)
     {
-        super(var1, toolMaterial, set, unlocalizedName);
+        super(var1, toolMaterial, field_150915_c, unlocalizedName);
     }
 
     @Override

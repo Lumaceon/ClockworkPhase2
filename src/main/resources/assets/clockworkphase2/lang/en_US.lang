@@ -4,7 +4,7 @@ item.clockworkphase2:clockwork_core.name=Clockwork Core
 item.clockworkphase2:clockwork_pickaxe.name=Clockwork Pickaxe
 item.clockworkphase2:clockwork_axe.name=Clockwork Axe
 item.clockworkphase2:clockwork_shovel.name=Clockwork Shovel
-item.clockworkphase2:clockwork_tool.name=Clockwork Multi-Tool
+item.clockworkphase2:clockwork_multitool.name=Clockwork Multi-Tool
 item.clockworkphase2:wood_gear.name=Wooden Gear
 item.clockworkphase2:stone_gear.name=Stone Gear
 item.clockworkphase2:iron_gear.name=Iron Gear
@@ -12,9 +12,15 @@ item.clockworkphase2:gold_gear.name=Golden Gear
 item.clockworkphase2:diamond_gear.name=Diamond Gear
 item.clockworkphase2:emerald_gear.name=Emerald Gear
 item.clockworkphase2:quartz_gear.name=Quartz Gear
+item.clockworkphase2:precious_charm.name=Precious Charm
+item.clockworkphase2:temporal_core.name=Temporal Core
+item.clockworkphase2:timestream_relocation.name=Timestream of Relocation
+item.clockworkphase2:timestream_silky_harvest.name=Timestream of Precise Excavation
+item.clockworkphase2:timestream_smelt.name=Timestream of Smelting
 
 #Block
 tile.clockworkphase2:time_sand.name=Time Sand
+tile.clockworkphase2:basic_winding_box.name=Manual Winding Box
 tile.clockworkphase2:assembly_table.name=Worktable
 tile.clockworkphase2:celestial_compass.name=Celestial Compass
 tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass

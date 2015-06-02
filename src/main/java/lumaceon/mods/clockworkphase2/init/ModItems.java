@@ -1,21 +1,17 @@
 package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import lumaceon.mods.clockworkphase2.item.components.timestream.ItemTimestreamRelocation;
+import lumaceon.mods.clockworkphase2.item.components.timestream.ItemTimestreamSilkyHarvest;
+import lumaceon.mods.clockworkphase2.item.components.timestream.ItemTimestreamSmelt;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemClockworkCore;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemMainspring;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalCore;
+import lumaceon.mods.clockworkphase2.item.components.tool.ItemTemporalCore;
 import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemGear;
 import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemMemoryComponent;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.function.passive.ItemTemporalFunctionRelocation;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.function.passive.ItemTemporalFunctionSilkyHarvest;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.function.passive.ItemTemporalFunctionSmelt;
-import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkAxe;
-import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkPickaxe;
-import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkShovel;
-import lumaceon.mods.clockworkphase2.item.construct.ItemClockworkTool;
+import lumaceon.mods.clockworkphase2.item.construct.*;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class ModItems
@@ -24,7 +20,7 @@ public class ModItems
     {
         initClockworkComponents();
         initTemporalComponents();
-        initTemporalFunctions();
+        initTimestreams();
         initConstructs();
         initBuckets();
     }
@@ -72,36 +68,36 @@ public class ModItems
         GameRegistry.registerItem(temporalCore, Names.ITEM.TEMPORAL_CORE);
     }
 
-    public static ItemTemporalFunctionRelocation temporalFunctionRelocation;
-    public static ItemTemporalFunctionSilkyHarvest temporalFunctionSilkyHarvest;
-    public static ItemTemporalFunctionSmelt temporalFunctionSmelt;
-    public static void initTemporalFunctions()
+    public static ItemTimestreamRelocation timestreamRelocation;
+    public static ItemTimestreamSilkyHarvest timestreamSilkyHarvest;
+    public static ItemTimestreamSmelt temporalFunctionSmelt;
+    public static void initTimestreams()
     {
-        temporalFunctionRelocation = new ItemTemporalFunctionRelocation(1, 100, Names.ITEM.TEMPORAL_FUNCTION_RELOCATION, false);
-        temporalFunctionSilkyHarvest = new ItemTemporalFunctionSilkyHarvest(1, 100, Names.ITEM.TEMPORAL_FUNCTION_SILKY_HARVEST, false);
-        temporalFunctionSmelt = new ItemTemporalFunctionSmelt(1, 100, Names.ITEM.TEMPORAL_FUNCTION_SMELT, false);
+        timestreamRelocation = new ItemTimestreamRelocation(1, 100, Names.ITEM.TIMESTREAM_RELOCATION);
+        timestreamSilkyHarvest = new ItemTimestreamSilkyHarvest(1, 100, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
+        temporalFunctionSmelt = new ItemTimestreamSmelt(1, 100, Names.ITEM.TIMESTREAM_SMELT);
 
-        GameRegistry.registerItem(temporalFunctionRelocation, Names.ITEM.TEMPORAL_FUNCTION_RELOCATION);
-        GameRegistry.registerItem(temporalFunctionSilkyHarvest, Names.ITEM.TEMPORAL_FUNCTION_SILKY_HARVEST);
-        GameRegistry.registerItem(temporalFunctionSmelt, Names.ITEM.TEMPORAL_FUNCTION_SMELT);
+        GameRegistry.registerItem(timestreamRelocation, Names.ITEM.TIMESTREAM_RELOCATION);
+        GameRegistry.registerItem(timestreamSilkyHarvest, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
+        GameRegistry.registerItem(temporalFunctionSmelt, Names.ITEM.TIMESTREAM_SMELT);
     }
 
     public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, 0, 0);
     public static Item clockworkPickaxe;
     public static Item clockworkAxe;
     public static Item clockworkShovel;
-    public static Item clockworkTool;
+    public static Item clockworkMultiTool;
     public static void initConstructs()
     {
         clockworkPickaxe = new ItemClockworkPickaxe(clockworkMaterial, Names.ITEM.CLOCKWORK_PICKAXE);
         clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
-        clockworkTool = new ItemClockworkTool(0, Item.ToolMaterial.IRON, ItemPickaxe.itemRegistry.getKeys(), Names.ITEM.CLOCKWORK_TOOL);
+        clockworkMultiTool = new ItemClockworkMultitool(0, Item.ToolMaterial.IRON, Names.ITEM.CLOCKWORK_MULTI_TOOL);
 
         GameRegistry.registerItem(clockworkPickaxe, Names.ITEM.CLOCKWORK_PICKAXE);
         GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
-        GameRegistry.registerItem(clockworkTool, Names.ITEM.CLOCKWORK_TOOL);
+        GameRegistry.registerItem(clockworkMultiTool, Names.ITEM.CLOCKWORK_MULTI_TOOL);
     }
 
     public static Item bucketTimeSand;

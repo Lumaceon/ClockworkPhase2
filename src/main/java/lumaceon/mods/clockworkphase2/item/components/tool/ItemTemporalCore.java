@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.item.components.tool.temporal;
+package lumaceon.mods.clockworkphase2.item.components.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,12 +39,27 @@ public class ItemTemporalCore extends ItemClockworkPhase implements ITemporalCor
     }
 
     @Override
+    public void setTimeSand(ItemStack item, long timeSand) {
+        TimeSandHelper.setTimeSand(item, timeSand);
+    }
+
+    @Override
     public long addTimeSand(ItemStack item, EntityPlayer player, long amount) {
         return TimeSandHelper.addTimeSand(item, player, amount);
     }
 
     @Override
+    public long addTimeSand(ItemStack item, long amount) {
+        return TimeSandHelper.addTimeSand(item, amount);
+    }
+
+    @Override
     public long consumeTimeSand(ItemStack item, EntityPlayer player, long amount) {
         return TimeSandHelper.consumeTimeSand(item, player, amount);
+    }
+
+    @Override
+    public long consumeTimeSand(ItemStack item, long amount) {
+        return TimeSandHelper.consumeTimeSand(item, amount);
     }
 }

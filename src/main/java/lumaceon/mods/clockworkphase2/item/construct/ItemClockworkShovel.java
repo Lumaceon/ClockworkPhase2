@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.item.construct;
 
 import com.google.common.collect.Sets;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.lib.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

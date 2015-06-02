@@ -21,7 +21,7 @@ public class Names
         public static final String CLOCKWORK_PICKAXE = "clockwork_pickaxe";
         public static final String CLOCKWORK_AXE = "clockwork_axe";
         public static final String CLOCKWORK_SHOVEL = "clockwork_shovel";
-        public static final String CLOCKWORK_TOOL = "clockwork_tool";
+        public static final String CLOCKWORK_MULTI_TOOL = "clockwork_multitool";
         public static final String GEAR_WOOD = "wood_gear";
         public static final String GEAR_STONE = "stone_gear";
         public static final String GEAR_IRON = "iron_gear";
@@ -32,9 +32,9 @@ public class Names
         public static final String PRECIOUS_CHARM = "precious_charm";
         public static final String TEMPORAL_CORE = "temporal_core";
 
-        public static final String TEMPORAL_FUNCTION_RELOCATION = "temporal_function_relocation";
-        public static final String TEMPORAL_FUNCTION_SILKY_HARVEST = "temporal_function_silky_harvest";
-        public static final String TEMPORAL_FUNCTION_SMELT = "temporal_function_smelt";
+        public static final String TIMESTREAM_RELOCATION = "timestream_relocation";
+        public static final String TIMESTREAM_SILKY_HARVEST = "timestream_silky_harvest";
+        public static final String TIMESTREAM_SMELT = "timestream_smelt";
     }
 
     public class FLUID

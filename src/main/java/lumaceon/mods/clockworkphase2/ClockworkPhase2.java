@@ -69,8 +69,6 @@ public class ClockworkPhase2
         FMLCommonHandler.instance().bus().register(new TickHandler());
         proxy.initSideHandlers();
 
-        //proxy.initializeParticleGenerator();
-
         new GuiHandler();
 
         PacketHandler.init();

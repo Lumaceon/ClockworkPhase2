@@ -14,19 +14,24 @@ public interface ITimeSand
      */
     public long getMaxTimeSand(ItemStack item);
     public void setTimeSand(ItemStack item, EntityPlayer player, long timeSand);
+    public void setTimeSand(ItemStack item, long timeSand); //Overloaded version for when there is no player involved.
     /**
      * Called to add time sand to the given itemstack.
      * @param item The itemstack to add timesand to.
+     * @param player The player using the itemstack if any. Check that this is not null before using for safety.
      * @param amount The amount of time sand to add.
      * @return Overspill (the amount that couldn't be added for whatever reason).
      */
     public long addTimeSand(ItemStack item, EntityPlayer player, long amount);
+    public long addTimeSand(ItemStack item, long amount); //Overloaded version for when there is no player involved.
 
     /**
      * Called to remove time sand from the given itemstack.
      * @param item The itemstack to consume time sand from.
+     * @param player The player using the itemstack if any. Check that this is not null before using for safety.
      * @param amount The amount of time sand to consume.
      * @return Overspill (the amount that couldn't be removed, usually because the item runs out).
      */
     public long consumeTimeSand(ItemStack item, EntityPlayer player, long amount);
+    public long consumeTimeSand(ItemStack item, long amount); //Overloaded version for when there is no player involved.
 }

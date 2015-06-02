@@ -2,12 +2,12 @@ package lumaceon.mods.clockworkphase2.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalToolFunction;
+import lumaceon.mods.clockworkphase2.api.item.timestream.IToolTimestream;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.util.TemporalToolHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.lib.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -31,9 +31,9 @@ public class WorldHandler
         {
             if(event.harvester.inventory.getStackInSlot(0) != null && event.harvester.inventory.getStackInSlot(0).getItem() instanceof ITemporalableTool)
             {
-                ITemporalToolFunction silk = null;
+                IToolTimestream silk = null;
                 ItemStack silkStack = null;
-                ITemporalToolFunction smelt = null;
+                IToolTimestream smelt = null;
                 ItemStack smeltStack = null;
 
                 if(heldItem != null && heldItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) heldItem.getItem()).isTemporal(heldItem) && heldItem.getItem() instanceof ITimeSand)
@@ -45,15 +45,15 @@ public class WorldHandler
                         ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
                         for(ItemStack item : inventory)
                         {
-                            if(item != null && item.getItem().equals(ModItems.temporalFunctionSilkyHarvest))
+                            if(item != null && item.getItem().equals(ModItems.timestreamSilkyHarvest))
                             {
-                                silk = (ITemporalToolFunction) item.getItem();
+                                silk = (IToolTimestream) item.getItem();
                                 silkStack = item;
                             }
 
                             if(item != null && item.getItem().equals(ModItems.temporalFunctionSmelt))
                             {
-                                smelt = (ITemporalToolFunction) item.getItem();
+                                smelt = (IToolTimestream) item.getItem();
                                 smeltStack = item;
                             }
                         }
@@ -107,7 +107,7 @@ public class WorldHandler
 
             for(ItemStack item : items)
             {
-                if(item != null && item.getItem().equals(ModItems.temporalFunctionRelocation))
+                if(item != null && item.getItem().equals(ModItems.timestreamRelocation))
                 {
                     int x = NBTHelper.INT.get(item, "cp_x");
                     int y = NBTHelper.INT.get(item, "cp_y");

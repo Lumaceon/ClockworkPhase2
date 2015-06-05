@@ -1,30 +1,33 @@
 package lumaceon.mods.clockworkphase2.tile;
 
+import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
+import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
+import lumaceon.mods.clockworkphase2.api.item.timestream.ITimezoneTimestream;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
-import lumaceon.mods.clockworkphase2.api.crafting.ITimestreamCraftingRecipe;
-import lumaceon.mods.clockworkphase2.api.crafting.TimestreamCraftingRegistry;
-import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
+import lumaceon.mods.clockworkphase2.api.crafting.timestream.ITimestreamCraftingRecipe;
+import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRegistry;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
+import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
+import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class TileCelestialCompass extends TileEntity implements ITimezone
+public class TileCelestialCompass extends TileClockworkPhase implements ITimezone
 {
     private int blocksToPlace = 96;
     private boolean registerTimezone = true;
 
     private ItemStack[] craftingItems = new ItemStack[9];
+    private ItemStack[] timestreamItems = new ItemStack[9];
     private ITimestreamCraftingRecipe currentRecipe;
-    private long timeSandLeftToCraft = 0;
-
-    private long timeSand = 0;
+    private int resultingTimestreamMagnitude = 0;
+    private int craftingTicksRemaining = 0;
 
 
     public boolean isAvailable() {
@@ -36,8 +39,10 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
     {
         super.writeToNBT(nbt);
         nbt.setInteger("internal_block_count", this.blocksToPlace);
-        nbt.setLong("TZ_timesand", this.timeSand);
-        nbt.setLong("TZ_tstg", this.timeSandLeftToCraft);
+        if(currentRecipe != null)
+            nbt.setString("recipe", currentRecipe.getUnlocalizedName());
+        nbt.setInteger("timestream_recipe_magnitude", resultingTimestreamMagnitude);
+        nbt.setInteger("craft_ticks", craftingTicksRemaining);
 
         if(craftingItems != null)
         {
@@ -60,6 +65,28 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
             }
             nbt.setTag("CC_craftC", nbtList);
         }
+
+        if(timestreamItems != null)
+        {
+            NBTTagList nbtList = new NBTTagList();
+            for (int index = 0; index < timestreamItems.length; index++)
+            {
+                if(timestreamItems[index] != null)
+                {
+                    NBTTagCompound tag = new NBTTagCompound();
+                    tag.setByte("slot_index", (byte)index);
+                    timestreamItems[index].writeToNBT(tag);
+                    nbtList.appendTag(tag);
+                }
+                else
+                {
+                    NBTTagCompound tag = new NBTTagCompound();
+                    tag.setByte("slot_index", (byte)index);
+                    nbtList.appendTag(tag);
+                }
+            }
+            nbt.setTag("CC_timestreams", nbtList);
+        }
     }
 
     @Override
@@ -67,8 +94,10 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
     {
         super.readFromNBT(nbt);
         this.blocksToPlace = nbt.getInteger("internal_block_count");
-        this.timeSand = nbt.getLong("TZ_timesand");
-        this.timeSandLeftToCraft = nbt.getLong("TZ_tstg");
+        if(nbt.hasKey("recipe"))
+            this.currentRecipe = TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(nbt.getString("recipe"));
+        this.resultingTimestreamMagnitude = nbt.getInteger("timestream_recipe_magnitude");
+        this.craftingTicksRemaining = nbt.getInteger("craft_ticks");
 
         if(nbt.hasKey("CC_craftC"))
         {
@@ -87,6 +116,24 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
             }
             this.craftingItems = inventory;
         }
+
+        if(nbt.hasKey("CC_timestreams"))
+        {
+            NBTTagList list = (NBTTagList) nbt.getTag("CC_timestreams");
+            ItemStack[] inventory;
+            inventory = new ItemStack[list.tagCount()];
+
+            for(int i = 0; i < list.tagCount(); ++i)
+            {
+                NBTTagCompound tagCompound = list.getCompoundTagAt(i);
+                byte slotIndex = tagCompound.getByte("slot_index");
+                if(slotIndex >= 0 && slotIndex < inventory.length)
+                {
+                    inventory[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
+                }
+            }
+            this.timestreamItems = inventory;
+        }
     }
 
     @Override
@@ -100,13 +147,27 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
 
         if(currentRecipe != null)
         {
-            if(currentRecipe.matches(craftingItems))
+            if(!worldObj.isRemote)
             {
-                craftingItems[8] = currentRecipe.getCraftingResult(craftingItems).copy();
-                currentRecipe = null;
-                for(int n = 0; n < craftingItems.length - 1; n++)
+                if(!currentRecipe.matches(craftingItems))
                 {
-                    craftingItems[n] = null;
+                    currentRecipe = null;
+                    craftingTicksRemaining = 0;
+                    resultingTimestreamMagnitude = 0;
+                }
+                else
+                {
+                    if(craftingTicksRemaining > 0)
+                        craftingTicksRemaining--;
+                    else if(resultingTimestreamMagnitude > 0) //Finalize crafting and apply results.
+                    {
+                        craftingItems[8] = currentRecipe.getCraftingResult(craftingItems, resultingTimestreamMagnitude);
+                        currentRecipe = null;
+                        for(int n = 0; n < craftingItems.length - 1; n++)
+                            craftingItems[n] = null;
+                    }
+                    else
+                        currentRecipe = null;
                 }
             }
         }
@@ -116,10 +177,6 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
             registerTimezone = false;
             TimezoneHandler.INTERNAL.registerTimezone(xCoord, yCoord, zCoord, worldObj);
         }
-    }
-
-    public ItemStack getCenterItem() {
-        return this.craftingItems[8];
     }
 
     /**
@@ -133,45 +190,74 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
 
     public boolean onMainBlockClicked(EntityPlayer player)
     {
-        if(player.isSneaking() && player.inventory.getStackInSlot(player.inventory.currentItem) == null)
-        {
-            for(ITimestreamCraftingRecipe recipe : TimestreamCraftingRegistry.TIMESTREAM_RECIPES)
-            {
-                if(recipe.matches(this.craftingItems))
-                {
-                    this.currentRecipe = recipe;
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if(!player.isSneaking())
-        {
-            return onSubBlockClicked(player, 8);
-        }
-        return false;
+        return onSubBlockClicked(player, 8);
     }
 
     public boolean onSubBlockClicked(EntityPlayer player, int circleClicked)
     {
-        if(circleClicked == -1 || player.isSneaking())
+        if(circleClicked == -1)
             return false;
         else
         {
-            int currentItem = player.inventory.currentItem;
-            if(player.inventory.getStackInSlot(currentItem) != null && craftingItems[circleClicked] == null)
+            int currentSlot = player.inventory.currentItem;
+            ItemStack heldItem = player.inventory.getCurrentItem();
+            if(player.isSneaking() && heldItem == null)
             {
-                ItemStack item = player.inventory.getStackInSlot(currentItem).copy();
+                for(ITimestreamCraftingRecipe recipe : TimestreamCraftingRegistry.TIMESTREAM_RECIPES.values())
+                {
+                    if(recipe.matches(this.craftingItems))
+                    {
+                        this.currentRecipe = recipe;
+                        this.craftingTicksRemaining = recipe.getCraftingDuration();
+                        this.resultingTimestreamMagnitude = 0;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            if(heldItem != null && heldItem.getItem() instanceof ITimeSand && circleClicked == 8) //Put held ITimeSand in center.
+            {
+                if(timestreamItems[circleClicked] == null)
+                {
+                    ItemStack item = heldItem.copy();
+                    item.stackSize = 1;
+                    timestreamItems[circleClicked] = item;
+                    timestreamItems[circleClicked].stackSize = 1;
+                    player.inventory.decrStackSize(currentSlot, 1);
+                    return true;
+                }
+            }
+            else if(heldItem != null && heldItem.getItem() instanceof ITimezoneTimestream) //Put held timestream in outlying circle.
+            {
+                if(timestreamItems[circleClicked] == null)
+                {
+                    ItemStack item = heldItem.copy();
+                    item.stackSize = 1;
+                    timestreamItems[circleClicked] = item;
+                    timestreamItems[circleClicked].stackSize = 1;
+                    player.inventory.decrStackSize(currentSlot, 1);
+                    return true;
+                }
+            }
+            else if(craftingItems[circleClicked] != null && heldItem == null) //Remove crafting item from circle, put in hand.
+            {
+                player.inventory.setInventorySlotContents(currentSlot, craftingItems[circleClicked].copy());
+                craftingItems[circleClicked] = null;
+                return true;
+            }
+            else if(timestreamItems[circleClicked] != null && heldItem == null) //Remove timestream from circle, put in hand (only if no crafting item exists).
+            {
+                player.inventory.setInventorySlotContents(currentSlot, timestreamItems[circleClicked].copy());
+                timestreamItems[circleClicked] = null;
+                return true;
+            }
+            else if(heldItem != null && craftingItems[circleClicked] == null) //Put ordinary item in crafting circles.
+            {
+                ItemStack item = heldItem.copy();
                 item.stackSize = 1;
                 craftingItems[circleClicked] = item;
                 craftingItems[circleClicked].stackSize = 1;
-                player.inventory.decrStackSize(currentItem, 1);
-                return true;
-            }
-            else if(craftingItems[circleClicked] != null && player.inventory.getStackInSlot(currentItem) == null)
-            {
-                player.inventory.setInventorySlotContents(currentItem, craftingItems[circleClicked].copy());
-                craftingItems[circleClicked] = null;
+                player.inventory.decrStackSize(currentSlot, 1);
                 return true;
             }
         }
@@ -234,69 +320,68 @@ public class TileCelestialCompass extends TileEntity implements ITimezone
 
     @Override
     public float getRange() {
-        return 128;
+        return timestreamItems[8] != null ? timestreamItems[8].getItem() instanceof ITimeSand ? timestreamItems[8].getItem() instanceof ITemporalCore ? 128 : 12 : 0 : 0; //Temporal core - 128. ITimeSand - 12.
     }
 
     @Override
-    public ItemStack getTimezoneModule(int index) {
-        return getCraftingItem(index);
+    public ItemStack getTimestream(int index) {
+        return timestreamItems[index];
     }
 
     @Override
-    public long getMaxTimeSand() {
-        return TimeConverter.EXASECOND * 9;
-    }
-
-    @Override
-    public long getTimeSand() {
-        return this.timeSand;
-    }
-
-    @Override
-    public void setTimeSand(long timeSand) {
-        this.timeSand = timeSand;
+    public void setTimestream(int index, ItemStack item) {
+        timestreamItems[index] = item;
         markDirty();
+    }
+
+    @Override
+    public long getMaxTimeSand()
+    {
+        if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
+            return ((ITimeSand) timestreamItems[8].getItem()).getMaxTimeSand(timestreamItems[8]);
+        return 0;
+    }
+
+    @Override
+    public long getTimeSand()
+    {
+        if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
+            return ((ITimeSand) timestreamItems[8].getItem()).getTimeSand(timestreamItems[8]);
+        return 0;
+    }
+
+    @Override
+    public void setTimeSand(long timeSand)
+    {
+        if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
+        {
+            markDirty();
+            ((ITimeSand) timestreamItems[8].getItem()).setTimeSand(timestreamItems[8], timeSand);
+        }
     }
 
     @Override
     public long addTimeSand(long timeSand)
     {
-        long timeSandAdded;
-        if(this.timeSand + timeSand > getMaxTimeSand()) //Amount to be added exceeds max.
+        if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
         {
-            timeSandAdded = getMaxTimeSand() - this.timeSand;
-            setTimeSand(getMaxTimeSand());
-        }
-        else
-        {
-            timeSandAdded = timeSand;
-            setTimeSand(this.timeSand + timeSand);
-        }
-
-        if(timeSandAdded > 0)
             markDirty();
-
-        return timeSandAdded;
+            return ((ITimeSand) timestreamItems[8].getItem()).addTimeSand(timestreamItems[8], timeSand);
+        }
+        return 0;
     }
 
     @Override
     public long consumeTimeSand(long timeSand)
     {
-        long timeSandConsumed;
-        if(this.timeSand - timeSand < 0) //Could not consume everything.
+        if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
         {
-            timeSandConsumed = this.timeSand;
-            setTimeSand(0);
-        }
-        else
-        {
-            timeSandConsumed = timeSand;
-            setTimeSand(this.timeSand - timeSand);
-        }
-
-        if(timeSandConsumed > 0)
             markDirty();
-
-        return timeSandConsumed;
+            return ((ITimeSand) timestreamItems[8].getItem()).consumeTimeSand(timestreamItems[8], timeSand);
+        }
+        return 0;
     }
+
+    @Override
+    public void setState(byte state) {} //NOOP
 }

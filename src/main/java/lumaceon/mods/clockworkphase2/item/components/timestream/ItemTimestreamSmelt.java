@@ -6,9 +6,11 @@ import lumaceon.mods.clockworkphase2.api.item.timestream.IToolTimestreamPassive;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.TimestreamHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class ItemTimestreamSmelt extends ItemClockworkPhase implements IToolTime
 
     @Override
     public long getTimeSandCostPerApplication(ItemStack item) {
-        return TimeConverter.MINUTE;
+        return TimeConverter.MINUTE * 5;
     }
 
     @Override

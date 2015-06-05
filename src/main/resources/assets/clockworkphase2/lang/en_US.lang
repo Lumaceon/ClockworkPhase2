@@ -13,7 +13,13 @@ item.clockworkphase2:diamond_gear.name=Diamond Gear
 item.clockworkphase2:emerald_gear.name=Emerald Gear
 item.clockworkphase2:quartz_gear.name=Quartz Gear
 item.clockworkphase2:precious_charm.name=Precious Charm
+item.clockworkphase2:dream_catcher.name=Dream Catcher
+item.clockworkphase2:ancient_coin.name=Ancient Coin
+item.clockworkphase2:note_bottle.name=Note-In-A-Bottle
+item.clockworkphase2:rusty_gear.name=Rusty Gear
+item.clockworkphase2:broken_elysian_gear.name=Elysian Gear (Broken)
 item.clockworkphase2:temporal_core.name=Temporal Core
+item.clockworkphase2:temporal_ingot.name=Temporal Ingot
 item.clockworkphase2:timestream_relocation.name=Timestream of Relocation
 item.clockworkphase2:timestream_silky_harvest.name=Timestream of Precise Excavation
 item.clockworkphase2:timestream_smelt.name=Timestream of Smelting
@@ -24,6 +30,7 @@ tile.clockworkphase2:basic_winding_box.name=Manual Winding Box
 tile.clockworkphase2:assembly_table.name=Worktable
 tile.clockworkphase2:celestial_compass.name=Celestial Compass
 tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
+tile.clockworkphase2:temporalizer.name=Temporalizer
 
 #General Localizations
 itemGroup.ClockworkPhase2=Clockwork Phase 2

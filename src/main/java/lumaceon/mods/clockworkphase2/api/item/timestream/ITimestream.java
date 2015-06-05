@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.api.item.timestream;
 
+import lumaceon.mods.clockworkphase2.api.ITemporalMaterial;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Abstract interface which all other timestreams extend.
  */
-public abstract interface ITimestream
+public abstract interface ITimestream extends ITemporalMaterial
 {
     /**
      * Magnitude means different things depending on the timestream. For the most part it represents either speed or

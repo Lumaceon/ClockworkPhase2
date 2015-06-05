@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class MainspringMetalRegistry
 {
-    private static ArrayList<MainspringMetal> METAL_DICTIONARY = new ArrayList<MainspringMetal>();
+    private static ArrayList<MainspringMetal> METALS = new ArrayList<MainspringMetal>();
 
     public static int metalTensionMultiplier = 8;
 
@@ -17,7 +17,7 @@ public class MainspringMetalRegistry
      * @param baseValue The base value of this material, which will be multiplied by metalTensionMultiplier.
      */
     public static void registerMetal(ItemStack metal, int baseValue) {
-        MainspringMetalRegistry.METAL_DICTIONARY.add(new MainspringMetal(metal, baseValue * metalTensionMultiplier));
+        MainspringMetalRegistry.METALS.add(new MainspringMetal(metal, baseValue * metalTensionMultiplier));
     }
 
     /**
@@ -26,7 +26,7 @@ public class MainspringMetalRegistry
      * @param baseValue The base value of this material, which will be multiplied by metalTensionMultiplier.
      */
     public static void registerMetal(String metalName, int baseValue) {
-        MainspringMetalRegistry.METAL_DICTIONARY.add(new MainspringMetal(metalName, baseValue * metalTensionMultiplier));
+        MainspringMetalRegistry.METALS.add(new MainspringMetal(metalName, baseValue * metalTensionMultiplier));
     }
 
     /**
@@ -40,7 +40,7 @@ public class MainspringMetalRegistry
             return 0;
 
         ArrayList<ItemStack> ores;
-        for(MainspringMetal metal : METAL_DICTIONARY)
+        for(MainspringMetal metal : METALS)
         {
             if(metal.metal != null)
             {

@@ -20,7 +20,7 @@ public interface ITimeSand
      * @param item The itemstack to add timesand to.
      * @param player The player using the itemstack if any. Check that this is not null before using for safety.
      * @param amount The amount of time sand to add.
-     * @return Overspill (the amount that couldn't be added for whatever reason).
+     * @return The amount of time sand that was successfully added.
      */
     public long addTimeSand(ItemStack item, EntityPlayer player, long amount);
     public long addTimeSand(ItemStack item, long amount); //Overloaded version for when there is no player involved.
@@ -30,7 +30,7 @@ public interface ITimeSand
      * @param item The itemstack to consume time sand from.
      * @param player The player using the itemstack if any. Check that this is not null before using for safety.
      * @param amount The amount of time sand to consume.
-     * @return Overspill (the amount that couldn't be removed, usually because the item runs out).
+     * @return The amount of time sand that was successfully consumed.
      */
     public long consumeTimeSand(ItemStack item, EntityPlayer player, long amount);
     public long consumeTimeSand(ItemStack item, long amount); //Overloaded version for when there is no player involved.

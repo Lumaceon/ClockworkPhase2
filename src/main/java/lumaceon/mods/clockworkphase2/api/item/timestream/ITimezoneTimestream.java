@@ -13,5 +13,5 @@ public interface ITimezoneTimestream extends ITimestream
      * that this timestream is attached to.
      * @return The texture to render, or null if none should be rendered.
      */
-    public ResourceLocation getCelestialCompassSymbol(ItemStack item);
+    public ResourceLocation getGlyphTexture(ItemStack item);
 }

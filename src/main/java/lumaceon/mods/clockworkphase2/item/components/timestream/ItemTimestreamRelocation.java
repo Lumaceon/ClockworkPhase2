@@ -2,23 +2,26 @@ package lumaceon.mods.clockworkphase2.item.components.timestream;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lumaceon.mods.clockworkphase2.api.item.timestream.ITimezoneTimestream;
 import lumaceon.mods.clockworkphase2.api.item.timestream.IToolTimestreamPassive;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.TimestreamHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemTimestreamRelocation extends ItemClockworkPhase implements IToolTimestreamPassive
+public class ItemTimestreamRelocation extends ItemClockworkPhase implements IToolTimestreamPassive, ITimezoneTimestream
 {
     public ItemTimestreamRelocation(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
@@ -106,5 +109,10 @@ public class ItemTimestreamRelocation extends ItemClockworkPhase implements IToo
     public void addTimestreamInformation(ItemStack item, EntityPlayer player, List list)
     {
 
+    }
+
+    @Override
+    public ResourceLocation getGlyphTexture(ItemStack item) {
+        return Textures.PARTICLE.TIME_SAND;
     }
 }

@@ -26,14 +26,15 @@ public class TimeSandHelper
 
     /**
      * Automatically handles inner temporal cores.
-     * @return Overspill (the amount that couldn't be added).
+     * @return The amount that could be added.
      */
     public static long addTimeSand(ItemStack item, EntityPlayer player, long amount)
     {
         if(item.getItem() instanceof ITimeSand)
         {
             ITimeSand timeContainer = (ITimeSand) item.getItem();
-            long overspill;
+            long startingAmount = amount;
+            long timeAdded;
             long max = timeContainer.getMaxTimeSand(item);
             long current = timeContainer.getTimeSand(item);
             if(current + amount >= max) //Exceeds the tool's internal maximum.
@@ -45,44 +46,46 @@ public class TimeSandHelper
                     {
                         if(is != null && is.getItem() instanceof ITemporalCore)
                         {
-                            amount = addTimeSand(is, player, amount);
+                            amount -= addTimeSand(is, player, amount);
                             NBTHelper.INVENTORY.set(item, NBTTags.COMPONENT_INVENTORY, items);
                             if(amount <= 0)
-                                return 0;
+                                return startingAmount;
                         }
                     }
                 }
+                current = timeContainer.getTimeSand(item);
                 if(current + amount >= max)
                 {
                     timeContainer.setTimeSand(item, player, max);
-                    overspill = max - current;
+                    timeAdded = max - current;
                 }
                 else
                 {
                     timeContainer.setTimeSand(item, player, current + amount);
-                    overspill = 0;
+                    timeAdded = startingAmount;
                 }
             }
             else
             {
                 timeContainer.setTimeSand(item, player, current + amount);
-                overspill = 0;
+                timeAdded = startingAmount;
             }
-            return overspill;
+            return timeAdded;
         }
-        return amount;
+        return 0;
     }
 
     /**
      * Automatically handles inner temporal cores.
-     * @return Overspill (the amount that couldn't be added).
+     * @return The amount that could be added.
      */
     public static long addTimeSand(ItemStack item, long amount)
     {
         if(item.getItem() instanceof ITimeSand)
         {
             ITimeSand timeContainer = (ITimeSand) item.getItem();
-            long overspill;
+            long startingAmount = amount;
+            long timeAdded;
             long max = timeContainer.getMaxTimeSand(item);
             long current = timeContainer.getTimeSand(item);
             if(current + amount >= max) //Exceeds the tool's internal maximum.
@@ -94,41 +97,43 @@ public class TimeSandHelper
                     {
                         if(is != null && is.getItem() instanceof ITemporalCore)
                         {
-                            amount = addTimeSand(is, amount);
+                            amount -= addTimeSand(is, amount);
                             NBTHelper.INVENTORY.set(item, NBTTags.COMPONENT_INVENTORY, items);
                             if(amount <= 0)
-                                return 0;
+                                return startingAmount;
                         }
                     }
                 }
+                current = timeContainer.getTimeSand(item);
                 if(current + amount >= max)
                 {
                     timeContainer.setTimeSand(item, max);
-                    overspill = max - current;
+                    timeAdded = max - current;
                 }
                 else
                 {
                     timeContainer.setTimeSand(item, current + amount);
-                    overspill = 0;
+                    timeAdded = startingAmount;
                 }
             }
             else
             {
                 timeContainer.setTimeSand(item, current + amount);
-                overspill = 0;
+                timeAdded = startingAmount;
             }
-            return overspill;
+            return timeAdded;
         }
-        return amount;
+        return 0;
     }
 
     public static long consumeTimeSand(ItemStack item, EntityPlayer player, long amount)
     {
-        if(item.getItem() instanceof IClockworkConstruct)
+        if(item.getItem() instanceof ITimeSand)
         {
             ITimeSand timeContainer = (ITimeSand) item.getItem();
-            long overspill;
-            long currentTension = timeContainer.getTimeSand(item);
+            long startingAmount = amount;
+            long amountConsumed;
+            long currentTime = timeContainer.getTimeSand(item);
 
             if(NBTHelper.hasTag(item, NBTTags.COMPONENT_INVENTORY))
             {
@@ -137,36 +142,38 @@ public class TimeSandHelper
                 {
                     if(is != null && is.getItem() instanceof ITemporalCore)
                     {
-                        amount = consumeTimeSand(is, player, amount);
+                        amount -= consumeTimeSand(is, player, amount);
                         NBTHelper.INVENTORY.set(item, NBTTags.COMPONENT_INVENTORY, items);
                         if(amount <= 0)
-                            return 0;
+                            return startingAmount;
                     }
                 }
             }
+            currentTime = timeContainer.getTimeSand(item);
 
-            if(currentTension - amount <= 0)
+            if(currentTime - amount <= 0)
             {
                 timeContainer.setTimeSand(item, player, 0);
-                overspill = currentTension;
+                amountConsumed = currentTime;
             }
             else
             {
-                timeContainer.setTimeSand(item, player, currentTension - amount);
-                overspill = amount;
+                timeContainer.setTimeSand(item, player, currentTime - amount);
+                amountConsumed = amount;
             }
-            return overspill;
+            return amountConsumed;
         }
-        return amount;
+        return 0;
     }
 
     public static long consumeTimeSand(ItemStack item, long amount)
     {
-        if(item.getItem() instanceof IClockworkConstruct)
+        if(item.getItem() instanceof ITimeSand)
         {
             ITimeSand timeContainer = (ITimeSand) item.getItem();
-            long overspill;
-            long currentTension = timeContainer.getTimeSand(item);
+            long startingAmount = amount;
+            long amountConsumed;
+            long currentTime = timeContainer.getTimeSand(item);
 
             if(NBTHelper.hasTag(item, NBTTags.COMPONENT_INVENTORY))
             {
@@ -175,27 +182,28 @@ public class TimeSandHelper
                 {
                     if(is != null && is.getItem() instanceof ITemporalCore)
                     {
-                        amount = consumeTimeSand(is, amount);
+                        amount -= consumeTimeSand(is, amount);
                         NBTHelper.INVENTORY.set(item, NBTTags.COMPONENT_INVENTORY, items);
                         if(amount <= 0)
-                            return 0;
+                            return startingAmount;
                     }
                 }
             }
+            currentTime = timeContainer.getTimeSand(item);
 
-            if(currentTension - amount <= 0)
+            if(currentTime - amount <= 0)
             {
                 timeContainer.setTimeSand(item, 0);
-                overspill = currentTension;
+                amountConsumed = currentTime;
             }
             else
             {
-                timeContainer.setTimeSand(item, currentTension - amount);
-                overspill = amount;
+                timeContainer.setTimeSand(item, currentTime - amount);
+                amountConsumed = amount;
             }
-            return overspill;
+            return amountConsumed;
         }
-        return amount;
+        return 0;
     }
 
     public static int getTimeSandChance(int playerLevel)

@@ -12,6 +12,7 @@ public class Names
         public static final String ASSEMBLY_TABLE = "assembly_table";
         public static final String CELESTIAL_COMPASS = "celestial_compass";
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
+        public static final String TEMPORALIZER = "temporalizer";
     }
 
     public class ITEM
@@ -30,7 +31,13 @@ public class Names
         public static final String GEAR_EMERALD = "emerald_gear";
         public static final String GEAR_QUARTZ = "quartz_gear";
         public static final String PRECIOUS_CHARM = "precious_charm";
+        public static final String DREAM_CATCHER = "dream_catcher";
+        public static final String ANCIENT_COIN = "ancient_coin";
+        public static final String NOTE_BOTTLE = "note_bottle";
+        public static final String GEAR_RUSTY = "rusty_gear";
+        public static final String GEAR_BROKEN_ELYSIAN = "broken_elysian_gear";
         public static final String TEMPORAL_CORE = "temporal_core";
+        public static final String TEMPORAL_INGOT = "temporal_ingot";
 
         public static final String TIMESTREAM_RELOCATION = "timestream_relocation";
         public static final String TIMESTREAM_SILKY_HARVEST = "timestream_silky_harvest";

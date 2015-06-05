@@ -15,6 +15,16 @@ public class Textures
     public static class GLYPH
     {
         public static ResourceLocation BASE_GLYPH = new ResourceLocation(Reference.MOD_ID, "textures/glyph/base.png");
+        public static ResourceLocation[] BASE_GLYPH_GEMS = {
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem0.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem1.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem2.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem3.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem4.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem5.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem6.png"),
+                new ResourceLocation(Reference.MOD_ID, "textures/glyph/gem7.png")
+        };
     }
 
     public static class PARTICLE

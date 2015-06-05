@@ -66,7 +66,7 @@ public class WorldHandler
                             if(timeSand - silk.getTimeSandCostPerApplication(silkStack) >= 0)
                             {
                                 timeContainer.consumeTimeSand(heldItem, event.harvester, silk.getTimeSandCostPerApplication(silkStack));
-                                ItemStack result = new ItemStack(event.block, 1, event.blockMetadata);
+                                ItemStack result = new ItemStack(event.block, 1, event.block.damageDropped(event.blockMetadata));
                                 event.drops.set(0, result);
                             }
                         }

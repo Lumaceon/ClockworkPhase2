@@ -7,8 +7,10 @@ import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.api.util.TimeSandHelper;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
@@ -61,5 +63,10 @@ public class ItemTemporalCore extends ItemClockworkPhase implements ITemporalCor
     @Override
     public long consumeTimeSand(ItemStack item, long amount) {
         return TimeSandHelper.consumeTimeSand(item, amount);
+    }
+
+    @Override
+    public ResourceLocation getGlyphTexture(ItemStack item) {
+        return Textures.PARTICLE.TIME_SAND;
     }
 }

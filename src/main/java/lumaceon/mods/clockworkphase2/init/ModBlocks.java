@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
+import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -11,8 +12,17 @@ public class ModBlocks
 {
     public static void init()
     {
+        initTimeMachines();
         initFluids();
         initMisc();
+    }
+
+    public static Block temporalizer;
+    public static void initTimeMachines()
+    {
+        temporalizer = new BlockTemporalizer(Material.iron, Names.BLOCK.TEMPORALIZER);
+
+        GameRegistry.registerBlock(temporalizer, Names.BLOCK.TEMPORALIZER);
     }
 
     public static Block timeSand;
@@ -42,5 +52,6 @@ public class ModBlocks
     public static void initTE()
     {
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
+        GameRegistry.registerTileEntity(TileTemporalizer.class, Names.BLOCK.TEMPORALIZER);
     }
 }

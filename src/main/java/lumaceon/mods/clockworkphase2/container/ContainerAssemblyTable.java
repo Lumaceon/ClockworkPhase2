@@ -30,9 +30,7 @@ public class ContainerAssemblyTable extends Container implements IAssemblyContai
         this.world = world;
 
         for(int x = 0; x < 9; x++)
-        {
             this.addSlotToContainer(new Slot(ip, x, 48 + x * 18 , 232));
-        }
 
         for(int x = 0; x < 9; x++)
         {

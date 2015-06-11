@@ -264,8 +264,7 @@ public class InformationDisplay
         {
             ITemporalCore core = (ITemporalCore) is.getItem();
             long timeSand = core.getTimeSand(is);
-            long max = core.getMaxTimeSand(is);
-            list.add("Time Sand: " + Colors.AQUA + TimeConverter.parseNumber(timeSand, 2) + "/" + TimeConverter.parseNumber(max, 1));
+            list.add("Time Sand: " + Colors.AQUA + TimeConverter.parseNumber(timeSand, 2));
         }
     }
 

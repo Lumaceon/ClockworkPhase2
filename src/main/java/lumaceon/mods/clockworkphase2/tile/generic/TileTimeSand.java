@@ -7,7 +7,7 @@ import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class TileTimeSand extends TileClockworkPhase implements ITimeSandTile
+public abstract class TileTimeSand extends TileTimezone implements ITimeSandTile
 {
     protected long internalTimeSand;
     protected long timeSandRequestAmount;
@@ -79,21 +79,19 @@ public abstract class TileTimeSand extends TileClockworkPhase implements ITimeSa
         }
     }
 
-    public void requestTimeSandFromTimezone(World world, int x, int y, int z, long timeSandToRequest)
+    public boolean requestTimeSandFromTimezone(World world, int x, int y, int z, long timeSandToRequest)
     {
         if(timeRequestTimer <= 0)
         {
             timeRequestTimer = timeBetweenTimezoneRequests;
-            ITimezone timezone = TimezoneHandler.getTimeZone(x, y, z, world);
+            ITimezone timezone = getTimezone();
 
             if(timezone == null)
-            {
-                timeRequestTimer = timeBetweenTimezoneRequests;
-                return;
-            }
+                return false;
 
             //Requests to consume, adds request minus what couldn't be consumed to machine, adds back any overspill.
             timezone.addTimeSand(addTimeSand(timeSandToRequest - timezone.consumeTimeSand(timeSandToRequest)));
         }
+        return true;
     }
 }

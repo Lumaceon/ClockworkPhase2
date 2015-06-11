@@ -31,6 +31,13 @@ tile.clockworkphase2:assembly_table.name=Worktable
 tile.clockworkphase2:celestial_compass.name=Celestial Compass
 tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
 tile.clockworkphase2:temporalizer.name=Temporalizer
+tile.clockworkphase2:timezone_fluid_importer.name=Timezone Fluid Importer
+tile.clockworkphase2:timezone_fluid_exporter.name=Timezone Fluid Exporter
+tile.clockworkphase2:copper_ore.name=Copper Ore
+tile.clockworkphase2:zinc_ore.name=Zinc Ore
+
+#Entity
+entity.personal_assistant_cube.name=Personal Assistant Cube
 
 #General Localizations
 itemGroup.ClockworkPhase2=Clockwork Phase 2

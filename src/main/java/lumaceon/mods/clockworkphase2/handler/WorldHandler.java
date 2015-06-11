@@ -51,7 +51,7 @@ public class WorldHandler
                                 silkStack = item;
                             }
 
-                            if(item != null && item.getItem().equals(ModItems.temporalFunctionSmelt))
+                            if(item != null && item.getItem().equals(ModItems.timestreamSmelt))
                             {
                                 smelt = (IToolTimestream) item.getItem();
                                 smeltStack = item;

@@ -1,8 +1,11 @@
 package lumaceon.mods.clockworkphase2.tile.timezone;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.ITemporalMaterial;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTimeSandInventoryMachine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,14 +28,14 @@ public class TileTemporalizer extends TileTimeSandInventoryMachine
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setByte("cp_state", (byte) STATE.ordinal());
+        nbt.setInteger("cp_state", STATE.ordinal());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        setState(nbt.getByte("cp_state"));
+        setState(nbt.getInteger("cp_state"));
     }
 
     @Override
@@ -47,13 +50,29 @@ public class TileTemporalizer extends TileTimeSandInventoryMachine
         {
             long amountConsumed = consumeTimeSand(30);
             if(amountConsumed == 30)
+            {
                 progressToGo--;
+                if(STATE != TemporalizerState.ACTIVE)
+                    setStateAndUpdate(TemporalizerState.ACTIVE.ordinal());
+            }
+
             else
             {
-                requestTimeSandFromTimezone(worldObj, xCoord, yCoord, zCoord, timeSandRequestAmount);
+                if(!requestTimeSandFromTimezone(worldObj, xCoord, yCoord, zCoord, timeSandRequestAmount))
+                {
+                    if(STATE != TemporalizerState.NO_TIMEZONE)
+                        setStateAndUpdate(TemporalizerState.NO_TIMEZONE.ordinal());
+                }
                 amountConsumed =+ consumeTimeSand(30 - amountConsumed);
                 if(amountConsumed == 30)
+                {
                     progressToGo--;
+                    if(STATE != TemporalizerState.ACTIVE)
+                        setStateAndUpdate(TemporalizerState.ACTIVE.ordinal());
+                }
+                else if(STATE != TemporalizerState.NO_ENERGY)
+                    setStateAndUpdate(TemporalizerState.NO_ENERGY.ordinal());
+
             }
             if(progressToGo <= 0)
             {
@@ -66,7 +85,12 @@ public class TileTemporalizer extends TileTimeSandInventoryMachine
             }
         }
         if(itemToTemporalize == null || itemToTemporalize.getItem() instanceof ITemporalMaterial)
+        {
             progressToGo = progressPerAction;
+            if(STATE != TemporalizerState.IDLE)
+                setStateAndUpdate(TemporalizerState.IDLE.ordinal());
+        }
+
     }
 
     @Override
@@ -75,12 +99,19 @@ public class TileTemporalizer extends TileTimeSandInventoryMachine
     }
 
     @Override
-    public void setState(byte state) {
+    public void setState(int state) {
         STATE = TemporalizerState.values()[state];
     }
 
-    public enum TemporalizerState
+    @Override
+    public void setStateAndUpdate(int state)
     {
-        IDLE, ACTIVE, NO_ENERGY, NO_TIMEZONE
+        if(worldObj != null && !worldObj.isRemote)
+        {
+            STATE = TemporalizerState.values()[state];
+            PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(xCoord, yCoord, zCoord, state), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 200));
+        }
     }
+
+    public enum TemporalizerState { IDLE, ACTIVE, NO_ENERGY, NO_TIMEZONE }
 }

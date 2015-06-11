@@ -5,6 +5,9 @@ import net.minecraft.item.ItemStack;
 public interface ITimezone
 {
     public float getRange();
+    public int getX();
+    public int getY();
+    public int getZ();
 
     /**
      * Indices 0-7 are the outer circles, started at the north-side and moving clockwise. Index 8 is the center.

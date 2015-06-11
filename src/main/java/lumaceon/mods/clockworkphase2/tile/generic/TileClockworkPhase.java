@@ -11,7 +11,9 @@ import net.minecraft.tileentity.TileEntity;
  */
 public abstract class TileClockworkPhase extends TileEntity
 {
-    public abstract void setState(byte state);
+    public abstract void setState(int state);
+
+    public abstract void setStateAndUpdate(int state);
 
     public void writeCustomNBT(NBTTagCompound nbt) {
         writeToNBT(nbt);

@@ -231,6 +231,11 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
             {
                 if(timestreamItems[circleClicked] == null)
                 {
+                    for(ItemStack ts : this.timestreamItems)
+                    {
+                        if(ts != null && ts.getItem().equals(heldItem.getItem()))
+                            return false;
+                    }
                     ItemStack item = heldItem.copy();
                     item.stackSize = 1;
                     timestreamItems[circleClicked] = item;
@@ -324,6 +329,21 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
+    public int getX() {
+        return xCoord;
+    }
+
+    @Override
+    public int getY() {
+        return yCoord;
+    }
+
+    @Override
+    public int getZ() {
+        return zCoord;
+    }
+
+    @Override
     public ItemStack getTimestream(int index) {
         return timestreamItems[index];
     }
@@ -383,5 +403,8 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public void setState(byte state) {} //NOOP
+    public void setState(int state) {} //NOOP
+
+    @Override
+    public void setStateAndUpdate(int state) {} //NOOP
 }

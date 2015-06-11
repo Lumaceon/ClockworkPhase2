@@ -5,10 +5,14 @@ import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public abstract class TileTimeSandInventoryMachine extends TileClockworkPhaseInventory implements ITimeSandTile
 {
+    public ITimezone timezone;
+    protected int tz_x, tz_y, tz_z;
+
     protected long internalTimeSand;
     protected long timeSandRequestAmount;
 
@@ -79,18 +83,36 @@ public abstract class TileTimeSandInventoryMachine extends TileClockworkPhaseInv
         }
     }
 
-    public void requestTimeSandFromTimezone(World world, int x, int y, int z, long timeSandToRequest)
+    public ITimezone getTimezone()
+    {
+        if(timezone != null)
+            return timezone;
+        TileEntity te = worldObj.getTileEntity(tz_x, tz_y, tz_z);
+        if(te != null && te instanceof ITimezone)
+        {
+            timezone = (ITimezone) te;
+            return timezone;
+        }
+
+        ITimezone timezone = TimezoneHandler.getTimeZone(xCoord, yCoord, zCoord, worldObj);
+        if(timezone != null)
+            this.timezone = timezone;
+        return timezone;
+    }
+
+    public boolean requestTimeSandFromTimezone(World world, int x, int y, int z, long timeSandToRequest)
     {
         if(timeRequestTimer <= 0)
         {
             timeRequestTimer = timeBetweenTimezoneRequests;
-            ITimezone timezone = TimezoneHandler.getTimeZone(x, y, z, world);
+            ITimezone timezone = getTimezone();
 
             if(timezone == null)
-                return;
+                return false;
 
             //Requests to consume, adds request minus what couldn't be consumed to machine, adds back any overspill.
             addTimeSand(timezone.consumeTimeSand(timeSandToRequest));
         }
+        return true;
     }
 }

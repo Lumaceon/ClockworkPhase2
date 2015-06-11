@@ -1,9 +1,11 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
-import lumaceon.mods.clockworkphase2.client.particle.ParticleGenerator;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
+import lumaceon.mods.clockworkphase2.client.tesr.TESRTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -12,22 +14,15 @@ import java.util.List;
 public class ClientProxy extends CommonProxy
 {
     @Override
-    public void registerTESR()
-    {
-
+    public void registerTESR() {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
     }
 
     @Override
-    public void registerModels()
-    {
-
-    }
+    public void registerModels() {}
 
     @Override
-    public void registerKeybindings()
-    {
-
-    }
+    public void registerKeybindings() {}
 
     @Override
     public void initSideHandlers()

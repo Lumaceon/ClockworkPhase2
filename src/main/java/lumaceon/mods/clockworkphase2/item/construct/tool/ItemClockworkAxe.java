@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.item.construct;
+package lumaceon.mods.clockworkphase2.item.construct.tool;
 
 import com.google.common.collect.Sets;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;

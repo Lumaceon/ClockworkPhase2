@@ -5,12 +5,11 @@ import io.netty.buffer.ByteBuf;
 
 public class MessageTileStateChange implements IMessage
 {
-    public int x, y, z;
-    public byte state;
+    public int x, y, z, state;
 
     public MessageTileStateChange() {}
 
-    public MessageTileStateChange(int x, int y, int z, byte stateOrdinal)
+    public MessageTileStateChange(int x, int y, int z, int stateOrdinal)
     {
         this.x = x;
         this.y = y;
@@ -24,7 +23,7 @@ public class MessageTileStateChange implements IMessage
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
-        buf.writeByte(state);
+        buf.writeInt(state);
     }
 
     @Override
@@ -33,6 +32,6 @@ public class MessageTileStateChange implements IMessage
         x = buf.readInt();
         y = buf.readInt();
         z = buf.readInt();
-        state = buf.readByte();
+        state = buf.readInt();
     }
 }

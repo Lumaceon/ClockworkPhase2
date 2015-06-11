@@ -6,6 +6,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.TemporalHarvestRegistry;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
@@ -13,12 +14,14 @@ import lumaceon.mods.clockworkphase2.config.ConfigurationHandler;
 import lumaceon.mods.clockworkphase2.creativetab.CreativeTabClockworkPhase2;
 import lumaceon.mods.clockworkphase2.handler.*;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
+import lumaceon.mods.clockworkphase2.init.ModEntities;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
+import lumaceon.mods.clockworkphase2.worldgen.WorldGeneratorOres;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -33,6 +36,8 @@ public class ClockworkPhase2
 
     public final CreativeTabs CREATIVE_TAB = new CreativeTabClockworkPhase2("Clockwork Phase 2");
 
+    public WorldGeneratorOres oreGenerator = new WorldGeneratorOres();
+
     @Mod.EventHandler
     public void preInitialize(FMLPreInitializationEvent event)
     {
@@ -43,9 +48,13 @@ public class ClockworkPhase2
         ModBlocks.init();
         ModBlocks.initTE();
 
+        GameRegistry.registerWorldGenerator(oreGenerator, 0);
+
         ModFluids.bindBlocks();
 
         ModItems.init();
+
+        ModEntities.init();
 
         proxy.registerKeybindings();
     }

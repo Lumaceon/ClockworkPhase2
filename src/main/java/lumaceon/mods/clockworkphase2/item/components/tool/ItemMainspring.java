@@ -2,27 +2,21 @@ package lumaceon.mods.clockworkphase2.item.components.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
+import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
 import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.network.PacketHandler;
-import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
 import lumaceon.mods.clockworkphase2.util.AssemblyHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
@@ -40,15 +34,27 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
     }
 
     @Override
-    public InventoryAssemblyComponents createComponentInventory(IAssemblyContainer container)
+    public AssemblySlot[] initializeSlots(ItemStack workItem)
     {
-        InventoryAssemblyComponents inventory = new InventoryAssemblyComponents(container, 9, 64);
-        AssemblyHelper.CREATE_COMPONENT_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
+        AssemblySlot[] slots = new AssemblySlot[]
+                {
+                        new AssemblySlot(Textures.ITEM.CLOCKWORK_CORE, 0.55F, 0.5F),
+                        new AssemblySlot(Textures.ITEM.MAINSPRING, 0.68F, 0.37F)
+                };
+        AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(workItem, slots);
+        return slots;
     }
 
     @Override
-    public Slot[] getContainerSlots(IAssemblyContainer container, IInventory inventory)
+    public void onComponentChange(ItemStack workItem, AssemblySlot[] slots) {}
+
+    @Override
+    public void saveComponentInventory(ItemStack workItem, AssemblySlot[] slots) {
+        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(workItem, slots);
+    }
+
+    /*@Override
+    public Slot[] initializeSlots(IAssemblyContainer container, IInventory inventory)
     {
         return new Slot[]
                 {
@@ -61,17 +67,9 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
                         new SlotMainspringMetal(inventory, 6, 108, 0),
                         new SlotMainspringMetal(inventory, 7, 126, 0),
                 };
-    }
+    }*/
 
-    @Override
-    public void onComponentChange(IAssemblyContainer container) {}
-
-    @Override
-    public void saveComponentInventory(IAssemblyContainer container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(container);
-    }
-
-    @Override
+    /*@Override
     public void initButtons(List buttonList, IAssemblyContainer container, int guiLeft, int guiTop) {
         ClockworkPhase2.proxy.initButtons(0, buttonList, container, guiLeft, guiTop);
     }
@@ -79,7 +77,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
     @Override
     public void onButtonActivated(int buttonID, List buttonList) {
         PacketHandler.INSTANCE.sendToServer(new MessageMainspringButton());
-    }
+    }*/
 
     public void onButtonServer(IAssemblyContainer container)
     {
@@ -118,10 +116,10 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
         }
     }
 
-    @Override
+    /*@Override
     public ResourceLocation getBackgroundTexture(IAssemblyContainer container) {
         return Textures.GUI.DEFAULT_ASSEMBLY_TABLE;
-    }
+    }*/
 
     @Override
     public int getMaxSize(ItemStack item) {

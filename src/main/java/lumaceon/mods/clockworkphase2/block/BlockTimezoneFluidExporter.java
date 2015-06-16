@@ -1,8 +1,5 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import lumaceon.mods.clockworkphase2.network.PacketHandler;
-import lumaceon.mods.clockworkphase2.network.message.MessageFluidStackDisplay;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -10,9 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class BlockTimezoneFluidExporter extends BlockClockworkPhase implements ITileEntityProvider
 {
@@ -55,6 +49,7 @@ public class BlockTimezoneFluidExporter extends BlockClockworkPhase implements I
         return false;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }

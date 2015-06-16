@@ -112,7 +112,7 @@ public class ContainerAssemblyTable extends Container implements IAssemblyContai
         this.guiTop = guiTop;
         if(item != null && item.getItem() instanceof IAssemblable && buttonList != null && guiLeft != -1 && guiTop != -1)
         {
-            ((IAssemblable) item.getItem()).initButtons(buttonList, this, guiLeft, guiTop);
+            //((IAssemblable) item.getItem()).initButtons(buttonList, this, guiLeft, guiTop);
         }
     }
 
@@ -134,9 +134,9 @@ public class ContainerAssemblyTable extends Container implements IAssemblyContai
     private void setupNewContainerAndGUI(ItemStack item)
     {
         IAssemblable template = (IAssemblable) item.getItem();
-        componentInventory = template.createComponentInventory(this);
-        template.saveComponentInventory(this);
-        Slot[] slots = template.getContainerSlots(this, componentInventory);
+        //componentInventory = template.createComponentInventory(this);
+        //template.saveComponentInventory(this);
+        /*[] slots = template.initializeSlots(this, componentInventory);
         for(Slot slot : slots)
         {
             this.addSlotToContainer(slot);
@@ -145,19 +145,19 @@ public class ContainerAssemblyTable extends Container implements IAssemblyContai
         if(buttonList != null && guiLeft != -1 && guiTop != -1)
         {
             template.initButtons(buttonList, this, guiLeft, guiTop);
-        }
+        }*/
     }
 
     @Override
     public void onComponentChanged()
     {
-        ItemStack item = mainInventory.getStackInSlot(0);
+        /*ItemStack item = mainInventory.getStackInSlot(0);
         if(item != null && item.getItem() instanceof IAssemblable)
         {
             ((IAssemblable) item.getItem()).onComponentChange(this);
             if(!world.isRemote)
                 ((IAssemblable) item.getItem()).saveComponentInventory(this);
-        }
+        }*/
     }
 
     @Override

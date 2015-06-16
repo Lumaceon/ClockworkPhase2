@@ -31,4 +31,10 @@ public class Textures
     {
         public static ResourceLocation TIME_SAND = new ResourceLocation(Reference.MOD_ID, "textures/particles/time_sand.png");
     }
+
+    public static class ITEM
+    {
+        public static ResourceLocation MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/items/mainspring.png");
+        public static ResourceLocation CLOCKWORK_CORE = new ResourceLocation(Reference.MOD_ID, "textures/items/clockwork_core.png");
+    }
 }

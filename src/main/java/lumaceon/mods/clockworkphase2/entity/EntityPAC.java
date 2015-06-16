@@ -27,6 +27,16 @@ public class EntityPAC extends EntityLiving
     }
 
     @Override
+    public void moveEntityWithHeading(float p_70612_1_, float p_70612_2_)
+    {
+        moveFlying(p_70612_1_, p_70612_2_, this.isAIEnabled() ? 0.04F : 0.02F);
+        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.motionX *= 0.99;
+        this.motionY *= 0.99;
+        this.motionZ *= 0.99;
+    }
+
+    @Override
     public void onUpdate()
     {
         super.onUpdate();

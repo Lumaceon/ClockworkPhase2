@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
+import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
 import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
@@ -11,10 +12,8 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.util.*;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockwork;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspring;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotTemporalCore;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotTemporalFunction;
+import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotClockworkCore;
+import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotMainspring;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
@@ -26,12 +25,9 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -151,23 +147,22 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
-    public InventoryAssemblyComponents createComponentInventory(IAssemblyContainer container)
+    public AssemblySlot[] initializeSlots(ItemStack workItem)
     {
-        ItemStack mainItem = container.getMainInventory().getStackInSlot(0);
-        int invSize = 2;
-        if(mainItem != null && mainItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) mainItem.getItem()).isTemporal(mainItem))
-        {
-            invSize += 2;
-            invSize += ((ITemporalableTool) mainItem.getItem()).getNumberOfPassiveTemporalFunctions(mainItem);
-        }
-
-        InventoryAssemblyComponents inventory = new InventoryAssemblyComponents(container, invSize, 1);
-        AssemblyHelper.CREATE_COMPONENT_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
+        AssemblySlot[] slots = new AssemblySlot[]
+                {
+                        new AssemblySlotMainspring(Textures.ITEM.MAINSPRING, 0.68F, 0.37F),
+                        new AssemblySlotClockworkCore(Textures.ITEM.CLOCKWORK_CORE, 0.55F, 0.5F),
+                        new AssemblySlot(Textures.GLYPH.BASE_GLYPH, 0.2F, 0.2F),
+                        new AssemblySlot(Textures.GLYPH.BASE_GLYPH, 0.5F, 0.2F),
+                        new AssemblySlot(Textures.GLYPH.BASE_GLYPH, 0.8F, 0.2F)
+                };
+        AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(workItem, slots);
+        return slots;
     }
 
-    @Override
-    public Slot[] getContainerSlots(IAssemblyContainer container, IInventory inventory)
+    /*@Override
+    public Slot[] initializeSlots(IAssemblyContainer container, IInventory inventory)
     {
         ItemStack mainItem = container.getMainInventory().getStackInSlot(0);
         if(mainItem != null && mainItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) mainItem.getItem()).isTemporal(mainItem))
@@ -187,22 +182,22 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
                         new SlotMainspring(inventory, 0, 20, 20),
                         new SlotClockwork(inventory, 1, 20, 40),
                 };
-    }
+    }*/
 
     @Override
-    public void onComponentChange(IAssemblyContainer container)
+    public void onComponentChange(ItemStack workItem, AssemblySlot[] slots)
     {
-        AssemblyHelper.COMPONENT_CHANGE.assembleClockworkConstruct(container, 0, 1);
-        if(container.getMainInventory().getStackInSlot(0) != null && isTemporal(container.getMainInventory().getStackInSlot(0)))
-            AssemblyHelper.COMPONENT_CHANGE.assembleClockworkTemporalTool(container);
+        AssemblyHelper.COMPONENT_CHANGE.assembleClockworkConstruct(workItem, slots[0], slots[1]);
+        if(workItem != null && isTemporal(workItem))
+            AssemblyHelper.COMPONENT_CHANGE.assembleClockworkTemporalTool(workItem, slots);
     }
 
     @Override
-    public void saveComponentInventory(IAssemblyContainer container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(container);
+    public void saveComponentInventory(ItemStack workItem, AssemblySlot[] slots) {
+        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(workItem, slots);
     }
 
-    @Override
+    /*@Override
     public void initButtons(List buttonList, IAssemblyContainer container, int guiLeft, int guiTop) {}
 
     @Override
@@ -211,7 +206,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     @Override
     public ResourceLocation getBackgroundTexture(IAssemblyContainer container){
         return Textures.GUI.DEFAULT_ASSEMBLY_TABLE;
-    }
+    }*/
 
     @Override
     public int getTension(ItemStack item) {

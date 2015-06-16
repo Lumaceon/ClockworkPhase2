@@ -2,7 +2,10 @@ package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
+import lumaceon.mods.clockworkphase2.block.steammachine.BlockBoiler;
 import lumaceon.mods.clockworkphase2.lib.Names;
+import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
+import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
@@ -15,10 +18,19 @@ public class ModBlocks
 {
     public static void init()
     {
+        initSteamMachines();
         initTimeMachines();
         initFluids();
         initOres();
         initMisc();
+    }
+
+    public static Block boiler;
+    public static void initSteamMachines()
+    {
+        boiler = new BlockBoiler(Material.iron, Names.BLOCK.BOILER);
+
+        GameRegistry.registerBlock(boiler, Names.BLOCK.BOILER);
     }
 
     public static Block temporalizer;
@@ -44,17 +56,20 @@ public class ModBlocks
 
     public static Block basicWindingBox;
     public static Block assemblyTable;
+    public static Block assemblyTableSB;
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     public static void initMisc()
     {
         basicWindingBox = new BlockBasicWindingBox(Material.iron, Names.BLOCK.BASIC_WINDING_BOX);
-        assemblyTable = new BlockAssemblyTable(Material.iron, Names.BLOCK.ASSEMBLY_TABLE);
+        assemblyTable = new BlockAssemblyTable(Material.wood, Names.BLOCK.ASSEMBLY_TABLE);
+        assemblyTableSB = new BlockAssemblyTableSB(Material.wood, Names.BLOCK.ASSEMBLY_TABLE_SB);
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
         celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
 
         GameRegistry.registerBlock(basicWindingBox, Names.BLOCK.BASIC_WINDING_BOX);
         GameRegistry.registerBlock(assemblyTable, Names.BLOCK.ASSEMBLY_TABLE);
+        GameRegistry.registerBlock(assemblyTableSB, Names.BLOCK.ASSEMBLY_TABLE_SB);
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
     }
@@ -79,5 +94,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileTemporalizer.class, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
+        GameRegistry.registerTileEntity(TileAssemblyTable.class, Names.BLOCK.ASSEMBLY_TABLE);
+        GameRegistry.registerTileEntity(TileAssemblyTableSB.class, Names.BLOCK.ASSEMBLY_TABLE_SB);
     }
 }

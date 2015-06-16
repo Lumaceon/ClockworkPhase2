@@ -45,7 +45,7 @@ public class GuiAssemblyTable extends GuiContainer
             ItemStack mainItem = container.getMainInventory().getStackInSlot(0);
             if(mainItem != null && mainItem.getItem() instanceof IAssemblable)
             {
-                ((IAssemblable) mainItem.getItem()).onButtonActivated(button.id, buttonList);
+                //((IAssemblable) mainItem.getItem()).onButtonActivated(button.id, buttonList);
             }
         }
     }
@@ -61,7 +61,7 @@ public class GuiAssemblyTable extends GuiContainer
             {
                 IAssemblable constructGUI = (IAssemblable) container.getMainInventory().getStackInSlot(0).getItem();
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                Minecraft.getMinecraft().renderEngine.bindTexture(constructGUI.getBackgroundTexture(container));
+                //Minecraft.getMinecraft().renderEngine.bindTexture(constructGUI.getBackgroundTexture(container));
                 this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
                 return;
             }

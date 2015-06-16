@@ -10,8 +10,10 @@ public class Names
         public static final String TIME_SAND = "time_sand";
         public static final String BASIC_WINDING_BOX = "basic_winding_box";
         public static final String ASSEMBLY_TABLE = "assembly_table";
+        public static final String ASSEMBLY_TABLE_SB = "assembly_table_sb";
         public static final String CELESTIAL_COMPASS = "celestial_compass";
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
+        public static final String BOILER = "boiler";
         public static final String TEMPORALIZER = "temporalizer";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";

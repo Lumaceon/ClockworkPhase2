@@ -4,7 +4,11 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
+import lumaceon.mods.clockworkphase2.client.tesr.TESRAssemblyTable;
+import lumaceon.mods.clockworkphase2.client.tesr.TESRAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.client.tesr.TESRTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
+import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.common.MinecraftForge;
@@ -14,7 +18,10 @@ import java.util.List;
 public class ClientProxy extends CommonProxy
 {
     @Override
-    public void registerTESR() {
+    public void registerTESR()
+    {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTableSB.class, new TESRAssemblyTableSB());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
     }
 

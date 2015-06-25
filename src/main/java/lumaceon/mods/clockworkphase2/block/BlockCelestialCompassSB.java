@@ -187,11 +187,8 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
     public void registerBlockIcons(IIconRegister registry)
     {
         this.blockIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
-
         for(int n = 0; n < 96; n++)
-        {
             this.icons[n] = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "/" + n);
-        }
     }
 
     private static int getTextureIndexFromCoordinates(int x, int z)

@@ -4,12 +4,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
 import lumaceon.mods.clockworkphase2.lib.Reference;
-import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
-import lumaceon.mods.clockworkphase2.network.message.MessageStandardParticleSpawn;
-import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
-import lumaceon.mods.clockworkphase2.network.message.handler.HandlerMainspringButton;
-import lumaceon.mods.clockworkphase2.network.message.handler.HandlerStandardParticleSpawn;
-import lumaceon.mods.clockworkphase2.network.message.handler.HandlerTileStateChange;
+import lumaceon.mods.clockworkphase2.network.message.*;
+import lumaceon.mods.clockworkphase2.network.message.handler.*;
 
 public class PacketHandler
 {
@@ -24,5 +20,9 @@ public class PacketHandler
         INSTANCE.registerMessage(HandlerStandardParticleSpawn.class, MessageStandardParticleSpawn.class, nextID, Side.CLIENT);
         nextID++;
         INSTANCE.registerMessage(HandlerTileStateChange.class, MessageTileStateChange.class, nextID, Side.CLIENT);
+        nextID++;
+        INSTANCE.registerMessage(HandlerLightningSwordActivate.class, MessageLightningSwordActivate.class, nextID, Side.SERVER);
+        nextID++;
+        INSTANCE.registerMessage(HandlerTimestreamRecipe.class, MessageTimestreamRecipe.class, nextID, Side.SERVER);
     }
 }

@@ -7,6 +7,7 @@ import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
+import lumaceon.mods.clockworkphase2.tile.TileTimestreamExtractionChamber;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidImporter;
@@ -33,15 +34,27 @@ public class ModBlocks
         GameRegistry.registerBlock(boiler, Names.BLOCK.BOILER);
     }
 
+    public static Block celestialCompass;
+    public static Block celestialCompassSB;
+    public static Block timestreamExtractionChamber;
+    public static Block timestreamExtractionChamberSB;
     public static Block temporalizer;
     public static Block timezoneFluidExporter;
     public static Block timezoneFluidImporter;
     public static void initTimeMachines()
     {
+        celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
+        celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        timestreamExtractionChamber = new BlockTimestreamExtractionChamber(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
+        timestreamExtractionChamberSB = new BlockTimestreamExtractionChamberSB(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER_SB);
         temporalizer = new BlockTemporalizer(Material.iron, Names.BLOCK.TEMPORALIZER);
         timezoneFluidExporter = new BlockTimezoneFluidExporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         timezoneFluidImporter = new BlockTimezoneFluidImporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
 
+        GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
+        GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        GameRegistry.registerBlock(timestreamExtractionChamber, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
+        GameRegistry.registerBlock(timestreamExtractionChamberSB, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER_SB);
         GameRegistry.registerBlock(temporalizer, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerBlock(timezoneFluidExporter, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerBlock(timezoneFluidImporter, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
@@ -57,21 +70,18 @@ public class ModBlocks
     public static Block basicWindingBox;
     public static Block assemblyTable;
     public static Block assemblyTableSB;
-    public static Block celestialCompass;
-    public static Block celestialCompassSB;
+    public static Block lightningRod;
     public static void initMisc()
     {
         basicWindingBox = new BlockBasicWindingBox(Material.iron, Names.BLOCK.BASIC_WINDING_BOX);
         assemblyTable = new BlockAssemblyTable(Material.wood, Names.BLOCK.ASSEMBLY_TABLE);
         assemblyTableSB = new BlockAssemblyTableSB(Material.wood, Names.BLOCK.ASSEMBLY_TABLE_SB);
-        celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
-        celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        lightningRod = new BlockLightningRod(Material.wood, Names.BLOCK.LIGHTNING_ROD);
 
         GameRegistry.registerBlock(basicWindingBox, Names.BLOCK.BASIC_WINDING_BOX);
         GameRegistry.registerBlock(assemblyTable, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerBlock(assemblyTableSB, Names.BLOCK.ASSEMBLY_TABLE_SB);
-        GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
-        GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        GameRegistry.registerBlock(lightningRod, Names.BLOCK.LIGHTNING_ROD);
     }
 
     public static Block oreCopper;
@@ -96,5 +106,6 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
         GameRegistry.registerTileEntity(TileAssemblyTable.class, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerTileEntity(TileAssemblyTableSB.class, Names.BLOCK.ASSEMBLY_TABLE_SB);
+        GameRegistry.registerTileEntity(TileTimestreamExtractionChamber.class, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
     }
 }

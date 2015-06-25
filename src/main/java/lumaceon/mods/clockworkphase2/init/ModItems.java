@@ -16,6 +16,7 @@ import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkAxe;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkMultitool;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkPickaxe;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkShovel;
+import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
@@ -104,6 +105,7 @@ public class ModItems
     public static ItemTimestreamSmelt timestreamSmelt;
     public static ItemTimestreamExtradimensionalTank timestreamExtradimensionalTank;
     public static ItemTimestreamMobMagnet timestreamMobMagnet;
+    public static ItemTimestreamLightning timestreamLightning;
     public static void initTimestreams()
     {
         timestreamRelocation = new ItemTimestreamRelocation(1, 100, Names.ITEM.TIMESTREAM_RELOCATION);
@@ -111,12 +113,14 @@ public class ModItems
         timestreamSmelt = new ItemTimestreamSmelt(1, 100, Names.ITEM.TIMESTREAM_SMELT);
         timestreamExtradimensionalTank = new ItemTimestreamExtradimensionalTank(1, 100, Names.ITEM.TIMESTREAM_EXTRA_TANK);
         timestreamMobMagnet = new ItemTimestreamMobMagnet(1, 100, Names.ITEM.TIMESTREAM_MOB_MAGNET);
+        timestreamLightning = new ItemTimestreamLightning(1, 100, Names.ITEM.TIMESTREAM_LIGHTNING);
 
         GameRegistry.registerItem(timestreamRelocation, Names.ITEM.TIMESTREAM_RELOCATION);
         GameRegistry.registerItem(timestreamSilkyHarvest, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
         GameRegistry.registerItem(timestreamSmelt, Names.ITEM.TIMESTREAM_SMELT);
         GameRegistry.registerItem(timestreamExtradimensionalTank, Names.ITEM.TIMESTREAM_EXTRA_TANK);
         GameRegistry.registerItem(timestreamMobMagnet, Names.ITEM.TIMESTREAM_MOB_MAGNET);
+        GameRegistry.registerItem(timestreamLightning, Names.ITEM.TIMESTREAM_LIGHTNING);
     }
 
     public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, 0, 0);
@@ -124,19 +128,22 @@ public class ModItems
     public static Item clockworkAxe;
     public static Item clockworkShovel;
     public static Item clockworkMultiTool;
+    public static Item lightningSword;
     public static Item PAC;
     public static void initConstructs()
     {
         clockworkPickaxe = new ItemClockworkPickaxe(clockworkMaterial, Names.ITEM.CLOCKWORK_PICKAXE);
         clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
-        clockworkMultiTool = new ItemClockworkMultitool(0, Item.ToolMaterial.IRON, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        clockworkMultiTool = new ItemClockworkMultitool(0, clockworkMaterial, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        lightningSword = new ItemLightningSword(clockworkMaterial, Names.ITEM.LIGHTNING_SWORD);
         PAC = new ItemPAC(1, 100, Names.ITEM.PAC);
 
         GameRegistry.registerItem(clockworkPickaxe, Names.ITEM.CLOCKWORK_PICKAXE);
         GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
         GameRegistry.registerItem(clockworkMultiTool, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        GameRegistry.registerItem(lightningSword, Names.ITEM.LIGHTNING_SWORD);
         GameRegistry.registerItem(PAC, Names.ITEM.PAC);
     }
 

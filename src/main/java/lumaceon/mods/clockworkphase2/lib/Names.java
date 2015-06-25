@@ -11,9 +11,12 @@ public class Names
         public static final String BASIC_WINDING_BOX = "basic_winding_box";
         public static final String ASSEMBLY_TABLE = "assembly_table";
         public static final String ASSEMBLY_TABLE_SB = "assembly_table_sb";
+        public static final String LIGHTNING_ROD = "lightning_rod";
         public static final String CELESTIAL_COMPASS = "celestial_compass";
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
         public static final String BOILER = "boiler";
+        public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
+        public static final String TIMESTREAM_EXTRACTION_CHAMBER_SB = "timestream_extraction_chamber_sb";
         public static final String TEMPORALIZER = "temporalizer";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";
@@ -30,6 +33,7 @@ public class Names
         public static final String CLOCKWORK_AXE = "clockwork_axe";
         public static final String CLOCKWORK_SHOVEL = "clockwork_shovel";
         public static final String CLOCKWORK_MULTI_TOOL = "clockwork_multitool";
+        public static final String LIGHTNING_SWORD = "lightning_sword";
         public static final String PAC = "personal_assistant_cube";
         public static final String GEAR_WOOD = "wood_gear";
         public static final String GEAR_STONE = "stone_gear";
@@ -51,6 +55,7 @@ public class Names
         public static final String TIMESTREAM_SMELT = "timestream_smelt";
         public static final String TIMESTREAM_EXTRA_TANK = "timestream_extra_tank";
         public static final String TIMESTREAM_MOB_MAGNET = "timestream_mob_magnet";
+        public static final String TIMESTREAM_LIGHTNING = "timestream_lightning";
 
         public static final String TEMPORAL_INGOT = "temporal_ingot";
         public static final String COPPER_INGOT = "copper_ingot";

@@ -95,7 +95,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
         super.readFromNBT(nbt);
         this.blocksToPlace = nbt.getInteger("internal_block_count");
         if(nbt.hasKey("recipe"))
-            this.currentRecipe = TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(nbt.getString("recipe"));
+            this.currentRecipe = TimestreamCraftingRegistry.getRecipe(nbt.getString("recipe"));
         this.resultingTimestreamMagnitude = nbt.getInteger("timestream_recipe_magnitude");
         this.craftingTicksRemaining = nbt.getInteger("craft_ticks");
 
@@ -145,7 +145,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
             return;
         }
 
-        if(currentRecipe != null)
+        /*if(currentRecipe != null)
         {
             if(!worldObj.isRemote)
             {
@@ -170,7 +170,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
                         currentRecipe = null;
                 }
             }
-        }
+        }*/
 
         if(registerTimezone && worldObj != null)
         {
@@ -203,7 +203,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
             ItemStack heldItem = player.inventory.getCurrentItem();
             if(player.isSneaking() && heldItem == null)
             {
-                for(ITimestreamCraftingRecipe recipe : TimestreamCraftingRegistry.TIMESTREAM_RECIPES.values())
+                /*for(ITimestreamCraftingRecipe recipe : TimestreamCraftingRegistry.TIMESTREAM_RECIPES.values())
                 {
                     if(recipe.matches(this.craftingItems))
                     {
@@ -212,7 +212,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
                         this.resultingTimestreamMagnitude = 0;
                         return true;
                     }
-                }
+                }*/
                 return false;
             }
             if(heldItem != null && heldItem.getItem() instanceof ITimeSand && circleClicked == 8) //Put held ITimeSand in center.

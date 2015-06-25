@@ -41,6 +41,8 @@ public class GuiHandler implements IGuiHandler
                 return new GuiAssemblyTable(player.inventory, world);
             case 1:
                 return new GuiTemporalizer(player.inventory, (TileTemporalizer) te, world);
+            case 2:
+                return new GuiTimestreamExtractionChamber(te);
         }
         return null;
     }

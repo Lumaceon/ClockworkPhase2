@@ -2,71 +2,41 @@ package lumaceon.mods.clockworkphase2.client.gui.pane;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.ResourceLocation;
 
-public class PaneComponent
+import java.awt.*;
+
+public class PaneComponentTitled extends PaneComponent
 {
-    public Minecraft mc;
-    public ResourceLocation texture = null;
+    public String componentTitle;
+    public int titleColor = Color.WHITE.getRGB();
+    public boolean shouldRenderString = true;
 
-    public EnumRenderType RENDER_TYPE = EnumRenderType.STRETCH;
-    public EnumSide ANCHOR = EnumSide.CENTER;
-    public int textureWidth = 1;
-    public int textureHeight = 1;
-    public float alpha = 1;
-
-    //Rendered from the center, which is where these coordinates represent.
-    public float xCenter = 0.5F;
-    public float yCenter = 0.5F;
-
-    //Size represents the entire area this component has, not the actual rendering area, 1 being the whole screen.
-    public float xSize = 1.0F;
-    public float ySize = 1.0F;
-
-    public float localSizeX = 1.0F;
-    public float localSizeY = 1.0F;
-
-    public PaneComponent(Minecraft mc) {
-        this.mc = mc;
+    public PaneComponentTitled(Minecraft mc) {
+        super(mc);
     }
 
-    public void setTexture(ResourceLocation texture) {
-        this.texture = texture;
+    public void setTitle(String title) {
+        componentTitle = title;
     }
 
-    public void setRenderType(EnumRenderType renderType) {
-        this.RENDER_TYPE = renderType;
+    public void setTitleColor(int color) {
+        titleColor = color;
     }
 
-    public void setTextureProportions(int width, int height) {
-        textureWidth = width;
-        textureHeight = height;
+    public void setShouldRenderString(boolean shouldRenderString) {
+        this.shouldRenderString = shouldRenderString;
     }
 
-    public void setPosition(float x, float y) {
-        xCenter = x;
-        yCenter = y;
-    }
-
-    public void setLocalSize(float x, float y) {
-        localSizeX = x;
-        localSizeY = y;
-    }
-
-    public void update(int screenWidth, int screenHeight) {
-        if(mc == null)
-            mc = Minecraft.getMinecraft();
-    }
-
+    @Override
     public void draw(int screenWidth, int screenHeight, double zLevel)
     {
-        if(alpha <= 0 || texture == null || mc == null || mc.renderEngine == null)
+        if(alpha <= 0 || texture == null || mc == null || mc.renderEngine == null || mc.fontRenderer == null)
             return;
 
-        double left;
-        double right;
-        double top;
-        double bottom;
+        double left = 0;
+        double right = 1;
+        double top = 0;
+        double bottom = 1;
         double textureRatio;
         double paneRatio;
         double finalRatio;
@@ -250,5 +220,7 @@ public class PaneComponent
                 tessellator.draw();
                 break;
         }
+        if(shouldRenderString)
+            mc.fontRenderer.drawString(componentTitle, (int) ((left + (right - left) / 2.0) - mc.fontRenderer.getStringWidth(componentTitle) / 2.0), (int) (bottom + (xSize * localSizeX * 0.2F) * screenHeight), titleColor);
     }
 }

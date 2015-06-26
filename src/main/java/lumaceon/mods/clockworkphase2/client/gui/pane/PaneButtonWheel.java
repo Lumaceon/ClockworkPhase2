@@ -25,15 +25,20 @@ public class PaneButtonWheel extends Pane
             for(int n = 0; n < components.size(); n++)
             {
                 component = components.get(n);
-                centerDistance = 1 - Math.abs(wheelLocation - n) * (1.0F / (componentFullDimRadius + 1));
-                component.alpha = centerDistance;
-                component.xCenter = (this.xCenter + (n - wheelLocation) * this.xSize * (0.5F / (componentFullDimRadius + 1)));
-                component.yCenter = this.yCenter;
+                if(component != null)
+                {
+                    centerDistance = 1 - Math.abs(wheelLocation - n) * (1.0F / (componentFullDimRadius + 1));
+                    component.alpha = centerDistance;
+                    component.xCenter = (this.xCenter + (n - wheelLocation) * this.xSize * (0.5F / (componentFullDimRadius + 1)));
+                    component.yCenter = this.yCenter;
 
-                float internalScale = centerDistance;
+                    float internalScale = centerDistance;
 
-                component.xSize = (this.ySize * ((float) screenHeight / (float) (screenWidth == 0 ? 1 : screenWidth))) * internalScale;
-                component.ySize = this.ySize * internalScale;
+                    component.xSize = (this.ySize * ((float) screenHeight / (float) (screenWidth == 0 ? 1 : screenWidth))) * internalScale;
+                    component.ySize = this.ySize * internalScale;
+                    if(component instanceof PaneComponentTitled)
+                        ((PaneComponentTitled) component).setShouldRenderString(n == targetIndex);
+                }
             }
         }
     }

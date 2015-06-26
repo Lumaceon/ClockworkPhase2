@@ -2,6 +2,9 @@ package lumaceon.mods.clockworkphase2.client.gui.pane;
 
 import net.minecraft.client.Minecraft;
 
+/**
+ * This pane will only attempt to show the latest pane added, fading out all the other pane components.
+ */
 public class PaneFadeChange extends Pane
 {
     public PaneFadeChange(Minecraft mc) {
@@ -27,7 +30,7 @@ public class PaneFadeChange extends Pane
             {
                 if(run == 0)
                 {
-                    component.alpha = Math.min(component.alpha + 0.1F, 1F);
+                    component.alpha = Math.min(component.alpha + 0.1F, this.alpha);
                     alpha = component.alpha;
                 }
                 else if(component.alpha < 0.1F)
@@ -35,7 +38,7 @@ public class PaneFadeChange extends Pane
                     components.remove(component);
                     return;
                 }
-                else if(alpha >= 1)
+                else
                     component.alpha -= 0.1F;
                 component.xCenter = this.xCenter + (spacingLeft / 2) - (spacingRight / 2);
                 component.yCenter = this.yCenter + (spacingTop / 2) - (spacingBottom / 2);

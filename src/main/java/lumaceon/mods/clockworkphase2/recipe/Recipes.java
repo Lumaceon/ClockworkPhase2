@@ -94,11 +94,11 @@ public class Recipes
 
     public static void initTimestreamRecipes()
     {
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("relocation", TimeConverter.HOUR, Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_RELOCATION, new ItemStack(ModItems.timestreamRelocation)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("smelt", TimeConverter.WEEK, Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_SMELT, new ItemStack(ModItems.timestreamSmelt)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("silky", TimeConverter.DAY, Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_SILKY, new ItemStack(ModItems.timestreamSilkyHarvest)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("tank", TimeConverter.MONTH, Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_TANK, new ItemStack(ModItems.timestreamExtradimensionalTank)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamRecipeLightning("lightning", TimeConverter.MINUTE, Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_LIGHTNING, new ItemStack(ModItems.timestreamLightning)));
+        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("relocation", TimeConverter.HOUR, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_RELOCATION, new ItemStack(ModItems.timestreamRelocation)));
+        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("smelt", TimeConverter.WEEK, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_SMELT, new ItemStack(ModItems.timestreamSmelt)));
+        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("silky", TimeConverter.DAY, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_SILKY, new ItemStack(ModItems.timestreamSilkyHarvest)));
+        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("tank", TimeConverter.MONTH, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_TANK, new ItemStack(ModItems.timestreamExtradimensionalTank)));
+        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamRecipeLightning("lightning", TimeConverter.MINUTE, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_LIGHTNING, new ItemStack(ModItems.timestreamLightning)));
         //TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("contract", Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_CONTRACT));
     }
 

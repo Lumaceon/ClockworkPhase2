@@ -28,6 +28,7 @@ public class TodoList
     //TODO Create timestream freeze plate.
     //TODO Create lightning rifle.
     //TODO Create mob drop platform.
+    //TODO Create entity tubes (like pipes, but they move entities).
     //TODO ? Create bio-net series (sense growable items or something like that).
     //TODO ? Create human patron series (exists in the PAC, sign a contract with a human which will do your bidding).
     //TODO ? Create light series (angelic theme, manipulate light into physical forms, probably with lasers as well).

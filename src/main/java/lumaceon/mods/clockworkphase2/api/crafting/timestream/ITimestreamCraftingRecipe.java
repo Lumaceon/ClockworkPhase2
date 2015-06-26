@@ -8,6 +8,8 @@ public interface ITimestreamCraftingRecipe
 {
     public String getUnlocalizedName();
 
+    public long getTimeSandRequirement();
+
     /**
      * Called each tick to check for the correct conditions. Ideally a timer should increment if the conditions are
      * valid.

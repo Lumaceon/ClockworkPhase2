@@ -9,6 +9,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.TemporalHarvestRegistry;
+import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRegistry;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigurationHandler;
 import lumaceon.mods.clockworkphase2.creativetab.CreativeTabClockworkPhase2;
@@ -88,5 +89,6 @@ public class ClockworkPhase2
     {
         MainspringMetalRegistry.INTERNAL.initDefaults();
         TemporalHarvestRegistry.init();
+        TimestreamCraftingRegistry.sortRecipesByTimeRequirement();
     }
 }

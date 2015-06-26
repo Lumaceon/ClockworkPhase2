@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.tile.timezone;
 
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.item.components.timestream.ItemTimestreamExtradimensionalTank;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTimezone;
+import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
+import lumaceon.mods.clockworkphase2.tile.generic.TileTimezoneUsage;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -10,19 +10,19 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTimezoneFluidImporter extends TileTimezone implements IFluidHandler
+public class TileTimezoneFluidImporter extends TileTimezoneUsage implements IFluidHandler
 {
-    public ItemStack getTimestream()
+    public ItemStack getTimezoneModule()
     {
         ITimezone timezone = getTimezone();
-        ItemStack timestream;
+        ItemStack timezoneModule;
         if(timezone != null)
         {
             for(int n = 0; n < 8; n++)
             {
-                timestream = timezone.getTimestream(n);
-                if(timestream != null && timestream.getItem() instanceof ItemTimestreamExtradimensionalTank)
-                    return timestream;
+                timezoneModule = timezone.getTimezoneModule(n);
+                if(timezoneModule != null && timezoneModule.getItem() instanceof ItemTimezoneModuleTank)
+                    return timezoneModule;
             }
         }
         return null;
@@ -41,9 +41,9 @@ public class TileTimezoneFluidImporter extends TileTimezone implements IFluidHan
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
     {
-        ItemStack timestream = getTimestream();
+        ItemStack timestream = getTimezoneModule();
         if(timestream != null)
-            return ((ItemTimestreamExtradimensionalTank) timestream.getItem()).fill(timestream, resource, doFill);
+            return ((ItemTimezoneModuleTank) timestream.getItem()).fill(timestream, resource, doFill);
         return 0;
     }
 

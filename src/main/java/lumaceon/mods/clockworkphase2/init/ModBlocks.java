@@ -4,10 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
 import lumaceon.mods.clockworkphase2.block.steammachine.BlockBoiler;
 import lumaceon.mods.clockworkphase2.lib.Names;
-import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
-import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
-import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
-import lumaceon.mods.clockworkphase2.tile.TileTimestreamExtractionChamber;
+import lumaceon.mods.clockworkphase2.tile.*;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidImporter;
@@ -23,6 +20,7 @@ public class ModBlocks
         initTimeMachines();
         initFluids();
         initOres();
+        initMetalBlocks();
         initMisc();
     }
 
@@ -37,7 +35,6 @@ public class ModBlocks
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     public static Block timestreamExtractionChamber;
-    public static Block timestreamExtractionChamberSB;
     public static Block temporalizer;
     public static Block timezoneFluidExporter;
     public static Block timezoneFluidImporter;
@@ -46,7 +43,6 @@ public class ModBlocks
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
         celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
         timestreamExtractionChamber = new BlockTimestreamExtractionChamber(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
-        timestreamExtractionChamberSB = new BlockTimestreamExtractionChamberSB(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER_SB);
         temporalizer = new BlockTemporalizer(Material.iron, Names.BLOCK.TEMPORALIZER);
         timezoneFluidExporter = new BlockTimezoneFluidExporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         timezoneFluidImporter = new BlockTimezoneFluidImporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
@@ -54,7 +50,6 @@ public class ModBlocks
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
         GameRegistry.registerBlock(timestreamExtractionChamber, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
-        GameRegistry.registerBlock(timestreamExtractionChamberSB, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER_SB);
         GameRegistry.registerBlock(temporalizer, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerBlock(timezoneFluidExporter, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerBlock(timezoneFluidImporter, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
@@ -70,18 +65,15 @@ public class ModBlocks
     public static Block basicWindingBox;
     public static Block assemblyTable;
     public static Block assemblyTableSB;
-    public static Block lightningRod;
     public static void initMisc()
     {
         basicWindingBox = new BlockBasicWindingBox(Material.iron, Names.BLOCK.BASIC_WINDING_BOX);
         assemblyTable = new BlockAssemblyTable(Material.wood, Names.BLOCK.ASSEMBLY_TABLE);
         assemblyTableSB = new BlockAssemblyTableSB(Material.wood, Names.BLOCK.ASSEMBLY_TABLE_SB);
-        lightningRod = new BlockLightningRod(Material.wood, Names.BLOCK.LIGHTNING_ROD);
 
         GameRegistry.registerBlock(basicWindingBox, Names.BLOCK.BASIC_WINDING_BOX);
         GameRegistry.registerBlock(assemblyTable, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerBlock(assemblyTableSB, Names.BLOCK.ASSEMBLY_TABLE_SB);
-        GameRegistry.registerBlock(lightningRod, Names.BLOCK.LIGHTNING_ROD);
     }
 
     public static Block oreCopper;
@@ -96,6 +88,28 @@ public class ModBlocks
 
         OreDictionary.registerOre("oreCopper", oreCopper);
         OreDictionary.registerOre("oreZinc", oreZinc);
+    }
+
+    public static Block blockCopper;
+    public static Block blockZinc;
+    public static Block blockBrass;
+    public static Block blockTemporal;
+    public static void initMetalBlocks()
+    {
+        blockCopper = new BlockClockworkPhase(Material.iron, Names.BLOCK.BLOCK_COPPER);
+        blockZinc = new BlockClockworkPhase(Material.iron, Names.BLOCK.BLOCK_ZINC);
+        blockBrass = new BlockClockworkPhase(Material.iron, Names.BLOCK.BLOCK_BRASS);
+        blockTemporal = new BlockClockworkPhase(Material.iron, Names.BLOCK.BLOCK_TEMPORAL);
+
+        GameRegistry.registerBlock(blockCopper, Names.BLOCK.BLOCK_COPPER);
+        GameRegistry.registerBlock(blockZinc, Names.BLOCK.BLOCK_ZINC);
+        GameRegistry.registerBlock(blockBrass, Names.BLOCK.BLOCK_BRASS);
+        GameRegistry.registerBlock(blockTemporal, Names.BLOCK.BLOCK_TEMPORAL);
+
+        OreDictionary.registerOre("blockCopper", blockCopper);
+        OreDictionary.registerOre("blockZinc", blockZinc);
+        OreDictionary.registerOre("blockBrass", blockBrass);
+        OreDictionary.registerOre("blockTemporal", blockTemporal);
     }
 
     public static void initTE()

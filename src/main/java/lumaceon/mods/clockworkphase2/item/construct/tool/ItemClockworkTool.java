@@ -131,8 +131,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
         if((isTemporal(is) && TemporalToolHelper.getTimeSand(is) <= 0) || !(entity instanceof EntityPlayer))
             return true;
 
-        consumeTimeSand(is, (EntityPlayer) entity, TemporalToolHelper.getTimeSandCostFromToolUsage(is));
-
         if(memory > 0 && !world.isRemote)
         {
             EntityPlayer player = (EntityPlayer)entity;
@@ -161,29 +159,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
         return slots;
     }
 
-    /*@Override
-    public Slot[] initializeSlots(IAssemblyContainer container, IInventory inventory)
-    {
-        ItemStack mainItem = container.getMainInventory().getStackInSlot(0);
-        if(mainItem != null && mainItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) mainItem.getItem()).isTemporal(mainItem))
-        {
-            Slot[] newSlots = new Slot[inventory.getSizeInventory()];
-            newSlots[0] = new SlotMainspring(inventory, 0, 20, 20);
-            newSlots[1] = new SlotClockwork(inventory, 1, 20, 40);
-            newSlots[2] = new SlotTemporalCore(inventory, 2, 40, 40);
-            newSlots[3] = new SlotTemporalFunction(inventory, 3, 40, 60, true);
-            for(int n = 4; n < inventory.getSizeInventory(); n++)
-                newSlots[n] = new SlotTemporalFunction(inventory, n, 100 + 20 * ((n - 4) % 2), 100 + 20 * (n - 4), false);
-            return newSlots;
-        }
-
-        return new Slot[]
-                {
-                        new SlotMainspring(inventory, 0, 20, 20),
-                        new SlotClockwork(inventory, 1, 20, 40),
-                };
-    }*/
-
     @Override
     public void onComponentChange(ItemStack workItem, AssemblySlot[] slots)
     {
@@ -196,17 +171,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     public void saveComponentInventory(ItemStack workItem, AssemblySlot[] slots) {
         AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(workItem, slots);
     }
-
-    /*@Override
-    public void initButtons(List buttonList, IAssemblyContainer container, int guiLeft, int guiTop) {}
-
-    @Override
-    public void onButtonActivated(int buttonID, List buttonList) {}
-
-    @Override
-    public ResourceLocation getBackgroundTexture(IAssemblyContainer container){
-        return Textures.GUI.DEFAULT_ASSEMBLY_TABLE;
-    }*/
 
     @Override
     public int getTension(ItemStack item) {

@@ -13,7 +13,7 @@ public interface ITimezone
      * Indices 0-7 are the outer circles, started at the north-side and moving clockwise. Index 8 is the center.
      * @return The timestream is the given index, or null if none exist.
      */
-    public ItemStack getTimestream(int index);
+    public ItemStack getTimezoneModule(int index);
 
     public void setTimestream(int index, ItemStack item);
 

@@ -4,20 +4,21 @@ import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingR
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class TimestreamRecipeLightning extends TimestreamCraftingRecipe
 {
-    public TimestreamRecipeLightning(String unlocalizedName, ResourceLocation icon, ResourceLocation background, ItemStack result) {
-        super(unlocalizedName, icon, background, result);
+    public TimestreamRecipeLightning(String unlocalizedName, long timeSandRequirement, ResourceLocation icon, ResourceLocation background, ItemStack result) {
+        super(unlocalizedName, timeSandRequirement, icon, background, result);
     }
 
     @Override
     public boolean updateRecipe(World world, int x, int y, int z)
     {
-        if(world.getBlock(x, y + 1, z).equals(ModBlocks.lightningRod))
+        if(world.getBlock(x, y + 1, z).equals(Blocks.iron_bars))
         {
             boolean chainBroken = false;
             int highestLightningRod = y + 1;
@@ -25,7 +26,7 @@ public class TimestreamRecipeLightning extends TimestreamCraftingRecipe
             for(int n = y + 2; n < 255; n++)
             {
                 Block block = world.getBlock(x, n, z);
-                if(!chainBroken && block != null && block.equals(ModBlocks.lightningRod))
+                if(!chainBroken && block != null && block.equals(Blocks.iron_bars))
                 {
                     highestLightningRod = n;
                     lightningRods++;

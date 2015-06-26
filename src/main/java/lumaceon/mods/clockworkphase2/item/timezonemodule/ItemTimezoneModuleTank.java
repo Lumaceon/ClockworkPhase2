@@ -1,19 +1,19 @@
-package lumaceon.mods.clockworkphase2.item.components.timestream;
+package lumaceon.mods.clockworkphase2.item.timezonemodule;
 
-import lumaceon.mods.clockworkphase2.api.item.timestream.ITimezoneTimestream;
+import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
-import java.util.List;
-
-public class ItemTimestreamExtradimensionalTank extends ItemClockworkPhase implements ITimezoneTimestream
+public class ItemTimezoneModuleTank extends ItemClockworkPhase implements ITimezoneModule
 {
-    public ItemTimestreamExtradimensionalTank(int maxStack, int maxDamage, String unlocalizedName) {
+    public ItemTimezoneModuleTank(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 
@@ -128,16 +128,6 @@ public class ItemTimestreamExtradimensionalTank extends ItemClockworkPhase imple
     }
 
     @Override
-    public int getMagnitude(ItemStack item) {
-        return 0;
-    }
-
-    @Override
-    public void setMagnitude(ItemStack item, int magnitude) {
-
-    }
-
-    @Override
     public int getColorRed(ItemStack item) {
         return 40;
     }
@@ -150,10 +140,5 @@ public class ItemTimestreamExtradimensionalTank extends ItemClockworkPhase imple
     @Override
     public int getColorBlue(ItemStack item) {
         return 255;
-    }
-
-    @Override
-    public void addTimestreamInformation(ItemStack item, EntityPlayer player, List list) {
-
     }
 }

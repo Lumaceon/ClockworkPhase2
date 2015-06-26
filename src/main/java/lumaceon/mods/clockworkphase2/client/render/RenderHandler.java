@@ -1,9 +1,8 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
-import lumaceon.mods.clockworkphase2.api.item.timestream.ITimestream;
-import lumaceon.mods.clockworkphase2.api.item.timestream.ITimezoneTimestream;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.block.BlockCelestialCompassSB;
@@ -49,7 +48,7 @@ public class RenderHandler
                 ITimezone timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
                 if(timezone != null)
                 {
-                    ItemStack coreStack = timezone.getTimestream(8);
+                    ItemStack coreStack = timezone.getTimezoneModule(8);
                     if(coreStack != null && coreStack.getItem() instanceof ITemporalCore)
                         TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);
                     TIMEZONE.renderCelestialCompassItems(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ);
@@ -94,10 +93,10 @@ public class RenderHandler
             ItemStack stack;
             for(int n = 0; n < 8; n++)
             {
-                stack = timezone.getTimestream(n);
-                if(stack != null && stack.getItem() instanceof ITimestream)
+                stack = timezone.getTimezoneModule(n);
+                if(stack != null && stack.getItem() instanceof ITimezoneModule)
                 {
-                    ITimestream ts = (ITimestream) stack.getItem();
+                    ITimezoneModule ts = (ITimezoneModule) stack.getItem();
                     mc.renderEngine.bindTexture(Textures.GLYPH.BASE_GLYPH_GEMS[n]);
                     GL11.glColor3f(ts.getColorRed(stack) / 255.0F, ts.getColorGreen(stack) / 255.0F, ts.getColorBlue(stack) / 255.0F);
                     tessy.startDrawingQuads();
@@ -217,11 +216,11 @@ public class RenderHandler
                 ResourceLocation loc = null;
                 for(int n = 0; n < 9; n++)
                 {
-                    itemToRender = celestialCompass.getTimestream(n);
+                    itemToRender = celestialCompass.getTimezoneModule(n);
                     if(itemToRender == null)
                         continue;
-                    if(itemToRender.getItem() instanceof ITimezoneTimestream)
-                        loc = ((ITimezoneTimestream) itemToRender.getItem()).getGlyphTexture(itemToRender);
+                    if(itemToRender.getItem() instanceof ITimezoneModule)
+                        loc = ((ITimezoneModule) itemToRender.getItem()).getGlyphTexture(itemToRender);
                     else if(itemToRender.getItem() instanceof ITemporalCore)
                         loc = ((ITemporalCore) itemToRender.getItem()).getGlyphTexture(itemToRender);
                     GL11.glPushMatrix();

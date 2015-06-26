@@ -6,6 +6,6 @@ public class BlockClockworkPhaseOre extends BlockClockworkPhase
 {
     public BlockClockworkPhaseOre(Material blockMaterial, int harvestLevel, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);
-        this.setHarvestLevel("pickaxe", 1);
+        this.setHarvestLevel("pickaxe", harvestLevel);
     }
 }

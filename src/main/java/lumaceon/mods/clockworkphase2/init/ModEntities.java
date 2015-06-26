@@ -21,4 +21,11 @@ public class ModEntities
         EntityRegistry.registerModEntity(entityClass, name, id, ClockworkPhase2.instance, 64, 1, true);
         EntityList.entityEggs.put(id, new EntityList.EntityEggInfo(id, mainColor, secondColor));
     }
+
+    public static void registerEntity(Class<? extends Entity> entityClass, String name)
+    {
+        int id = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(entityClass, name, id);
+        EntityRegistry.registerModEntity(entityClass, name, id, ClockworkPhase2.instance, 64, 1, true);
+    }
 }

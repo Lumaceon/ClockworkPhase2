@@ -118,7 +118,6 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                     {
                         if(slot != null && slot.isEnabled)
                         {
-                            GL11.glDisable(GL11.GL_LIGHTING);
                             boolean isMouseOver = isIntersecting(xCoord, yCoord, zCoord, slot);
                             if(isMouseOver)
                                 slot.ticksMousedOver = Math.min(30, slot.ticksMousedOver + 1);

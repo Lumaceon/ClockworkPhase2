@@ -2,13 +2,12 @@ package lumaceon.mods.clockworkphase2.tile;
 
 import lumaceon.mods.clockworkphase2.api.crafting.timestream.ITimestreamCraftingRecipe;
 import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRegistry;
-import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
-import lumaceon.mods.clockworkphase2.util.Logger;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.tile.generic.TileTimezoneUsage;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
-public class TileTimestreamExtractionChamber extends TileClockworkPhase
+public class TileTimestreamExtractionChamber extends TileTimezoneUsage
 {
     public ITimestreamCraftingRecipe currentRecipe;
 
@@ -36,17 +35,20 @@ public class TileTimestreamExtractionChamber extends TileClockworkPhase
     @Override
     public void updateEntity()
     {
-        if(currentRecipe != null)
+        ITimezone timezone = getTimezone();
+        if(currentRecipe != null && timezone != null)
         {
-            if(currentRecipe.finalize(worldObj, xCoord, yCoord, zCoord))
+            if(currentRecipe.getTimeSandRequirement() <= timezone.getTimeSand())
             {
-                worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord, yCoord + 1, zCoord, currentRecipe.getCraftingResult(worldObj, xCoord, yCoord, zCoord)));
-                currentRecipe = null;
-            }
-            else if(currentRecipe.updateRecipe(worldObj, xCoord, yCoord, zCoord))
-            {
-                Logger.info("Recipe update");
-                //TODO Fancy stuff.
+                if(currentRecipe.finalize(worldObj, xCoord, yCoord, zCoord))
+                {
+                    worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord, yCoord + 1, zCoord, currentRecipe.getCraftingResult(worldObj, xCoord, yCoord, zCoord)));
+                    currentRecipe = null;
+                }
+                else if(currentRecipe.updateRecipe(worldObj, xCoord, yCoord, zCoord))
+                {
+                    //TODO Fancies.
+                }
             }
         }
     }

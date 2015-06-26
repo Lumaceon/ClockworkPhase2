@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.tile;
 
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
+import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
-import lumaceon.mods.clockworkphase2.api.item.timestream.ITimezoneTimestream;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.api.crafting.timestream.ITimestreamCraftingRecipe;
@@ -10,7 +10,6 @@ import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingR
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
-import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -227,7 +226,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
                     return true;
                 }
             }
-            else if(heldItem != null && heldItem.getItem() instanceof ITimezoneTimestream) //Put held timestream in outlying circle.
+            else if(heldItem != null && heldItem.getItem() instanceof ITimezoneModule) //Put held timestream in outlying circle.
             {
                 if(timestreamItems[circleClicked] == null)
                 {
@@ -344,7 +343,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public ItemStack getTimestream(int index) {
+    public ItemStack getTimezoneModule(int index) {
         return timestreamItems[index];
     }
 

@@ -63,7 +63,7 @@ public class EntityHandler
                 ItemStack timestream;
                 for(int n = 0; n < 8; n++)
                 {
-                    timestream = timezone.getTimestream(n);
+                    timestream = timezone.getTimezoneModule(n);
                     if(timestream != null && timestream.getItem() instanceof ItemTimestreamMobMagnet)
                     {
                         event.entity.setPosition(timezone.getX(), timezone.getY(), timezone.getZ());

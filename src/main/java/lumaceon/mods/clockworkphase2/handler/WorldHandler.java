@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import lumaceon.mods.clockworkphase2.api.item.ITemporalToolModule;
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
-import lumaceon.mods.clockworkphase2.api.item.timestream.IToolTimestream;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.util.TemporalToolHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
@@ -29,70 +29,56 @@ public class WorldHandler
         ItemStack heldItem = event.harvester.inventory.getStackInSlot(event.harvester.inventory.currentItem);
         if(!event.isSilkTouching)
         {
-            if(event.harvester.inventory.getStackInSlot(0) != null && event.harvester.inventory.getStackInSlot(0).getItem() instanceof ITemporalableTool)
+            ITemporalToolModule silk = null;
+            ItemStack silkStack = null;
+            ITemporalToolModule smelt = null;
+
+            if(heldItem != null && heldItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) heldItem.getItem()).isTemporal(heldItem))
             {
-                IToolTimestream silk = null;
-                ItemStack silkStack = null;
-                IToolTimestream smelt = null;
-                ItemStack smeltStack = null;
-
-                if(heldItem != null && heldItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) heldItem.getItem()).isTemporal(heldItem) && heldItem.getItem() instanceof ITimeSand)
+                if(NBTHelper.hasTag(heldItem, NBTTags.COMPONENT_INVENTORY))
                 {
-                    ITimeSand timeContainer = (ITimeSand) heldItem.getItem();
-                    long timeSand = TemporalToolHelper.getTimeSand(heldItem);
-                    if(NBTHelper.hasTag(heldItem, NBTTags.COMPONENT_INVENTORY))
+                    ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
+                    for(ItemStack item : inventory)
                     {
-                        ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
-                        for(ItemStack item : inventory)
+                        if(item != null && item.getItem().equals(ModItems.temporalToolModuleSilkTouch))
                         {
-                            if(item != null && item.getItem().equals(ModItems.timestreamSilkyHarvest))
-                            {
-                                silk = (IToolTimestream) item.getItem();
-                                silkStack = item;
-                            }
-
-                            if(item != null && item.getItem().equals(ModItems.timestreamSmelt))
-                            {
-                                smelt = (IToolTimestream) item.getItem();
-                                smeltStack = item;
-                            }
+                            silk = (ITemporalToolModule) item.getItem();
+                            silkStack = item;
                         }
+
+                        if(item != null && item.getItem().equals(ModItems.temporalToolModuleSmelt))
+                            smelt = (ITemporalToolModule) item.getItem();
                     }
+                }
 
-                    if(silk != null && silkStack != null && !event.drops.isEmpty())
+                if(silk != null && silkStack != null && !event.drops.isEmpty())
+                {
+                    if(event.block.canSilkHarvest(event.world, event.harvester, event.x, event.y, event.z, event.blockMetadata))
                     {
-                        if(event.block.canSilkHarvest(event.world, event.harvester, event.x, event.y, event.z, event.blockMetadata))
-                        {
-                            if(timeSand - silk.getTimeSandCostPerApplication(silkStack) >= 0)
-                            {
-                                timeContainer.consumeTimeSand(heldItem, event.harvester, silk.getTimeSandCostPerApplication(silkStack));
-                                ItemStack result = new ItemStack(event.block, 1, event.block.damageDropped(event.blockMetadata));
-                                event.drops.set(0, result);
-                            }
-                        }
+                        ItemStack result = new ItemStack(event.block, 1, event.block.damageDropped(event.blockMetadata));
+                        event.drops.set(0, result);
                     }
-                    else if(smelt != null && !event.drops.isEmpty())
+                }
+                else if(smelt != null && !event.drops.isEmpty())
+                {
+                    for(int n = 0; n < event.drops.size(); n++)
                     {
-                        for(int n = 0; n < event.drops.size(); n++)
+                        ItemStack smeltedOutput = FurnaceRecipes.smelting().getSmeltingResult(event.drops.get(n).copy());
+
+                        //Fortune code from BlockOre\\
+                        int j = event.world.rand.nextInt(event.fortuneLevel + 2) - 1;
+                        if (j < 0) { j = 0; }
+                        int size = j + 1; //Modified to ignore quantity dropped, already handled by iterating through drops.
+                        //Fortune code from BlockOre\\
+
+                        if(smeltedOutput != null)
                         {
-                            ItemStack smeltedOutput = FurnaceRecipes.smelting().getSmeltingResult(event.drops.get(n).copy());
-
-                            //Fortune code from BlockOre\\
-                            int j = event.world.rand.nextInt(event.fortuneLevel + 2) - 1;
-                            if (j < 0) { j = 0; }
-                            int size = j + 1; //Modified to ignore quantity dropped, already handled by iterating through drops.
-                            //Fortune code from BlockOre\\
-
-                            if(smeltedOutput != null && timeSand - smelt.getTimeSandCostPerApplication(smeltStack) >= 0)
-                            {
-                                timeContainer.consumeTimeSand(heldItem, event.harvester, smelt.getTimeSandCostPerApplication(smeltStack));
-                                //Only drop 1 if the smelted item is a block or the same as the block broken
-                                if(Item.getItemFromBlock(event.block).equals(smeltedOutput.getItem()))
-                                    size = 1;
-                                smeltedOutput.stackSize = size;
-                                event.drops.remove(n);
-                                event.drops.add(n, smeltedOutput);
-                            }
+                            //Only drop 1 if the smelted item is a block or the same as the block broken
+                            if(Item.getItemFromBlock(event.block).equals(smeltedOutput.getItem()))
+                                size = 1;
+                            smeltedOutput.stackSize = size;
+                            event.drops.remove(n);
+                            event.drops.add(n, smeltedOutput);
                         }
                     }
                 }
@@ -107,7 +93,7 @@ public class WorldHandler
 
             for(ItemStack item : items)
             {
-                if(item != null && item.getItem().equals(ModItems.timestreamRelocation))
+                if(item != null && item.getItem().equals(ModItems.temporalToolModuleTeleport))
                 {
                     int x = NBTHelper.INT.get(item, "cp_x");
                     int y = NBTHelper.INT.get(item, "cp_y");

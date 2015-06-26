@@ -2,16 +2,16 @@ package lumaceon.mods.clockworkphase2.tile.timezone;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.item.components.timestream.ItemTimestreamExtradimensionalTank;
+import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTimezone;
+import lumaceon.mods.clockworkphase2.tile.generic.TileTimezoneUsage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileTimezoneFluidExporter extends TileTimezone implements IFluidHandler
+public class TileTimezoneFluidExporter extends TileTimezoneUsage implements IFluidHandler
 {
     public String targetFluid = "";
     public FluidStack renderStack;
@@ -106,17 +106,17 @@ public class TileTimezoneFluidExporter extends TileTimezone implements IFluidHan
         return targetFluid;
     }
 
-    public ItemStack getTimestream()
+    public ItemStack getTimezoneModule()
     {
         ITimezone timezone = getTimezone();
-        ItemStack timestream;
+        ItemStack timezoneModule;
         if(timezone != null)
         {
             for(int n = 0; n < 8; n++)
             {
-                timestream = timezone.getTimestream(n);
-                if(timestream != null && timestream.getItem() instanceof ItemTimestreamExtradimensionalTank)
-                    return timestream;
+                timezoneModule = timezone.getTimezoneModule(n);
+                if(timezoneModule != null && timezoneModule.getItem() instanceof ItemTimezoneModuleTank)
+                    return timezoneModule;
             }
         }
         return null;
@@ -158,18 +158,18 @@ public class TileTimezoneFluidExporter extends TileTimezone implements IFluidHan
     {
         if(resource == null)
             return null;
-        ItemStack timestream = getTimestream();
+        ItemStack timestream = getTimezoneModule();
         if(timestream != null)
-            return ((ItemTimestreamExtradimensionalTank) timestream.getItem()).drain(timestream, resource.amount, doDrain, targetFluid);
+            return ((ItemTimezoneModuleTank) timestream.getItem()).drain(timestream, resource.amount, doDrain, targetFluid);
         return null;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
     {
-        ItemStack timestream = getTimestream();
+        ItemStack timestream = getTimezoneModule();
         if(timestream != null)
-            return ((ItemTimestreamExtradimensionalTank) timestream.getItem()).drain(timestream, maxDrain, doDrain, targetFluid);
+            return ((ItemTimezoneModuleTank) timestream.getItem()).drain(timestream, maxDrain, doDrain, targetFluid);
         return null;
     }
 
@@ -186,10 +186,10 @@ public class TileTimezoneFluidExporter extends TileTimezone implements IFluidHan
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from)
     {
-        ItemStack timestream = getTimestream();
+        ItemStack timestream = getTimezoneModule();
         if(timestream != null)
         {
-            ItemTimestreamExtradimensionalTank tank = ((ItemTimestreamExtradimensionalTank) timestream.getItem());
+            ItemTimezoneModuleTank tank = ((ItemTimezoneModuleTank) timestream.getItem());
             return tank.getTankInfo(timestream);
         }
         return new FluidTankInfo[] { new FluidTankInfo(null, 0) };

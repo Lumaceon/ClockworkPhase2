@@ -7,7 +7,6 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporal;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
-import lumaceon.mods.clockworkphase2.api.item.timestream.*;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalable;
 import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
@@ -157,27 +156,23 @@ public class InformationDisplay
         {
             long timeSand = TemporalToolHelper.getTimeSand(tool);
             boolean temporalCore = false;
-            long timeSandCost = 0;
             int memory = ((IClockworkConstruct) tool.getItem()).getMemory(tool);
             if(NBTHelper.hasTag(tool, NBTTags.COMPONENT_INVENTORY))
             {
                 ItemStack[] components = NBTHelper.INVENTORY.get(tool, NBTTags.COMPONENT_INVENTORY);
                 for(ItemStack item : components)
                 {
-                    if(item != null && item.getItem() instanceof IToolTimestream)
-                        timeSandCost += ((IToolTimestream) item.getItem()).getTimeSandCostPerBlock(item);
                     if(item != null && item.getItem() instanceof ITemporalCore)
                         temporalCore = true;
                 }
             }
             list.add(getTemporalSignificance(temporalCore, timeSand));
-            list.add(Colors.WHITE + "Time Sand Cost Per Block: " + Colors.GOLD + TimeConverter.parseNumber(timeSandCost, 2));
             list.add(Colors.WHITE + "Time Sand Extraction Chance: " + Colors.GOLD + "1 / " + TimeSandHelper.getTimeSandChance(player.experienceLevel));
             list.add(Colors.WHITE + "Time Sand From Extraction: " + Colors.GOLD + TimeConverter.parseNumber(ClockworkHelper.getTimeSandFromStats(memory), 2));
         }
     }
 
-    public static void addTimestreamInformation(ItemStack is, EntityPlayer player, List list, float qualityMod, float speedMod, float memoryMod)
+    /*public static void addTimestreamInformation(ItemStack is, EntityPlayer player, List list, float qualityMod, float speedMod, float memoryMod)
     {
         list.add("");
 
@@ -236,7 +231,7 @@ public class InformationDisplay
             else
                 list.add(Colors.BLUE + "Tab - Clockwork Modifiers");
         }
-    }
+    }*/
 
     public static void addMainspringInformation(ItemStack is, List list)
     {

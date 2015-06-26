@@ -19,4 +19,22 @@ public class TimestreamCraftingRegistry
         }
         return null;
     }
+
+    public static void sortRecipesByTimeRequirement()
+    {
+        ArrayList<ITimestreamCraftingRecipe> sortedList = new ArrayList<ITimestreamCraftingRecipe>(TIMESTREAM_RECIPES.size());
+        ITimestreamCraftingRecipe leastCostly = null;
+        for(int n = 0; n < sortedList.size(); n++)
+        {
+            for(ITimestreamCraftingRecipe recipe : TIMESTREAM_RECIPES)
+            {
+                if(leastCostly == null)
+                    leastCostly = recipe;
+                else if(leastCostly.getTimeSandRequirement() > recipe.getTimeSandRequirement())
+                    leastCostly = recipe;
+            }
+            sortedList.add(leastCostly);
+            TIMESTREAM_RECIPES.remove(leastCostly);
+        }
+    }
 }

@@ -4,7 +4,7 @@ import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class TileTimezone extends TileClockworkPhase
+public abstract class TileTimezoneUsage extends TileClockworkPhase
 {
     public ITimezone timezone;
     protected int tz_x, tz_y, tz_z;

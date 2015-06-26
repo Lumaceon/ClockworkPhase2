@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
-import lumaceon.mods.clockworkphase2.api.item.timestream.IToolTimestream;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.item.ItemStack;
@@ -68,21 +67,5 @@ public class TemporalToolHelper
             }
         }
         return capacity;
-    }
-
-    public static long getTimeSandCostFromToolUsage(ItemStack item)
-    {
-        long timeSandCost = 0;
-        if(item != null && NBTHelper.hasTag(item, NBTTags.COMPONENT_INVENTORY))
-        {
-            ItemStack[] components = NBTHelper.INVENTORY.get(item, NBTTags.COMPONENT_INVENTORY);
-
-            for(ItemStack is : components)
-            {
-                if(is != null && is.getItem() instanceof IToolTimestream)
-                    timeSandCost += ((IToolTimestream) is.getItem()).getTimeSandCostPerBlock(is);
-            }
-        }
-        return timeSandCost;
     }
 }

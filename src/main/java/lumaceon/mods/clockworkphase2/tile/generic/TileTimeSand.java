@@ -2,12 +2,11 @@ package lumaceon.mods.clockworkphase2.tile.generic;
 
 import lumaceon.mods.clockworkphase2.api.timezone.ITimeSandTile;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class TileTimeSand extends TileTimezone implements ITimeSandTile
+public abstract class TileTimeSand extends TileTimezoneUsage implements ITimeSandTile
 {
     protected long internalTimeSand;
     protected long timeSandRequestAmount;

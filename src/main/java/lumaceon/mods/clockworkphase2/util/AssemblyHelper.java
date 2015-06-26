@@ -1,9 +1,9 @@
 package lumaceon.mods.clockworkphase2.util;
 
 import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
+import lumaceon.mods.clockworkphase2.api.item.ITemporalToolModule;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
-import lumaceon.mods.clockworkphase2.api.item.timestream.IToolTimestream;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.item.ItemStack;
@@ -126,9 +126,9 @@ public class AssemblyHelper
                 for(int n = 0; n < slots.length; n++)
                 {
                     item = slots[n].getItemStack();
-                    if(item != null && item.getItem() instanceof IToolTimestream)
+                    if(item != null && item.getItem() instanceof ITemporalToolModule)
                     {
-                        IToolTimestream temp = (IToolTimestream) item.getItem();
+                        ITemporalToolModule temp = (ITemporalToolModule) item.getItem();
                         NBTHelper.INT.set(workItem, NBTTags.QUALITY, (int) (construct.getQuality(workItem) + quality * (temp.getQualityMultiplier(item) - 1)));
                         NBTHelper.INT.set(workItem, NBTTags.SPEED, (int) (construct.getSpeed(workItem) + speed * (temp.getSpeedMultiplier(item) - 1)));
                         NBTHelper.INT.set(workItem, NBTTags.MEMORY, (int) (construct.getMemory(workItem) + memory * (temp.getMemoryMultiplier(item) - 1)));

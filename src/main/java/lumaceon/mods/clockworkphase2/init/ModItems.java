@@ -5,7 +5,10 @@ import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
 import lumaceon.mods.clockworkphase2.item.ItemBugSwatter;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.item.ItemTemporalIngot;
-import lumaceon.mods.clockworkphase2.item.components.timestream.*;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleHarvestTeleport;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSilkHarvest;
+import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSmelt;
+import lumaceon.mods.clockworkphase2.item.timestream.*;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemClockworkCore;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemMainspring;
 import lumaceon.mods.clockworkphase2.item.components.ItemTemporalCore;
@@ -17,6 +20,7 @@ import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkMultitool;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkPickaxe;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkShovel;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
+import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
@@ -26,6 +30,8 @@ public class ModItems
 {
     public static void init()
     {
+        initTemporalToolModules();
+        initTimezoneModules();
         initClockworkComponents();
         initTemporalComponents();
         initTimestreams();
@@ -33,6 +39,28 @@ public class ModItems
         initBuckets();
         initMetals();
         initMisc();
+    }
+
+    public static Item temporalToolModuleSilkTouch;
+    public static Item temporalToolModuleSmelt;
+    public static Item temporalToolModuleTeleport;
+    public static void initTemporalToolModules()
+    {
+        temporalToolModuleSilkTouch = new ItemTemporalToolModuleSilkHarvest(1, 100, Names.ITEM.TEMPORAL_TOOL_MODULE_SILK);
+        temporalToolModuleSmelt = new ItemTemporalToolModuleSmelt(1, 100, Names.ITEM.TEMPORAL_TOOL_MODULE_SMELT);
+        temporalToolModuleTeleport = new ItemTemporalToolModuleHarvestTeleport(1, 100, Names.ITEM.TEMPORAL_TOOL_MODULE_TELEPORT);
+
+        GameRegistry.registerItem(temporalToolModuleSilkTouch, Names.ITEM.TEMPORAL_TOOL_MODULE_SILK);
+        GameRegistry.registerItem(temporalToolModuleSmelt, Names.ITEM.TEMPORAL_TOOL_MODULE_SMELT);
+        GameRegistry.registerItem(temporalToolModuleTeleport, Names.ITEM.TEMPORAL_TOOL_MODULE_TELEPORT);
+    }
+
+    public static Item timezoneModuleTank;
+    public static void initTimezoneModules()
+    {
+        timezoneModuleTank = new ItemTimezoneModuleTank(1, 100, Names.ITEM.TIMEZONE_MODULE_TANK);
+
+        GameRegistry.registerItem(timezoneModuleTank, Names.ITEM.TIMEZONE_MODULE_TANK);
     }
 
     public static ItemMainspring mainspring;
@@ -90,6 +118,14 @@ public class ModItems
         MemoryItemRegistry.registerMemoryItem(noteBottle);
         MemoryItemRegistry.registerMemoryItem(gearRusty);
         //Elysian gear not registered as a memory item because it's considerably more rare and dropped separately.
+
+        OreDictionary.registerOre("gearWood", gearWood);
+        OreDictionary.registerOre("gearStone", gearStone);
+        OreDictionary.registerOre("gearIron", gearIron);
+        OreDictionary.registerOre("gearGold", gearGold);
+        OreDictionary.registerOre("gearQuartz", gearQuartz);
+        OreDictionary.registerOre("gearDiamond", gearDiamond);
+        OreDictionary.registerOre("gearEmerald", gearEmerald);
     }
 
     public static Item temporalCore;
@@ -156,17 +192,20 @@ public class ModItems
     public static Item ingotTemporal;
     public static Item ingotCopper;
     public static Item ingotZinc;
+    public static Item lumpBrass;
     public static Item ingotBrass;
     public static void initMetals()
     {
         ingotTemporal = new ItemTemporalIngot(64, 100, Names.ITEM.TEMPORAL_INGOT);
         ingotCopper = new ItemClockworkPhase(64, 100, Names.ITEM.COPPER_INGOT);
         ingotZinc = new ItemClockworkPhase(64, 100, Names.ITEM.ZINC_INGOT);
+        lumpBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_LUMP);
         ingotBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_INGOT);
 
         GameRegistry.registerItem(ingotTemporal, Names.ITEM.TEMPORAL_INGOT);
         GameRegistry.registerItem(ingotCopper, Names.ITEM.COPPER_INGOT);
         GameRegistry.registerItem(ingotZinc, Names.ITEM.ZINC_INGOT);
+        GameRegistry.registerItem(lumpBrass, Names.ITEM.BRASS_LUMP);
         GameRegistry.registerItem(ingotBrass, Names.ITEM.BRASS_INGOT);
 
         OreDictionary.registerOre("ingotTemporal", ingotTemporal);
@@ -176,9 +215,19 @@ public class ModItems
     }
 
     public static Item bugSwatter;
+    public static Item temporalDriveSimulate;
+    public static Item temporalDriveModify;
+    public static Item temporalDriveDuplicate;
     public static void initMisc()
     {
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
+        temporalDriveSimulate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
+        temporalDriveModify = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
+        temporalDriveDuplicate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
+
         GameRegistry.registerItem(bugSwatter, "bug_swatter");
+        GameRegistry.registerItem(temporalDriveSimulate, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
+        GameRegistry.registerItem(temporalDriveModify, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
+        GameRegistry.registerItem(temporalDriveDuplicate, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
     }
 }

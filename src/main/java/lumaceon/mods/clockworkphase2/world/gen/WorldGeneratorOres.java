@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.worldgen;
+package lumaceon.mods.clockworkphase2.world.gen;
 
 import cpw.mods.fml.common.IWorldGenerator;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;

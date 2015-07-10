@@ -39,15 +39,4 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(renderer);
         FMLCommonHandler.instance().bus().register(renderer);
     }
-
-    @Override
-    public void initButtons(int id, List buttonList, IAssemblyContainer container, int guiLeft, int guiTop)
-    {
-        switch (id)
-        {
-            case 0: //Mainspring
-                buttonList.add(new GuiButton(0, guiLeft + 50, guiTop + 50, 100, 20, "Add Metal"));
-                break;
-        }
-    }
 }

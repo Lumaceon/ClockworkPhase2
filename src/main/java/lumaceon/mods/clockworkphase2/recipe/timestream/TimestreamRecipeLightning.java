@@ -1,7 +1,6 @@
 package lumaceon.mods.clockworkphase2.recipe.timestream;
 
 import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRecipe;
-import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.Blocks;
@@ -11,6 +10,8 @@ import net.minecraft.world.World;
 
 public class TimestreamRecipeLightning extends TimestreamCraftingRecipe
 {
+    boolean complete = false;
+
     public TimestreamRecipeLightning(String unlocalizedName, long timeSandRequirement, ResourceLocation icon, ResourceLocation background, ItemStack result) {
         super(unlocalizedName, timeSandRequirement, icon, background, result);
     }
@@ -37,7 +38,11 @@ public class TimestreamRecipeLightning extends TimestreamCraftingRecipe
                     chainBroken = true;
             }
             if(world.getWorldTime() % 5 == 0 && world.rand.nextInt(10000 / lightningRods) == 0)
+            {
                 world.spawnEntityInWorld(new EntityLightningBolt(world, x, highestLightningRod + 1, z));
+                world.spawnEntityInWorld(new EntityLightningBolt(world, x, highestLightningRod + 1, z));
+                complete = true;
+            }
             return true;
         }
         return false;
@@ -45,6 +50,6 @@ public class TimestreamRecipeLightning extends TimestreamCraftingRecipe
 
     @Override
     public boolean finalize(World world, int x, int y, int z) {
-        return false;
+        return complete;
     }
 }

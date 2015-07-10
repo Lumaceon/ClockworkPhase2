@@ -72,6 +72,9 @@ public class ModItems
     public static Item gearDiamond;
     public static Item gearEmerald;
     public static Item gearQuartz;
+    public static Item gearCopper;
+    public static Item gearZinc;
+    public static Item gearBrass;
     public static Item preciousCharm;
     public static Item dreamCatcher;
     public static Item ancientCoin;
@@ -89,6 +92,9 @@ public class ModItems
         gearDiamond = new ItemGear(Names.ITEM.GEAR_DIAMOND, 50, 40, 0, 3);
         gearEmerald = new ItemGear(Names.ITEM.GEAR_EMERALD, 40, 50, 0, 3);
         gearQuartz = new ItemGear(Names.ITEM.GEAR_QUARTZ, 70, 10, 0, 2);
+        gearCopper = new ItemGear(Names.ITEM.GEAR_COPPER, 20, 30, 0, 2);
+        gearZinc = new ItemGear(Names.ITEM.GEAR_ZINC, 30, 20, 0, 2);
+        gearBrass = new ItemGear(Names.ITEM.GEAR_BRASS, 40, 35, 0, 2);
         preciousCharm = new ItemMemoryComponent(Names.ITEM.PRECIOUS_CHARM, 0, 0, 50, -1);
         dreamCatcher = new ItemMemoryComponent(Names.ITEM.DREAM_CATCHER, 0, 0, 40, -1);
         ancientCoin = new ItemMemoryComponent(Names.ITEM.ANCIENT_COIN, 0, 0, 30, -1);
@@ -105,6 +111,9 @@ public class ModItems
         GameRegistry.registerItem(gearDiamond, Names.ITEM.GEAR_DIAMOND);
         GameRegistry.registerItem(gearEmerald, Names.ITEM.GEAR_EMERALD);
         GameRegistry.registerItem(gearQuartz, Names.ITEM.GEAR_QUARTZ);
+        GameRegistry.registerItem(gearCopper, Names.ITEM.GEAR_COPPER);
+        GameRegistry.registerItem(gearZinc, Names.ITEM.GEAR_ZINC);
+        GameRegistry.registerItem(gearBrass, Names.ITEM.GEAR_BRASS);
         GameRegistry.registerItem(preciousCharm, Names.ITEM.PRECIOUS_CHARM);
         GameRegistry.registerItem(dreamCatcher, Names.ITEM.DREAM_CATCHER);
         GameRegistry.registerItem(ancientCoin, Names.ITEM.ANCIENT_COIN);
@@ -126,6 +135,9 @@ public class ModItems
         OreDictionary.registerOre("gearQuartz", gearQuartz);
         OreDictionary.registerOre("gearDiamond", gearDiamond);
         OreDictionary.registerOre("gearEmerald", gearEmerald);
+        OreDictionary.registerOre("gearCopper", gearCopper);
+        OreDictionary.registerOre("gearZinc", gearZinc);
+        OreDictionary.registerOre("gearBrass", gearBrass);
     }
 
     public static Item temporalCore;

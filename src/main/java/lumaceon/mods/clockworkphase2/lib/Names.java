@@ -15,7 +15,6 @@ public class Names
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
         public static final String BOILER = "boiler";
         public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
-        public static final String TEMPORALIZER = "temporalizer";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";
 
@@ -45,6 +44,9 @@ public class Names
         public static final String GEAR_DIAMOND = "diamond_gear";
         public static final String GEAR_EMERALD = "emerald_gear";
         public static final String GEAR_QUARTZ = "quartz_gear";
+        public static final String GEAR_COPPER = "copper_gear";
+        public static final String GEAR_ZINC = "zinc_gear";
+        public static final String GEAR_BRASS = "brass_gear";
         public static final String PRECIOUS_CHARM = "precious_charm";
         public static final String DREAM_CATCHER = "dream_catcher";
         public static final String ANCIENT_COIN = "ancient_coin";

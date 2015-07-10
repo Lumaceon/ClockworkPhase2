@@ -1,11 +1,14 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.block.BlockCelestialCompassSB;
+import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
+import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
@@ -14,15 +17,18 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+
 public class RenderHandler
 {
+    public static OverlayRenderElementTemporalInfluence overlayInfluence = new OverlayRenderElementTemporalInfluence();
     public static RenderItem renderItem;
     public static Minecraft mc;
     public static EntityItem item;
@@ -34,6 +40,22 @@ public class RenderHandler
         renderItem.setRenderManager(RenderManager.instance);
 
         mc = Minecraft.getMinecraft();
+    }
+
+    public static ArrayList<OverlayRenderElement> overlayRenderList = new ArrayList<OverlayRenderElement>();
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onRenderOverlay(RenderGameOverlayEvent.Post event)
+    {
+        for(int n = 0; n < overlayRenderList.size(); n++)
+        {
+            OverlayRenderElement element = overlayRenderList.get(n);
+            if(!element.render(event))
+            {
+                overlayRenderList.remove(n);
+                n--;
+            }
+        }
     }
 
     @SubscribeEvent
@@ -121,12 +143,12 @@ public class RenderHandler
             if(te != null && te instanceof TileCelestialCompass)
             {
                 TileCelestialCompass celestialCompass = (TileCelestialCompass) te;
-                ItemStack itemToRender = celestialCompass.getCraftingItem(8);
-                float scale;
+                ItemStack itemToRender;
+                //float scale;
 
                 if(item == null)
                     item = new EntityItem(mc.theWorld);
-                if(itemToRender != null)
+                /*if(itemToRender != null)
                 {
                     GL11.glPushMatrix();
                     if(itemToRender.getItem() instanceof ItemBlock)
@@ -211,7 +233,7 @@ public class RenderHandler
                             break;
                     }
                     GL11.glPopMatrix();
-                }
+                }*/
 
                 ResourceLocation loc = null;
                 for(int n = 0; n < 9; n++)

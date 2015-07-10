@@ -20,8 +20,7 @@ public class TodoList
     //TODO Create planetary civilization patronage system.
     //TODO Create utopian-style decorative blocks.
     //TODO Create steampunk-style decorative blocks.
-    //TODO Create special temporal armor slots, which will defend against temporal-based damage.
-    //TODO Create some actual armor for that ^
+    //TODO Create special temporal shielding.
     //TODO Create liquid whip.
     //TODO Create Liquid cannon.
     //TODO Create PAC.

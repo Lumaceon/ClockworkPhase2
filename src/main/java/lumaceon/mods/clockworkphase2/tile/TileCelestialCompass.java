@@ -10,11 +10,14 @@ import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingR
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class TileCelestialCompass extends TileClockworkPhase implements ITimezone
@@ -22,11 +25,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     private int blocksToPlace = 96;
     private boolean registerTimezone = true;
 
-    private ItemStack[] craftingItems = new ItemStack[9];
     private ItemStack[] timestreamItems = new ItemStack[9];
-    private ITimestreamCraftingRecipe currentRecipe;
-    private int resultingTimestreamMagnitude = 0;
-    private int craftingTicksRemaining = 0;
 
 
     public boolean isAvailable() {
@@ -38,32 +37,6 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     {
         super.writeToNBT(nbt);
         nbt.setInteger("internal_block_count", this.blocksToPlace);
-        if(currentRecipe != null)
-            nbt.setString("recipe", currentRecipe.getUnlocalizedName());
-        nbt.setInteger("timestream_recipe_magnitude", resultingTimestreamMagnitude);
-        nbt.setInteger("craft_ticks", craftingTicksRemaining);
-
-        if(craftingItems != null)
-        {
-            NBTTagList nbtList = new NBTTagList();
-            for (int index = 0; index < craftingItems.length; index++)
-            {
-                if(craftingItems[index] != null)
-                {
-                    NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("slot_index", (byte)index);
-                    craftingItems[index].writeToNBT(tag);
-                    nbtList.appendTag(tag);
-                }
-                else
-                {
-                    NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("slot_index", (byte)index);
-                    nbtList.appendTag(tag);
-                }
-            }
-            nbt.setTag("CC_craftC", nbtList);
-        }
 
         if(timestreamItems != null)
         {
@@ -93,28 +66,6 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     {
         super.readFromNBT(nbt);
         this.blocksToPlace = nbt.getInteger("internal_block_count");
-        if(nbt.hasKey("recipe"))
-            this.currentRecipe = TimestreamCraftingRegistry.getRecipe(nbt.getString("recipe"));
-        this.resultingTimestreamMagnitude = nbt.getInteger("timestream_recipe_magnitude");
-        this.craftingTicksRemaining = nbt.getInteger("craft_ticks");
-
-        if(nbt.hasKey("CC_craftC"))
-        {
-            NBTTagList list = (NBTTagList) nbt.getTag("CC_craftC");
-            ItemStack[] inventory;
-            inventory = new ItemStack[list.tagCount()];
-
-            for(int i = 0; i < list.tagCount(); ++i)
-            {
-                NBTTagCompound tagCompound = list.getCompoundTagAt(i);
-                byte slotIndex = tagCompound.getByte("slot_index");
-                if(slotIndex >= 0 && slotIndex < inventory.length)
-                {
-                    inventory[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
-                }
-            }
-            this.craftingItems = inventory;
-        }
 
         if(nbt.hasKey("CC_timestreams"))
         {
@@ -144,47 +95,11 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
             return;
         }
 
-        /*if(currentRecipe != null)
-        {
-            if(!worldObj.isRemote)
-            {
-                if(!currentRecipe.matches(craftingItems))
-                {
-                    currentRecipe = null;
-                    craftingTicksRemaining = 0;
-                    resultingTimestreamMagnitude = 0;
-                }
-                else
-                {
-                    if(craftingTicksRemaining > 0)
-                        craftingTicksRemaining--;
-                    else if(resultingTimestreamMagnitude > 0) //Finalize crafting and apply results.
-                    {
-                        craftingItems[8] = currentRecipe.getCraftingResult(craftingItems, resultingTimestreamMagnitude);
-                        currentRecipe = null;
-                        for(int n = 0; n < craftingItems.length - 1; n++)
-                            craftingItems[n] = null;
-                    }
-                    else
-                        currentRecipe = null;
-                }
-            }
-        }*/
-
         if(registerTimezone && worldObj != null)
         {
             registerTimezone = false;
             TimezoneHandler.INTERNAL.registerTimezone(xCoord, yCoord, zCoord, worldObj);
         }
-    }
-
-    /**
-     * Returns the item current in one of the outlying circles, starting at the top and moving clockwise.
-     * @param index The circle index.
-     * @return The item currently in that circle.
-     */
-    public ItemStack getCraftingItem(int index) {
-        return this.craftingItems[index];
     }
 
     public boolean onMainBlockClicked(EntityPlayer player)
@@ -200,20 +115,6 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
         {
             int currentSlot = player.inventory.currentItem;
             ItemStack heldItem = player.inventory.getCurrentItem();
-            if(player.isSneaking() && heldItem == null)
-            {
-                /*for(ITimestreamCraftingRecipe recipe : TimestreamCraftingRegistry.TIMESTREAM_RECIPES.values())
-                {
-                    if(recipe.matches(this.craftingItems))
-                    {
-                        this.currentRecipe = recipe;
-                        this.craftingTicksRemaining = recipe.getCraftingDuration();
-                        this.resultingTimestreamMagnitude = 0;
-                        return true;
-                    }
-                }*/
-                return false;
-            }
             if(heldItem != null && heldItem.getItem() instanceof ITimeSand && circleClicked == 8) //Put held ITimeSand in center.
             {
                 if(timestreamItems[circleClicked] == null)
@@ -243,25 +144,10 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
                     return true;
                 }
             }
-            else if(craftingItems[circleClicked] != null && heldItem == null) //Remove crafting item from circle, put in hand.
-            {
-                player.inventory.setInventorySlotContents(currentSlot, craftingItems[circleClicked].copy());
-                craftingItems[circleClicked] = null;
-                return true;
-            }
             else if(timestreamItems[circleClicked] != null && heldItem == null) //Remove timestream from circle, put in hand (only if no crafting item exists).
             {
                 player.inventory.setInventorySlotContents(currentSlot, timestreamItems[circleClicked].copy());
                 timestreamItems[circleClicked] = null;
-                return true;
-            }
-            else if(heldItem != null && craftingItems[circleClicked] == null) //Put ordinary item in crafting circles.
-            {
-                ItemStack item = heldItem.copy();
-                item.stackSize = 1;
-                craftingItems[circleClicked] = item;
-                craftingItems[circleClicked].stackSize = 1;
-                player.inventory.decrStackSize(currentSlot, 1);
                 return true;
             }
         }
@@ -315,10 +201,13 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
             currentZ = z + BlockPatterns.CELESTIAL_COMPASS[n].z;
 
             if(world.getBlock(currentX, currentY, currentZ).equals(ModBlocks.celestialCompassSB))
-            {
                 world.setBlock(currentX, currentY, currentZ, Blocks.air);
-            }
         }
+        TileEntity te = world.getTileEntity(x, y, z);
+        if(te != null && te instanceof TileCelestialCompass)
+            for(ItemStack item : ((TileCelestialCompass) te).timestreamItems)
+                if(item != null)
+                    world.spawnEntityInWorld(new EntityItem(world, x, y, z, item));
         TimezoneHandler.INTERNAL.pingAndCleanTimezones();
     }
 

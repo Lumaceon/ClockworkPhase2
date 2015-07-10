@@ -1,11 +1,10 @@
 package lumaceon.mods.clockworkphase2.inventory.assemblyslot;
 
-import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemClockworkCore;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class AssemblySlotClockworkCore extends AssemblySlot
+public class AssemblySlotClockworkCore extends AssemblySlotClockworkPhase
 {
     public AssemblySlotClockworkCore(ResourceLocation defaultTexture) {
         super(defaultTexture);

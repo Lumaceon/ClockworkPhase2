@@ -8,8 +8,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
+import lumaceon.mods.clockworkphase2.api.TemporalAchievementList;
 import lumaceon.mods.clockworkphase2.api.TemporalHarvestRegistry;
-import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRegistry;
+import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigurationHandler;
 import lumaceon.mods.clockworkphase2.creativetab.CreativeTabClockworkPhase2;
@@ -18,12 +19,19 @@ import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModEntities;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
-import lumaceon.mods.clockworkphase2.worldgen.WorldGeneratorOres;
+import lumaceon.mods.clockworkphase2.util.Logger;
+import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
+import lumaceon.mods.clockworkphase2.world.provider.WorldProviderPast;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.AchievementList;
+import net.minecraftforge.common.AchievementPage;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
@@ -35,7 +43,7 @@ public class ClockworkPhase2
     @SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static IProxy proxy;
 
-    public final CreativeTabs CREATIVE_TAB = new CreativeTabClockworkPhase2("Clockwork Phase 2");
+    public final CreativeTabs CREATIVE_TAB = new CreativeTabClockworkPhase2("ClockworkPhase2");
 
     public WorldGeneratorOres oreGenerator = new WorldGeneratorOres();
 
@@ -58,6 +66,7 @@ public class ClockworkPhase2
         ModEntities.init();
 
         proxy.registerKeybindings();
+
     }
 
     @Mod.EventHandler
@@ -69,19 +78,22 @@ public class ClockworkPhase2
 
         Recipes.init();
 
-
         BucketHandler.INSTANCE.buckets.put(ModBlocks.timeSand, ModItems.bucketTimeSand);
 
         MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenHandler());
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new EntityHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());
+        MinecraftForge.EVENT_BUS.register(new AchievementHandler());
         FMLCommonHandler.instance().bus().register(new TickHandler());
         proxy.initSideHandlers();
 
         new GuiHandler();
 
         PacketHandler.init();
+        Defaults.DIM_ID.PAST = DimensionManager.getNextFreeDimId();
+        DimensionManager.registerProviderType(Defaults.DIM_ID.PAST, WorldProviderPast.class, false);
+        DimensionManager.registerDimension(Defaults.DIM_ID.PAST, Defaults.DIM_ID.PAST);
     }
 
     @Mod.EventHandler
@@ -89,6 +101,40 @@ public class ClockworkPhase2
     {
         MainspringMetalRegistry.INTERNAL.initDefaults();
         TemporalHarvestRegistry.init();
-        TimestreamCraftingRegistry.sortRecipesByTimeRequirement();
+
+        long value;
+        Logger.info("||Detecting Individual Achievements||");
+        for(Object achievement : AchievementList.achievementList)
+        {
+            if(achievement != null && achievement instanceof Achievement)
+            {
+                value = TemporalAchievementList.INTERNAL.registerAchievement((Achievement) achievement);
+                if(value <= 0)
+                    Logger.info("{SKIPPED achievement '" + ((Achievement) achievement).statId + "'}");
+                else if(((Achievement) achievement).getSpecial())
+                    Logger.info("{Registered achievement \'" + ((Achievement) achievement).statId + "\' with a value of " + value + "} [Adds to special multiplier]");
+                else
+                    Logger.info("{Registered achievement \'" + ((Achievement) achievement).statId + "\' with a value of " + value + "}");
+            }
+        }
+        Logger.info("Total Temporal Influence From Achievements: " + TemporalAchievementList.INTERNAL.totalWeight);
+        Logger.info("");
+        Logger.info("||Detecting Pages||");
+        for(AchievementPage page : AchievementPage.getAchievementPages())
+        {
+            int pageValue = TemporalAchievementList.INTERNAL.registerPage(page);
+            if(pageValue > 0)
+                Logger.info("Page Found - " + page.getName() + " [Completionist Multiplier Bonus: x" + pageValue + "]");
+        }
+        Logger.info("Maximum Multiplier From Completionist Bonuses: " + TemporalAchievementList.INTERNAL.maxPageMultiplier);
+        Logger.info("");
+        Logger.info("||Calculating Special Achievement Exponential Increment Rate||");
+        TemporalAchievementList.INTERNAL.setupSpecialMultiplier();
+        Logger.info("Found " + TemporalAchievementList.INTERNAL.specialAchievementCount + " special achievements, exponential increment set to " + TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent);
+        Logger.info("Maximum Special Achievement Multiplier: " + (long) Math.pow(TemporalAchievementList.INTERNAL.specialAchievementCount + 1, TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent));
+        for(int n = 1; n <= TemporalAchievementList.INTERNAL.specialAchievementCount + 1; n++)
+        {
+            Logger.info((n - 1) + " Special Achievement(s): x" + (long) Math.pow(n, TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent));
+        }
     }
 }

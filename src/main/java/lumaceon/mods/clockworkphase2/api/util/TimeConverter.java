@@ -20,7 +20,7 @@ public class TimeConverter
     public static final long AGE = YEAR * 1000000; //31,104,000,000,000 | 1 million years.
     public static final long EPOCH = AGE * 10; //311,040,000,000,000 | 10 million years.
     public static final long ERA = EPOCH * 10; //3,110,400,000,000,000 | 100 million years.
-    public static final long GALACTIC_YEAR = YEAR * 230000000; //7,153,920,000,000,000 | 230 million years.
+    public static final long GALACTIC_YEAR = YEAR * 230000000; //7,153,920,000,000,000 | 230 million years - Not shown.
     public static final long EON = ERA * 10; //31,104,000,000,000,000 | 1 billion years.
     public static final long EXASECOND = TERASECOND * 1000000; //1,000,000,000,000,000,000 | 1 quintillion seconds
     public static final long INFINITE = 9223372036854775807L; //Never shown: if this is acquired, do something cool.

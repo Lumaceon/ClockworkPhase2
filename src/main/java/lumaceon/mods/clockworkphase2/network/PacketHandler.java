@@ -15,11 +15,11 @@ public class PacketHandler
     {
         //Note: the side passed in is the RECEIVING side.
         int nextID = 0;
-        INSTANCE.registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, nextID, Side.SERVER);
-        nextID++;
         INSTANCE.registerMessage(HandlerStandardParticleSpawn.class, MessageStandardParticleSpawn.class, nextID, Side.CLIENT);
         nextID++;
         INSTANCE.registerMessage(HandlerTileStateChange.class, MessageTileStateChange.class, nextID, Side.CLIENT);
+        nextID++;
+        INSTANCE.registerMessage(HandlerTemporalInfluence.class, MessageTemporalInfluence.class, nextID, Side.CLIENT);
         nextID++;
         INSTANCE.registerMessage(HandlerLightningSwordActivate.class, MessageLightningSwordActivate.class, nextID, Side.SERVER);
         nextID++;

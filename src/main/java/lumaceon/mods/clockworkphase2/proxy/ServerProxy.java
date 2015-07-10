@@ -14,6 +14,4 @@ public class ServerProxy extends CommonProxy
     public void registerKeybindings() {}
     @Override
     public void initSideHandlers() {}
-    @Override
-    public void initButtons(int id, List buttonList, IAssemblyContainer container, int guiLeft, int guiTop) {}
 }

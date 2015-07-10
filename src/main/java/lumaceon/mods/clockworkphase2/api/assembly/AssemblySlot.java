@@ -1,12 +1,15 @@
 package lumaceon.mods.clockworkphase2.api.assembly;
 
+import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 /**
  * Used in IAssemblable to assemble different items, like the clockwork tools.
  */
-public class AssemblySlot
+public abstract class AssemblySlot
 {
     private ItemStack itemInSlot;
     private ResourceLocation defaultTexture;
@@ -42,8 +45,34 @@ public class AssemblySlot
         this.sizeY = sizeY;
     }
 
-    public boolean isItemValid(ItemStack itemToInsert) {
-        return true;
+    public abstract boolean isItemValid(ItemStack itemToInsert);
+
+    public void onClick(World world, int x, int y, int z, EntityPlayer player, ItemStack heldItem, ItemStack workItem, AssemblySlot[] slots)
+    {
+        ItemStack slotItem = getItemStack();
+        if(slotItem != null && heldItem == null) //Item is in slot, hand is empty.
+        {
+            player.inventory.setInventorySlotContents(player.inventory.currentItem, slotItem);
+            setItemStack(null);
+            ((IAssemblable) workItem.getItem()).onComponentChange(workItem, slots);
+            ((IAssemblable) workItem.getItem()).saveComponentInventory(workItem, slots);
+        }
+        else if(slotItem != null && heldItem.getItem().equals(slotItem.getItem()) && heldItem.getMaxStackSize() >= heldItem.stackSize + slotItem.stackSize) //Item is in slot, hand is not empty but has the same item.
+        {
+            heldItem.stackSize += slotItem.stackSize;
+            setItemStack(null);
+            ((IAssemblable) workItem.getItem()).onComponentChange(workItem, slots);
+            ((IAssemblable) workItem.getItem()).saveComponentInventory(workItem, slots);
+        }
+        else if(slotItem == null && heldItem != null && isItemValid(heldItem)) //No item in slot, but the held item is valid.
+        {
+            ItemStack newSlot = heldItem.copy();
+            newSlot.stackSize = 1;
+            setItemStack(newSlot);
+            heldItem.stackSize--;
+            ((IAssemblable) workItem.getItem()).onComponentChange(workItem, slots);
+            ((IAssemblable) workItem.getItem()).saveComponentInventory(workItem, slots);
+        }
     }
 
     /**
@@ -52,6 +81,8 @@ public class AssemblySlot
     public ResourceLocation getRenderIcon() {
         return defaultTexture;
     }
+
+    public ResourceLocation getMouseOverIcon(EntityPlayer player, ItemStack workItem, ItemStack heldItem) { return null; }
 
     public ItemStack getItemStack() {
         return itemInSlot;

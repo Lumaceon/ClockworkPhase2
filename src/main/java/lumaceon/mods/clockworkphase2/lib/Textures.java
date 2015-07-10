@@ -47,5 +47,13 @@ public class Textures
     {
         public static ResourceLocation MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/items/mainspring.png");
         public static ResourceLocation CLOCKWORK_CORE = new ResourceLocation(Reference.MOD_ID, "textures/items/clockwork_core.png");
+        public static ResourceLocation WOOD_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/items/wood_gear.png");
+    }
+
+    public static class MISC
+    {
+        public static final ResourceLocation TEMPORAL_MODULE = new ResourceLocation("textures/temporal_module.png");
+        public static final ResourceLocation INVALID = new ResourceLocation(Reference.MOD_ID, "textures/misc/invalid.png");
+        public static final ResourceLocation VALID = new ResourceLocation(Reference.MOD_ID, "textures/misc/valid.png");
     }
 }

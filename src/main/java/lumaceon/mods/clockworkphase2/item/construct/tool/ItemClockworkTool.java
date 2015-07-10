@@ -6,14 +6,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
 import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.util.*;
 import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotClockworkCore;
 import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotMainspring;
+import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotTemporalModule;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
@@ -151,9 +150,9 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
                 {
                         new AssemblySlotMainspring(Textures.ITEM.MAINSPRING, 0.68F, 0.37F),
                         new AssemblySlotClockworkCore(Textures.ITEM.CLOCKWORK_CORE, 0.55F, 0.5F),
-                        new AssemblySlot(Textures.GLYPH.BASE_GLYPH, 0.2F, 0.2F),
-                        new AssemblySlot(Textures.GLYPH.BASE_GLYPH, 0.5F, 0.2F),
-                        new AssemblySlot(Textures.GLYPH.BASE_GLYPH, 0.8F, 0.2F)
+                        new AssemblySlotTemporalModule(Textures.MISC.TEMPORAL_MODULE, 0.2F, 0.2F),
+                        new AssemblySlotTemporalModule(Textures.MISC.TEMPORAL_MODULE, 0.5F, 0.2F),
+                        new AssemblySlotTemporalModule(Textures.MISC.TEMPORAL_MODULE, 0.8F, 0.2F)
                 };
         AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(workItem, slots);
         return slots;

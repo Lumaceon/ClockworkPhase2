@@ -10,5 +10,4 @@ public interface IProxy
     public void registerModels();
     public void registerKeybindings();
     public void initSideHandlers();
-    public void initButtons(int id, List buttonList, IAssemblyContainer container, int guiLeft, int guiTop);
 }

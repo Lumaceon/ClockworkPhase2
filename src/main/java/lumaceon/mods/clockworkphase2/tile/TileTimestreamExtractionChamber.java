@@ -42,7 +42,8 @@ public class TileTimestreamExtractionChamber extends TileTimezoneUsage
             {
                 if(currentRecipe.finalize(worldObj, xCoord, yCoord, zCoord))
                 {
-                    worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord, yCoord + 1, zCoord, currentRecipe.getCraftingResult(worldObj, xCoord, yCoord, zCoord)));
+                    if(!worldObj.isRemote)
+                        worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord, yCoord + 1, zCoord, currentRecipe.getCraftingResult(worldObj, xCoord, yCoord, zCoord)));
                     currentRecipe = null;
                 }
                 else if(currentRecipe.updateRecipe(worldObj, xCoord, yCoord, zCoord))

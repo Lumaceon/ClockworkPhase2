@@ -9,7 +9,9 @@ import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
+import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotClockworkComponent;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.AssemblyHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,8 +30,22 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     }
 
     @Override
-    public AssemblySlot[] initializeSlots(ItemStack assemblyItem) {
-        return new AssemblySlot[0];
+    public AssemblySlot[] initializeSlots(ItemStack assemblyItem)
+    {
+        AssemblySlot[] slots = new AssemblySlot[]
+                {
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.3F, 0.3F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.5F, 0.3F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.7F, 0.3F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.3F, 0.5F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.5F, 0.5F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.7F, 0.5F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.3F, 0.7F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.5F, 0.7F),
+                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.7F, 0.7F)
+                };
+        AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(assemblyItem, slots);
+        return slots;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class ModBlocks
 {
     public static void init()
     {
-        initSteamMachines();
+        //initSteamMachines();
         initTimeMachines();
         initFluids();
         initOres();
@@ -35,7 +35,7 @@ public class ModBlocks
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     public static Block timestreamExtractionChamber;
-    public static Block temporalizer;
+    //public static Block temporalizer;
     public static Block timezoneFluidExporter;
     public static Block timezoneFluidImporter;
     public static void initTimeMachines()
@@ -43,14 +43,14 @@ public class ModBlocks
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
         celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
         timestreamExtractionChamber = new BlockTimestreamExtractionChamber(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
-        temporalizer = new BlockTemporalizer(Material.iron, Names.BLOCK.TEMPORALIZER);
+        //temporalizer = new BlockTemporalizer(Material.iron, Names.BLOCK.TEMPORALIZER);
         timezoneFluidExporter = new BlockTimezoneFluidExporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         timezoneFluidImporter = new BlockTimezoneFluidImporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
 
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
         GameRegistry.registerBlock(timestreamExtractionChamber, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
-        GameRegistry.registerBlock(temporalizer, Names.BLOCK.TEMPORALIZER);
+        //GameRegistry.registerBlock(temporalizer, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerBlock(timezoneFluidExporter, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerBlock(timezoneFluidImporter, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
     }
@@ -115,7 +115,7 @@ public class ModBlocks
     public static void initTE()
     {
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
-        GameRegistry.registerTileEntity(TileTemporalizer.class, Names.BLOCK.TEMPORALIZER);
+        //GameRegistry.registerTileEntity(TileTemporalizer.class, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
         GameRegistry.registerTileEntity(TileAssemblyTable.class, Names.BLOCK.ASSEMBLY_TABLE);

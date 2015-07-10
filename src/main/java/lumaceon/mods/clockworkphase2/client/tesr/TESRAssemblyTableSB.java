@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.client.tesr;
 
 import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
 import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
+import lumaceon.mods.clockworkphase2.item.ItemBugSwatter;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
@@ -26,11 +28,8 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
     private ResourceLocation side = new ResourceLocation(Reference.MOD_ID, "textures/blocks/assembly_table_sb/side.png");
     private ResourceLocation back = new ResourceLocation(Reference.MOD_ID, "textures/blocks/assembly_table_sb/back.png");
     private ResourceLocation front = new ResourceLocation(Reference.MOD_ID, "textures/blocks/assembly_table_sb/front.png");
-    private ResourceLocation invalid = new ResourceLocation(Reference.MOD_ID, "textures/misc/invalid.png");
-    private ResourceLocation valid = new ResourceLocation(Reference.MOD_ID, "textures/misc/valid.png");
 
-    public TESRAssemblyTableSB()
-    {
+    public TESRAssemblyTableSB() {
         itemRenderer.setRenderManager(RenderManager.instance);
         itemRenderer.renderWithColor = true;
     }
@@ -44,6 +43,23 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
             float pixel = 1.0F/16.0F;
             GL11.glPushMatrix();
             GL11.glTranslated(x, y, z);
+            ForgeDirection meta = ForgeDirection.getOrientation(te.blockMetadata);
+
+            switch(meta)
+            {
+                case NORTH:
+                    GL11.glRotatef(90, 0, 1, 0);
+                    GL11.glTranslatef(-1F, 0, 0);
+                    break;
+                case WEST:
+                    GL11.glRotatef(180, 0, 1, 0);
+                    GL11.glTranslatef(-1F, 0, -1F);
+                    break;
+                case SOUTH:
+                    GL11.glRotatef(270, 0, 1, 0);
+                    GL11.glTranslatef(0, 0, -1);
+                    break;
+            }
             Tessellator t = Tessellator.instance;
 
             this.bindTexture(top);
@@ -62,10 +78,10 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
             t.draw();
             this.bindTexture(side);
             t.startDrawingQuads();
-            t.addVertexWithUV(0, 1, 1, 0, 1);
-            t.addVertexWithUV(0, 0, 1, 1, 1);
-            t.addVertexWithUV(pixel * 2, 0, 1, 1, 1);
-            t.addVertexWithUV(pixel * 2, 1, 1, 0, 1);
+            t.addVertexWithUV(0, 1, 1, 1, 0);
+            t.addVertexWithUV(0, 0, 1, 0, 0);
+            t.addVertexWithUV(pixel * 2, 0, 1, 0, 1);
+            t.addVertexWithUV(pixel * 2, 1, 1, 1, 1);
             t.draw();
             this.bindTexture(front);
             t.startDrawingQuads();
@@ -81,7 +97,6 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
             t.addVertexWithUV(0, 0, 1, 0, 1);
             t.addVertexWithUV(0, 1, 1, 0, 0);
             t.draw();
-
             ItemStack workItem = table.getWorkItem();
             if(workItem != null)
             {
@@ -101,12 +116,30 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                 {
                     GL11.glPopMatrix();
                     GL11.glPushMatrix();
-                    GL11.glTranslated(x + pixel * 3.0, y, z);
+                    GL11.glTranslated(x, y, z);
+                    switch(meta)
+                    {
+                        case EAST:
+                            GL11.glTranslated(pixel * 3.0, 0, 0);
+                            break;
+                        case NORTH:
+                            GL11.glTranslated(0, 0, 1 - pixel * 3.0);
+                            GL11.glRotatef(90, 0, 1, 0);
+                            break;
+                        case WEST:
+                            GL11.glTranslated(1 - (pixel * 3.0), 0, 1);
+                            GL11.glRotatef(180, 0, 1, 0);
+                            break;
+                        case SOUTH:
+                            GL11.glTranslated(1, 0, pixel * 3.0);
+                            GL11.glRotatef(270, 0, 1, 0);
+                            break;
+                    }
                     MovingObjectPosition MOB = Minecraft.getMinecraft().objectMouseOver;
                     double xCoord = -10;
                     double yCoord = -10;
                     double zCoord = -10;
-                    if(MOB != null && MOB.typeOfHit.equals(MovingObjectPosition.MovingObjectType.BLOCK) && MOB.hitVec != null)
+                    if(MOB != null && MOB.typeOfHit.equals(MovingObjectPosition.MovingObjectType.BLOCK) && te.getWorldObj().getBlock(MOB.blockX, MOB.blockY, MOB.blockZ).equals(te.blockType) && MOB.hitVec != null)
                     {
                         xCoord = MOB.hitVec.xCoord - te.xCoord;
                         yCoord = MOB.hitVec.yCoord - te.yCoord;
@@ -118,7 +151,7 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                     {
                         if(slot != null && slot.isEnabled)
                         {
-                            boolean isMouseOver = isIntersecting(xCoord, yCoord, zCoord, slot);
+                            boolean isMouseOver = isIntersecting(xCoord, yCoord, zCoord, meta, slot);
                             if(isMouseOver)
                                 slot.ticksMousedOver = Math.min(30, slot.ticksMousedOver + 1);
                             else
@@ -153,10 +186,10 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                                 this.bindTexture(defaultIcon);
                                 t.startDrawingQuads();
                                 t.setColorRGBA_F(0.5F, 0.5F, 0.5F, 1.0F);
-                                t.addVertexWithUV(0, lowY, lowX, 1, 0);
-                                t.addVertexWithUV(0, highY, lowX, 0, 0);
-                                t.addVertexWithUV(0, highY, highX, 0, 1);
-                                t.addVertexWithUV(0, lowY, highX, 1, 1);
+                                t.addVertexWithUV(0, lowY, lowX, 1, 1);
+                                t.addVertexWithUV(0, highY, lowX, 1, 0);
+                                t.addVertexWithUV(0, highY, highX, 0, 0);
+                                t.addVertexWithUV(0, lowY, highX, 0, 1);
                                 t.draw();
 
                                 if(slot.ticksMousedOver > 0)
@@ -165,14 +198,15 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                                     if(player != null)
                                     {
                                         ItemStack itemInHand = player.inventory.getCurrentItem();
-                                        if(itemInHand != null && slot.isItemValid(itemInHand))
+                                        ResourceLocation location = slot.getMouseOverIcon(player, workItem, itemInHand);
+                                        if(location != null)
                                         {
                                             lowX = ((1 - slot.centerX) - (slot.sizeX * 0.5F * pixel) * (Math.min(slot.ticksMousedOver, 20) / 20F));
                                             highX = ((1 - slot.centerX) + (slot.sizeX * 0.5F * pixel) * (Math.min(slot.ticksMousedOver, 20) / 20F));
                                             lowY = ((1 - slot.centerY) - (slot.sizeY * 0.5F * pixel) * (Math.min(slot.ticksMousedOver, 20) / 20F));
                                             highY = ((1 - slot.centerY) + (slot.sizeY * 0.5F * pixel) * (Math.min(slot.ticksMousedOver, 20) / 20F));
                                             float upwardTranslation = ((slot.ticksMousedOver * slot.sizeY * pixel) + 1) / 30;
-                                            this.bindTexture(valid);
+                                            this.bindTexture(location);
                                             t.startDrawingQuads();
                                             t.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
                                             t.addVertexWithUV(0.01, lowY + upwardTranslation, lowX, 1, 1);
@@ -181,7 +215,7 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                                             t.addVertexWithUV(0.01, lowY + upwardTranslation, highX, 0, 1);
                                             t.draw();
                                         }
-                                        else
+                                        /*else
                                         {
                                             lowX = ((1 - slot.centerX) - (slot.sizeX * 0.5F * pixel) * (Math.min(slot.ticksMousedOver, 20) / 20F));
                                             highX = ((1 - slot.centerX) + (slot.sizeX * 0.5F * pixel) * (Math.min(slot.ticksMousedOver, 20) / 20F));
@@ -196,7 +230,7 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
                                             t.addVertexWithUV(0.01, highY + upwardTranslation, highX, 0, 0);
                                             t.addVertexWithUV(0.01, lowY + upwardTranslation, highX, 0, 1);
                                             t.draw();
-                                        }
+                                        }*/
                                     }
                                 }
                             }
@@ -208,10 +242,31 @@ public class TESRAssemblyTableSB extends TileEntitySpecialRenderer
         }
     }
 
-    private boolean isIntersecting(double x, double y, double z, AssemblySlot slot)
+    private boolean isIntersecting(double x, double y, double z, ForgeDirection meta, AssemblySlot slot)
     {
-        if(z > (1 - slot.centerX) + slot.sizeX * 0.5 * 1F/16F || z < (1 - slot.centerX) - slot.sizeX * 0.5 * 1F/16F)
+        if(x < 0 || z < 0)
             return false;
+        switch(meta)
+        {
+            case EAST:
+                if(z > (1 - slot.centerX) + slot.sizeX * 0.5 * 1F/16F || z < (1 - slot.centerX) - slot.sizeX * 0.5 * 1F/16F)
+                    return false;
+                break;
+            case WEST:
+                z = Math.abs(1 - z);
+                if(z > (1 - slot.centerX) + slot.sizeX * 0.5 * 1F/16F || z < (1 - slot.centerX) - slot.sizeX * 0.5 * 1F/16F)
+                    return false;
+                break;
+            case NORTH:
+                if(x > (1 - slot.centerX) + slot.sizeX * 0.5 * 1F/16F || x < (1 - slot.centerX) - slot.sizeX * 0.5 * 1F/16F)
+                    return false;
+                break;
+            case SOUTH:
+                x = Math.abs(1 - x);
+                if(x > (1 - slot.centerX) + slot.sizeX * 0.5 * 1F/16F || x < (1 - slot.centerX) - slot.sizeX * 0.5 * 1F/16F)
+                    return false;
+                break;
+        }
         if(y > (1 - slot.centerY) + slot.sizeY * 0.5 * 1F/16F || y < (1 - slot.centerY) - slot.sizeY * 0.5 * 1F/16F)
             return false;
         return true;

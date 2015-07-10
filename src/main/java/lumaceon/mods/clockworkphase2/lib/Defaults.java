@@ -6,4 +6,9 @@ public class Defaults
     {
         public static int perBlock = 50;
     }
+
+    public static class DIM_ID
+    {
+        public static int PAST;
+    }
 }

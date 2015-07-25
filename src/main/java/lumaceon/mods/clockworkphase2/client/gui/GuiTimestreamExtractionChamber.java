@@ -8,6 +8,7 @@ import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTimestreamRecipe;
 import lumaceon.mods.clockworkphase2.tile.TileTimestreamExtractionChamber;
+import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.input.Keyboard;
@@ -15,17 +16,16 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class GuiTimestreamExtractionChamber extends GuiScreen
+public class GuiTimestreamExtractionChamber extends GuiPane
 {
     private TileEntity te;
 
     public int backgroundWidth, backgroundHeight;
-    public Pane basePane = new Pane(mc);
-    public PaneBorder borderPane = new PaneBorder(mc);
-    public PaneComponent top = new PaneComponent(mc);
-    public PaneComponent bottom = new PaneComponent(mc);
-    public PaneFadeChange fader = new PaneFadeChange(mc);
-    public PaneButtonWheel buttonWheel = new PaneButtonWheel(mc);
+    public PaneBorder borderPane = new PaneBorder(mc, this);
+    public PaneComponent top = new PaneComponent(mc, this);
+    public PaneComponent bottom = new PaneComponent(mc, this);
+    public PaneFadeChange fader = new PaneFadeChange(mc, this);
+    public PaneButtonWheel buttonWheel = new PaneButtonWheel(mc, this);
 
     public PaneComponent[] recipeButtons = new PaneComponent[TimestreamCraftingRegistry.TIMESTREAM_RECIPES.size()];
 
@@ -41,7 +41,7 @@ public class GuiTimestreamExtractionChamber extends GuiScreen
         buttonWheel.ANCHOR = EnumSide.TOP;
         if(TimestreamCraftingRegistry.TIMESTREAM_RECIPES.size() > 0)
         {
-            PaneComponent startBackground = new PaneComponent(mc);
+            PaneComponent startBackground = new PaneComponent(mc, this);
             startBackground.setTexture(TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(0).getBackground());
             startBackground.setTextureProportions(backgroundWidth, backgroundHeight);
             startBackground.setRenderType(EnumRenderType.FILL);
@@ -49,10 +49,11 @@ public class GuiTimestreamExtractionChamber extends GuiScreen
         }
         for(int n = 0; n < recipeButtons.length; n++)
         {
-            PaneComponentTitled component = new PaneComponentTitled(mc);
+            PaneComponentTitled component = new PaneComponentTitled(mc, this);
             ITimestreamCraftingRecipe recipe = TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(n);
             component.setTexture(recipe.getIcon());
             component.setLocalSize(0.7F, 0.7F);
+            component.mouseOverEnlarge = true;
             component.setTitle(TimeConverter.parseNumber(recipe.getTimeSandRequirement(), 1));
             if(te != null && te instanceof TileTimestreamExtractionChamber && ((TileTimestreamExtractionChamber) te).getTimezone() != null)
                 component.setTitleColor(((TileTimestreamExtractionChamber) te).getTimezone().getTimeSand() < recipe.getTimeSandRequirement() ? Color.RED.getRGB() : Color.GREEN.getRGB());
@@ -72,32 +73,6 @@ public class GuiTimestreamExtractionChamber extends GuiScreen
     }
 
     @Override
-    public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_)
-    {
-        super.drawScreen(p_73863_1_, p_73863_2_, p_73863_3_);
-        GL11.glPushMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        basePane.draw(width, height, zLevel);
-        GL11.glPopMatrix();
-    }
-
-    @Override
-    public void updateScreen()
-    {
-        super.updateScreen();
-        basePane.update(width, height);
-    }
-
-    @Override
-    public void initGui()
-    {
-        super.initGui();
-        buttonList.clear();
-    }
-
-    @Override
     protected void keyTyped(char p_73869_1_, int p_73869_2_)
     {
         if(p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode())
@@ -105,20 +80,12 @@ public class GuiTimestreamExtractionChamber extends GuiScreen
         else if(p_73869_2_ == this.mc.gameSettings.keyBindLeft.getKeyCode())
         {
             buttonWheel.selectPrevious();
-            PaneComponent newComponent = new PaneComponent(mc);
-            newComponent.setTexture(TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(buttonWheel.targetIndex).getBackground());
-            newComponent.setTextureProportions(backgroundWidth, backgroundHeight);
-            newComponent.setRenderType(EnumRenderType.FILL);
-            fader.addComponent(newComponent, width, height);
+            updateBackground();
         }
         else if(p_73869_2_ == this.mc.gameSettings.keyBindRight.getKeyCode())
         {
             buttonWheel.selectNext();
-            PaneComponent newComponent = new PaneComponent(mc);
-            newComponent.setTexture(TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(buttonWheel.targetIndex).getBackground());
-            newComponent.setTextureProportions(backgroundWidth, backgroundHeight);
-            newComponent.setRenderType(EnumRenderType.FILL);
-            fader.addComponent(newComponent, width, height);
+            updateBackground();
         }
         else if(p_73869_2_ == Keyboard.KEY_RETURN || p_73869_2_ == this.mc.gameSettings.keyBindJump.getKeyCode())
         {
@@ -134,5 +101,21 @@ public class GuiTimestreamExtractionChamber extends GuiScreen
     public boolean doesGuiPauseGame()
     {
         return false;
+    }
+
+    @Override
+    public void onComponentClicked(PaneComponent component, int buttonClicked)
+    {
+        if(component.equals(buttonWheel))
+            updateBackground();
+    }
+
+    private void updateBackground()
+    {
+        PaneComponent newComponent = new PaneComponent(mc, this);
+        newComponent.setTexture(TimestreamCraftingRegistry.TIMESTREAM_RECIPES.get(buttonWheel.targetIndex).getBackground());
+        newComponent.setTextureProportions(backgroundWidth, backgroundHeight);
+        newComponent.setRenderType(EnumRenderType.FILL);
+        fader.addComponent(newComponent, width, height);
     }
 }

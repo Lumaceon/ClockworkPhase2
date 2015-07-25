@@ -17,9 +17,13 @@ public class Names
         public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";
+        public static final String TELESCOPE = "telescope";
 
         public static final String ORE_COPPER = "copper_ore";
         public static final String ORE_ZINC = "zinc_ore";
+        public static final String FOSSIL_MOON_FLOWER = "moon_flower_fossil";
+
+        public static final String MOON_FLOWER = "moon_flower";
 
         public static final String BLOCK_COPPER = "copper_block";
         public static final String BLOCK_ZINC = "zinc_block";
@@ -35,6 +39,9 @@ public class Names
         public static final String CLOCKWORK_AXE = "clockwork_axe";
         public static final String CLOCKWORK_SHOVEL = "clockwork_shovel";
         public static final String CLOCKWORK_MULTI_TOOL = "clockwork_multitool";
+        public static final String STONE_TROWEL = "stone_trowel";
+        public static final String IRON_TROWEL = "iron_trowel";
+        public static final String DIAMOND_TROWEL = "diamond_trowel";
         public static final String LIGHTNING_SWORD = "lightning_sword";
         public static final String PAC = "personal_assistant_cube";
         public static final String GEAR_WOOD = "wood_gear";
@@ -57,6 +64,9 @@ public class Names
         public static final String TEMPORAL_DRIVE_SIMULATE = "temporal_drive_simulate";
         public static final String TEMPORAL_DRIVE_MODIFY = "temporal_drive_modify";
         public static final String TEMPORAL_DRIVE_DUPLICATE = "temporal_drive_duplicate";
+        public static final String MOON_FLOWER_SEEDS = "moon_flower_seeds";
+        public static final String MOON_PEARL = "moon_pearl";
+        public static final String ELYSIAN_GEM = "elysian_gem";
 
         public static final String TIMESTREAM_RELOCATION = "timestream_relocation";
         public static final String TIMESTREAM_SILKY_HARVEST = "timestream_silky_harvest";

@@ -41,6 +41,7 @@ public class Textures
     public static class PARTICLE
     {
         public static ResourceLocation TIME_SAND = new ResourceLocation(Reference.MOD_ID, "textures/particles/time_sand.png");
+        public static ResourceLocation TEST = new ResourceLocation(Reference.MOD_ID, "textures/particles/particle.png");
     }
 
     public static class ITEM

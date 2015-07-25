@@ -2,9 +2,7 @@ package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
-import lumaceon.mods.clockworkphase2.item.ItemBugSwatter;
-import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
-import lumaceon.mods.clockworkphase2.item.ItemTemporalIngot;
+import lumaceon.mods.clockworkphase2.item.*;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleHarvestTeleport;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSilkHarvest;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSmelt;
@@ -35,7 +33,7 @@ public class ModItems
         initClockworkComponents();
         initTemporalComponents();
         initTimestreams();
-        initConstructs();
+        initTools();
         initBuckets();
         initMetals();
         initMisc();
@@ -176,14 +174,20 @@ public class ModItems
     public static Item clockworkAxe;
     public static Item clockworkShovel;
     public static Item clockworkMultiTool;
+    public static Item trowelStone;
+    public static Item trowelIron;
+    public static Item trowelDiamond;
     public static Item lightningSword;
     public static Item PAC;
-    public static void initConstructs()
+    public static void initTools()
     {
         clockworkPickaxe = new ItemClockworkPickaxe(clockworkMaterial, Names.ITEM.CLOCKWORK_PICKAXE);
         clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
         clockworkMultiTool = new ItemClockworkMultitool(0, clockworkMaterial, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        trowelStone = new ItemTrowel(Item.ToolMaterial.STONE, 1, Names.ITEM.STONE_TROWEL);
+        trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, 1, Names.ITEM.IRON_TROWEL);
+        trowelDiamond = new ItemTrowel(Item.ToolMaterial.EMERALD, 1, Names.ITEM.DIAMOND_TROWEL); //Says emerald; is actually diamond.
         lightningSword = new ItemLightningSword(clockworkMaterial, Names.ITEM.LIGHTNING_SWORD);
         PAC = new ItemPAC(1, 100, Names.ITEM.PAC);
 
@@ -191,6 +195,9 @@ public class ModItems
         GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
         GameRegistry.registerItem(clockworkMultiTool, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        GameRegistry.registerItem(trowelStone, Names.ITEM.STONE_TROWEL);
+        GameRegistry.registerItem(trowelIron, Names.ITEM.IRON_TROWEL);
+        GameRegistry.registerItem(trowelDiamond, Names.ITEM.DIAMOND_TROWEL);
         GameRegistry.registerItem(lightningSword, Names.ITEM.LIGHTNING_SWORD);
         GameRegistry.registerItem(PAC, Names.ITEM.PAC);
     }
@@ -230,16 +237,25 @@ public class ModItems
     public static Item temporalDriveSimulate;
     public static Item temporalDriveModify;
     public static Item temporalDriveDuplicate;
+    public static Item moonFlowerSeeds;
+    public static Item moonPearl;
+    public static Item elysianGem;
     public static void initMisc()
     {
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         temporalDriveSimulate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
         temporalDriveModify = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         temporalDriveDuplicate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
+        moonFlowerSeeds = new ItemMoonFlowerSeeds(64, 0, Names.ITEM.MOON_FLOWER_SEEDS);
+        moonPearl = new ItemClockworkPhase(64, 0, Names.ITEM.MOON_PEARL);
+        elysianGem = new ItemClockworkPhase(64, 0, Names.ITEM.ELYSIAN_GEM);
 
         GameRegistry.registerItem(bugSwatter, "bug_swatter");
         GameRegistry.registerItem(temporalDriveSimulate, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
         GameRegistry.registerItem(temporalDriveModify, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         GameRegistry.registerItem(temporalDriveDuplicate, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
+        GameRegistry.registerItem(moonFlowerSeeds, Names.ITEM.MOON_FLOWER_SEEDS);
+        GameRegistry.registerItem(moonPearl, Names.ITEM.MOON_PEARL);
+        GameRegistry.registerItem(elysianGem, Names.ITEM.ELYSIAN_GEM);
     }
 }

@@ -32,13 +32,13 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
             for(int n = 1; n < additionList.size(); n++) //Draw additional strings.
             {
                 InfluenceIncrease ii = additionList.get(n);
-                Minecraft.getMinecraft().fontRenderer.drawString(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2), event.resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2)) / 2, (60 - ii.tweening) + yTranslation + n * 30, 125576);
+                Minecraft.getMinecraft().fontRenderer.drawString(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2), event.resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2)) / 2, (40 - ii.tweening) + yTranslation + n * 30, 125576);
             }
             if(yTranslation == 0)
             {
                 if(sleepTimer > 120)
                 {
-                    if(!additionList.isEmpty() && additionList.get(0).tweening == 30)
+                    if(!additionList.isEmpty() && additionList.get(0).tweening == 10)
                     {
                         InfluenceIncrease ii = additionList.get(0);
                         displayInfluence = Math.min((long) (ii.previousInfluence + ((ii.newInfluence - ii.previousInfluence) * (ii.ticksIncreased / 200.0))), ii.newInfluence);
@@ -52,13 +52,11 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
                         }
                     }
                     else
-                        additionList.get(0).tweening = Math.min(additionList.get(0).tweening + 1, 30);
+                        additionList.get(0).tweening = Math.min(additionList.get(0).tweening + 1, 10);
                 }
                 else
                     sleepTimer++;
             }
-
-
         }
         return true;
     }

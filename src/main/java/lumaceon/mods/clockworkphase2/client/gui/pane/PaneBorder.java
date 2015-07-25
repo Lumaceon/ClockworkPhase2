@@ -1,11 +1,12 @@
 package lumaceon.mods.clockworkphase2.client.gui.pane;
 
+import lumaceon.mods.clockworkphase2.client.gui.GuiPane;
 import net.minecraft.client.Minecraft;
 
 public class PaneBorder extends Pane
 {
-    public PaneBorder(Minecraft mc) {
-        super(mc);
+    public PaneBorder(Minecraft mc, GuiPane guiPane) {
+        super(mc, guiPane);
     }
 
     @Override

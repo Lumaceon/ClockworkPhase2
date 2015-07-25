@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.gui.pane;
 
+import lumaceon.mods.clockworkphase2.client.gui.GuiPane;
 import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ public class Pane extends PaneComponent
     public float componentSpacingLeft = 0;
     public float componentSpacingRight = 0;
 
-    public Pane(Minecraft mc) {
-        super(mc);
+    public Pane(Minecraft mc, GuiPane guiPane) {
+        super(mc, guiPane);
     }
 
     public void addComponent(PaneComponent component, int screenWidth, int screenHeight)
@@ -67,6 +68,24 @@ public class Pane extends PaneComponent
                 component.update(screenWidth, screenHeight);
             }
         }
+    }
+
+    @Override
+    public void onMouseMoved(float mouseX, float mouseY)
+    {
+        for(PaneComponent component : components)
+            if(component != null)
+                component.onMouseMoved(mouseX, mouseY);
+    }
+
+    @Override
+    public void onMouseClicked(float mouseX, float mouseY, int buttonClicked)
+    {
+        for(PaneComponent component : components)
+            if(component != null)
+                component.onMouseClicked(mouseX, mouseY, buttonClicked);
+        if(mouseX > xCenter - xSize / 2.0F && mouseX < xCenter + xSize / 2.0F && mouseY > yCenter - ySize / 2.0F && mouseY < yCenter + ySize / 2.0F)
+            parentGui.onComponentClicked(this, buttonClicked);
     }
 
     @Override

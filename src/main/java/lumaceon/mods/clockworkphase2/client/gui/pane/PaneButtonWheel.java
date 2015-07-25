@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.gui.pane;
 
+import lumaceon.mods.clockworkphase2.client.gui.GuiPane;
 import net.minecraft.client.Minecraft;
 
 public class PaneButtonWheel extends Pane
@@ -8,8 +9,8 @@ public class PaneButtonWheel extends Pane
     public float wheelLocation = 0; //Starting at 0 and moving a component to the right/down per increment of 1.
     public int componentFullDimRadius = 3;
 
-    public PaneButtonWheel(Minecraft mc) {
-        super(mc);
+    public PaneButtonWheel(Minecraft mc, GuiPane guiPane) {
+        super(mc, guiPane);
     }
 
     @Override
@@ -41,6 +42,25 @@ public class PaneButtonWheel extends Pane
                 }
             }
         }
+    }
+
+    @Override
+    public void onMouseClicked(float mouseX, float mouseY, int buttonClicked)
+    {
+        for(int n = 0; n < components.size(); n++)
+        {
+            PaneComponent component = components.get(n);
+            if(component.mouseIsHoveringOverThis)
+            {
+                if(n == targetIndex)
+                    component.onMouseClicked(mouseX, mouseY, buttonClicked);
+                else
+                    targetIndex = n;
+                break;
+            }
+        }
+        if(mouseX > xCenter - xSize / 2.0F && mouseX < xCenter + xSize / 2.0F && mouseY > yCenter - ySize / 2.0F && mouseY < yCenter + ySize / 2.0F)
+            parentGui.onComponentClicked(this, buttonClicked);
     }
 
     public void selectNext()

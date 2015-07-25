@@ -15,10 +15,7 @@ import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigurationHandler;
 import lumaceon.mods.clockworkphase2.creativetab.CreativeTabClockworkPhase2;
 import lumaceon.mods.clockworkphase2.handler.*;
-import lumaceon.mods.clockworkphase2.init.ModBlocks;
-import lumaceon.mods.clockworkphase2.init.ModEntities;
-import lumaceon.mods.clockworkphase2.init.ModFluids;
-import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.init.*;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
@@ -54,6 +51,7 @@ public class ClockworkPhase2
 
         ModFluids.init();
 
+        ModItems.init();
         ModBlocks.init();
         ModBlocks.initTE();
 
@@ -61,7 +59,7 @@ public class ClockworkPhase2
 
         ModFluids.bindBlocks();
 
-        ModItems.init();
+        ModPhases.init();
 
         ModEntities.init();
 

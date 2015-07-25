@@ -44,12 +44,10 @@ public class EntityHandler
     }
 
     @SubscribeEvent
-    public void onEntityClicked(EntityInteractEvent event) //Player right-clicked PAC.
+    public void onEntityClicked(EntityInteractEvent event) //Player right-clicked an entity.
     {
-        if(event.target != null && event.target instanceof EntityPAC)
-        {
-            Logger.info("Nyan");
-        }
+        if(event.target != null && event.target instanceof EntityPAC) //The entity was a PAC.
+            ((EntityPAC) event.target).onRightClicked(event.entityPlayer);
     }
 
     /*@SubscribeEvent

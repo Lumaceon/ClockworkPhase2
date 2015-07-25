@@ -5,7 +5,6 @@ import lumaceon.mods.clockworkphase2.block.*;
 import lumaceon.mods.clockworkphase2.block.steammachine.BlockBoiler;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.tile.*;
-import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidImporter;
 import net.minecraft.block.Block;
@@ -20,6 +19,7 @@ public class ModBlocks
         initTimeMachines();
         initFluids();
         initOres();
+        initPlants();
         initMetalBlocks();
         initMisc();
     }
@@ -62,32 +62,29 @@ public class ModBlocks
         GameRegistry.registerBlock(timeSand, Names.BLOCK.TIME_SAND);
     }
 
-    public static Block basicWindingBox;
-    public static Block assemblyTable;
-    public static Block assemblyTableSB;
-    public static void initMisc()
-    {
-        basicWindingBox = new BlockBasicWindingBox(Material.iron, Names.BLOCK.BASIC_WINDING_BOX);
-        assemblyTable = new BlockAssemblyTable(Material.wood, Names.BLOCK.ASSEMBLY_TABLE);
-        assemblyTableSB = new BlockAssemblyTableSB(Material.wood, Names.BLOCK.ASSEMBLY_TABLE_SB);
-
-        GameRegistry.registerBlock(basicWindingBox, Names.BLOCK.BASIC_WINDING_BOX);
-        GameRegistry.registerBlock(assemblyTable, Names.BLOCK.ASSEMBLY_TABLE);
-        GameRegistry.registerBlock(assemblyTableSB, Names.BLOCK.ASSEMBLY_TABLE_SB);
-    }
-
     public static Block oreCopper;
     public static Block oreZinc;
+    public static Block fossilMoonFlower;
     public static void initOres()
     {
         oreCopper = new BlockClockworkPhaseOre(Material.rock, 1, Names.BLOCK.ORE_COPPER);
         oreZinc = new BlockClockworkPhaseOre(Material.rock, 1, Names.BLOCK.ORE_ZINC);
+        fossilMoonFlower = new BlockClockworkPhaseFossil(Material.rock, 1, Names.BLOCK.FOSSIL_MOON_FLOWER, ModItems.moonFlowerSeeds);
 
         GameRegistry.registerBlock(oreCopper, Names.BLOCK.ORE_COPPER);
         GameRegistry.registerBlock(oreZinc, Names.BLOCK.ORE_ZINC);
+        GameRegistry.registerBlock(fossilMoonFlower, Names.BLOCK.FOSSIL_MOON_FLOWER);
 
         OreDictionary.registerOre("oreCopper", oreCopper);
         OreDictionary.registerOre("oreZinc", oreZinc);
+    }
+
+    public static Block moonFlower;
+    public static void initPlants()
+    {
+        moonFlower = new BlockMoonFlower(Material.plants, Names.BLOCK.MOON_FLOWER);
+
+        GameRegistry.registerBlock(moonFlower, Names.BLOCK.MOON_FLOWER);
     }
 
     public static Block blockCopper;
@@ -112,6 +109,23 @@ public class ModBlocks
         OreDictionary.registerOre("blockTemporal", blockTemporal);
     }
 
+    public static Block basicWindingBox;
+    public static Block assemblyTable;
+    public static Block assemblyTableSB;
+    public static Block telescope;
+    public static void initMisc()
+    {
+        basicWindingBox = new BlockBasicWindingBox(Material.iron, Names.BLOCK.BASIC_WINDING_BOX);
+        assemblyTable = new BlockAssemblyTable(Material.wood, Names.BLOCK.ASSEMBLY_TABLE);
+        assemblyTableSB = new BlockAssemblyTableSB(Material.wood, Names.BLOCK.ASSEMBLY_TABLE_SB);
+        telescope = new BlockTelescope(Material.wood, Names.BLOCK.TELESCOPE);
+
+        GameRegistry.registerBlock(basicWindingBox, Names.BLOCK.BASIC_WINDING_BOX);
+        GameRegistry.registerBlock(assemblyTable, Names.BLOCK.ASSEMBLY_TABLE);
+        GameRegistry.registerBlock(assemblyTableSB, Names.BLOCK.ASSEMBLY_TABLE_SB);
+        GameRegistry.registerBlock(telescope, Names.BLOCK.TELESCOPE);
+    }
+
     public static void initTE()
     {
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
@@ -121,5 +135,6 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileAssemblyTable.class, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerTileEntity(TileAssemblyTableSB.class, Names.BLOCK.ASSEMBLY_TABLE_SB);
         GameRegistry.registerTileEntity(TileTimestreamExtractionChamber.class, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
+        GameRegistry.registerTileEntity(TileTelescope.class, Names.BLOCK.TELESCOPE);
     }
 }

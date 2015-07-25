@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.entity;
 
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,7 +8,7 @@ import net.minecraft.world.World;
 
 public class EntityPAC extends EntityLiving
 {
-    protected EntityPlayer owner;
+    public EntityPlayer owner;
 
     public EntityPAC(World world)
     {
@@ -45,5 +46,15 @@ public class EntityPAC extends EntityLiving
             if(owner == null || ExtendedPlayerProperties.get(owner).playerPAC == null || ExtendedPlayerProperties.get(owner).playerPAC != this)
                 this.kill();
         }
+    }
+
+    public void onRightClicked(EntityPlayer player)
+    {
+        if(owner == null || !player.equals(owner))
+            return;
+
+        ExtendedPlayerProperties properties = ExtendedPlayerProperties.get(player);
+        if(properties.playerPAC != null && properties.playerPAC.equals(this))
+            player.openGui(ClockworkPhase2.instance, 3, worldObj, (int) posX, (int) posY, (int) posZ);
     }
 }

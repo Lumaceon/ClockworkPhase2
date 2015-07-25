@@ -7,11 +7,16 @@ import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.block.BlockCelestialCompassSB;
+import lumaceon.mods.clockworkphase2.client.particle.ParticleSpawn;
+import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
+import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequenceTimezone;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -25,6 +30,8 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RenderHandler
 {
@@ -32,6 +39,7 @@ public class RenderHandler
     public static RenderItem renderItem;
     public static Minecraft mc;
     public static EntityItem item;
+    public static double interpolatedPosX, interpolatedPosY, interpolatedPosZ;
 
     public RenderHandler()
     {
@@ -61,8 +69,32 @@ public class RenderHandler
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event)
     {
+        interpolatedPosX = mc.thePlayer.lastTickPosX + (mc.thePlayer.posX - mc.thePlayer.lastTickPosX) * (double)event.partialTicks;
+        interpolatedPosY = mc.thePlayer.lastTickPosY + (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) * (double)event.partialTicks;
+        interpolatedPosZ = mc.thePlayer.lastTickPosZ + (mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ) * (double)event.partialTicks;
+        if(!ParticleSequence.particles.isEmpty())
+        {
+            GL11.glPushMatrix();
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            Minecraft.getMinecraft().renderEngine.bindTexture(Textures.PARTICLE.TEST);
+            for(int n = 0; n < ParticleSequence.particles.size(); n++)
+            {
+                EntityFX fx = ParticleSequence.particles.get(n);
+                if(fx == null || fx.isDead)
+                {
+                    ParticleSequence.particles.remove(n);
+                    --n;
+                }
+                else
+                    fx.renderParticle(Tessellator.instance, event.partialTicks, ActiveRenderInfo.rotationX, ActiveRenderInfo.rotationXZ, ActiveRenderInfo.rotationZ, ActiveRenderInfo.rotationYZ, ActiveRenderInfo.rotationXY);
+            }
+            GL11.glPopMatrix();
+        }
+
         if(RenderManager.instance.renderEngine == null)
             return;
+
         if(mc.theWorld != null)
         {
             for(int[] area : TimezoneHandler.timezones)
@@ -74,6 +106,8 @@ public class RenderHandler
                     if(coreStack != null && coreStack.getItem() instanceof ITemporalCore)
                         TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);
                     TIMEZONE.renderCelestialCompassItems(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ);
+                    if(!TIMEZONE.timezoneSequences.containsKey(timezone) || TIMEZONE.timezoneSequences.get(timezone) == null)
+                        TIMEZONE.timezoneSequences.put(timezone, ParticleSequence.spawnParticleSequence(new ParticleSequenceTimezone(timezone, area[0] + 0.5, area[1] + 0.5, area[2] + 0.5)));
                 }
             }
         }
@@ -81,6 +115,8 @@ public class RenderHandler
 
     public static class TIMEZONE
     {
+        public static Map<ITimezone, ParticleSequence> timezoneSequences = new HashMap<ITimezone, ParticleSequence>();
+
         public static void renderGlyph(int[] area, double x, double y, double z, ITimezone timezone)
         {
             if(mc.renderViewEntity != null)

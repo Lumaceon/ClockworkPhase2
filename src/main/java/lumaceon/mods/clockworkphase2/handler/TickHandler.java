@@ -2,6 +2,9 @@ package lumaceon.mods.clockworkphase2.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import lumaceon.mods.clockworkphase2.api.phase.Phase;
+import lumaceon.mods.clockworkphase2.api.phase.Phases;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 
 public class TickHandler
@@ -18,5 +21,16 @@ public class TickHandler
         }
         else
             tickTimer++;
+    }
+
+    @SubscribeEvent
+    public void onWorldTick(TickEvent.WorldTickEvent event)
+    {
+        if(event.world != null && !event.world.isRemote)
+        {
+            Phase[] phases = Phases.getPhases(event.world);
+            for(Phase phase : phases)
+                phase.update(Side.SERVER);
+        }
     }
 }

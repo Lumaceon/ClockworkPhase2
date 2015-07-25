@@ -8,7 +8,7 @@ public class EntityTimeSandExtractionFX extends EntityClockworkPhaseFX
 {
     public EntityTimeSandExtractionFX(World world, double x, double y, double z)
     {
-        super(world, x, y, z);
+        super(world, x, y, z, 0, 0, 0, 0);
         this.motionX = (-0.5F + world.rand.nextFloat()) * 0.2F;
         this.motionY = (-0.5F + world.rand.nextFloat()) * 0.2F;
         this.motionZ = (-0.5F + world.rand.nextFloat()) * 0.2F;

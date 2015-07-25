@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.gui.pane;
 
+import lumaceon.mods.clockworkphase2.client.gui.GuiPane;
 import net.minecraft.client.Minecraft;
 
 /**
@@ -7,8 +8,8 @@ import net.minecraft.client.Minecraft;
  */
 public class PaneFadeChange extends Pane
 {
-    public PaneFadeChange(Minecraft mc) {
-        super(mc);
+    public PaneFadeChange(Minecraft mc, GuiPane guiPane) {
+        super(mc, guiPane);
     }
 
     public void addComponent(PaneComponent component, int screenWidth, int screenHeight)

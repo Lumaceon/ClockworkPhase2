@@ -2,12 +2,28 @@ package lumaceon.mods.clockworkphase2.tile.generic;
 
 import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class TileTimezoneUsage extends TileClockworkPhase
+public abstract class TileTimezonePowered extends TileClockworkPhase
 {
-    public ITimezone timezone;
+    private ITimezone timezone;
     protected int tz_x, tz_y, tz_z;
+    public long timeStored = 0;
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setLong("time_storage", timeStored);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        timeStored = nbt.getLong("time_storage");
+    }
 
     public ITimezone getTimezone()
     {

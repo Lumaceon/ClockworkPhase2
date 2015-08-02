@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.tile.timezone;
+package lumaceon.mods.clockworkphase2.tile;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.ITemporalMaterial;

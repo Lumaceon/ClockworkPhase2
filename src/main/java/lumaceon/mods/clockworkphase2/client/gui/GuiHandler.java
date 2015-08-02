@@ -5,9 +5,11 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.container.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.container.ContainerPAC;
+import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalizer;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
-import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
+import lumaceon.mods.clockworkphase2.tile.TileTemporalizer;
+import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -31,6 +33,8 @@ public class GuiHandler implements IGuiHandler
                 return new ContainerTemporalizer(player.inventory, (TileTemporalizer) te, world);
             case 3:
                 return new ContainerPAC(player.inventory, world, ExtendedPlayerProperties.get(player).playerPAC);
+            case 4:
+                return new ContainerTemporalFurnace(player.inventory, (TileTemporalFurnace) te, world);
         }
         return null;
     }
@@ -49,6 +53,8 @@ public class GuiHandler implements IGuiHandler
                 return new GuiTimestreamExtractionChamber(te);
             case 3:
                 return new GuiPAC(player, ExtendedPlayerProperties.get(player).playerPAC);
+            case 4:
+                return new GuiTemporalFurnace(player.inventory, (TileTemporalFurnace) te, world);
         }
         return null;
     }

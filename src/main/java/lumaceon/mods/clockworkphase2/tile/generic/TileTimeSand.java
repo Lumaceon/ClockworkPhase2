@@ -6,7 +6,7 @@ import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class TileTimeSand extends TileTimezoneUsage implements ITimeSandTile
+public abstract class TileTimeSand extends TileTimezonePowered implements ITimeSandTile
 {
     protected long internalTimeSand;
     protected long timeSandRequestAmount;

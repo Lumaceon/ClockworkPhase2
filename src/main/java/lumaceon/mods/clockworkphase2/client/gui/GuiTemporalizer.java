@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.client.gui;
 
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalizer;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.tile.timezone.TileTemporalizer;
+import lumaceon.mods.clockworkphase2.tile.TileTemporalizer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;

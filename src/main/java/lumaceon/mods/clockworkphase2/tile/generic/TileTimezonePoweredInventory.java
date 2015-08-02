@@ -6,10 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public abstract class TileClockworkPhaseInventory extends TileClockworkPhase implements IInventory
+public abstract class TileTimezonePoweredInventory extends TileTimezonePowered implements IInventory
 {
-    public static final String INVENTORY_TAG = "inventory_items";
-
     protected ItemStack[] inventory;
 
     @Override
@@ -28,7 +26,7 @@ public abstract class TileClockworkPhaseInventory extends TileClockworkPhase imp
                 nbtList.appendTag(tag);
             }
         }
-        nbt.setTag(INVENTORY_TAG, nbtList);
+        nbt.setTag(TileClockworkPhaseInventory.INVENTORY_TAG, nbtList);
     }
 
     @Override
@@ -36,7 +34,7 @@ public abstract class TileClockworkPhaseInventory extends TileClockworkPhase imp
     {
         super.readFromNBT(nbt);
 
-        NBTTagList tagList = nbt.getTagList(INVENTORY_TAG, 10);
+        NBTTagList tagList = nbt.getTagList(TileClockworkPhaseInventory.INVENTORY_TAG, 10);
         inventory = new ItemStack[getSizeInventory()];
         for(int i = 0; i < tagList.tagCount(); ++i)
         {

@@ -5,8 +5,9 @@ import lumaceon.mods.clockworkphase2.block.*;
 import lumaceon.mods.clockworkphase2.block.steammachine.BlockBoiler;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.tile.*;
-import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
-import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidImporter;
+import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
+import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidImporter;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.oredict.OreDictionary;
@@ -38,6 +39,7 @@ public class ModBlocks
     //public static Block temporalizer;
     public static Block timezoneFluidExporter;
     public static Block timezoneFluidImporter;
+    public static Block temporalFurnace;
     public static void initTimeMachines()
     {
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
@@ -46,6 +48,7 @@ public class ModBlocks
         //temporalizer = new BlockTemporalizer(Material.iron, Names.BLOCK.TEMPORALIZER);
         timezoneFluidExporter = new BlockTimezoneFluidExporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         timezoneFluidImporter = new BlockTimezoneFluidImporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
+        temporalFurnace = new BlockTemporalFurnace(Material.iron, Names.BLOCK.TEMPORAL_FURNACE);
 
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
@@ -53,6 +56,7 @@ public class ModBlocks
         //GameRegistry.registerBlock(temporalizer, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerBlock(timezoneFluidExporter, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerBlock(timezoneFluidImporter, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
+        GameRegistry.registerBlock(temporalFurnace, Names.BLOCK.TEMPORAL_FURNACE);
     }
 
     public static Block timeSand;
@@ -135,6 +139,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileAssemblyTable.class, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerTileEntity(TileAssemblyTableSB.class, Names.BLOCK.ASSEMBLY_TABLE_SB);
         GameRegistry.registerTileEntity(TileTimestreamExtractionChamber.class, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
+        GameRegistry.registerTileEntity(TileTemporalFurnace.class, Names.BLOCK.TEMPORAL_FURNACE);
         GameRegistry.registerTileEntity(TileTelescope.class, Names.BLOCK.TELESCOPE);
     }
 }

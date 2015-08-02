@@ -12,6 +12,7 @@ import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
 import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequenceTimezone;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
+import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,6 @@ public class RenderHandler
     }
 
     public static ArrayList<OverlayRenderElement> overlayRenderList = new ArrayList<OverlayRenderElement>();
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onRenderOverlay(RenderGameOverlayEvent.Post event)
     {
@@ -64,6 +64,23 @@ public class RenderHandler
                 n--;
             }
         }
+    }
+
+    public static ArrayList<WorldRenderElement> worldRenderList = new ArrayList<WorldRenderElement>();
+
+    /**
+     * Registers a worldRenderElement to be rendered each RenderWorldLastEvent tick.
+     * @param worldRenderElement The element to add.
+     * @return False if this position is already registered (and wasn't registered).
+     */
+    public static boolean registerWorldRenderElement(WorldRenderElement worldRenderElement)
+    {
+        for(WorldRenderElement WRE : worldRenderList)
+            if(WRE.alreadyExists(worldRenderElement))
+                return false;
+
+        worldRenderList.add(worldRenderElement);
+        return true;
     }
 
     @SubscribeEvent
@@ -110,6 +127,10 @@ public class RenderHandler
                         TIMEZONE.timezoneSequences.put(timezone, ParticleSequence.spawnParticleSequence(new ParticleSequenceTimezone(timezone, area[0] + 0.5, area[1] + 0.5, area[2] + 0.5)));
                 }
             }
+
+            for(WorldRenderElement wre : worldRenderList)
+                if(wre.isSameWorld(mc.theWorld))
+                    wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
         }
     }
 

@@ -21,6 +21,8 @@ public class PacketHandler
         nextID++;
         INSTANCE.registerMessage(HandlerTemporalInfluence.class, MessageTemporalInfluence.class, nextID, Side.CLIENT);
         nextID++;
+        INSTANCE.registerMessage(HandlerTemporalMachineSync.class, MessageTemporalMachineSync.class, nextID, Side.CLIENT);
+        nextID++;
         INSTANCE.registerMessage(HandlerLightningSwordActivate.class, MessageLightningSwordActivate.class, nextID, Side.SERVER);
         nextID++;
         INSTANCE.registerMessage(HandlerTimestreamRecipe.class, MessageTimestreamRecipe.class, nextID, Side.SERVER);

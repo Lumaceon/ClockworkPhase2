@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public class ServerProxy extends CommonProxy
     public void registerKeybindings() {}
     @Override
     public void initSideHandlers() {}
+    @Override
+    public void addWorldRenderer(World world, int x, int y, int z, int ID) {}
+    @Override
+    public void clearWorldRenderers(World world, int x, int y, int z) {}
 }

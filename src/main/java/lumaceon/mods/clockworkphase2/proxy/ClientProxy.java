@@ -2,21 +2,19 @@ package lumaceon.mods.clockworkphase2.proxy;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
-import lumaceon.mods.clockworkphase2.client.tesr.TESRAssemblyTable;
-import lumaceon.mods.clockworkphase2.client.tesr.TESRAssemblyTableSB;
-import lumaceon.mods.clockworkphase2.client.tesr.TESRTelescope;
-import lumaceon.mods.clockworkphase2.client.tesr.TESRTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
+import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalClock;
+import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.TileTelescope;
-import lumaceon.mods.clockworkphase2.tile.timezone.TileTimezoneFluidExporter;
-import net.minecraft.client.gui.GuiButton;
+import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
+import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.List;
 
 public class ClientProxy extends CommonProxy
 {
@@ -27,6 +25,7 @@ public class ClientProxy extends CommonProxy
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTableSB.class, new TESRAssemblyTableSB());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTelescope.class, new TESRTelescope());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalFurnace.class, new TESRTemporalFurnace());
     }
 
     @Override
@@ -43,5 +42,24 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(renderer);
         FMLCommonHandler.instance().bus().register(renderer);
         FMLCommonHandler.instance().bus().register(new ClientTickHandler());
+    }
+
+    @Override
+    public void addWorldRenderer(World world, int x, int y, int z, int ID)
+    {
+        switch(ID)
+        {
+            case 0: //Temporal machine clock renderer.
+                RenderHandler.registerWorldRenderElement(new WorldRenderElementTemporalClock(world, x, y, z));
+                break;
+        }
+    }
+
+    @Override
+    public void clearWorldRenderers(World world, int x, int y, int z)
+    {
+        for(WorldRenderElement wre : RenderHandler.worldRenderList)
+            if(wre.isSameWorld(world) && wre.xPos == x && wre.yPos == y && wre.zPos == z)
+                RenderHandler.worldRenderList.remove(wre);
     }
 }

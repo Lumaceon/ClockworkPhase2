@@ -24,6 +24,18 @@ public abstract class TileClockworkPhase extends TileEntity
     }
 
     @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setInteger("meta", blockMetadata);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        blockMetadata = nbt.getInteger("meta");
+    }
+
+    @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         writeCustomNBT(nbttagcompound);

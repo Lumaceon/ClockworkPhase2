@@ -6,23 +6,21 @@ package lumaceon.mods.clockworkphase2.api.util;
  */
 public class TimeConverter
 {
-    public static final long SECOND = 1;
-    public static final long MINUTE = SECOND * 60; //60
-    public static final long HOUR = MINUTE * 60; //3,600
-    public static final long DAY = HOUR * 24; //86,400
-    public static final long WEEK = DAY * 7; //604,800 - Skipped in most cases.
-    public static final long MONTH = DAY * 30; //2,592,000
-    public static final long YEAR = MONTH * 12; //31,104,000
-    public static final long DECADE = YEAR * 10; //311,040,000
-    public static final long CENTURY = YEAR * 100; //3,110,400,000
-    public static final long MILLENNIUM = YEAR * 1000; //31,104,000,000
-    public static final long TERASECOND = (long) 1000000 * 1000000; //1,000,000,000,000 | one trillion seconds.
-    public static final long AGE = YEAR * 1000000; //31,104,000,000,000 | 1 million years.
-    public static final long EPOCH = AGE * 10; //311,040,000,000,000 | 10 million years.
-    public static final long ERA = EPOCH * 10; //3,110,400,000,000,000 | 100 million years.
-    public static final long GALACTIC_YEAR = YEAR * 230000000; //7,153,920,000,000,000 | 230 million years - Not shown.
-    public static final long EON = ERA * 10; //31,104,000,000,000,000 | 1 billion years.
-    public static final long EXASECOND = TERASECOND * 1000000; //1,000,000,000,000,000,000 | 1 quintillion seconds
+    public static final long SECOND = 20;
+    public static final long MINUTE = SECOND * 60; //1200
+    public static final long HOUR = MINUTE * 60; //72,000
+    public static final long DAY = HOUR * 24; //1,728,000
+    public static final long WEEK = DAY * 7; //12,096,000 - Skipped in most cases.
+    public static final long MONTH = DAY * 30; //51,840,000
+    public static final long YEAR = MONTH * 12; //622,080,000
+    public static final long DECADE = YEAR * 10; //6,220,800,000
+    public static final long CENTURY = YEAR * 100; //62,208,000,000
+    public static final long MILLENNIUM = YEAR * 1000; //622,080,000,000
+    public static final long TERASECOND = 20000000000000L; //20,000,000,000,000 | one trillion seconds.
+    public static final long AGE = YEAR * 1000000; //622,080,000,000,000 | 1 million years.
+    public static final long EPOCH = AGE * 10; //6,220,800,000,000,000 | 10 million years.
+    public static final long ERA = EPOCH * 10; //62,208,000,000,000,000 | 100 million years.
+    public static final long EON = ERA * 10; //622,080,000,000,000,000 | 1 billion years.
     public static final long INFINITE = 9223372036854775807L; //Never shown: if this is acquired, do something cool.
 
     /**
@@ -40,25 +38,10 @@ public class TimeConverter
         String parsedString = "";
         int pass = 0;
         long numberOf;
-        if(timeSand >= EXASECOND)
-        {
-            numberOf = timeSand / EXASECOND;
-            parsedString = parsedString.concat(Long.toString(numberOf));
-            parsedString = parsedString.concat(" Exasecond");
-            if(numberOf > 1)
-                parsedString = parsedString.concat("s");
-            pass++;
-            if(pass == typesToParse)
-                return parsedString;
-            else
-                timeSand -= EXASECOND * numberOf;
-        }
 
         if(timeSand >= EON)
         {
             numberOf = timeSand / EON;
-            if(pass > 0)
-                parsedString = parsedString.concat(", ");
             parsedString = parsedString.concat(Long.toString(numberOf));
             parsedString = parsedString.concat(" Eon");
             if(numberOf > 1)
@@ -266,9 +249,9 @@ public class TimeConverter
                 timeSand -= MINUTE * numberOf;
         }
 
-        if(timeSand > 0)
+        if(timeSand >= SECOND)
         {
-            numberOf = timeSand;
+            numberOf = timeSand / SECOND;
             if(pass > 0)
                 parsedString = parsedString.concat(", ");
             parsedString = parsedString.concat(Long.toString(numberOf));

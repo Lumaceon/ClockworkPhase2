@@ -17,6 +17,7 @@ public class Names
         public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";
+        public static final String TEMPORAL_FURNACE = "temporal_furnace";
         public static final String TELESCOPE = "telescope";
 
         public static final String ORE_COPPER = "copper_ore";
@@ -92,6 +93,7 @@ public class Names
     public class FLUID
     {
         public static final String TIME_SAND = BLOCK.TIME_SAND;
+        public static final String STEAM = "steam";
     }
 
     public class ENTITY

@@ -15,7 +15,6 @@ public class TileAssemblyTableSB extends TileClockworkPhase
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("meta", blockMetadata);
         if(workItem != null)
         {
             NBTTagCompound tag = new NBTTagCompound();
@@ -30,7 +29,6 @@ public class TileAssemblyTableSB extends TileClockworkPhase
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        blockMetadata = nbt.getInteger("meta");
         if(nbt.hasKey("work_item"))
         {
             workItem = ItemStack.loadItemStackFromNBT((NBTTagCompound) nbt.getTag("work_item"));

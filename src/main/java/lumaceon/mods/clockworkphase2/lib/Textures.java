@@ -9,6 +9,13 @@ public class Textures
 
     public static class GUI
     {
+        public static ResourceLocation CLOCK = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock.png");
+        public static ResourceLocation CLOCK_SECOND = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock_second.png");
+        public static ResourceLocation CLOCK_MINUTE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock_minute.png");
+        public static ResourceLocation CLOCK_HOUR = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock_hour.png");
+        public static ResourceLocation CLOCK_CENTER_PEG = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock_center.png");
+        public static ResourceLocation BASE = new ResourceLocation(Reference.MOD_ID, "textures/gui/base_gui.png");
+
         public static ResourceLocation DEFAULT_ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
         public static ResourceLocation TS_CRAFT_TOP = new ResourceLocation(Reference.MOD_ID, "textures/gui/timestream_crafting_top.png");
         public static ResourceLocation TS_CRAFT_BOTTOM = new ResourceLocation(Reference.MOD_ID, "textures/gui/timestream_crafting_bottom.png");

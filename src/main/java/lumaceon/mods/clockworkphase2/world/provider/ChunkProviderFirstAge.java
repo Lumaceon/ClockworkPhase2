@@ -12,13 +12,13 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 import java.util.List;
 
-public class ChunkProviderPast implements IChunkProvider
+public class ChunkProviderFirstAge implements IChunkProvider
 {
     private World worldObj;
     private final Block[] cachedBlockIDs = new Block[256];
     private final byte[] cachedBlockMetadata = new byte[256];
 
-    public ChunkProviderPast(World world) {
+    public ChunkProviderFirstAge(World world) {
         worldObj = world;
     }
 
@@ -99,7 +99,7 @@ public class ChunkProviderPast implements IChunkProvider
 
     @Override
     public String makeString() {
-        return "ChunkProviderPast";
+        return "ChunkProviderFirstAge";
     }
 
     @Override

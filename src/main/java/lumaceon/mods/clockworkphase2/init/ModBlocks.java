@@ -8,6 +8,7 @@ import lumaceon.mods.clockworkphase2.tile.*;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidImporter;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalConduit;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.oredict.OreDictionary;
@@ -33,6 +34,7 @@ public class ModBlocks
         GameRegistry.registerBlock(boiler, Names.BLOCK.BOILER);
     }
 
+    public static Block temporalConduit;
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     public static Block timestreamExtractionChamber;
@@ -42,6 +44,7 @@ public class ModBlocks
     public static Block temporalFurnace;
     public static void initTimeMachines()
     {
+        temporalConduit = new BlockTemporalConduit(Material.glass, Names.BLOCK.TEMPORAL_CONDUIT);
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
         celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
         timestreamExtractionChamber = new BlockTimestreamExtractionChamber(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
@@ -50,6 +53,7 @@ public class ModBlocks
         timezoneFluidImporter = new BlockTimezoneFluidImporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
         temporalFurnace = new BlockTemporalFurnace(Material.iron, Names.BLOCK.TEMPORAL_FURNACE);
 
+        GameRegistry.registerBlock(temporalConduit, Names.BLOCK.TEMPORAL_CONDUIT);
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
         GameRegistry.registerBlock(timestreamExtractionChamber, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
@@ -132,6 +136,7 @@ public class ModBlocks
 
     public static void initTE()
     {
+        GameRegistry.registerTileEntity(TileTemporalConduit.class, Names.BLOCK.TEMPORAL_CONDUIT);
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
         //GameRegistry.registerTileEntity(TileTemporalizer.class, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);

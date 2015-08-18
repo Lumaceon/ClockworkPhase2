@@ -10,7 +10,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.TemporalAchievementList;
 import lumaceon.mods.clockworkphase2.api.TemporalHarvestRegistry;
-import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigurationHandler;
 import lumaceon.mods.clockworkphase2.creativetab.CreativeTabClockworkPhase2;
@@ -23,7 +22,7 @@ import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
-import lumaceon.mods.clockworkphase2.world.provider.WorldProviderPast;
+import lumaceon.mods.clockworkphase2.world.provider.WorldProviderFirstAge;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
@@ -61,6 +60,8 @@ public class ClockworkPhase2
 
         ModPhases.init();
 
+        Times.init();
+
         ModEntities.init();
 
         proxy.registerKeybindings();
@@ -89,9 +90,9 @@ public class ClockworkPhase2
         new GuiHandler();
 
         PacketHandler.init();
-        Defaults.DIM_ID.PAST = DimensionManager.getNextFreeDimId();
-        DimensionManager.registerProviderType(Defaults.DIM_ID.PAST, WorldProviderPast.class, false);
-        DimensionManager.registerDimension(Defaults.DIM_ID.PAST, Defaults.DIM_ID.PAST);
+        Defaults.DIM_ID.FIRST_AGE = DimensionManager.getNextFreeDimId();
+        DimensionManager.registerProviderType(Defaults.DIM_ID.FIRST_AGE, WorldProviderFirstAge.class, false);
+        DimensionManager.registerDimension(Defaults.DIM_ID.FIRST_AGE, Defaults.DIM_ID.FIRST_AGE);
     }
 
     @Mod.EventHandler

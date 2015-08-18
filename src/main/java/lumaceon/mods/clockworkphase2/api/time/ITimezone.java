@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.api.timezone;
+package lumaceon.mods.clockworkphase2.api.time;
 
 import net.minecraft.item.ItemStack;
 

@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileSteamTemporal extends TileTimezonePowered implements IFluidHandler
+public class TileSteamTemporal extends TileTemporal implements IFluidHandler
 {
     public int steamUsePerTick = 5;
     public int maxSteamBuffer = 1000;

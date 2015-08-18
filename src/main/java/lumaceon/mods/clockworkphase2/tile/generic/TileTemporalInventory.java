@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public abstract class TileTimezonePoweredInventory extends TileTimezonePowered implements IInventory
+public abstract class TileTemporalInventory extends TileTemporal implements IInventory
 {
     protected ItemStack[] inventory;
 

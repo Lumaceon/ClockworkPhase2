@@ -1,16 +1,20 @@
 package lumaceon.mods.clockworkphase2.handler;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
+import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.entity.EntityPAC;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.util.Logger;
+import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleMobRepellent;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 public class EntityHandler
@@ -50,10 +54,10 @@ public class EntityHandler
             ((EntityPAC) event.target).onRightClicked(event.entityPlayer);
     }
 
-    /*@SubscribeEvent
-    public void onEntitySpawn(LivingSpawnEvent event)
+    @SubscribeEvent
+    public void onEntitySpawn(LivingSpawnEvent.CheckSpawn event)
     {
-        if(!event.isCanceled() && event instanceof LivingSpawnEvent.CheckSpawn)
+        if(!event.isCanceled())
         {
             ITimezone timezone = TimezoneHandler.getTimeZone(event.x, event.y, event.z, event.world);
             if(timezone != null)
@@ -62,13 +66,13 @@ public class EntityHandler
                 for(int n = 0; n < 8; n++)
                 {
                     timestream = timezone.getTimezoneModule(n);
-                    if(timestream != null && timestream.getItem() instanceof ItemTimestreamMobMagnet)
+                    if(timestream != null && timestream.getItem() instanceof ItemTimezoneModuleMobRepellent)
                     {
-                        event.entity.setPosition(timezone.getX(), timezone.getY(), timezone.getZ());
-                        break;
+                        event.setResult(Event.Result.DENY);
+                        return;
                     }
                 }
             }
         }
-    }*/
+    }
 }

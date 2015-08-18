@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.particle.sequence;
 
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.time.ITimezone;
 import lumaceon.mods.clockworkphase2.client.particle.ParticleSpawn;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;

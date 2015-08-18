@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.tile.machine;
 
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.time.ITimezone;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTimezonePowered;
+import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTimezoneFluidImporter extends TileTimezonePowered implements IFluidHandler
+public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHandler
 {
     public ItemStack getTimezoneModule()
     {

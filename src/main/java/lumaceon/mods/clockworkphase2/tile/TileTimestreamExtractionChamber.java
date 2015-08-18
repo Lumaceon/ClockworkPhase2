@@ -2,12 +2,12 @@ package lumaceon.mods.clockworkphase2.tile;
 
 import lumaceon.mods.clockworkphase2.api.crafting.timestream.ITimestreamCraftingRecipe;
 import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRegistry;
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTimezonePowered;
+import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileTimestreamExtractionChamber extends TileTimezonePowered
+public class TileTimestreamExtractionChamber extends TileTemporal
 {
     public ITimestreamCraftingRecipe currentRecipe;
 

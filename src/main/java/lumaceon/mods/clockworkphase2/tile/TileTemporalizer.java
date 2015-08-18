@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.tile;
+/**package lumaceon.mods.clockworkphase2.tile;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.ITemporalMaterial;
@@ -6,7 +6,6 @@ import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTimeSandInventoryMachine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -115,3 +114,4 @@ public class TileTemporalizer extends TileTimeSandInventoryMachine
 
     public enum TemporalizerState { IDLE, ACTIVE, NO_ENERGY, NO_TIMEZONE }
 }
+**/

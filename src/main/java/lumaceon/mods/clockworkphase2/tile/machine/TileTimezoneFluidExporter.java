@@ -1,17 +1,17 @@
 package lumaceon.mods.clockworkphase2.tile.machine;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.time.ITimezone;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTimezonePowered;
+import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileTimezoneFluidExporter extends TileTimezonePowered implements IFluidHandler
+public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHandler
 {
     public String targetFluid = "";
     public FluidStack renderStack;

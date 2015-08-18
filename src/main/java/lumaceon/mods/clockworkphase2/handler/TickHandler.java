@@ -5,7 +5,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import lumaceon.mods.clockworkphase2.api.phase.Phase;
 import lumaceon.mods.clockworkphase2.api.phase.Phases;
-import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 
 public class TickHandler
 {

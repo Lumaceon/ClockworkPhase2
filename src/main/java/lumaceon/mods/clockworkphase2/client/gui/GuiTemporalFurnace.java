@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.client.gui;
 
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
+import lumaceon.mods.clockworkphase2.init.Times;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.util.Logger;
@@ -10,6 +11,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class GuiTemporalFurnace extends GuiContainer
@@ -35,7 +37,7 @@ public class GuiTemporalFurnace extends GuiContainer
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        this.drawCenteredString(fontRendererObj, TimeConverter.parseNumber(te.timeStored, 2), 150, 23 - fontRendererObj.FONT_HEIGHT / 2, 0x00D0FF);
+        this.drawCenteredString(fontRendererObj, TimeConverter.parseNumber(te.getTimeStored(ForgeDirection.DOWN, Times.smelting), 2), 150, 23 - fontRendererObj.FONT_HEIGHT / 2, 0x00D0FF);
     }
 
     @Override

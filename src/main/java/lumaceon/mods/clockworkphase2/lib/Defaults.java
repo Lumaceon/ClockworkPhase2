@@ -9,6 +9,6 @@ public class Defaults
 
     public static class DIM_ID
     {
-        public static int PAST;
+        public static int FIRST_AGE;
     }
 }

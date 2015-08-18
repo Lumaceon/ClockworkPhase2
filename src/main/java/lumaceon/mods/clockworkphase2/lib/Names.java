@@ -11,6 +11,7 @@ public class Names
         public static final String BASIC_WINDING_BOX = "basic_winding_box";
         public static final String ASSEMBLY_TABLE = "assembly_table";
         public static final String ASSEMBLY_TABLE_SB = "assembly_table_sb";
+        public static final String TEMPORAL_CONDUIT = "temporal_conduit";
         public static final String CELESTIAL_COMPASS = "celestial_compass";
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
         public static final String BOILER = "boiler";
@@ -73,8 +74,7 @@ public class Names
         public static final String TIMESTREAM_SILKY_HARVEST = "timestream_silky_harvest";
         public static final String TIMESTREAM_SMELT = "timestream_smelt";
         public static final String TIMESTREAM_EXTRA_TANK = "timestream_tank";
-        public static final String TIMESTREAM_MOB_MAGNET = "timestream_mob_magnet";
-        public static final String TIMESTREAM_MOB_REPELLENT = "timestream_mob_repell";
+        public static final String TIMESTREAM_MOB_REPULSER = "timestream_mob_repulser";
         public static final String TIMESTREAM_LIGHTNING = "timestream_lightning";
 
         public static final String TEMPORAL_TOOL_MODULE_SILK = "temporal_tool_module_silky";
@@ -82,6 +82,7 @@ public class Names
         public static final String TEMPORAL_TOOL_MODULE_TELEPORT = "temporal_tool_module_teleport";
 
         public static final String TIMEZONE_MODULE_TANK = "timezone_module_tank";
+        public static final String TIMEZONE_MODULE_MOB_REPELL = "timezone_module_mob_repell";
 
         public static final String TEMPORAL_INGOT = "temporal_ingot";
         public static final String COPPER_INGOT = "copper_ingot";

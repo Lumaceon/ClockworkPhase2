@@ -1,18 +1,22 @@
 package lumaceon.mods.clockworkphase2.network.message;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class MessageTemporalMachineSync implements IMessage
 {
-    public long newTime;
+    public TimeStorage timeStorage;
     public int x, y, z;
+    public NBTTagCompound nbt;
 
     public MessageTemporalMachineSync() {}
 
-    public MessageTemporalMachineSync(long newTime, int x, int y, int z)
+    public MessageTemporalMachineSync(TimeStorage timeStorage, int x, int y, int z)
     {
-        this.newTime = newTime;
+        this.timeStorage = timeStorage;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -21,7 +25,9 @@ public class MessageTemporalMachineSync implements IMessage
     @Override
     public void toBytes(ByteBuf buf)
     {
-        buf.writeLong(this.newTime);
+        NBTTagCompound nbt = new NBTTagCompound();
+        timeStorage.writeToNBT(nbt);
+        ByteBufUtils.writeTag(buf, nbt);
         buf.writeInt(x);
         buf.writeInt(y);
         buf.writeInt(z);
@@ -30,7 +36,7 @@ public class MessageTemporalMachineSync implements IMessage
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        newTime = buf.readLong();
+        nbt = ByteBufUtils.readTag(buf);
         x = buf.readInt();
         y = buf.readInt();
         z = buf.readInt();

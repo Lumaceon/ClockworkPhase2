@@ -18,6 +18,7 @@ import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkMultitool;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkPickaxe;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkShovel;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
+import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleMobRepellent;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import net.minecraft.item.Item;
@@ -54,11 +55,14 @@ public class ModItems
     }
 
     public static Item timezoneModuleTank;
+    public static Item timezoneModuleMobRepell;
     public static void initTimezoneModules()
     {
         timezoneModuleTank = new ItemTimezoneModuleTank(1, 100, Names.ITEM.TIMEZONE_MODULE_TANK);
+        timezoneModuleMobRepell = new ItemTimezoneModuleMobRepellent(1, 100, Names.ITEM.TIMEZONE_MODULE_MOB_REPELL);
 
         GameRegistry.registerItem(timezoneModuleTank, Names.ITEM.TIMEZONE_MODULE_TANK);
+        GameRegistry.registerItem(timezoneModuleMobRepell, Names.ITEM.TIMEZONE_MODULE_MOB_REPELL);
     }
 
     public static ItemMainspring mainspring;
@@ -150,7 +154,7 @@ public class ModItems
     public static ItemTimestreamSilkyHarvest timestreamSilkyHarvest;
     public static ItemTimestreamSmelt timestreamSmelt;
     public static ItemTimestreamExtradimensionalTank timestreamExtradimensionalTank;
-    public static ItemTimestreamMobMagnet timestreamMobMagnet;
+    public static ItemTimestreamMobRepulser timestreamMobRepulser;
     public static ItemTimestreamLightning timestreamLightning;
     public static void initTimestreams()
     {
@@ -158,14 +162,14 @@ public class ModItems
         timestreamSilkyHarvest = new ItemTimestreamSilkyHarvest(1, 100, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
         timestreamSmelt = new ItemTimestreamSmelt(1, 100, Names.ITEM.TIMESTREAM_SMELT);
         timestreamExtradimensionalTank = new ItemTimestreamExtradimensionalTank(1, 100, Names.ITEM.TIMESTREAM_EXTRA_TANK);
-        timestreamMobMagnet = new ItemTimestreamMobMagnet(1, 100, Names.ITEM.TIMESTREAM_MOB_MAGNET);
+        timestreamMobRepulser = new ItemTimestreamMobRepulser(1, 100, Names.ITEM.TIMESTREAM_MOB_REPULSER);
         timestreamLightning = new ItemTimestreamLightning(1, 100, Names.ITEM.TIMESTREAM_LIGHTNING);
 
         GameRegistry.registerItem(timestreamRelocation, Names.ITEM.TIMESTREAM_RELOCATION);
         GameRegistry.registerItem(timestreamSilkyHarvest, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
         GameRegistry.registerItem(timestreamSmelt, Names.ITEM.TIMESTREAM_SMELT);
         GameRegistry.registerItem(timestreamExtradimensionalTank, Names.ITEM.TIMESTREAM_EXTRA_TANK);
-        GameRegistry.registerItem(timestreamMobMagnet, Names.ITEM.TIMESTREAM_MOB_MAGNET);
+        GameRegistry.registerItem(timestreamMobRepulser, Names.ITEM.TIMESTREAM_MOB_REPULSER);
         GameRegistry.registerItem(timestreamLightning, Names.ITEM.TIMESTREAM_LIGHTNING);
     }
 

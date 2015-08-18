@@ -6,9 +6,7 @@ import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.container.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.container.ContainerPAC;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
-import lumaceon.mods.clockworkphase2.container.ContainerTemporalizer;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
-import lumaceon.mods.clockworkphase2.tile.TileTemporalizer;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -29,8 +27,6 @@ public class GuiHandler implements IGuiHandler
         {
             case 0:
                 return new ContainerAssemblyTable(player.inventory, world);
-            case 1:
-                return new ContainerTemporalizer(player.inventory, (TileTemporalizer) te, world);
             case 3:
                 return new ContainerPAC(player.inventory, world, ExtendedPlayerProperties.get(player).playerPAC);
             case 4:
@@ -47,8 +43,6 @@ public class GuiHandler implements IGuiHandler
         {
             case 0:
                 return new GuiAssemblyTable(player.inventory, world);
-            case 1:
-                return new GuiTemporalizer(player.inventory, (TileTemporalizer) te, world);
             case 2:
                 return new GuiTimestreamExtractionChamber(te);
             case 3:

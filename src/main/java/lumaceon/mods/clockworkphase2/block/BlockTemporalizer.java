@@ -1,7 +1,6 @@
 package lumaceon.mods.clockworkphase2.block;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.tile.TileTemporalizer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +25,6 @@ public class BlockTemporalizer extends BlockClockworkPhaseSided implements ITile
 
     @Override
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        return new TileTemporalizer();
+        return null;
     }
 }

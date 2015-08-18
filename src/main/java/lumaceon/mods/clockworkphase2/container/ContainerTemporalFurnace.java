@@ -20,11 +20,11 @@ public class ContainerTemporalFurnace extends Container
         this.te = te;
 
         for(int x = 0; x < 9; x++)
-            this.addSlotToContainer(new Slot(ip, x, 71 + x * 18 , 205));
+            this.addSlotToContainer(new Slot(ip, x, 70 + x * 18 , 205));
 
         for(int x = 0; x < 9; x++)
             for(int y = 0; y < 3; y++)
-                this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, 71 + x * 18, 147 + y * 18));
+                this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, 70 + x * 18, 147 + y * 18));
 
         this.addSlotToContainer(new SlotInventoryValid(te, 0, 70, 72));
         this.addSlotToContainer(new SlotInventoryValid(te, 1, 214, 72));

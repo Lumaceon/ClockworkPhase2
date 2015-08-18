@@ -12,6 +12,7 @@ import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.TileTelescope;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalConduit;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,6 +22,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerTESR()
     {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalConduit.class, new TESRTemporalConduit());
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTableSB.class, new TESRAssemblyTableSB());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());

@@ -6,17 +6,18 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
-public class WorldProviderPast extends WorldProvider
+public class WorldProviderFirstAge extends WorldProvider
 {
     @Override
-    public void registerWorldChunkManager() {
-        this.dimensionId = Defaults.DIM_ID.PAST;
+    public void registerWorldChunkManager()
+    {
+        this.dimensionId = Defaults.DIM_ID.FIRST_AGE;
         this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT);
     }
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        return new ChunkProviderPast(this.worldObj);
+        return new ChunkProviderFirstAge(this.worldObj);
     }
 
     @Override

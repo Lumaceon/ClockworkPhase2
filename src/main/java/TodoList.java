@@ -14,7 +14,6 @@ public class TodoList
     //TODO Create clockwork sword.
     //TODO Create temporal drives (mostly for crafting recipe and lore purposes).
     //TODO Create a guide book.
-    //TODO Create Elysium.
     //TODO Create clockwork wings (or some sort of equivalent).
     //TODO Create trial dungeon system (ideally a very modular one).
     //TODO Create planetary civilization patronage system.

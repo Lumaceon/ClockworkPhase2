@@ -6,6 +6,7 @@ import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.util.TemporalToolHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import lumaceon.mods.clockworkphase2.extendeddata.ExtendedWorldData;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.inventory.IInventory;
@@ -15,9 +16,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 public class WorldHandler
 {
+    @SubscribeEvent
+    public void onWorldCreated(WorldEvent.Load event)
+    {
+        if(event.world != null && event.world.provider.dimensionId == 0) //Is this the main world?
+        {
+            ExtendedWorldData worldData = ExtendedWorldData.get(event.world);
+            if(worldData.isRuinMapGenerated(event.world) && !event.world.isRemote)
+                worldData.generateRuinMap(event.world);
+        }
+    }
+
     @SubscribeEvent
     public void onBlockHarvested(BlockEvent.HarvestDropsEvent event)
     {

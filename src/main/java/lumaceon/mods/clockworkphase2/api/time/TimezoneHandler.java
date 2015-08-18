@@ -1,6 +1,5 @@
-package lumaceon.mods.clockworkphase2.api.timezone;
+package lumaceon.mods.clockworkphase2.api.time;
 
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;

@@ -14,7 +14,7 @@ public class WorldGeneratorOres implements IWorldGenerator
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-        if(world.provider.dimensionId == 0)
+        if(world.provider.isSurfaceWorld())
         {
             spawnOres(ModBlocks.oreCopper, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 35, 128);
             spawnOres(ModBlocks.oreZinc, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 20, 128);

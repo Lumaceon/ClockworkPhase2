@@ -332,7 +332,7 @@ public class InformationDisplay
             return Colors.WHITE + "(Self Temporality)";
         else if(timeSand <= TimeConverter.CENTURY)
             return Colors.YELLOW + "(Local Temporality)";
-        else if(timeSand <= TimeConverter.AGE)
+        else if(timeSand <= TimeConverter.HOUR)
             return Colors.DARK_AQUA + "(Global Temporality)";
         else if(timeSand <= TimeConverter.EON)
             return Colors.AQUA + "(Interstellar Temporality)";

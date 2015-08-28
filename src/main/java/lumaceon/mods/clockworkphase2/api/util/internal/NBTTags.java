@@ -6,7 +6,7 @@ public class NBTTags
     public static final String ACTIVE = "cp_is_active";
     public static final String MAX_TENSION = "max_tension";
     public static final String CURRENT_TENSION = "current_tension";
-    public static final String TIME_SAND = "time_sand";
+    public static final String TIME = "time_stored";
     public static final String QUALITY = "cp_quality";
     public static final String SPEED = "cp_speed";
     public static final String MEMORY = "cp_memory";

@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.block;
 
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalConduit;
+import lumaceon.mods.clockworkphase2.util.TemporalConduitNetwork;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -19,7 +20,7 @@ public class BlockTemporalConduit extends BlockClockworkPhase implements ITileEn
     {
         TileEntity te = world.getTileEntity(x, y, z);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+            ((TileTemporalConduit) te).updateNetwork(world, x, y, z);
     }
 
     @Override
@@ -44,29 +45,55 @@ public class BlockTemporalConduit extends BlockClockworkPhase implements ITileEn
         super.breakBlock(world, x, y, z, block, meta);
 
         TileEntity te;
+        TemporalConduitNetwork previousTCN = null;
         te = world.getTileEntity(x + 1, y, z);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+            previousTCN = ((TileTemporalConduit) te).updateNetwork(world, x + 1, y, z);
 
         te = world.getTileEntity(x - 1, y, z);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+        {
+            if(previousTCN != null && ((TileTemporalConduit) te).TCN.equals(previousTCN))
+                ((TileTemporalConduit) te).updateConnections(x - 1, y, z);
+            else
+                previousTCN = ((TileTemporalConduit) te).updateNetwork(world, x - 1, y, z);
+        }
 
         te = world.getTileEntity(x, y + 1, z);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+        {
+            if(previousTCN != null && ((TileTemporalConduit) te).TCN.equals(previousTCN))
+                ((TileTemporalConduit) te).updateConnections(x, y + 1, z);
+            else
+                ((TileTemporalConduit) te).updateNetwork(world, x, y + 1, z);
+        }
 
         te = world.getTileEntity(x, y - 1, z);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+        {
+            if(previousTCN != null && ((TileTemporalConduit) te).TCN.equals(previousTCN))
+                ((TileTemporalConduit) te).updateConnections(x, y - 1, z);
+            else
+                ((TileTemporalConduit) te).updateNetwork(world, x, y - 1, z);
+        }
 
         te = world.getTileEntity(x, y, z - 1);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+        {
+            if(previousTCN != null && ((TileTemporalConduit) te).TCN.equals(previousTCN))
+                ((TileTemporalConduit) te).updateConnections(x, y, z - 1);
+            else
+                ((TileTemporalConduit) te).updateNetwork(world, x, y, z - 1);
+        }
 
         te = world.getTileEntity(x, y, z + 1);
         if(te != null && te instanceof TileTemporalConduit)
-            ((TileTemporalConduit) te).updateConnections(x, y, z);
+        {
+            if(previousTCN != null && ((TileTemporalConduit) te).TCN.equals(previousTCN))
+                ((TileTemporalConduit) te).updateConnections(x, y, z + 1);
+            else
+                ((TileTemporalConduit) te).updateNetwork(world, x, y, z + 1);
+        }
     }
 
     @Override

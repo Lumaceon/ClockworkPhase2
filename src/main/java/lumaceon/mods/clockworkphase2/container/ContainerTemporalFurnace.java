@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.container;
 
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotInventoryValid;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

@@ -18,7 +18,9 @@ public class Names
         public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";
+        public static final String TIME_COLLECTOR = "time_collector";
         public static final String TEMPORAL_FURNACE = "temporal_furnace";
+        public static final String TIME_WELL = "time_well";
         public static final String TELESCOPE = "telescope";
 
         public static final String ORE_COPPER = "copper_ore";
@@ -41,6 +43,8 @@ public class Names
         public static final String CLOCKWORK_AXE = "clockwork_axe";
         public static final String CLOCKWORK_SHOVEL = "clockwork_shovel";
         public static final String CLOCKWORK_MULTI_TOOL = "clockwork_multitool";
+        public static final String PSEUDO_TEMPORAL_HOURGLASS = "pseudo_temporal_hourglass";
+        public static final String TEMPORAL_HOURGLASS = "temporal_hourglass";
         public static final String STONE_TROWEL = "stone_trowel";
         public static final String IRON_TROWEL = "iron_trowel";
         public static final String DIAMOND_TROWEL = "diamond_trowel";

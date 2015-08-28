@@ -10,10 +10,9 @@ import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.TileTelescope;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalConduit;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 

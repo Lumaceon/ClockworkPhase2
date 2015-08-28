@@ -60,8 +60,6 @@ public class ClockworkPhase2
 
         ModPhases.init();
 
-        Times.init();
-
         ModEntities.init();
 
         proxy.registerKeybindings();

@@ -17,8 +17,7 @@ public class TimeConverter
     public static final long CENTURY = YEAR * 100; //62,208,000,000
     public static final long MILLENNIUM = YEAR * 1000; //622,080,000,000
     public static final long TERASECOND = 20000000000000L; //20,000,000,000,000 | one trillion seconds.
-    public static final long AGE = YEAR * 1000000; //622,080,000,000,000 | 1 million years.
-    public static final long EPOCH = AGE * 10; //6,220,800,000,000,000 | 10 million years.
+    public static final long EPOCH = YEAR * 10000000; //6,220,800,000,000,000 | 10 million years.
     public static final long ERA = EPOCH * 10; //62,208,000,000,000,000 | 100 million years.
     public static final long EON = ERA * 10; //622,080,000,000,000,000 | 1 billion years.
     public static final long INFINITE = 9223372036854775807L; //Never shown: if this is acquired, do something cool.
@@ -83,22 +82,6 @@ public class TimeConverter
                 return parsedString;
             else
                 timeSand -= EPOCH * numberOf;
-        }
-
-        if(timeSand >= AGE)
-        {
-            numberOf = timeSand / AGE;
-            if(pass > 0)
-                parsedString = parsedString.concat(", ");
-            parsedString = parsedString.concat(Long.toString(numberOf));
-            parsedString = parsedString.concat(" Age");
-            if(numberOf > 1)
-                parsedString = parsedString.concat("s");
-            pass++;
-            if(pass == typesToParse)
-                return parsedString;
-            else
-                timeSand -= AGE * numberOf;
         }
 
         if(timeSand >= TERASECOND)

@@ -2,10 +2,8 @@ package lumaceon.mods.clockworkphase2.client.gui;
 
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
-import lumaceon.mods.clockworkphase2.init.Times;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
-import lumaceon.mods.clockworkphase2.util.Logger;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -37,7 +35,7 @@ public class GuiTemporalFurnace extends GuiContainer
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        this.drawCenteredString(fontRendererObj, TimeConverter.parseNumber(te.getTimeStored(ForgeDirection.DOWN, Times.smelting), 2), 150, 23 - fontRendererObj.FONT_HEIGHT / 2, 0x00D0FF);
+        this.drawCenteredString(fontRendererObj, TimeConverter.parseNumber(te.getTimeStored(), 2), 150, 23 - fontRendererObj.FONT_HEIGHT / 2, 0x00D0FF);
     }
 
     @Override
@@ -55,21 +53,21 @@ public class GuiTemporalFurnace extends GuiContainer
 
         GL11.glPushMatrix();
         GL11.glTranslatef(guiLeft + xSize / 2.0F, guiTop + ySize / 2.0F, 0);
-        GL11.glRotatef((360F / 12F) * (((float) te.timeStored / (float) TimeConverter.HOUR) % 12F), 0, 0, 1.0F);
+        GL11.glRotatef((360F / 12F) * (((float) te.time / (float) TimeConverter.HOUR) % 12F), 0, 0, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(Textures.GUI.CLOCK_HOUR);
         drawTexturedModalRect(-100, -100, 0, 0, 200, 200);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslatef(guiLeft + xSize / 2.0F, guiTop + ySize / 2.0F, 0);
-        GL11.glRotatef((360F / 60F) * (((float) te.timeStored / (float) TimeConverter.MINUTE) % 60F), 0, 0, 1.0F);
+        GL11.glRotatef((360F / 60F) * (((float) te.time / (float) TimeConverter.MINUTE) % 60F), 0, 0, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(Textures.GUI.CLOCK_MINUTE);
         drawTexturedModalRect(-100, -100, 0, 0, 200, 200);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslatef(guiLeft + xSize / 2.0F, guiTop + ySize / 2.0F, 0);
-        GL11.glRotatef((360F / 60F) * ((te.timeStored / TimeConverter.SECOND) % 60F), 0, 0, 1.0F);
+        GL11.glRotatef((360F / 60F) * ((te.time / TimeConverter.SECOND) % 60F), 0, 0, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(Textures.GUI.CLOCK_SECOND);
         drawTexturedModalRect(-100, -100, 0, 0, 200, 200);
         GL11.glPopMatrix();

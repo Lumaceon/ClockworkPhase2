@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.block;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;

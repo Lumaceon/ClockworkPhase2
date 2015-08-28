@@ -1,28 +1,25 @@
-package lumaceon.mods.clockworkphase2.tile.machine;
+package lumaceon.mods.clockworkphase2.tile.temporal;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.time.ITimeProvider;
 import lumaceon.mods.clockworkphase2.api.time.ITimeReceiver;
-import lumaceon.mods.clockworkphase2.api.time.Time;
 import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
-import lumaceon.mods.clockworkphase2.init.Times;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTemporalMachineSync;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporalInventory;
-import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileTemporalFurnace extends TileTemporalInventory implements ITimeReceiver, ITimeProvider
 {
-    public long ticksPerAction = 600; //30 seconds, triple the time of a normal furnace.
+    public long ticksPerAction = 200; //10 seconds, the time of a normal furnace.
 
     public TileTemporalFurnace()
     {
         super();
         this.inventory = new ItemStack[2]; //0 - Input, 1 - Output.
-        timeStorage = new TimeStorage(ticksPerAction * 8);
+        timeStorage = new TimeStorage(ticksPerAction * 32);
     }
 
     @Override
@@ -30,17 +27,17 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
     {
         if(!worldObj.isRemote)
         {
-            timeStorage.receiveTime(Times.smelting, 1, false);
+            timeStorage.receiveTime(1, false);
             smeltAsMuchAsPossible();
         }
         else
-            timeStorage.receiveTime(Times.smelting, 1, false);
+            timeStorage.receiveTime(1, false);
     }
 
     private void smeltAsMuchAsPossible()
     {
         boolean smelted = false;
-        while(canSmelt() && (timeStorage.getTimeStored(Times.smelting) >= ticksPerAction || (getTimezone() != null && getTimezone().getTimeSand() >= ticksPerAction - timeStorage.getTimeStored(Times.smelting))))
+        while(canSmelt() && (timeStorage.getTimeStored() >= ticksPerAction || (getTimezone() != null && getTimezone().getTimeSand() >= ticksPerAction - timeStorage.getTimeStored())))
         {
             if(!consumeTime())
                 return;
@@ -87,14 +84,14 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
      */
     private boolean consumeTime()
     {
-        long timeConsumed = Math.min(timeStorage.getTimeStored(Times.smelting), ticksPerAction);
+        long timeConsumed = Math.min(timeStorage.getTimeStored(), ticksPerAction);
         if(timeConsumed < ticksPerAction) //Could not consume all time required, take additional time from timezone.
         {
-            timeStorage.extractTime(Times.smelting, timeStorage.getTimeStored(Times.smelting), false);
+            timeStorage.extractTime(timeStorage.getTimeStored(), false);
             return getTimezone().consumeTimeSand(ticksPerAction - timeConsumed) == ticksPerAction - timeConsumed;
         }
         else //All time was consumed from this tile entity.
-            timeStorage.extractTime(Times.smelting, ticksPerAction, false);
+            timeStorage.extractTime(ticksPerAction, false);
         return true;
     }
 
@@ -105,30 +102,27 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
     public void setStateAndUpdate(int state) {}
 
     @Override
-    public long extractEnergy(ForgeDirection from, Time time, long maxExtract, boolean simulate)
-    {
-        return 0;
+    public long extractTime(long maxExtract, boolean simulate) {
+        return timeStorage.extractTime(maxExtract, simulate);
     }
 
     @Override
-    public long receiveTime(ForgeDirection from, Time time, long maxReceive, boolean simulate)
-    {
-        return 0;
+    public long receiveTime(long maxReceive, boolean simulate) {
+        return timeStorage.receiveTime(maxReceive, simulate);
     }
 
     @Override
-    public long getMaxTotalTimeStorage(ForgeDirection from) {
-        return timeStorage.getMaxTotalTimeStorage();
+    public long getMaxCapacity() {
+        return timeStorage.getMaxCapacity();
     }
 
     @Override
-    public long getTimeStored(ForgeDirection from, Time time) {
-        return timeStorage.getTimeStored(time);
+    public long getTimeStored() {
+        return timeStorage.getTimeStored();
     }
 
-    @Override
-    public long getEmptySpace(ForgeDirection from, Time time) {
-        return timeStorage.getEmptySpace(time);
+    public long getEmptySpace() {
+        return timeStorage.getEmptySpace();
     }
 
     @Override

@@ -7,7 +7,7 @@ import lumaceon.mods.clockworkphase2.container.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.container.ContainerPAC;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTemporalFurnace;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

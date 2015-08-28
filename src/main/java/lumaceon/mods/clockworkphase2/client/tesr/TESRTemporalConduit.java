@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 public class TESRTemporalConduit extends TileEntitySpecialRenderer
 {
     public static final ResourceLocation CONDUIT = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_conduit.png");
+    public static final ResourceLocation CONDUIT_SIDE = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_conduit_side.png");
 
     private Minecraft mc;
     private boolean renderInside = true;
@@ -32,11 +33,121 @@ public class TESRTemporalConduit extends TileEntitySpecialRenderer
         boolean[] connections = ((TileTemporalConduit)te).connections;
         for(int n = 0; n < 6; n++)
             if(connections[n])
-                renderSideConnection(tessellator, ForgeDirection.getOrientation(n));
+            {
+                renderCenterConnection(tessellator, ForgeDirection.getOrientation(n));
+                bindTexture(CONDUIT_SIDE);
+                renderSide(tessellator, ForgeDirection.getOrientation(n));
+                bindTexture(CONDUIT);
+            }
         GL11.glPopMatrix();
     }
 
-    private void renderSideConnection(Tessellator tessellator, ForgeDirection direction)
+    private void renderSide(Tessellator tessellator, ForgeDirection direction)
+    {
+        float worldPixel = 1F/16F;
+        float texturePixel = 1F/32F;
+        float stutterFraction = 1F/300F;
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        if(direction.equals(ForgeDirection.DOWN))
+            GL11.glRotatef(180, 1, 0, 0);
+        else if(direction.equals(ForgeDirection.NORTH))
+            GL11.glRotatef(270, 1, 0, 0);
+        else if(direction.equals(ForgeDirection.SOUTH))
+            GL11.glRotatef(90, 1, 0, 0);
+        else if(direction.equals(ForgeDirection.WEST))
+            GL11.glRotatef(90, 0, 0, 1);
+        else if(direction.equals(ForgeDirection.EAST))
+            GL11.glRotatef(270, 0, 0, 1);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+
+        //BOTTOM
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(0 + stutterFraction, 1.0F - worldPixel, 1 - stutterFraction, 0, texturePixel);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1.0F - worldPixel, 0 + stutterFraction, 0, 0);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1.0F - worldPixel, 0 + stutterFraction, texturePixel * 16, 0);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1.0F - worldPixel, 1 - stutterFraction, texturePixel * 16, texturePixel);
+        tessellator.draw();
+
+        //TOP
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(1 - stutterFraction, 1 - stutterFraction, 1 - stutterFraction, texturePixel * 16, texturePixel * 17);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1 - stutterFraction, 0 + stutterFraction, texturePixel * 16, texturePixel);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1 - stutterFraction, 0 + stutterFraction, 0, texturePixel);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1 - stutterFraction, 1 - stutterFraction, 0, texturePixel * 17);
+        tessellator.draw();
+
+        //NORTH
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(0 + stutterFraction, 1.0F - worldPixel, 0 + stutterFraction, texturePixel * 16, 0);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1 - stutterFraction, 0 + stutterFraction, 0, 0);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1 - stutterFraction, 0 + stutterFraction, 0, texturePixel);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1.0F - worldPixel, 0 + stutterFraction, texturePixel * 16, texturePixel);
+        tessellator.draw();
+
+        //SOUTH
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(0 + stutterFraction, 1 - stutterFraction, 1 - stutterFraction, texturePixel * 16, 0);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1.0F - worldPixel, 1 - stutterFraction, 0, 0);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1.0F - worldPixel, 1 - stutterFraction, 0, texturePixel);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1 - stutterFraction, 1 - stutterFraction, texturePixel * 16, texturePixel);
+        tessellator.draw();
+
+        //WEST
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(0 + stutterFraction, 1 - stutterFraction, 0 + stutterFraction, texturePixel * 16, 0);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1.0F - worldPixel, 0 + stutterFraction, 0, 0);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1.0F - worldPixel, 1 - stutterFraction, 0, texturePixel);
+        tessellator.addVertexWithUV(0 + stutterFraction, 1 - stutterFraction, 1 - stutterFraction, texturePixel * 16, texturePixel);
+        tessellator.draw();
+
+        //EAST
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(1 - stutterFraction, 1 - stutterFraction, 1 - stutterFraction, texturePixel * 16, 0);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1.0F - worldPixel, 1 - stutterFraction, 0, 0);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1.0F - worldPixel, 0 + stutterFraction, 0, texturePixel);
+        tessellator.addVertexWithUV(1 - stutterFraction, 1 - stutterFraction, 0 + stutterFraction, texturePixel * 16, texturePixel);
+        tessellator.draw();
+
+        if(false)
+        {
+            //NORTH
+            tessellator.startDrawingQuads();
+            tessellator.addVertexWithUV(1, 1.0F - worldPixel, 0, texturePixel * 10, 0);
+            tessellator.addVertexWithUV(1, 1, 0, texturePixel * 4, 0);
+            tessellator.addVertexWithUV(0, 1, 0, texturePixel * 4, texturePixel * 4);
+            tessellator.addVertexWithUV(0, 1.0F - worldPixel, 0, texturePixel * 10, texturePixel * 4);
+            tessellator.draw();
+
+            //SOUTH
+            tessellator.startDrawingQuads();
+            tessellator.addVertexWithUV(1, 1, 1, texturePixel * 10, texturePixel * 4);
+            tessellator.addVertexWithUV(1, 1.0F - worldPixel, 1, texturePixel * 4, texturePixel * 4);
+            tessellator.addVertexWithUV(0, 1.0F - worldPixel, 1, texturePixel * 4, 0);
+            tessellator.addVertexWithUV(0, 1, 1, texturePixel * 10, 0);
+            tessellator.draw();
+
+            //WEST
+            tessellator.startDrawingQuads();
+            tessellator.addVertexWithUV(0, 1, 1, texturePixel * 10, texturePixel * 4);
+            tessellator.addVertexWithUV(0, 1.0F - worldPixel, 1, texturePixel * 4, texturePixel * 4);
+            tessellator.addVertexWithUV(0, 1.0F - worldPixel, 0, texturePixel * 4, 0);
+            tessellator.addVertexWithUV(0, 1, 0, texturePixel * 10, 0);
+            tessellator.draw();
+
+            //EAST
+            tessellator.startDrawingQuads();
+            tessellator.addVertexWithUV(1, 1, 0, texturePixel * 10, texturePixel * 4);
+            tessellator.addVertexWithUV(1, 1.0F - worldPixel, 0, texturePixel * 4, texturePixel * 4);
+            tessellator.addVertexWithUV(1, 1.0F - worldPixel, 1, texturePixel * 4, 0);
+            tessellator.addVertexWithUV(1, 1, 1, texturePixel * 10, 0);
+            tessellator.draw();
+        }
+        GL11.glPopMatrix();
+    }
+
+    private void renderCenterConnection(Tessellator tessellator, ForgeDirection direction)
     {
         float worldPixel = 1F/16F;
         float texturePixel = 1F/16F;
@@ -47,7 +158,9 @@ public class TESRTemporalConduit extends TileEntitySpecialRenderer
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         if(direction.equals(ForgeDirection.DOWN))
+        {
             GL11.glRotatef(180, 1, 0, 0);
+        }
         else if(direction.equals(ForgeDirection.NORTH))
             GL11.glRotatef(270, 1, 0, 0);
         else if(direction.equals(ForgeDirection.SOUTH))

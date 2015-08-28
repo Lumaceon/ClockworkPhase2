@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
+import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.item.*;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleHarvestTeleport;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSilkHarvest;
@@ -178,6 +179,8 @@ public class ModItems
     public static Item clockworkAxe;
     public static Item clockworkShovel;
     public static Item clockworkMultiTool;
+    public static Item pseudoTemporalHourglass;
+    public static Item temporalHourglass;
     public static Item trowelStone;
     public static Item trowelIron;
     public static Item trowelDiamond;
@@ -189,6 +192,8 @@ public class ModItems
         clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
         clockworkMultiTool = new ItemClockworkMultitool(0, clockworkMaterial, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        pseudoTemporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.DAY, Names.ITEM.PSEUDO_TEMPORAL_HOURGLASS);
+        temporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.YEAR, Names.ITEM.TEMPORAL_HOURGLASS);
         trowelStone = new ItemTrowel(Item.ToolMaterial.STONE, 1, Names.ITEM.STONE_TROWEL);
         trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, 1, Names.ITEM.IRON_TROWEL);
         trowelDiamond = new ItemTrowel(Item.ToolMaterial.EMERALD, 1, Names.ITEM.DIAMOND_TROWEL); //Says emerald; is actually diamond.
@@ -199,6 +204,8 @@ public class ModItems
         GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
         GameRegistry.registerItem(clockworkMultiTool, Names.ITEM.CLOCKWORK_MULTI_TOOL);
+        GameRegistry.registerItem(pseudoTemporalHourglass, Names.ITEM.PSEUDO_TEMPORAL_HOURGLASS);
+        GameRegistry.registerItem(temporalHourglass, Names.ITEM.TEMPORAL_HOURGLASS);
         GameRegistry.registerItem(trowelStone, Names.ITEM.STONE_TROWEL);
         GameRegistry.registerItem(trowelIron, Names.ITEM.IRON_TROWEL);
         GameRegistry.registerItem(trowelDiamond, Names.ITEM.DIAMOND_TROWEL);

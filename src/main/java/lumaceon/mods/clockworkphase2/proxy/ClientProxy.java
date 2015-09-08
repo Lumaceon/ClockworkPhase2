@@ -6,6 +6,7 @@ import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalClock;
+import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
@@ -13,7 +14,10 @@ import lumaceon.mods.clockworkphase2.tile.TileTelescope;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalConduit;
+import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends CommonProxy
@@ -62,5 +66,12 @@ public class ClientProxy extends CommonProxy
         for(WorldRenderElement wre : RenderHandler.worldRenderList)
             if(wre.isSameWorld(world) && wre.xPos == x && wre.yPos == y && wre.zPos == z)
                 RenderHandler.worldRenderList.remove(wre);
+    }
+
+    @Override
+    public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) {
+        if(worldProvider instanceof WorldProviderForthAge)
+            return new SkyRendererForthAge();
+        return null;
     }
 }

@@ -5,7 +5,14 @@ import net.minecraft.util.ResourceLocation;
 public class Textures
 {
     public static final String RESOURCE_PREFIX = Reference.MOD_ID + ":";
-    public static final ResourceLocation VANILLA_PARTICLES = new ResourceLocation("textures/particle/particles.png");
+
+    public static class VANILLA
+    {
+        public static final ResourceLocation VANILLA_PARTICLES = new ResourceLocation("textures/particle/particles.png");
+        public static final ResourceLocation MOON_PHASES = new ResourceLocation("textures/environment/moon_phases.png");
+        public static ResourceLocation SUN = new ResourceLocation("textures/environment/sun.png");
+        public static ResourceLocation END_SKY = new ResourceLocation("textures/environment/end_sky.png");
+    }
 
     public static class GUI
     {

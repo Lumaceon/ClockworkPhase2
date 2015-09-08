@@ -1,7 +1,8 @@
 package lumaceon.mods.clockworkphase2.world.gen;
 
 import cpw.mods.fml.common.IWorldGenerator;
-import lumaceon.mods.clockworkphase2.extendeddata.ExtendedWorldData;
+import lumaceon.mods.clockworkphase2.extendeddata.ExtendedMapData;
+import lumaceon.mods.clockworkphase2.lib.Defaults;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -12,10 +13,11 @@ public class WorldGeneratorRuins implements IWorldGenerator
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-        if(world.provider.dimensionId == 0)
+        int dimID = world.provider.dimensionId;
+        if(dimID == 0 || dimID == Defaults.DIM_ID.FIRST_AGE || dimID == Defaults.DIM_ID.SECOND_AGE || dimID == Defaults.DIM_ID.THIRD_AGE || dimID == Defaults.DIM_ID.FORTH_AGE)
         {
-            ExtendedWorldData worldData = ExtendedWorldData.get(world);
-            if(worldData != null && worldData.isRuinMapGenerated(world))
+            ExtendedMapData worldData = ExtendedMapData.get(world);
+            if(worldData != null && worldData.isRuinMapGenerated())
                 worldData.generateRuins(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
     }

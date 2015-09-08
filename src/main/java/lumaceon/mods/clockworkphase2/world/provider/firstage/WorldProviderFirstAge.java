@@ -1,7 +1,6 @@
-package lumaceon.mods.clockworkphase2.world.provider;
+package lumaceon.mods.clockworkphase2.world.provider.firstage;
 
 import lumaceon.mods.clockworkphase2.lib.Defaults;
-import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.WorldChunkManager;

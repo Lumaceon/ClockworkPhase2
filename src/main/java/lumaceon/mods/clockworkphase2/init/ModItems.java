@@ -245,6 +245,7 @@ public class ModItems
     }
 
     public static Item bugSwatter;
+    public static Item ageDev;
     public static Item temporalDriveSimulate;
     public static Item temporalDriveModify;
     public static Item temporalDriveDuplicate;
@@ -254,6 +255,7 @@ public class ModItems
     public static void initMisc()
     {
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
+        ageDev = new ItemAgeDev(1, 100, "age_developer");
         temporalDriveSimulate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
         temporalDriveModify = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         temporalDriveDuplicate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
@@ -262,6 +264,7 @@ public class ModItems
         elysianGem = new ItemClockworkPhase(64, 0, Names.ITEM.ELYSIAN_GEM);
 
         GameRegistry.registerItem(bugSwatter, "bug_swatter");
+        GameRegistry.registerItem(ageDev, "age_developer");
         GameRegistry.registerItem(temporalDriveSimulate, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
         GameRegistry.registerItem(temporalDriveModify, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         GameRegistry.registerItem(temporalDriveDuplicate, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);

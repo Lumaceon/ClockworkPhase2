@@ -1,13 +1,17 @@
 package lumaceon.mods.clockworkphase2.api;
 
+import lumaceon.mods.clockworkphase2.util.SchematicUtility;
+import net.minecraft.util.ResourceLocation;
+
 public abstract class RuinTemplate
 {
-    /**
-     * The radius of space to reserve for these ruins, not including vertical space.
-     * The area is a square going from lowest to highest height, and is reserved with corners as opposed to a cylinder.
-     * You don't necessarily have to use the entire area you reserve, it just marks the borders of the ruins.
-     */
-    public int areaRadius;
+    public SchematicUtility.Schematic ruinSchematic;
+    public ResourceLocation schematicLocation;
+    public String uniqueName;
 
-
+    public RuinTemplate(ResourceLocation schematicLocation, String uniqueName) {
+        this.schematicLocation = schematicLocation;
+        this.uniqueName = uniqueName; //TODO - cleanup resourceLocation schematic loading.
+        ruinSchematic = SchematicUtility.INSTANCE.loadModSchematic("NewModSchematic", true);
+    }
 }

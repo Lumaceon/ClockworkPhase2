@@ -20,9 +20,12 @@ import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
+import lumaceon.mods.clockworkphase2.util.SchematicUtility;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
-import lumaceon.mods.clockworkphase2.world.provider.WorldProviderFirstAge;
+import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorRuins;
+import lumaceon.mods.clockworkphase2.world.provider.firstage.WorldProviderFirstAge;
+import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
@@ -42,6 +45,7 @@ public class ClockworkPhase2
     public final CreativeTabs CREATIVE_TAB = new CreativeTabClockworkPhase2("ClockworkPhase2");
 
     public WorldGeneratorOres oreGenerator = new WorldGeneratorOres();
+    public WorldGeneratorRuins ruinGenerator = new WorldGeneratorRuins();
 
     @Mod.EventHandler
     public void preInitialize(FMLPreInitializationEvent event)
@@ -55,6 +59,7 @@ public class ClockworkPhase2
         ModBlocks.initTE();
 
         GameRegistry.registerWorldGenerator(oreGenerator, 0);
+        GameRegistry.registerWorldGenerator(ruinGenerator, 0);
 
         ModFluids.bindBlocks();
 
@@ -88,9 +93,18 @@ public class ClockworkPhase2
         new GuiHandler();
 
         PacketHandler.init();
+
+        //---- Age Registration ----\\
+        Defaults.DIM_ID.FORTH_AGE = DimensionManager.getNextFreeDimId();
+        DimensionManager.registerProviderType(Defaults.DIM_ID.FORTH_AGE, WorldProviderForthAge.class, false);
+        DimensionManager.registerDimension(Defaults.DIM_ID.FORTH_AGE, Defaults.DIM_ID.FORTH_AGE);
+
         Defaults.DIM_ID.FIRST_AGE = DimensionManager.getNextFreeDimId();
         DimensionManager.registerProviderType(Defaults.DIM_ID.FIRST_AGE, WorldProviderFirstAge.class, false);
         DimensionManager.registerDimension(Defaults.DIM_ID.FIRST_AGE, Defaults.DIM_ID.FIRST_AGE);
+        //---- Age Registration ----\\
+
+        ModRuins.init();
     }
 
     @Mod.EventHandler

@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.world.provider;
+package lumaceon.mods.clockworkphase2.world.provider.forthage;
 
 import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.block.Block;
@@ -35,7 +35,7 @@ import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCAT
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.*;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 
-public class ChunkProviderFirstAge implements IChunkProvider
+public class ChunkProviderForthAge implements IChunkProvider
 {
     /** RNG. */
     private Random rand;
@@ -72,7 +72,6 @@ public class ChunkProviderFirstAge implements IChunkProvider
     double[] field_147428_e;
     double[] field_147425_f;
     double[] field_147426_g;
-    int[][] field_73219_j = new int[32][32];
 
     {
         caveGenerator = TerrainGen.getModdedMapGen(caveGenerator, CAVE);
@@ -83,7 +82,7 @@ public class ChunkProviderFirstAge implements IChunkProvider
         ravineGenerator = TerrainGen.getModdedMapGen(ravineGenerator, RAVINE);
     }
 
-    public ChunkProviderFirstAge(World world, long seed, boolean features)
+    public ChunkProviderForthAge(World world, long seed, boolean features)
     {
         this.worldObj = world;
         this.mapFeaturesEnabled = features;
@@ -119,7 +118,7 @@ public class ChunkProviderFirstAge implements IChunkProvider
         this.mobSpawnerNoise = (NoiseGeneratorOctaves)noiseGens[6];
     }
 
-    public void func_147424_a(int p_147424_1_, int p_147424_2_, Block[] p_147424_3_)
+    public void func_147424_a(int p_147424_1_, int p_147424_2_, Block[] blocks)
     {
         byte b0 = 63;
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, p_147424_1_ * 4 - 2, p_147424_2_ * 4 - 2, 10, 10);
@@ -170,15 +169,15 @@ public class ChunkProviderFirstAge implements IChunkProvider
                             {
                                 if ((d15 += d16) > 0.0D)
                                 {
-                                    p_147424_3_[j3 += short1] = Blocks.stone;
+                                    blocks[j3 += short1] = Blocks.stone;
                                 }
                                 else if (k2 * 8 + l2 < b0)
                                 {
-                                    p_147424_3_[j3 += short1] = Blocks.water;
+                                    blocks[j3 += short1] = Blocks.water; //TODO - modify that
                                 }
                                 else
                                 {
-                                    p_147424_3_[j3 += short1] = null;
+                                    blocks[j3 += short1] = null;
                                 }
                             }
 
@@ -511,7 +510,7 @@ public class ChunkProviderFirstAge implements IChunkProvider
      */
     @Override
     public String makeString() {
-        return this.getClass().getName();
+        return "ForthAgeSource";
     }
 
     /**

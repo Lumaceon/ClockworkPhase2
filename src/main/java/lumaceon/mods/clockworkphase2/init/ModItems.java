@@ -7,6 +7,7 @@ import lumaceon.mods.clockworkphase2.item.*;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleHarvestTeleport;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSilkHarvest;
 import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSmelt;
+import lumaceon.mods.clockworkphase2.item.construct.tool.*;
 import lumaceon.mods.clockworkphase2.item.timestream.*;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemClockworkCore;
 import lumaceon.mods.clockworkphase2.item.components.tool.ItemMainspring;
@@ -14,10 +15,6 @@ import lumaceon.mods.clockworkphase2.item.components.ItemTemporalCore;
 import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemGear;
 import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemMemoryComponent;
 import lumaceon.mods.clockworkphase2.item.construct.misc.ItemPAC;
-import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkAxe;
-import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkMultitool;
-import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkPickaxe;
-import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkShovel;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleMobRepellent;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
@@ -175,11 +172,12 @@ public class ModItems
     }
 
     public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, 0, 0);
+    public static Item.ToolMaterial temporalMaterial = EnumHelper.addToolMaterial("TEMPORAL", 3, 100, 3, 0, 0);
     public static Item clockworkPickaxe;
     public static Item clockworkAxe;
     public static Item clockworkShovel;
     public static Item clockworkMultiTool;
-    public static Item pseudoTemporalHourglass;
+    public static Item temporalExcavator;
     public static Item temporalHourglass;
     public static Item trowelStone;
     public static Item trowelIron;
@@ -192,8 +190,8 @@ public class ModItems
         clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
         clockworkMultiTool = new ItemClockworkMultitool(0, clockworkMaterial, Names.ITEM.CLOCKWORK_MULTI_TOOL);
-        pseudoTemporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.DAY, Names.ITEM.PSEUDO_TEMPORAL_HOURGLASS);
-        temporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.YEAR, Names.ITEM.TEMPORAL_HOURGLASS);
+        temporalExcavator = new ItemTemporalExcavator(0, temporalMaterial, Names.ITEM.TEMPORAL_EXCAVATOR);
+        temporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.MONTH, Names.ITEM.TEMPORAL_HOURGLASS);
         trowelStone = new ItemTrowel(Item.ToolMaterial.STONE, 1, Names.ITEM.STONE_TROWEL);
         trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, 1, Names.ITEM.IRON_TROWEL);
         trowelDiamond = new ItemTrowel(Item.ToolMaterial.EMERALD, 1, Names.ITEM.DIAMOND_TROWEL); //Says emerald; is actually diamond.
@@ -204,7 +202,7 @@ public class ModItems
         GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
         GameRegistry.registerItem(clockworkMultiTool, Names.ITEM.CLOCKWORK_MULTI_TOOL);
-        GameRegistry.registerItem(pseudoTemporalHourglass, Names.ITEM.PSEUDO_TEMPORAL_HOURGLASS);
+        GameRegistry.registerItem(temporalExcavator, Names.ITEM.TEMPORAL_EXCAVATOR);
         GameRegistry.registerItem(temporalHourglass, Names.ITEM.TEMPORAL_HOURGLASS);
         GameRegistry.registerItem(trowelStone, Names.ITEM.STONE_TROWEL);
         GameRegistry.registerItem(trowelIron, Names.ITEM.IRON_TROWEL);
@@ -246,6 +244,7 @@ public class ModItems
 
     public static Item bugSwatter;
     public static Item ageDev;
+    public static Item schematicTool;
     public static Item temporalDriveSimulate;
     public static Item temporalDriveModify;
     public static Item temporalDriveDuplicate;
@@ -256,6 +255,7 @@ public class ModItems
     {
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         ageDev = new ItemAgeDev(1, 100, "age_developer");
+        schematicTool = new ItemCreativeModSchematicTool(1, 100, "schematic_tool");
         temporalDriveSimulate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
         temporalDriveModify = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         temporalDriveDuplicate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
@@ -265,6 +265,7 @@ public class ModItems
 
         GameRegistry.registerItem(bugSwatter, "bug_swatter");
         GameRegistry.registerItem(ageDev, "age_developer");
+        GameRegistry.registerItem(schematicTool, "schematic_tool");
         GameRegistry.registerItem(temporalDriveSimulate, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
         GameRegistry.registerItem(temporalDriveModify, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         GameRegistry.registerItem(temporalDriveDuplicate, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);

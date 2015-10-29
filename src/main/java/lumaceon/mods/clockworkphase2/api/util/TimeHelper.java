@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.time.ITimeSupplierItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -63,5 +64,35 @@ public class TimeHelper
             }
         }
         return timeConsumed;
+    }
+
+    public static long getTimeInInventory(IInventory inventory)
+    {
+        long timeFound = 0;
+        for(int n = 0; n < inventory.getSizeInventory(); n++)
+        {
+            ItemStack is = inventory.getStackInSlot(n);
+            if(is != null && is.getItem() instanceof ITimeSupplierItem)
+                timeFound += ((ITimeSupplierItem) is.getItem()).getTimeStored(is);
+        }
+        return timeFound;
+    }
+
+    /**
+     * Gets the time to break the block in seconds (1 = 1 second). This defaults to the speed of diamond tools if there
+     * is no override tool in the excavator.
+     * @param blockHardness The hardness of the block.
+     * @param player The player trying to break the block.
+     * @param temporalExcavator The temporal excavator itemstack.
+     * @return The time, in ticks, it takes to break the block.
+     */
+    public static long timeToBreakBlock(float blockHardness, EntityPlayer player, ItemStack temporalExcavator)
+    {
+        float timeCostInSeconds = blockHardness * 1.5F / 8.0F;
+        if(player.isInWater())
+            timeCostInSeconds *= 5.0F;
+        if(player.isAirBorne)
+            timeCostInSeconds *= 5.0F;
+        return (long) (timeCostInSeconds * 20);
     }
 }

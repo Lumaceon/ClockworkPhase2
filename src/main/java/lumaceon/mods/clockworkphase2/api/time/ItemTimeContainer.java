@@ -5,7 +5,7 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemTimeContainer extends Item implements ITimeContainer
+public class ItemTimeContainer extends Item implements ITimeContainerItem
 {
     public long capacity;
 

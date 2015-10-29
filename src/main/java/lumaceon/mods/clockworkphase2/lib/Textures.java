@@ -23,6 +23,8 @@ public class Textures
         public static ResourceLocation CLOCK_CENTER_PEG = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock_center.png");
         public static ResourceLocation BASE = new ResourceLocation(Reference.MOD_ID, "textures/gui/base_gui.png");
 
+        public static ResourceLocation TIME_WELL = new ResourceLocation(Reference.MOD_ID, "textures/gui/time_well.png");
+
         public static ResourceLocation DEFAULT_ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
         public static ResourceLocation TS_CRAFT_TOP = new ResourceLocation(Reference.MOD_ID, "textures/gui/timestream_crafting_top.png");
         public static ResourceLocation TS_CRAFT_BOTTOM = new ResourceLocation(Reference.MOD_ID, "textures/gui/timestream_crafting_bottom.png");

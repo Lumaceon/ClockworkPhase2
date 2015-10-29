@@ -36,6 +36,17 @@ public class WorldProviderForthAge extends WorldProviderSurface
         return "Entering the 4th Age";
     }
 
+    @Override
+    protected void generateLightBrightnessTable()
+    {
+        float f = 0.0F;
+
+        for (int i = 0; i <= 15; ++i)
+        {
+            float f1 = (1.0F - (float)i / 15.0F);
+            this.lightBrightnessTable[i] = ((1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f) * 0.15F;
+        }
+    }
 
     @SideOnly(Side.CLIENT)
     public IRenderHandler getSkyRenderer()
@@ -54,5 +65,10 @@ public class WorldProviderForthAge extends WorldProviderSurface
         vec.yCoord *= 0.2;
         vec.zCoord *= 0.2;
         return vec;
+    }
+
+    @Override
+    public float getSunBrightnessFactor(float par1) {
+        return 0.0F;
     }
 }

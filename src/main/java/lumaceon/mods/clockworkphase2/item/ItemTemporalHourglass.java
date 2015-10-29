@@ -1,9 +1,18 @@
 package lumaceon.mods.clockworkphase2.item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.api.time.ITimeSupplierItem;
+import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
+import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemTemporalHourglass extends ItemClockworkPhase implements ITimeSupplierItem
 {
@@ -12,6 +21,18 @@ public class ItemTemporalHourglass extends ItemClockworkPhase implements ITimeSu
     public ItemTemporalHourglass(int maxStack, int maxDamage, long capacity, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
         this.capacity = capacity;
+    }
+
+    @Override
+    public void onUpdate(ItemStack is, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
+        if(is.getItem() instanceof ItemTemporalHourglass && entity.isSneaking())
+            ((ItemTemporalHourglass) is.getItem()).receiveTime(is, 20, false);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
+        list.add("Time Stored: " + Colors.AQUA + TimeConverter.parseNumber(NBTHelper.LONG.get(is, NBTTags.TIME), 3));
     }
 
     @Override

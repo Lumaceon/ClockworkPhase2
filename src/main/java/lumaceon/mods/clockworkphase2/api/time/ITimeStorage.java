@@ -2,7 +2,8 @@ package lumaceon.mods.clockworkphase2.api.time;
 
 /**
  * An interface for time storage and interaction. Should be implemented on a class which is then used to represent the
- * internal time storage. Do not implement this on a tile entity class itself.
+ * internal time storage. Do not implement this on a tile entity class. Instead, use the TimeStorage class or implement
+ * your own.
  *
  * (Based off of the RF API - Credits to King Lemming)
  */

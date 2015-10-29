@@ -77,19 +77,32 @@ public class ModBlocks
 
     public static Block oreCopper;
     public static Block oreZinc;
-    public static Block fossilMoonFlower;
+    public static Block fossilForthAge;
+    public static Block fossilThirdAge;
+    public static Block fossilSecondAge;
+    public static Block fossilFirstAge;
     public static void initOres()
     {
         oreCopper = new BlockClockworkPhaseOre(Material.rock, 1, Names.BLOCK.ORE_COPPER);
         oreZinc = new BlockClockworkPhaseOre(Material.rock, 1, Names.BLOCK.ORE_ZINC);
-        fossilMoonFlower = new BlockClockworkPhaseFossil(Material.rock, 1, Names.BLOCK.FOSSIL_MOON_FLOWER, ModItems.moonFlowerSeeds);
+        fossilForthAge = new BlockClockworkPhaseFossil(Material.rock, 0, Names.BLOCK.FOSSIL_FORTH_AGE);
+        fossilThirdAge = new BlockClockworkPhaseFossil(Material.rock, 1, Names.BLOCK.FOSSIL_THIRD_AGE);
+        fossilSecondAge = new BlockClockworkPhaseFossil(Material.rock, 2, Names.BLOCK.FOSSIL_SECOND_AGE);
+        fossilFirstAge = new BlockClockworkPhaseFossil(Material.rock, 3, Names.BLOCK.FOSSIL_FIRST_AGE);
 
         GameRegistry.registerBlock(oreCopper, Names.BLOCK.ORE_COPPER);
         GameRegistry.registerBlock(oreZinc, Names.BLOCK.ORE_ZINC);
-        GameRegistry.registerBlock(fossilMoonFlower, Names.BLOCK.FOSSIL_MOON_FLOWER);
+        GameRegistry.registerBlock(fossilForthAge, Names.BLOCK.FOSSIL_FORTH_AGE);
+        GameRegistry.registerBlock(fossilThirdAge, Names.BLOCK.FOSSIL_THIRD_AGE);
+        GameRegistry.registerBlock(fossilSecondAge, Names.BLOCK.FOSSIL_SECOND_AGE);
+        GameRegistry.registerBlock(fossilFirstAge, Names.BLOCK.FOSSIL_FIRST_AGE);
 
         OreDictionary.registerOre("oreCopper", oreCopper);
         OreDictionary.registerOre("oreZinc", oreZinc);
+        OreDictionary.registerOre("fossil4", fossilForthAge);
+        OreDictionary.registerOre("fossil3", fossilThirdAge);
+        OreDictionary.registerOre("fossil2", fossilSecondAge);
+        OreDictionary.registerOre("fossil1", fossilFirstAge);
     }
 
     public static Block moonFlower;
@@ -143,7 +156,6 @@ public class ModBlocks
     {
         GameRegistry.registerTileEntity(TileTemporalConduit.class, Names.BLOCK.TEMPORAL_CONDUIT);
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
-        //GameRegistry.registerTileEntity(TileTemporalizer.class, Names.BLOCK.TEMPORALIZER);
         GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
         GameRegistry.registerTileEntity(TileTimeCollector.class, Names.BLOCK.TIME_COLLECTOR);

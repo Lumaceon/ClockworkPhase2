@@ -1,12 +1,16 @@
 #Item
 item.clockworkphase2:mainspring.name=Mainspring
 item.clockworkphase2:clockwork_core.name=Clockwork Core
+
 item.clockworkphase2:clockwork_pickaxe.name=Clockwork Pickaxe
 item.clockworkphase2:clockwork_axe.name=Clockwork Axe
 item.clockworkphase2:clockwork_shovel.name=Clockwork Shovel
 item.clockworkphase2:clockwork_multitool.name=Clockwork Multi-Tool
+item.clockworkphase2:temporal_excavator.name=Temporal Excavator
+
 item.clockworkphase2:lightning_sword.name=Lightning Sword
 item.clockworkphase2:personal_assistant_cube.name=Personal Assistant Cube Call
+
 item.clockworkphase2:wood_gear.name=Wooden Gear
 item.clockworkphase2:stone_gear.name=Stone Gear
 item.clockworkphase2:iron_gear.name=Iron Gear
@@ -14,13 +18,17 @@ item.clockworkphase2:gold_gear.name=Golden Gear
 item.clockworkphase2:diamond_gear.name=Diamond Gear
 item.clockworkphase2:emerald_gear.name=Emerald Gear
 item.clockworkphase2:quartz_gear.name=Quartz Gear
+
 item.clockworkphase2:precious_charm.name=Precious Charm
 item.clockworkphase2:dream_catcher.name=Dream Catcher
 item.clockworkphase2:ancient_coin.name=Ancient Coin
 item.clockworkphase2:note_bottle.name=Note-In-A-Bottle
 item.clockworkphase2:rusty_gear.name=Rusty Gear
 item.clockworkphase2:broken_elysian_gear.name=Elysian Gear (Broken)
+
 item.clockworkphase2:temporal_core.name=Temporal Core
+item.clockworkphase2:temporal_hourglass.name=Temporal Hourglass
+
 item.clockworkphase2:temporal_drive_simulate.name=Temporal Simulation Drive
 item.clockworkphase2:temporal_drive_modify.name=Temporal Modification Drive
 item.clockworkphase2:temporal_drive_duplicate.name=Temporal Duplication Drive
@@ -31,34 +39,44 @@ item.clockworkphase2:timestream_tank.name=Timestream of Fluidic Storage
 item.clockworkphase2:timestream_mob_repulser.name=Timestream of Mob Repulsion
 item.clockworkphase2:timestream_lightning.name=Timestream of Lightning
 item.clockworkphase2:timestream_lightning_rod.name=Timestream of Lightning {Cannibalized}
+
 item.clockworkphase2:temporal_tool_module_silky.name=Temporal Tool Module: Silk Touch
 item.clockworkphase2:temporal_tool_module_smelt.name=Temporal Tool Module: Smelt
 item.clockworkphase2:temporal_tool_module_teleport.name=Temporal Tool Module: Teleport
+
 item.clockworkphase2:timezone_module_tank.name=Timezone Function: Fluid Tank
+
 item.clockworkphase2:temporal_ingot.name=Temporal Ingot
 item.clockworkphase2:copper_ingot.name=Copper Ingot
 item.clockworkphase2:zinc_ingot.name=Zinc Ingot
 item.clockworkphase2:brass_ingot.name=Brass Ingot
 item.clockworkphase2:brass_lump.name=Brass Lump
 
+item.clockworkphase2:schematic_tool.name=Schematic Maker
+
 #Block
 tile.clockworkphase2:time_sand.name=Time Sand
 tile.clockworkphase2:basic_winding_box.name=Manual Winding Box
 tile.clockworkphase2:assembly_table.name=Worktable
 tile.clockworkphase2:assembly_table_sb.name=Worktable
-tile.clockworkphase2:celestial_compass.name=Celestial Compass
-tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
-tile.clockworkphase2:boiler.name=Boiler
-tile.clockworkphase2:timestream_extraction_chamber.name=Timestream Extractor
-tile.clockworkphase2:temporalizer.name=Temporalizer
-tile.clockworkphase2:timezone_fluid_importer.name=Timezone Fluid Importer
-tile.clockworkphase2:timezone_fluid_exporter.name=Timezone Fluid Exporter
+
 tile.clockworkphase2:copper_ore.name=Copper Ore
 tile.clockworkphase2:zinc_ore.name=Zinc Ore
 tile.clockworkphase2:copper_block.name=Copper Block
 tile.clockworkphase2:zinc_block.name=Zinc Block
 tile.clockworkphase2:brass_block.name=Brass Block
 tile.clockworkphase2:temporal_block.name=Temporal Block
+
+tile.clockworkphase2:celestial_compass.name=Celestial Compass
+tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
+tile.clockworkphase2:timezone_fluid_importer.name=Timezone Fluid Importer
+tile.clockworkphase2:timezone_fluid_exporter.name=Timezone Fluid Exporter
+tile.clockworkphase2:time_well.name=Time Well
+
+tile.clockworkphase2:forth_age_fossil.name=Fossil (4th Age)
+tile.clockworkphase2:third_age_fossil.name=Fossil (3rd Age)
+tile.clockworkphase2:second_age_fossil.name=Fossil (2st Age)
+tile.clockworkphase2:first_age_fossil.name=Fossil (1st Age)
 
 #Entity
 entity.personal_assistant_cube.name=Personal Assistant Cube

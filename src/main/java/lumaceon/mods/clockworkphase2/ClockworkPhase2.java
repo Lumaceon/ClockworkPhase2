@@ -85,6 +85,7 @@ public class ClockworkPhase2
         MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenHandler());
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new EntityHandler());
+        MinecraftForge.EVENT_BUS.register(new PlayerHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());
         MinecraftForge.EVENT_BUS.register(new AchievementHandler());
         FMLCommonHandler.instance().bus().register(new TickHandler());

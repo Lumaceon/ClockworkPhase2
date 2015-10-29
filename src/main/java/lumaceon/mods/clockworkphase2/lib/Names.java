@@ -26,6 +26,10 @@ public class Names
         public static final String ORE_COPPER = "copper_ore";
         public static final String ORE_ZINC = "zinc_ore";
         public static final String FOSSIL_MOON_FLOWER = "moon_flower_fossil";
+        public static final String FOSSIL_FORTH_AGE = "forth_age_fossil";
+        public static final String FOSSIL_THIRD_AGE = "third_age_fossil";
+        public static final String FOSSIL_SECOND_AGE = "second_age_fossil";
+        public static final String FOSSIL_FIRST_AGE = "first_age_fossil";
 
         public static final String MOON_FLOWER = "moon_flower";
 
@@ -43,7 +47,7 @@ public class Names
         public static final String CLOCKWORK_AXE = "clockwork_axe";
         public static final String CLOCKWORK_SHOVEL = "clockwork_shovel";
         public static final String CLOCKWORK_MULTI_TOOL = "clockwork_multitool";
-        public static final String PSEUDO_TEMPORAL_HOURGLASS = "pseudo_temporal_hourglass";
+        public static final String TEMPORAL_EXCAVATOR = "temporal_excavator";
         public static final String TEMPORAL_HOURGLASS = "temporal_hourglass";
         public static final String STONE_TROWEL = "stone_trowel";
         public static final String IRON_TROWEL = "iron_trowel";

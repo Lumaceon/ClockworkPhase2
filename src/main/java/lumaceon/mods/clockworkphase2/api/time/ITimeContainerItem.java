@@ -3,12 +3,13 @@ package lumaceon.mods.clockworkphase2.api.time;
 import net.minecraft.item.ItemStack;
 
 /**
- * Implement this on items which hold time. Most items that use time should just use the method in the TimeHelper class
- * instead of implementing this.
+ * Implement this on items which hold time. Consider implementing ITimeSupplierItem instead, if you wish other items to
+ * pull time from this one. If you wish to create an item that uses time, consider directly drawing time from
+ * ITimeSupplierItems (such as the hourglasses) via static methods in the TimeHelper class.
  *
  * (Based off of the RF API - Credits to King Lemming)
  */
-public interface ITimeContainer
+public interface ITimeContainerItem
 {
     /**
      * Receives time into the timeItem passed in.

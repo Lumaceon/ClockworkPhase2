@@ -15,8 +15,7 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
 {
     public long ticksPerAction = 200; //10 seconds, the time of a normal furnace.
 
-    public TileTemporalFurnace()
-    {
+    public TileTemporalFurnace() {
         super();
         this.inventory = new ItemStack[2]; //0 - Input, 1 - Output.
         timeStorage = new TimeStorage(ticksPerAction * 32);

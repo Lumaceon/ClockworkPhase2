@@ -14,6 +14,8 @@ public class Names
         public static final String TEMPORAL_CONDUIT = "temporal_conduit";
         public static final String CELESTIAL_COMPASS = "celestial_compass";
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
+        public static final String TEMPORAL_DISPLACEMENT_ALTAR = "temporal_displacement_altar";
+        public static final String TEMPORAL_DISPLACEMENT_ALTAR_SB = "temporal_displacement_altar_sb";
         public static final String BOILER = "boiler";
         public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";

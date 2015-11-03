@@ -72,5 +72,15 @@ public class Textures
         public static final ResourceLocation TEMPORAL_MODULE = new ResourceLocation("textures/temporal_module.png");
         public static final ResourceLocation INVALID = new ResourceLocation(Reference.MOD_ID, "textures/misc/invalid.png");
         public static final ResourceLocation VALID = new ResourceLocation(Reference.MOD_ID, "textures/misc/valid.png");
+
+        public static final ResourceLocation FORTH_AGE_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/misc/gear_age4.png");
+        public static final ResourceLocation THIRD_AGE_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/misc/gear_age3.png");
+        public static final ResourceLocation SECOND_AGE_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/misc/gear_age2.png");
+        public static final ResourceLocation FIRST_AGE_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/misc/gear_age1.png");
+
+        public static final ResourceLocation TDA_METAL_FRAME = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/metal_frame.png");
+        public static final ResourceLocation TDA_GLASS_FRAME = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/glass_frame.png");
+        public static final ResourceLocation TDA_BOTTOM = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/bottom.png");
+        public static final ResourceLocation TDA_GEARS = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/gears.png");
     }
 }

@@ -175,7 +175,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
                 z = this.zCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
                 meta = BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].meta;
 
-                if(worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).equals(ModBlocks.celestialCompassSB))
+                if(worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).equals(ModBlocks.celestialCompassSB) || worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z))
                 {
                     this.getWorldObj().setBlock(x, y, z, ModBlocks.celestialCompassSB, meta, 2);
                     blocksToPlace--;
@@ -188,7 +188,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
         }
     }
 
-    public static void destroyCompass(World world, int x, int y, int z)
+    public static void destroyMultiblock(World world, int x, int y, int z)
     {
         for(int n = 0; n < 96; n++)
         {

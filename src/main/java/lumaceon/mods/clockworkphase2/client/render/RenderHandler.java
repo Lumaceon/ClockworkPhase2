@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -36,7 +37,7 @@ import java.util.Map;
 
 public class RenderHandler
 {
-    public static final WorldRenderElementSchematic schematicRenderer = new WorldRenderElementSchematic(null, 0, 0, 0);
+    //public static final WorldRenderElementSchematic schematicRenderer = new WorldRenderElementSchematic(null, 0, 0, 0);
     public static OverlayRenderElementTemporalInfluence overlayInfluence = new OverlayRenderElementTemporalInfluence();
     public static RenderItem renderItem;
     public static Minecraft mc;
@@ -51,7 +52,7 @@ public class RenderHandler
 
         mc = Minecraft.getMinecraft();
 
-        registerWorldRenderElement(schematicRenderer);
+        //registerWorldRenderElement(schematicRenderer);
     }
 
     public static ArrayList<OverlayRenderElement> overlayRenderList = new ArrayList<OverlayRenderElement>();
@@ -131,9 +132,11 @@ public class RenderHandler
                 }
             }
 
+            EntityLivingBase camera = mc.renderViewEntity;
             for(WorldRenderElement wre : worldRenderList)
                 if(wre != null && wre.isSameWorld(mc.theWorld))
-                    wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
+                    if(Math.sqrt(Math.pow(Math.abs(wre.xPos - camera.posX), 2) + Math.pow(Math.abs(wre.yPos - camera.posY), 2) + Math.pow(Math.abs(wre.zPos - camera.posZ), 2)) <= wre.maxRenderDistance())
+                        wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
         }
     }
 

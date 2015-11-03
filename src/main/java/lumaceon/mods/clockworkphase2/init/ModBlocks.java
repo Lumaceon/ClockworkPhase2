@@ -39,6 +39,8 @@ public class ModBlocks
     public static Block temporalConduit;
     public static Block celestialCompass;
     public static Block celestialCompassSB;
+    public static Block temporalDisplacementAltar;
+    public static Block temporalDisplacementAltarSB;
     public static Block timestreamExtractionChamber;
     public static Block timezoneFluidExporter;
     public static Block timezoneFluidImporter;
@@ -50,6 +52,8 @@ public class ModBlocks
         temporalConduit = new BlockTemporalConduit(Material.glass, Names.BLOCK.TEMPORAL_CONDUIT);
         celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
         celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        temporalDisplacementAltar = new BlockTemporalDisplacementAltar(Material.iron, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
+        temporalDisplacementAltarSB = new BlockTemporalDisplacementAltarSB(Material.iron, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR_SB);
         timestreamExtractionChamber = new BlockTimestreamExtractionChamber(Material.iron, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
         timezoneFluidExporter = new BlockTimezoneFluidExporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         timezoneFluidImporter = new BlockTimezoneFluidImporter(Material.iron, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
@@ -60,6 +64,8 @@ public class ModBlocks
         GameRegistry.registerBlock(temporalConduit, Names.BLOCK.TEMPORAL_CONDUIT);
         GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        GameRegistry.registerBlock(temporalDisplacementAltar, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
+        GameRegistry.registerBlock(temporalDisplacementAltarSB, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR_SB);
         GameRegistry.registerBlock(timestreamExtractionChamber, Names.BLOCK.TIMESTREAM_EXTRACTION_CHAMBER);
         GameRegistry.registerBlock(timezoneFluidExporter, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerBlock(timezoneFluidImporter, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
@@ -156,6 +162,7 @@ public class ModBlocks
     {
         GameRegistry.registerTileEntity(TileTemporalConduit.class, Names.BLOCK.TEMPORAL_CONDUIT);
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
+        GameRegistry.registerTileEntity(TileTemporalDisplacementAltar.class, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
         GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
         GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
         GameRegistry.registerTileEntity(TileTimeCollector.class, Names.BLOCK.TIME_COLLECTOR);

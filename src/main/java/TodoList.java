@@ -2,6 +2,7 @@ public class TodoList
 {
     //TODO FIX infinite xp exploit (silktouch tool module).
     //TODO FIX schematics not copying unloaded chunks.
+    //TODO FIX remove renderers when switching worlds.
     //TODO Add configs
     //TODO Finish up clockwork assembly system.
     //TODO Add some way to acquire temporal materials.

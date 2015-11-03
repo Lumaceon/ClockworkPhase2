@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.render.elements.world;
 
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.world.World;
 
 public abstract class WorldRenderElement
@@ -28,6 +29,18 @@ public abstract class WorldRenderElement
     }
 
     public boolean isSameWorld(World world) {
-        return world.equals(this.world);
+        return world.provider.dimensionId == this.world.provider.dimensionId;
+    }
+
+    /**
+     * A method called for all renderers during ClientProxy.clearWorldRenderers.
+     * @return True if this is finished rendering and should be deleted, false if not.
+     */
+    public boolean isFinished() {
+        return world == null;
+    }
+
+    public float maxRenderDistance() {
+        return 256;
     }
 }

@@ -69,6 +69,8 @@ tile.clockworkphase2:temporal_block.name=Temporal Block
 
 tile.clockworkphase2:celestial_compass.name=Celestial Compass
 tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
+tile.clockworkphase2:temporal_displacement_altar.name=Temporal Displacement Altar
+tile.clockworkphase2:temporal_displacement_altar_sb.name=Temporal Displacement Altar
 tile.clockworkphase2:timezone_fluid_importer.name=Timezone Fluid Importer
 tile.clockworkphase2:timezone_fluid_exporter.name=Timezone Fluid Exporter
 tile.clockworkphase2:time_well.name=Time Well

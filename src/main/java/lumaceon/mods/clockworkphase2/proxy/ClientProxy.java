@@ -5,6 +5,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
+import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTDA;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalClock;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalDisplacementAltar;
 import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
@@ -62,6 +63,9 @@ public class ClientProxy extends CommonProxy
                 break;
             case 1: //Temporal displacement altar renderer.
                 RenderHandler.registerWorldRenderElement(new WorldRenderElementTemporalDisplacementAltar(world, x, y, z));
+                break;
+            case 2://TDA Stargate style
+                RenderHandler.registerWorldRenderElement(new WorldRenderElementTDA(world, x, y, z));
                 break;
         }
     }

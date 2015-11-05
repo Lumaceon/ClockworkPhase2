@@ -82,5 +82,8 @@ public class Textures
         public static final ResourceLocation TDA_GLASS_FRAME = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/glass_frame.png");
         public static final ResourceLocation TDA_BOTTOM = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/bottom.png");
         public static final ResourceLocation TDA_GEARS = new ResourceLocation(Reference.MOD_ID, "textures/blocks/temporal_displacement_altar_sb/gears.png");
+
+        public static final ResourceLocation TDA = new ResourceLocation(Reference.MOD_ID, "textures/blocks/special_renders/TDA.png");
+        public static final ResourceLocation TDA_SIDES = new ResourceLocation(Reference.MOD_ID, "textures/blocks/special_renders/TDA_sides.png");
     }
 }

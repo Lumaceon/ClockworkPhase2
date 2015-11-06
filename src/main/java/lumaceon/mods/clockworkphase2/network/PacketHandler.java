@@ -24,7 +24,5 @@ public class PacketHandler
         INSTANCE.registerMessage(HandlerTemporalMachineSync.class, MessageTemporalMachineSync.class, nextID, Side.CLIENT);
         nextID++;
         INSTANCE.registerMessage(HandlerLightningSwordActivate.class, MessageLightningSwordActivate.class, nextID, Side.SERVER);
-        nextID++;
-        INSTANCE.registerMessage(HandlerTimestreamRecipe.class, MessageTimestreamRecipe.class, nextID, Side.SERVER);
     }
 }

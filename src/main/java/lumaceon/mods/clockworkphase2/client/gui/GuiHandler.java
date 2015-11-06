@@ -4,7 +4,6 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.container.ContainerAssemblyTable;
-import lumaceon.mods.clockworkphase2.container.ContainerPAC;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
 import lumaceon.mods.clockworkphase2.container.ContainerTimeWell;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
@@ -31,8 +30,6 @@ public class GuiHandler implements IGuiHandler
                 return new ContainerAssemblyTable(player.inventory, world);
             case 1:
                 return new ContainerTimeWell(player.inventory, (TileTimeWell) te, world);
-            case 3:
-                return new ContainerPAC(player.inventory, world, ExtendedPlayerProperties.get(player).playerPAC);
             case 4:
                 return new ContainerTemporalFurnace(player.inventory, (TileTemporalFurnace) te, world);
         }
@@ -49,10 +46,6 @@ public class GuiHandler implements IGuiHandler
                 return new GuiAssemblyTable(player.inventory, world);
             case 1:
                 return new GuiTimeWell(player.inventory, (TileTimeWell) te, world);
-            case 2:
-                return new GuiTimestreamExtractionChamber(te);
-            case 3:
-                return new GuiPAC(player, ExtendedPlayerProperties.get(player).playerPAC);
             case 4:
                 return new GuiTemporalFurnace(player.inventory, (TileTemporalFurnace) te, world);
         }

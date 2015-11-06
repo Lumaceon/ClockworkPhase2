@@ -12,7 +12,6 @@ import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequenceTi
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
-import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementSchematic;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
@@ -37,7 +36,6 @@ import java.util.Map;
 
 public class RenderHandler
 {
-    //public static final WorldRenderElementSchematic schematicRenderer = new WorldRenderElementSchematic(null, 0, 0, 0);
     public static OverlayRenderElementTemporalInfluence overlayInfluence = new OverlayRenderElementTemporalInfluence();
     public static RenderItem renderItem;
     public static Minecraft mc;

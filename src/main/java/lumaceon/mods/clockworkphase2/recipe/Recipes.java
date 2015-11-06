@@ -1,13 +1,8 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRecipe;
-import lumaceon.mods.clockworkphase2.api.crafting.timestream.TimestreamCraftingRegistry;
-import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.recipe.timestream.TimestreamRecipeLightning;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -23,7 +18,6 @@ public class Recipes
         initTimezoneModules();
         initMisc();
         initFurnaceRecipes();
-        initTimestreamRecipes();
     }
 
     public static void initClockworkComponentRecipes()
@@ -48,8 +42,6 @@ public class Recipes
         GameRegistry.addRecipe(new ShapedOreRecipe(result, " bb", " ib", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
         result = new ItemStack(ModItems.clockworkShovel);
         GameRegistry.addRecipe(new ShapedOreRecipe(result, " b ", " i ", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
-        result = new ItemStack(ModItems.clockworkMultiTool);
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bbb", "bib", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
     }
 
     public static void initTemporalClockworkModules()
@@ -90,16 +82,6 @@ public class Recipes
         GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.ingotCopper), 0.7F);
         GameRegistry.addSmelting(ModBlocks.oreZinc, new ItemStack(ModItems.ingotZinc), 0.7F);
         GameRegistry.addSmelting(ModItems.lumpBrass, new ItemStack(ModItems.ingotBrass), 1.5F);
-    }
-
-    public static void initTimestreamRecipes()
-    {
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("relocation", TimeConverter.HOUR, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_RELOCATION, new ItemStack(ModItems.timestreamRelocation)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("smelt", TimeConverter.WEEK, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_SMELT, new ItemStack(ModItems.timestreamSmelt)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("silky", TimeConverter.DAY, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_SILKY, new ItemStack(ModItems.timestreamSilkyHarvest)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("tank", TimeConverter.MONTH, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_TANK, new ItemStack(ModItems.timestreamExtradimensionalTank)));
-        TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamRecipeLightning("lightning", TimeConverter.MINUTE, Textures.GUI.TS_ICON_SMELT, Textures.GUI.TS_BG_LIGHTNING, new ItemStack(ModItems.timestreamLightning)));
-        //TimestreamCraftingRegistry.registerTimestreamRecipe(new TimestreamCraftingRecipe("contract", Textures.ITEM.MAINSPRING, Textures.GUI.TS_BG_CONTRACT));
     }
 
     public static void addGearRecipe(ItemStack result, String materialName) {

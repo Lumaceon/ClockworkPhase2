@@ -47,12 +47,12 @@ public class EntityHandler
         }
     }
 
-    @SubscribeEvent
+    /*@SubscribeEvent
     public void onEntityClicked(EntityInteractEvent event) //Player right-clicked an entity.
     {
         if(event.target != null && event.target instanceof EntityPAC) //The entity was a PAC.
             ((EntityPAC) event.target).onRightClicked(event.entityPlayer);
-    }
+    }*/
 
     @SubscribeEvent
     public void onEntitySpawn(LivingSpawnEvent.CheckSpawn event)

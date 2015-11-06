@@ -3,20 +3,16 @@ package lumaceon.mods.clockworkphase2.block;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.api.phase.Phases;
-import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -75,13 +71,6 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
         {
             if(world.canBlockSeeTheSky(x, y, z) && !world.isDaytime())
             {
-                if(!world.getBlock(x, y+1, z).equals(ModBlocks.telescope))
-                    return;
-                else if(!world.getBlock(x, y+2, z).equals(ModBlocks.telescope) && random.nextInt(3) != 0)
-                    return;
-                else if(!world.getBlock(x, y+3, z).equals(ModBlocks.telescope) && random.nextInt(3) != 0)
-                    return;
-
                 if(Phases.isPhaseActive(world, x, y, z, Phases.elysianComet))
                     world.setBlockMetadataWithNotify(x, y, z, 5, 2); //Set meta to 5 (temporal material)
                 else

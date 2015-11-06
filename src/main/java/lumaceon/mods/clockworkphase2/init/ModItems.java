@@ -176,7 +176,6 @@ public class ModItems
     public static Item clockworkPickaxe;
     public static Item clockworkAxe;
     public static Item clockworkShovel;
-    public static Item clockworkMultiTool;
     public static Item temporalExcavator;
     public static Item temporalHourglass;
     public static Item trowelStone;
@@ -189,7 +188,6 @@ public class ModItems
         clockworkPickaxe = new ItemClockworkPickaxe(clockworkMaterial, Names.ITEM.CLOCKWORK_PICKAXE);
         clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
-        clockworkMultiTool = new ItemClockworkMultitool(0, clockworkMaterial, Names.ITEM.CLOCKWORK_MULTI_TOOL);
         temporalExcavator = new ItemTemporalExcavator(0, temporalMaterial, Names.ITEM.TEMPORAL_EXCAVATOR);
         temporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.MONTH, Names.ITEM.TEMPORAL_HOURGLASS);
         trowelStone = new ItemTrowel(Item.ToolMaterial.STONE, 1, Names.ITEM.STONE_TROWEL);
@@ -201,7 +199,6 @@ public class ModItems
         GameRegistry.registerItem(clockworkPickaxe, Names.ITEM.CLOCKWORK_PICKAXE);
         GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
-        GameRegistry.registerItem(clockworkMultiTool, Names.ITEM.CLOCKWORK_MULTI_TOOL);
         GameRegistry.registerItem(temporalExcavator, Names.ITEM.TEMPORAL_EXCAVATOR);
         GameRegistry.registerItem(temporalHourglass, Names.ITEM.TEMPORAL_HOURGLASS);
         GameRegistry.registerItem(trowelStone, Names.ITEM.STONE_TROWEL);

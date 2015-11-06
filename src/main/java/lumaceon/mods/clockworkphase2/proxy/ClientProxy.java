@@ -10,15 +10,11 @@ import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderEle
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalDisplacementAltar;
 import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
-import lumaceon.mods.clockworkphase2.handler.WorldHandler;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
-import lumaceon.mods.clockworkphase2.tile.TileTelescope;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
-import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalConduit;
 import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
@@ -29,11 +25,9 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerTESR()
     {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalConduit.class, new TESRTemporalConduit());
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTableSB.class, new TESRAssemblyTableSB());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTelescope.class, new TESRTelescope());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalFurnace.class, new TESRTemporalFurnace());
     }
 

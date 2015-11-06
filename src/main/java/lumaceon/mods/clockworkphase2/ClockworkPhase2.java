@@ -20,7 +20,6 @@ import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
-import lumaceon.mods.clockworkphase2.util.SchematicUtility;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorRuins;
@@ -82,7 +81,6 @@ public class ClockworkPhase2
 
         BucketHandler.INSTANCE.buckets.put(ModBlocks.timeSand, ModItems.bucketTimeSand);
 
-        MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenHandler());
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new EntityHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerHandler());

@@ -19,17 +19,14 @@ public class Names
         public static final String TDA = "tda";
         public static final String TDA_SB = "tda_sb";
         public static final String BOILER = "boiler";
-        public static final String TIMESTREAM_EXTRACTION_CHAMBER = "timestream_extraction_chamber";
         public static final String TIMEZONE_FLUID_EXPORTER = "timezone_fluid_exporter";
         public static final String TIMEZONE_FLUID_IMPORTER = "timezone_fluid_importer";
         public static final String TIME_COLLECTOR = "time_collector";
         public static final String TEMPORAL_FURNACE = "temporal_furnace";
         public static final String TIME_WELL = "time_well";
-        public static final String TELESCOPE = "telescope";
 
         public static final String ORE_COPPER = "copper_ore";
         public static final String ORE_ZINC = "zinc_ore";
-        public static final String FOSSIL_MOON_FLOWER = "moon_flower_fossil";
         public static final String FOSSIL_FORTH_AGE = "forth_age_fossil";
         public static final String FOSSIL_THIRD_AGE = "third_age_fossil";
         public static final String FOSSIL_SECOND_AGE = "second_age_fossil";

@@ -47,12 +47,13 @@ public class Names
         public static final String CLOCKWORK_PICKAXE = "clockwork_pickaxe";
         public static final String CLOCKWORK_AXE = "clockwork_axe";
         public static final String CLOCKWORK_SHOVEL = "clockwork_shovel";
-        public static final String CLOCKWORK_MULTI_TOOL = "clockwork_multitool";
         public static final String TEMPORAL_EXCAVATOR = "temporal_excavator";
         public static final String TEMPORAL_HOURGLASS = "temporal_hourglass";
+        public static final String WOOD_TROWEL = "wooden_trowel";
         public static final String STONE_TROWEL = "stone_trowel";
         public static final String IRON_TROWEL = "iron_trowel";
         public static final String DIAMOND_TROWEL = "diamond_trowel";
+        public static final String WIRE_DUSTER = "wire_duster";
         public static final String LIGHTNING_SWORD = "lightning_sword";
         public static final String PAC = "personal_assistant_cube";
         public static final String GEAR_WOOD = "wood_gear";

@@ -178,9 +178,11 @@ public class ModItems
     public static Item clockworkShovel;
     public static Item temporalExcavator;
     public static Item temporalHourglass;
+    public static Item trowelWood;
     public static Item trowelStone;
     public static Item trowelIron;
     public static Item trowelDiamond;
+    public static Item wireDuster;
     public static Item lightningSword;
     public static Item PAC;
     public static void initTools()
@@ -190,9 +192,11 @@ public class ModItems
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
         temporalExcavator = new ItemTemporalExcavator(0, temporalMaterial, Names.ITEM.TEMPORAL_EXCAVATOR);
         temporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.MONTH, Names.ITEM.TEMPORAL_HOURGLASS);
+        trowelWood = new ItemTrowel(Item.ToolMaterial.WOOD, 1, Names.ITEM.WOOD_TROWEL);
         trowelStone = new ItemTrowel(Item.ToolMaterial.STONE, 1, Names.ITEM.STONE_TROWEL);
         trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, 1, Names.ITEM.IRON_TROWEL);
         trowelDiamond = new ItemTrowel(Item.ToolMaterial.EMERALD, 1, Names.ITEM.DIAMOND_TROWEL); //Says emerald; is actually diamond.
+        wireDuster = new ItemWireDuster(1, 100, Names.ITEM.WIRE_DUSTER);
         lightningSword = new ItemLightningSword(clockworkMaterial, Names.ITEM.LIGHTNING_SWORD);
         PAC = new ItemPAC(1, 100, Names.ITEM.PAC);
 
@@ -201,9 +205,11 @@ public class ModItems
         GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
         GameRegistry.registerItem(temporalExcavator, Names.ITEM.TEMPORAL_EXCAVATOR);
         GameRegistry.registerItem(temporalHourglass, Names.ITEM.TEMPORAL_HOURGLASS);
+        GameRegistry.registerItem(trowelWood, Names.ITEM.WOOD_TROWEL);
         GameRegistry.registerItem(trowelStone, Names.ITEM.STONE_TROWEL);
         GameRegistry.registerItem(trowelIron, Names.ITEM.IRON_TROWEL);
         GameRegistry.registerItem(trowelDiamond, Names.ITEM.DIAMOND_TROWEL);
+        GameRegistry.registerItem(wireDuster, Names.ITEM.WIRE_DUSTER);
         GameRegistry.registerItem(lightningSword, Names.ITEM.LIGHTNING_SWORD);
         GameRegistry.registerItem(PAC, Names.ITEM.PAC);
     }

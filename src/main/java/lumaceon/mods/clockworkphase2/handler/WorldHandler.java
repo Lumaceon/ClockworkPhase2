@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.item.ITemporalToolModule;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedMapData;
 import lumaceon.mods.clockworkphase2.init.ModItems;
@@ -44,7 +43,7 @@ public class WorldHandler
             ItemStack silkStack = null;
             ITemporalToolModule smelt = null;
 
-            if(heldItem != null && heldItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) heldItem.getItem()).isTemporal(heldItem))
+            if(heldItem != null) //&& heldItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) heldItem.getItem()).isTemporal(heldItem))
             {
                 if(NBTHelper.hasTag(heldItem, NBTTags.COMPONENT_INVENTORY))
                 {

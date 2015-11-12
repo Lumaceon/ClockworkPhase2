@@ -29,9 +29,6 @@ public class ItemClockworkAxe extends ItemClockworkTool
         if(tension <= 0)
             return 1.0F;
 
-        if(isTemporal(is) && getTimeSand(is) <= 0)
-            return 1.0F;
-
         int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
         if(speed <= 0)
             return 1.0F;

@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.tile;
 
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
 import lumaceon.mods.clockworkphase2.api.time.ITimezone;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
@@ -208,10 +207,13 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
         TimezoneHandler.INTERNAL.pingAndCleanTimezones();
     }
 
-    @Override
+    /*@Override
     public float getRange() {
         return timestreamItems[8] != null ? timestreamItems[8].getItem() instanceof ITimeSand ? timestreamItems[8].getItem() instanceof ITemporalCore ? 128 : 12 : 0 : 0; //Temporal core - 128. ITimeSand - 12.
-    }
+    }*/
+
+    @Override
+    public float getRange() { return 128F; }
 
     @Override
     public int getX() {

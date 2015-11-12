@@ -3,10 +3,9 @@ package lumaceon.mods.clockworkphase2.client.gui;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.container.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
 import lumaceon.mods.clockworkphase2.container.ContainerTimeWell;
-import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimeWell;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +42,7 @@ public class GuiHandler implements IGuiHandler
         switch(ID)
         {
             case 0:
-                return new GuiAssemblyTable(player.inventory, world);
+                return new GuiAssemblyTable(player.inventory, world, x, y, z);
             case 1:
                 return new GuiTimeWell(player.inventory, (TileTimeWell) te, world);
             case 4:

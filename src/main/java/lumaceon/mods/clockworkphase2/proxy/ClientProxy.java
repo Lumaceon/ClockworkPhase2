@@ -2,7 +2,9 @@ package lumaceon.mods.clockworkphase2.proxy;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
+import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTDA;
@@ -11,7 +13,6 @@ import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderEle
 import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
-import lumaceon.mods.clockworkphase2.tile.TileAssemblyTableSB;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
@@ -20,13 +21,14 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.util.List;
+
 public class ClientProxy extends CommonProxy
 {
     @Override
     public void registerTESR()
     {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTableSB.class, new TESRAssemblyTableSB());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalFurnace.class, new TESRTemporalFurnace());
     }
@@ -83,5 +85,16 @@ public class ClientProxy extends CommonProxy
         if(worldProvider instanceof WorldProviderForthAge)
             return new SkyRendererForthAge();
         return null;
+    }
+
+    @Override
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
+    {
+        switch (id)
+        {
+            case 0: //Mainspring
+                ButtonInitializer.initializeMainspringButtons(buttonList, container, guiLeft, guiTop);
+                break;
+        }
     }
 }

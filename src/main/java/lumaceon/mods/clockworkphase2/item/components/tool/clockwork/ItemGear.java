@@ -39,11 +39,6 @@ public class ItemGear extends ItemClockworkPhase implements IClockworkComponent
     }
 
     @Override
-    public int getMemory(ItemStack is) {
-        return memory;
-    }
-
-    @Override
     public int getHarvestLevel(ItemStack is) {
         return harvestLevel;
     }

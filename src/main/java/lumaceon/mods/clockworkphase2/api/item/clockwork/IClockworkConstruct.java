@@ -11,7 +11,6 @@ public interface IClockworkConstruct
     public int getMaxTension(ItemStack item);
     public int getQuality(ItemStack item);
     public int getSpeed(ItemStack item);
-    public int getMemory(ItemStack item);
     public void setTension(ItemStack item, int tension);
     public void setHarvestLevels(ItemStack item, int harvestLevel);
 

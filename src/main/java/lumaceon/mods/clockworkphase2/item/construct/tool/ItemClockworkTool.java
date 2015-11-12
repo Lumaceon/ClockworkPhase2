@@ -1,39 +1,36 @@
 package lumaceon.mods.clockworkphase2.item.construct.tool;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
-import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalableTool;
-import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.util.*;
-import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotClockworkCore;
-import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotMainspring;
-import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotTemporalModule;
+import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.network.PacketHandler;
-import lumaceon.mods.clockworkphase2.network.message.MessageStandardParticleSpawn;
-import lumaceon.mods.clockworkphase2.util.AssemblyHelper;
+import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 import java.util.List;
 import java.util.Set;
 
-public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct, ITimeSand, ITemporalableTool
+public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct
 {
     public ItemClockworkTool(float var1, ToolMaterial toolMaterial, Set set, String unlocalizedName)
     {
@@ -75,9 +72,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
         if(tension <= 0)
             return 1.0F;
 
-        if(isTemporal(is) && getTimeSand(is) <= 0)
-            return 1.0F;
-
         int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
         if(speed <= 0)
             return 1.0F;
@@ -92,9 +86,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
         {
             int tension = NBTHelper.INT.get(stack, NBTTags.CURRENT_TENSION);
             if(tension <= 0)
-                return 1.0F;
-
-            if(isTemporal(stack) && getTimeSand(stack) <= 0)
                 return 1.0F;
 
             int speed = NBTHelper.INT.get(stack, NBTTags.SPEED);
@@ -122,53 +113,11 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
 
         int quality = clockworkConstruct.getQuality(is);
         int speed = clockworkConstruct.getSpeed(is);
-        int memory = clockworkConstruct.getMemory(is);
         int tensionCost = ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perBlock, quality, speed);
 
         consumeTension(is, tensionCost);
 
-        if((isTemporal(is) && TemporalToolHelper.getTimeSand(is) <= 0) || !(entity instanceof EntityPlayer))
-            return true;
-
-        if(memory > 0 && !world.isRemote)
-        {
-            EntityPlayer player = (EntityPlayer)entity;
-            int chance = TimeSandHelper.getTimeSandChance(player.experienceLevel);
-            if(world.rand.nextInt(chance) == 0)
-            {
-                addTimeSand(is, player, ClockworkHelper.getTimeSandFromStats(memory));
-                PacketHandler.INSTANCE.sendToAllAround(new MessageStandardParticleSpawn(x + 0.5, y + 0.5, z + 0.5, 0, 20), new NetworkRegistry.TargetPoint(world.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 64));
-            }
-        }
         return true;
-    }
-
-    @Override
-    public AssemblySlot[] initializeSlots(ItemStack workItem)
-    {
-        AssemblySlot[] slots = new AssemblySlot[]
-                {
-                        new AssemblySlotMainspring(Textures.ITEM.MAINSPRING, 0.68F, 0.37F),
-                        new AssemblySlotClockworkCore(Textures.ITEM.CLOCKWORK_CORE, 0.55F, 0.5F),
-                        new AssemblySlotTemporalModule(Textures.MISC.TEMPORAL_MODULE, 0.2F, 0.2F),
-                        new AssemblySlotTemporalModule(Textures.MISC.TEMPORAL_MODULE, 0.5F, 0.2F),
-                        new AssemblySlotTemporalModule(Textures.MISC.TEMPORAL_MODULE, 0.8F, 0.2F)
-                };
-        AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(workItem, slots);
-        return slots;
-    }
-
-    @Override
-    public void onComponentChange(ItemStack workItem, AssemblySlot[] slots)
-    {
-        AssemblyHelper.COMPONENT_CHANGE.assembleClockworkConstruct(workItem, slots[0], slots[1]);
-        if(workItem != null && isTemporal(workItem))
-            AssemblyHelper.COMPONENT_CHANGE.assembleClockworkTemporalTool(workItem, slots);
-    }
-
-    @Override
-    public void saveComponentInventory(ItemStack workItem, AssemblySlot[] slots) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(workItem, slots);
     }
 
     @Override
@@ -189,11 +138,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     @Override
     public int getSpeed(ItemStack item) {
         return ClockworkHelper.getSpeed(item);
-    }
-
-    @Override
-    public int getMemory(ItemStack item) {
-        return ClockworkHelper.getMemory(item);
     }
 
     @Override
@@ -236,81 +180,34 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
-    public long getTimeSand(ItemStack item) {
-        return TimeSandHelper.getTimeSand(item);
+    public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
+        return Textures.GUI.ASSEMBLY_TABLE;
     }
 
     @Override
-    public long getMaxTimeSand(ItemStack item) {
-        return TimeConverter.WEEK * 2;
+    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
+        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 2, 1);
+        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
+        return inventory;
     }
 
     @Override
-    public void setTimeSand(ItemStack item, EntityPlayer player, long timeSand) {
-        TimeSandHelper.setTimeSand(item, timeSand);
-    }
-
-    @Override
-    public void setTimeSand(ItemStack item, long timeSand) {
-        setTimeSand(item, null, timeSand);
-    }
-
-    @Override
-    public long addTimeSand(ItemStack item, EntityPlayer player, long amount)
+    public Slot[] getContainerSlots(IInventory inventory)
     {
-        long amountAdded = TimeSandHelper.addTimeSand(item, player, amount);
-        if(!isTemporal(item) && getTimeSand(item) >= TimeConverter.WEEK)
-        {
-            setTemporal(item, true);
-            player.addChatComponentMessage(new ChatComponentText("Your " + getItemStackDisplayName(item) + " is beginning to radiate a temporal energy outside it's own."));
-        }
-        return amountAdded;
+        return new Slot[]
+                {
+                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring),
+                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore),
+                };
     }
 
     @Override
-    public long addTimeSand(ItemStack item, long amount) {
-        return TimeSandHelper.addTimeSand(item, amount);
+    public void saveComponentInventory(ContainerAssemblyTable container) {
+        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
     }
 
     @Override
-    public long consumeTimeSand(ItemStack item, EntityPlayer player, long amount)
-    {
-        long amountConsumed = TimeSandHelper.consumeTimeSand(item, player, amount);
-        if(isTemporal(item) && !TemporalToolHelper.hasTemporalCore(item) && getTimeSand(item) < TimeConverter.WEEK)
-        {
-            setTemporal(item, false);
-            player.addChatComponentMessage(new ChatComponentText("Your " + getItemStackDisplayName(item) + "'s temporal energy begins to fade."));
-        }
-        return amountConsumed;
-    }
-
-    @Override
-    public long consumeTimeSand(ItemStack item, long amount) {
-        return TimeSandHelper.consumeTimeSand(item, amount);
-    }
-
-    @Override
-    public boolean isTemporal(ItemStack item) {
-        return NBTHelper.BOOLEAN.get(item, NBTTags.TEMPORAL_STATE);
-    }
-
-    @Override
-    public void setTemporal(ItemStack item, boolean isTemporal) {
-        NBTHelper.BOOLEAN.set(item, NBTTags.TEMPORAL_STATE, isTemporal);
-    }
-
-    @Override
-    public int getNumberOfPassiveTemporalFunctions(ItemStack item) {
-        return isTemporal(item) ? Math.max(NBTHelper.INT.get(item, NBTTags.TIMESTREAM_COUNT), 1) : 0;
-    }
-
-    @Override
-    public void setNumberOfPassiveTemporalFunctions(ItemStack item, int numberOfFunctions) {
-        NBTHelper.INT.set(item, NBTTags.TIMESTREAM_COUNT, numberOfFunctions);
-    }
-
-    @Override
-    public void addTemporalInformation(ItemStack item, EntityPlayer player, List list) {
-        InformationDisplay.addTemporalToolInformation(item, player, list);
+    public void onInventoryChange(ContainerAssemblyTable container) {
+        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkTool(container, 0, 1);
     }
 }

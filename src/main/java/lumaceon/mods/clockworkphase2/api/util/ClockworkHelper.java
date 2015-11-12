@@ -10,7 +10,6 @@ public class ClockworkHelper
     public static final String CURRENT_TENSION = "current_tension";
     public static final String QUALITY = "cp_quality";
     public static final String SPEED = "cp_speed";
-    public static final String MEMORY = "cp_memory";
 
     public static int getMaxTension(ItemStack item) {
         return NBTHelper.hasTag(item, MAX_TENSION) ? NBTHelper.INT.get(item, MAX_TENSION) : 0;
@@ -26,10 +25,6 @@ public class ClockworkHelper
 
     public static int getSpeed(ItemStack item) {
         return NBTHelper.hasTag(item, SPEED) ? NBTHelper.INT.get(item, SPEED) : 0;
-    }
-
-    public static int getMemory(ItemStack item) {
-        return NBTHelper.hasTag(item, MEMORY) ? NBTHelper.INT.get(item, MEMORY) : 0;
     }
 
     public static void setTension(ItemStack item, int tension) {
@@ -105,9 +100,5 @@ public class ClockworkHelper
     public static int getTensionCostFromStats(int baseCost, int quality, int speed) {
         float efficiency = (float) speed / quality;
         return (int) Math.round(baseCost * Math.pow(efficiency, 2));
-    }
-
-    public static int getTimeSandFromStats(int memory) {
-        return (int) (3 * (Math.pow(memory, 1.5)));
     }
 }

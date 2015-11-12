@@ -6,7 +6,6 @@ public interface IClockworkComponent
 {
     public int getQuality(ItemStack is);
     public int getSpeed(ItemStack is);
-    public int getMemory(ItemStack is);
 
     /**
      * Default clockwork tools will take on the greatest harvest level found in their components.

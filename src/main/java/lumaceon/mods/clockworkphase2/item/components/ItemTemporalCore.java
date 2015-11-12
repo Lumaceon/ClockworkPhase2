@@ -1,31 +1,16 @@
 package lumaceon.mods.clockworkphase2.item.components;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
-import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
-import lumaceon.mods.clockworkphase2.api.util.TimeSandHelper;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
-import lumaceon.mods.clockworkphase2.lib.Textures;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class ItemTemporalCore extends ItemClockworkPhase implements ITemporalCore
+public class ItemTemporalCore extends ItemClockworkPhase
 {
     public ItemTemporalCore(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addTemporalCoreInformation(is, list);
-    }
-
-    @Override
+    /*@Override
     public long getTimeSand(ItemStack item) {
         return TimeSandHelper.getTimeSand(item);
     }
@@ -68,5 +53,5 @@ public class ItemTemporalCore extends ItemClockworkPhase implements ITemporalCor
     @Override
     public ResourceLocation getGlyphTexture(ItemStack item) {
         return Textures.PARTICLE.TIME_SAND;
-    }
+    }*/
 }

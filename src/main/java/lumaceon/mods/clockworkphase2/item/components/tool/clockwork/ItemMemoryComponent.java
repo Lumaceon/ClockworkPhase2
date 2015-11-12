@@ -39,11 +39,6 @@ public class ItemMemoryComponent extends ItemClockworkPhase implements IClockwor
     }
 
     @Override
-    public int getMemory(ItemStack is) {
-        return memory;
-    }
-
-    @Override
     public int getHarvestLevel(ItemStack is) {
         return harvestLevel;
     }

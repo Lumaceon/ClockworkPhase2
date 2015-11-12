@@ -21,7 +21,8 @@ public class Textures
 
         public static ResourceLocation TIME_WELL = new ResourceLocation(Reference.MOD_ID, "textures/gui/time_well.png");
 
-        public static ResourceLocation DEFAULT_ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
+        public static ResourceLocation ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
+        public static ResourceLocation ASSEMBLY_TABLE_MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_mainspring.png");
     }
 
     public static class GLYPH

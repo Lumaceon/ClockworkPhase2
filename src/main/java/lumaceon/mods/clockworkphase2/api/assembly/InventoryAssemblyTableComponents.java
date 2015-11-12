@@ -1,17 +1,16 @@
-package lumaceon.mods.clockworkphase2.inventory;
+package lumaceon.mods.clockworkphase2.api.assembly;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public class InventoryUpdated implements IInventory
+public class InventoryAssemblyTableComponents implements IInventory
 {
     private ItemStack[] inventory;
-    private Container eventHandler;
+    private ContainerAssemblyTable eventHandler;
     private int stackLimit;
 
-    public InventoryUpdated(Container eventHandler, int size, int stackLimit)
+    public InventoryAssemblyTableComponents(ContainerAssemblyTable eventHandler, int size, int stackLimit)
     {
         this.inventory = new ItemStack[size];
         this.eventHandler = eventHandler;
@@ -41,7 +40,7 @@ public class InventoryUpdated implements IInventory
             {
                 itemstack = this.inventory[p_70298_1_];
                 this.inventory[p_70298_1_] = null;
-                this.eventHandler.onCraftMatrixChanged(this);
+                this.eventHandler.onCraftMatrixComponentChanged();
                 return itemstack;
             }
             else
@@ -53,7 +52,7 @@ public class InventoryUpdated implements IInventory
                     this.inventory[p_70298_1_] = null;
                 }
 
-                this.eventHandler.onCraftMatrixChanged(this);
+                this.eventHandler.onCraftMatrixComponentChanged();
                 return itemstack;
             }
         }
@@ -82,7 +81,17 @@ public class InventoryUpdated implements IInventory
     public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_)
     {
         this.inventory[p_70299_1_] = p_70299_2_;
-        this.eventHandler.onCraftMatrixChanged(this);
+        this.eventHandler.onCraftMatrixComponentChanged();
+    }
+
+    /**
+     * Used to set items before inventory initialization.
+     * @param slot Target slot.
+     * @param item New item to set.
+     */
+    public void setInventorySlotContentsRemotely(int slot, ItemStack item)
+    {
+        this.inventory[slot] = item;
     }
 
     @Override

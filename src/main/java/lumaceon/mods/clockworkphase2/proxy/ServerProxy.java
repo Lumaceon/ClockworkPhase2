@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
@@ -23,4 +23,6 @@ public class ServerProxy extends CommonProxy
     public void clearWorldRenderers(World world, int x, int y, int z) {}
     @Override
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) { return null; }
+    @Override
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop) {}
 }

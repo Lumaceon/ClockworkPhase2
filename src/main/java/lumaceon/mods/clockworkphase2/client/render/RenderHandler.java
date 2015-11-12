@@ -3,7 +3,6 @@ package lumaceon.mods.clockworkphase2.client.render;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
-import lumaceon.mods.clockworkphase2.api.item.temporal.ITemporalCore;
 import lumaceon.mods.clockworkphase2.api.time.ITimezone;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.block.BlockCelestialCompassSB;
@@ -122,8 +121,8 @@ public class RenderHandler
                 if(timezone != null)
                 {
                     ItemStack coreStack = timezone.getTimezoneModule(8);
-                    if(coreStack != null && coreStack.getItem() instanceof ITemporalCore)
-                        TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);
+                    //if(coreStack != null && coreStack.getItem() instanceof ITemporalCore)
+                    //    TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);
                     TIMEZONE.renderCelestialCompassItems(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ);
                     if(!TIMEZONE.timezoneSequences.containsKey(timezone) || TIMEZONE.timezoneSequences.get(timezone) == null)
                         TIMEZONE.timezoneSequences.put(timezone, ParticleSequence.spawnParticleSequence(new ParticleSequenceTimezone(timezone, area[0] + 0.5, area[1] + 0.5, area[2] + 0.5)));
@@ -304,8 +303,8 @@ public class RenderHandler
                         continue;
                     if(itemToRender.getItem() instanceof ITimezoneModule)
                         loc = ((ITimezoneModule) itemToRender.getItem()).getGlyphTexture(itemToRender);
-                    else if(itemToRender.getItem() instanceof ITemporalCore)
-                        loc = ((ITemporalCore) itemToRender.getItem()).getGlyphTexture(itemToRender);
+                    //else if(itemToRender.getItem() instanceof ITemporalCore)
+                    //    loc = ((ITemporalCore) itemToRender.getItem()).getGlyphTexture(itemToRender);
                     GL11.glPushMatrix();
                     GL11.glColor3f(1, 1, 1);
                     mc.renderEngine.bindTexture(loc);

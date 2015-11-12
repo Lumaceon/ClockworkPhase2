@@ -1,8 +1,11 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
+
+import java.util.List;
 
 public interface IProxy
 {
@@ -13,4 +16,5 @@ public interface IProxy
     public void addWorldRenderer(World world, int x, int y, int z, int ID);
     public void clearWorldRenderers(World world, int x, int y, int z);
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider);
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop);
 }

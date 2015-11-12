@@ -12,6 +12,6 @@ public abstract class RuinTemplate
     public RuinTemplate(ResourceLocation schematicLocation, String uniqueName) {
         this.schematicLocation = schematicLocation;
         this.uniqueName = uniqueName; //TODO - cleanup resourceLocation schematic loading.
-        ruinSchematic = SchematicUtility.INSTANCE.loadModSchematic("NewModSchematic", true);
+        ruinSchematic = SchematicUtility.INSTANCE.loadModSchematic("NewSchematic", true);
     }
 }

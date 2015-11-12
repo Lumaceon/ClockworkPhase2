@@ -30,6 +30,9 @@ public class Ruins
         Area schematicArea = template.ruinSchematic.getAreaFromWorldCoordinates(this.x, this.y, this.z);
         if(schematicArea.doAreasIntersect(chunkArea))
         {
+            System.out.println(schematicArea.getWidth() + ", " + template.ruinSchematic.width);
+            System.out.println(schematicArea.getHeight() + ", " + template.ruinSchematic.height);
+            System.out.println(schematicArea.getLength() + ", " + template.ruinSchematic.length);
             int[] offset = template.ruinSchematic.getSchematicToWorldOffset(this.x, this.y, this.z);
             int xTemp, yTemp, zTemp;
             Block block;

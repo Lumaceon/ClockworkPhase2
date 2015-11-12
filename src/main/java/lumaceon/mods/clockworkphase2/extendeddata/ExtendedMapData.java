@@ -1,8 +1,6 @@
 package lumaceon.mods.clockworkphase2.extendeddata;
 
 import lumaceon.mods.clockworkphase2.api.RuinRegistry;
-import lumaceon.mods.clockworkphase2.api.RuinTemplate;
-import lumaceon.mods.clockworkphase2.init.ModRuins;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.ruins.Ruins;
@@ -56,7 +54,8 @@ public class ExtendedMapData extends WorldSavedData
 
             }
         }*/
-        forthAgeRuins.add(new Ruins(ModRuins.testRuins, 0, 64, 0));
+        //fifthAgeRuins.add(new Ruins(ModRuins.testRuins, 50, 64, 200));
+        //fifthAgeRuins.add(new Ruins(ModRuins.smallerRuins, 300, 64, -20));
         this.ruinMapGenerated = true;
         markDirty();
     }

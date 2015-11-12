@@ -2,25 +2,33 @@ package lumaceon.mods.clockworkphase2.item.components.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
-import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
-import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblableButtons;
+import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
+import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotMainspringMetal;
-import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotMainspringWind;
-import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
-import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.util.AssemblyHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
+import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Textures;
+import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
-public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, IMainspring
+public class ItemMainspring extends ItemClockworkPhase implements IAssemblableButtons, IMainspring
 {
     public int maxTension = 1000000;
 
@@ -34,62 +42,6 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
     }
 
     @Override
-    public AssemblySlot[] initializeSlots(ItemStack workItem)
-    {
-        AssemblySlot[] slots = new AssemblySlot[]
-                {
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.3F, 0.3F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.5F, 0.3F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.7F, 0.3F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.3F, 0.5F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.7F, 0.5F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.3F, 0.7F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.5F, 0.7F),
-                        new AssemblySlotMainspringMetal(Textures.ITEM.CLOCKWORK_CORE, 0.7F, 0.7F),
-                        new AssemblySlotMainspringWind(Textures.MISC.VALID, 0.5F, 0.5F, 2.0F, 2.0F)
-                };
-        AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(workItem, slots);
-        return slots;
-    }
-
-    @Override
-    public void onComponentChange(ItemStack workItem, AssemblySlot[] slots) {}
-
-    @Override
-    public void saveComponentInventory(ItemStack workItem, AssemblySlot[] slots) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(workItem, slots);
-    }
-
-    public void addMetal(AssemblySlot[] slots, ItemStack workItem)
-    {
-        int baseValues = 0;
-        for(AssemblySlot slot : slots)
-        {
-            ItemStack item = slot.getItemStack();
-            if(item != null)
-                baseValues += MainspringMetalRegistry.getValue(item);
-        }
-        if(baseValues > 0)
-        {
-            int currentMaxTension = NBTHelper.INT.get(workItem, NBTTags.MAX_TENSION);
-            int newMaxTension = currentMaxTension + baseValues;
-            if(currentMaxTension == getMaxSize(workItem))
-                return;
-            if(newMaxTension > getMaxSize(workItem))
-                newMaxTension = getMaxSize(workItem);
-            if(workItem.getMaxDamage() == 0 || getMaxSize(workItem) / workItem.getMaxDamage() == 0)
-                workItem.setItemDamage(0);
-            else
-                workItem.setItemDamage(workItem.getMaxDamage() - newMaxTension / (getMaxSize(workItem) / workItem.getMaxDamage()));
-
-            NBTHelper.INT.set(workItem, NBTTags.MAX_TENSION,  newMaxTension);
-            for(AssemblySlot slot : slots)
-                if(slot.getItemStack() != null)
-                    slot.setItemStack(null);
-        }
-    }
-
-    @Override
     public int getMaxSize(ItemStack item) {
         return maxTension;
     }
@@ -97,5 +49,83 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblable, 
     @Override
     public int getTension(ItemStack item) {
         return ClockworkHelper.getMaxTension(item);
+    }
+
+    @Override
+    public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
+        return Textures.GUI.ASSEMBLY_TABLE_MAINSPRING;
+    }
+
+    @Override
+    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
+        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 8, 1);
+        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
+        return inventory;
+    }
+
+    @Override
+    public Slot[] getContainerSlots(IInventory inventory) {
+        return new Slot[]
+                {
+                        new SlotMainspringMetal(inventory, 0, 124, 50),
+                        new SlotMainspringMetal(inventory, 1, 142, 50),
+                        new SlotMainspringMetal(inventory, 2, 160, 50),
+                        new SlotMainspringMetal(inventory, 3, 160, 68),
+                        new SlotMainspringMetal(inventory, 4, 160, 86),
+                        new SlotMainspringMetal(inventory, 5, 142, 86),
+                        new SlotMainspringMetal(inventory, 6, 124, 86),
+                        new SlotMainspringMetal(inventory, 7, 124, 68),
+                };
+    }
+
+    @Override
+    public void saveComponentInventory(ContainerAssemblyTable container) {
+        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
+    }
+
+    @Override
+    public void onInventoryChange(ContainerAssemblyTable container) {} //NOOP
+
+    @Override
+    public void initButtons(List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
+    {
+        ClockworkPhase2.proxy.initializeButtonsViaProxy(0, buttonList, container, guiLeft, guiTop);
+    }
+
+    @Override
+    public void onButtonClicked(int buttonID, List buttonList) {
+        PacketHandler.INSTANCE.sendToServer(new MessageMainspringButton());
+    }
+
+    public static void onButtonClickedServer(ContainerAssemblyTable container)
+    {
+        ItemStack mainItem = container.mainInventory.getStackInSlot(0);
+        if(mainItem != null && mainItem.getItem() instanceof ItemMainspring)
+        {
+            int baseValues = 0;
+            for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)
+            {
+                ItemStack item = container.componentInventory.getStackInSlot(n);
+                if(item != null)
+                    baseValues += MainspringMetalRegistry.getValue(item);
+            }
+            if(baseValues > 0)
+            {
+                int currentMaxTension = NBTHelper.INT.get(mainItem, NBTTags.MAX_TENSION);
+                int newMaxTension = currentMaxTension + baseValues;
+                if(currentMaxTension == Defaults.TENSION.maxMainspringTension)
+                    return;
+                if(newMaxTension > Defaults.TENSION.maxMainspringTension)
+                    newMaxTension = Defaults.TENSION.maxMainspringTension;
+                if(mainItem.getMaxDamage() == 0 || Defaults.TENSION.maxMainspringTension / mainItem.getMaxDamage() == 0)
+                    mainItem.setItemDamage(0);
+                else
+                    mainItem.setItemDamage(mainItem.getMaxDamage() - newMaxTension / (Defaults.TENSION.maxMainspringTension / mainItem.getMaxDamage()));
+
+                NBTHelper.INT.set(mainItem, NBTTags.MAX_TENSION,  newMaxTension);
+                for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)
+                    container.componentInventory.setInventorySlotContents(n, null);
+            }
+        }
     }
 }

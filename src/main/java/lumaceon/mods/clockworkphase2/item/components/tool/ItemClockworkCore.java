@@ -2,19 +2,21 @@ package lumaceon.mods.clockworkphase2.item.components.tool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.api.assembly.AssemblySlot;
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblyContainer;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyComponents;
-import lumaceon.mods.clockworkphase2.api.item.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
+import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.inventory.assemblyslot.AssemblySlotClockworkComponent;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockworkComponent;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.util.AssemblyHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 
@@ -30,37 +32,29 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     }
 
     @Override
-    public AssemblySlot[] initializeSlots(ItemStack assemblyItem)
-    {
-        AssemblySlot[] slots = new AssemblySlot[]
-                {
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.3F, 0.3F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.5F, 0.3F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.7F, 0.3F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.3F, 0.5F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.5F, 0.5F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.7F, 0.5F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.3F, 0.7F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.5F, 0.7F),
-                        new AssemblySlotClockworkComponent(Textures.ITEM.WOOD_GEAR, 0.7F, 0.7F)
-                };
-        AssemblyHelper.INITIALIZE_SLOTS.loadStandardComponentInventory(assemblyItem, slots);
-        return slots;
+    public int getQuality(ItemStack item) {
+        return ClockworkHelper.getQuality(item);
     }
 
     @Override
-    public void onComponentChange(ItemStack workItem, AssemblySlot[] slots) {
-        AssemblyHelper.COMPONENT_CHANGE.assembleClockwork(workItem, slots);
+    public int getSpeed(ItemStack item) {
+        return ClockworkHelper.getSpeed(item);
     }
 
     @Override
-    public void saveComponentInventory(ItemStack workItem, AssemblySlot[] slots) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveNewComponentInventory(workItem, slots);
+    public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
+        return Textures.GUI.ASSEMBLY_TABLE;
     }
 
-    /*@Override
-    public Slot[] initializeSlots(IAssemblyContainer container, IInventory inventory)
-    {
+    @Override
+    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
+        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 10, 1);
+        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
+        return inventory;
+    }
+
+    @Override
+    public Slot[] getContainerSlots(IInventory inventory) {
         return new Slot[]
                 {
                         new SlotClockworkComponent(inventory, 0, 0, 0),
@@ -74,31 +68,15 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
                         new SlotClockworkComponent(inventory, 8, 18, 36),
                         new SlotClockworkComponent(inventory, 9, 18, 54)
                 };
-    }*/
-
-    /*@Override
-    public void initButtons(List buttonList, IAssemblyContainer container, int guiLeft, int guiTop) {}
-
-    @Override
-    public void onButtonActivated(int buttonID, List buttonList) {}
-
-    @Override
-    public ResourceLocation getBackgroundTexture(IAssemblyContainer container) {
-        return Textures.GUI.DEFAULT_ASSEMBLY_TABLE;
-    }*/
-
-    @Override
-    public int getQuality(ItemStack item) {
-        return ClockworkHelper.getQuality(item);
     }
 
     @Override
-    public int getSpeed(ItemStack item) {
-        return ClockworkHelper.getSpeed(item);
+    public void saveComponentInventory(ContainerAssemblyTable container) {
+        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
     }
 
     @Override
-    public int getMemory(ItemStack item) {
-        return ClockworkHelper.getMemory(item);
+    public void onInventoryChange(ContainerAssemblyTable container) {
+        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkCore(container);
     }
 }

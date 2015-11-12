@@ -31,16 +31,18 @@ public class ModRuins
 
     }
 
-    public static RuinTemplate testRuins;
+    //public static RuinTemplate testRuins;
     public static void initForthAge()
     {
-        testRuins = new RuinTemplateTest(RuinTemplates.FORTH.TEST, "TEEEEESSSSSST");
+        //testRuins = new RuinTemplateTest(RuinTemplates.FORTH.TEST, "TEEEEESSSSSST");
 
-        RuinRegistry.registerRuins(testRuins, "TEEEEESSSSSST");
+        //RuinRegistry.registerRuins(testRuins, "TEEEEESSSSSST");
     }
 
+    //public static RuinTemplate smallerRuins;
     public static void initFifthAge()
     {
-
+        //smallerRuins = new RuinTemplateTest(RuinTemplates.FIFTH.TEST, "A Small Test");
+        //RuinRegistry.registerRuins(smallerRuins, "A Small Test");
     }
 }

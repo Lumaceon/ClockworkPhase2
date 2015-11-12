@@ -4,7 +4,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
-import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import lumaceon.mods.clockworkphase2.network.message.MessageTemporalInfluence;
 import net.minecraft.client.Minecraft;

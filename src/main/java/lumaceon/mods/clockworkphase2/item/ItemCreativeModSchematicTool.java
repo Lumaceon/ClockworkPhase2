@@ -40,10 +40,10 @@ public class ItemCreativeModSchematicTool extends ItemClockworkPhase
     @Override
     public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
     {
-        if(!world.isRemote)
+        if(world.isRemote)
         {
             Area area = new Area(NBTHelper.INT.get(item, "x1"), NBTHelper.INT.get(item, "y1"), NBTHelper.INT.get(item, "z1"), NBTHelper.INT.get(item, "x2"), NBTHelper.INT.get(item, "y2"), NBTHelper.INT.get(item, "z2"));
-            SchematicUtility.INSTANCE.createModSchematic(area, (short) 0, "NewSchematic");
+            SchematicUtility.INSTANCE.createModSchematic(world, area, (short) 0, "NewSchematic");
             player.addChatComponentMessage(new ChatComponentText("Created new schematic with a block size of (" + area.getBlockCount() + ")"));
         }
         return item;

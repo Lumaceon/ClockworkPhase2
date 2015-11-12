@@ -1,22 +1,18 @@
 package lumaceon.mods.clockworkphase2.util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.lib.Reference;
+import cpw.mods.fml.server.FMLServerHandler;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,26 +20,68 @@ public class SchematicUtility
 {
     public static final SchematicUtility INSTANCE = new SchematicUtility();
 
+    public File modFileDirectory;
+    public String modID;
+    public File mcDataDirectory;
+
+    public World clientWorld;
+
+    /**
+     * Used to set the location of your mod's file directory (most commonly the .jar file, though it varies).
+     * Most mods will wish to pass in the value of FMLPreInitializationEvent.getSourceFile().
+     * @param file A file representing your mod's file directory.
+     * @param modID The ID of your mod.
+     */
+    public void setModResourceLocation(File file, String modID) {
+        modFileDirectory = file;
+        this.modID = modID;
+    }
+
+    /**
+     * Used on the client to save and load from the modschematics folder in Minecraft's main directory.
+     * @param mcDataDir Minecraft.mcDataDir or Minecraft's top data folder.
+     */
+    public void setMinecraftDirectory(File mcDataDir) {
+        this.mcDataDirectory = mcDataDir;
+    }
+
+    private File getSchematicFile(String fileName, boolean defaultResource)
+    {
+        File file;
+        if(defaultResource)
+            file = new File(modFileDirectory, "assets\\" + this.modID + "\\schematics\\" + fileName + ".modschematic");
+        else
+        {
+            if(FMLCommonHandler.instance().getEffectiveSide().isServer() && FMLServerHandler.instance().getServer() != null)
+                file = FMLServerHandler.instance().getServer().getFile("\\modschematics\\" + fileName + ".modschematic");
+            else if(this.mcDataDirectory != null)
+                file = new File(this.mcDataDirectory.getName(), "\\modschematics\\" + fileName + ".modschematic");
+            else
+            {
+                Logger.error("Attempted to load schematic file\'" + fileName + ".modschematic\' without specifying the Minecraft file directory.");
+                return null;
+            }
+        }
+        return file;
+    }
+
     /**
      * Loads a .modschematic file and returns a ModSchematic class. Does not load .schematic files.
      * @param fileName The name of the file to load (file extension should not be included).
-     * @param defaultResource If true, checks the schematics folder under clockworkphase2 resources.
+     * @param defaultResource If true, checks the schematics folder in your mods resources.
      *                        If false, checks modschematics folder (which is a sub of the main MC Directory).
      * @return The loaded ModSchematic.
      */
     public ModSchematic loadModSchematic(String fileName, boolean defaultResource)
     {
+        if(modFileDirectory == null)
+        {
+            Logger.error("Attempted to load schematic file\'" + fileName + ".modschematic\' server-side without specifying your mod\'s file directory.");
+            return null;
+        }
         try
         {
-            InputStream is;
-            if(defaultResource)
-            {
-                ResourceLocation resourceLocation = new ResourceLocation(Reference.MOD_ID, "schematics/" + fileName + ".modschematic");
-                IResource resource = Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation);
-                is = resource.getInputStream();
-            }
-            else
-                is = new FileInputStream(new File(Minecraft.getMinecraft().mcDataDir.getName(), "\\modschematics\\" + fileName + ".modschematic"));
+            InputStream is = new FileInputStream(getSchematicFile(fileName, defaultResource));
             NBTTagCompound nbt = CompressedStreamTools.readCompressed(is);
             is.close();
             NBTTagList tileEntities = nbt.getTagList("TileEntities", 10);
@@ -105,7 +143,7 @@ public class SchematicUtility
     /**
      * Loads a .schematic file and returns a ModSchematic class. Does not load .modschematic files.
      * @param fileName The name of the file to load (file extension should not be included).
-     * @param defaultResource If true, checks the schematics folder under clockworkphase2 resources.
+     * @param defaultResource If true, checks the schematics folder under your mods resources.
      *                        If false, checks modschematics folder (which is a sub of the main MC Directory).
      * @return The loaded Schematic.
      */
@@ -113,11 +151,7 @@ public class SchematicUtility
     {
         try
         {
-            InputStream is;
-            if(defaultResource)
-                is = this.getClass().getClassLoader().getResourceAsStream("assets/" + Reference.MOD_ID + "/schematics/" + fileName);
-            else
-                is = new FileInputStream(new File(Minecraft.getMinecraft().mcDataDir.getName(), "\\modschematics\\" + fileName + ".modschematic"));
+            InputStream is = new FileInputStream(getSchematicFile(fileName, defaultResource));
             NBTTagCompound nbt = CompressedStreamTools.readCompressed(is);
             is.close();
             NBTTagList tileEntities = nbt.getTagList("TileEntities", 10);
@@ -145,20 +179,30 @@ public class SchematicUtility
      * @param fileName The name of the file to create, which is automatically given the .modschematic file extension.
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void createModSchematic(Area area, short horizon, String fileName)
+    public void createModSchematic(World world, Area area, short horizon, String fileName)
     {
-        Minecraft mc = Minecraft.getMinecraft();
-        if(mc.theWorld == null || area == null || fileName == null)
+        if(world == null)
+        {
+            Logger.error("Attempted to create a schematics with a null world.");
             return;
-        World world = mc.theWorld;
+        }
         TileEntity te;
         Block blc;
         try
         {
-            File newFile = new File(Minecraft.getMinecraft().mcDataDir.getName(), "\\modschematics");
-            newFile.mkdir();
-            newFile = new File(newFile, fileName + ".modschematic");
-            FileOutputStream output = new FileOutputStream(newFile);
+            File schematicFolderLocation;
+            if(FMLServerHandler.instance().getServer() != null)
+                schematicFolderLocation = FMLServerHandler.instance().getServer().getFile("\\modschematics");
+            else if(this.mcDataDirectory != null)
+                schematicFolderLocation = new File(this.mcDataDirectory.getName(), "\\modschematics");
+            else
+            {
+                Logger.error("Attempted to create a schematic file without specifying the Minecraft file directory.");
+                return;
+            }
+            schematicFolderLocation.mkdir();
+            schematicFolderLocation = new File(schematicFolderLocation, fileName + ".modschematic");
+            FileOutputStream output = new FileOutputStream(schematicFolderLocation);
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setShort("Width", area.getWidth());
             nbt.setShort("Height", area.getHeight());
@@ -211,6 +255,7 @@ public class SchematicUtility
             nbt.setTag("TileEntities", tileList);
             nbt.setTag("IDMap", idMapping);
             CompressedStreamTools.writeCompressed(nbt, output);
+            output.close();
         }
         catch (IOException ex)
         {

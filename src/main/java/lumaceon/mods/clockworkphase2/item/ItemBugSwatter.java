@@ -97,7 +97,7 @@ public class ItemBugSwatter extends ItemClockworkPhase
     public ItemStack onItemRightClick(ItemStack bugSwatter, World world, EntityPlayer player)
     {
         if(!world.isRemote)
-            SchematicUtility.INSTANCE.createModSchematic(new Area((int) player.posX - 50, (int) player.posY - 50, (int) player.posZ - 50, (int) player.posX + 50, (int) player.posY + 50, (int) player.posZ + 50), (short) 64, "NewModSchematic");
+            SchematicUtility.INSTANCE.createModSchematic(world, new Area((int) player.posX - 50, (int) player.posY - 50, (int) player.posZ - 50, (int) player.posX + 50, (int) player.posY + 50, (int) player.posZ + 50), (short) 64, "NewModSchematic");
         return bugSwatter;
     }
 }

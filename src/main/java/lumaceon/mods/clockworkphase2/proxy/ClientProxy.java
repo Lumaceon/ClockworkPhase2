@@ -5,6 +5,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
+import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTDA;
@@ -16,15 +17,22 @@ import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.io.File;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy
 {
+    @Override
+    public World getClientWorld() {
+        return Minecraft.getMinecraft() == null ? null : Minecraft.getMinecraft().theWorld;
+    }
+
     @Override
     public void registerTESR()
     {
@@ -96,5 +104,10 @@ public class ClientProxy extends CommonProxy
                 ButtonInitializer.initializeMainspringButtons(buttonList, container, guiLeft, guiTop);
                 break;
         }
+    }
+
+    @Override
+    public File getMinecraftDataDirectory() {
+        return Minecraft.getMinecraft().mcDataDir;
     }
 }

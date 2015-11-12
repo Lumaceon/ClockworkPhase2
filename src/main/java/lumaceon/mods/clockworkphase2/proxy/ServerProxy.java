@@ -5,10 +5,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 
+import java.io.File;
 import java.util.List;
 
 public class ServerProxy extends CommonProxy
 {
+    @Override
+    public World getClientWorld() { return null; }
     @Override
     public void registerTESR() {}
     @Override
@@ -25,4 +28,6 @@ public class ServerProxy extends CommonProxy
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) { return null; }
     @Override
     public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop) {}
+    @Override
+    public File getMinecraftDataDirectory() { return null; }
 }

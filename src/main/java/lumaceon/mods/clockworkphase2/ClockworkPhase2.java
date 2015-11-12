@@ -21,6 +21,7 @@ import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
 import lumaceon.mods.clockworkphase2.util.Logger;
+import lumaceon.mods.clockworkphase2.util.SchematicUtility;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorRuins;
 import lumaceon.mods.clockworkphase2.world.provider.firstage.WorldProviderFirstAge;
@@ -50,6 +51,9 @@ public class ClockworkPhase2
     public void preInitialize(FMLPreInitializationEvent event)
     {
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
+        SchematicUtility.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
+        SchematicUtility.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
+        SchematicUtility.INSTANCE.loadModSchematic("NewSchematic", false);
 
         ModFluids.init();
 

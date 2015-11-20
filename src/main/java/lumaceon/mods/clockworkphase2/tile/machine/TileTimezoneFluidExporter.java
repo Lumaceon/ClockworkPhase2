@@ -58,12 +58,12 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                     if(!anyFound && tank != null && tank.fluid != null)
                         anyFound = true;
 
-                    if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) == tank.fluid.fluidID)
+                    if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) == tank.fluid.getFluidID())
                     {
                         found = true;
                         indexFound = n;
                     }
-                    else if(found && tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) != tank.fluid.fluidID)
+                    else if(found && tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) != tank.fluid.getFluidID())
                     {
                         targetFluid = tank.fluid.getFluid().getName();
                         setStateAndUpdate(FluidRegistry.getFluidID(targetFluid));
@@ -76,7 +76,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                     for(int n = 0; n < Math.min(tanks.length, indexFound); n++)
                     {
                         tank = tanks[n];
-                        if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) != tank.fluid.fluidID)
+                        if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) != tank.fluid.getFluidID())
                         {
                             targetFluid = tank.fluid.getFluid().getName();
                             setStateAndUpdate(FluidRegistry.getFluidID(targetFluid));

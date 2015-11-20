@@ -22,7 +22,7 @@ group= "lumaceon.mods.clockworkphase2" // http://maven.apache.org/guides/mini/gu
 archivesBaseName = "clockworkphase2"
 
 minecraft {
-    version = "1.7.10-10.13.2.1291"
+    version = "1.7.10-10.13.4.1558-1.7.10"
     runDir = "eclipse"
 }
 

@@ -61,7 +61,7 @@ public class ItemTimezoneModuleTank extends ItemClockworkPhase implements ITimez
         {
             if(!doFill)
                 return Math.min(getMaxCapacity(item, firstEmpty), resource.amount);
-            NBTHelper.STRING.set(item, "fluid_name_" + firstEmpty, FluidRegistry.getFluidName(resource.fluidID));
+            NBTHelper.STRING.set(item, "fluid_name_" + firstEmpty, FluidRegistry.getFluidName(resource.getFluidID()));
             NBTHelper.INT.set(item, "fluid_amount_" + firstEmpty, Math.min(getMaxCapacity(item, firstEmpty), resource.amount));
             return Math.min(getMaxCapacity(item, firstEmpty), resource.amount);
         }

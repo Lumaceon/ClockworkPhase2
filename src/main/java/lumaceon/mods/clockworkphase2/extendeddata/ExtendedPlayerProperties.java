@@ -23,10 +23,10 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties
     public PlayerPropertiesPAC PACProperties;
 
     //Represents overall progression in the game, as dictated by achievements.
-    public long temporalInfluence = 0;
+    public int temporalInfluence = 0;
 
     //Used in rendering to show the increase of temporal influence.
-    public long previousTemporalInfluence = 0;
+    public int previousTemporalInfluence = 0;
 
     public int totalAchievementWeight = 0;
     public int totalSpecialAchievementsEarned = 0;
@@ -52,12 +52,12 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
-        compound.setLong("temporalInfluence", temporalInfluence);
+        compound.setInteger("temporalInfluence", temporalInfluence);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound compound) {
-        temporalInfluence = compound.getLong("temporalInfluence");
+        temporalInfluence = compound.getInteger("temporalInfluence");
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties
         if(player != null && player.worldObj != null && !player.worldObj.isRemote)
         {
             EntityPlayerMP playerMP = ((EntityPlayerMP)player);
-            long baseInfluence = 0;
+            int baseInfluence = 0;
             int pageMultiplier = 1;
             int specialAchievements = 0;
             for(Object object : AchievementList.achievementList)
@@ -101,7 +101,7 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties
             }
 
             previousTemporalInfluence = temporalInfluence;
-            temporalInfluence = baseInfluence * pageMultiplier * (long) Math.pow(specialAchievements + 1, TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent);
+            temporalInfluence = baseInfluence * pageMultiplier * (int) Math.pow(specialAchievements + 1, TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent);
 
             if(previousTemporalInfluence != temporalInfluence)
                 PacketHandler.INSTANCE.sendTo(new MessageTemporalInfluence(temporalInfluence), playerMP);

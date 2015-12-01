@@ -18,7 +18,7 @@ public interface ITimeContainerItem
      * @param simulate If true, a simulation will occur, but no time will actually be added.
      * @return The amount of time that was added successfully (or would have been added if simulated).
      */
-    public long receiveTime(ItemStack timeItem, long maxReceive, boolean simulate);
+    public int receiveTime(ItemStack timeItem, int maxReceive, boolean simulate);
 
     /**
      * Extracts time from the timeItem passed in.
@@ -27,15 +27,15 @@ public interface ITimeContainerItem
      * @param simulate If true, a simulation will occur, but no time will actually be removed.
      * @return The amount of time that was removed successfully (or would have been removed if simulated).
      */
-    public long extractTime(ItemStack timeItem, long maxExtract, boolean simulate);
+    public int extractTime(ItemStack timeItem, int maxExtract, boolean simulate);
 
     /**
      * Returns the maximum amount of time that can be stored in this ItemStack.
      */
-    public long getMaxCapacity(ItemStack timeItem);
+    public int getMaxCapacity(ItemStack timeItem);
 
     /**
      * Returns the amount of time that's stored in this ItemStack.
      */
-    public long getTimeStored(ItemStack timeItem);
+    public int getTimeStored(ItemStack timeItem);
 }

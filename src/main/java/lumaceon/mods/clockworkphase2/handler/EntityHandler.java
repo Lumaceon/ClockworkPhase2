@@ -3,9 +3,8 @@ package lumaceon.mods.clockworkphase2.handler;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
-import lumaceon.mods.clockworkphase2.entity.EntityPAC;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleMobRepellent;
@@ -15,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 public class EntityHandler
 {
@@ -59,7 +57,7 @@ public class EntityHandler
     {
         if(!event.isCanceled())
         {
-            ITimezone timezone = TimezoneHandler.getTimeZone(event.x, event.y, event.z, event.world);
+            ITimezoneProvider timezone = TimezoneHandler.getTimeZone(event.x, event.y, event.z, event.world);
             if(timezone != null)
             {
                 ItemStack timestream;

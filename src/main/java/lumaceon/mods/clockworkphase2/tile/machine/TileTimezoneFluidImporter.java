@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.tile.machine;
 
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
 {
     public ItemStack getTimezoneModule()
     {
-        ITimezone timezone = getTimezone();
+        ITimezoneProvider timezone = getTimezone();
         ItemStack timezoneModule;
         if(timezone != null)
         {

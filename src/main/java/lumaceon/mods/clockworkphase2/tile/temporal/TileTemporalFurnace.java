@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileTemporalFurnace extends TileTemporalInventory implements ITimeReceiver, ITimeProvider
 {
-    public long ticksPerAction = 200; //10 seconds, the time of a normal furnace.
+    public int ticksPerAction = 200; //10 seconds, the time of a normal furnace.
 
     public TileTemporalFurnace() {
         super();
@@ -83,7 +83,7 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
      */
     private boolean consumeTime()
     {
-        long timeConsumed = Math.min(timeStorage.getTimeStored(), ticksPerAction);
+        int timeConsumed = Math.min(timeStorage.getTimeStored(), ticksPerAction);
         if(timeConsumed < ticksPerAction) //Could not consume all time required, take additional time from timezone.
         {
             timeStorage.extractTime(timeStorage.getTimeStored(), false);
@@ -101,26 +101,26 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
     public void setStateAndUpdate(int state) {}
 
     @Override
-    public long extractTime(long maxExtract, boolean simulate) {
+    public int extractTime(int maxExtract, boolean simulate) {
         return timeStorage.extractTime(maxExtract, simulate);
     }
 
     @Override
-    public long receiveTime(long maxReceive, boolean simulate) {
+    public int receiveTime(int maxReceive, boolean simulate) {
         return timeStorage.receiveTime(maxReceive, simulate);
     }
 
     @Override
-    public long getMaxCapacity() {
+    public int getMaxCapacity() {
         return timeStorage.getMaxCapacity();
     }
 
     @Override
-    public long getTimeStored() {
+    public int getTimeStored() {
         return timeStorage.getTimeStored();
     }
 
-    public long getEmptySpace() {
+    public int getEmptySpace() {
         return timeStorage.getEmptySpace();
     }
 

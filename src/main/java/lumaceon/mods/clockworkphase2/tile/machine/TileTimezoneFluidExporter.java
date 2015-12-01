@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.tile.machine;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
@@ -108,7 +108,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
 
     public ItemStack getTimezoneModule()
     {
-        ITimezone timezone = getTimezone();
+        ITimezoneProvider timezone = getTimezone();
         ItemStack timezoneModule;
         if(timezone != null)
         {

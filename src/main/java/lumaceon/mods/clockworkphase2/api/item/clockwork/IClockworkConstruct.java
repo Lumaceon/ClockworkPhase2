@@ -5,14 +5,19 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public interface IClockworkConstruct
+public interface IClockworkConstruct extends IClockwork
 {
+    public int getTier(ItemStack item);
     public int getTension(ItemStack item);
     public int getMaxTension(ItemStack item);
-    public int getQuality(ItemStack item);
-    public int getSpeed(ItemStack item);
     public void setTension(ItemStack item, int tension);
-    public void setHarvestLevels(ItemStack item, int harvestLevel);
+
+    /**
+     * Sets the 'tier' of this construct's clockwork. This is context sensitive; in clockwork tools this sets the
+     * appropriate harvest level, but in machines it's usually ignored or saved and referred to directly.
+     * @param tier The tier to set up, which is set by the highest tiered component in the clockwork.
+     */
+    public void setTier(ItemStack item, int tier);
 
     /**
      * Used by a winding box and similar contraptions to add tension to this item.
@@ -33,5 +38,5 @@ public interface IClockworkConstruct
      * @param item The itemstack to add information for.
      * @param list The list of informative lines.
      */
-    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list);
+    public void addConstructInformation(ItemStack item, EntityPlayer player, List list);
 }

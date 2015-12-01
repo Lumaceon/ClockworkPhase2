@@ -5,16 +5,16 @@ import net.minecraft.item.ItemStack;
 
 public interface ITimeSand
 {
-    public long getTimeSand(ItemStack item);
+    public int getTimeSand(ItemStack item);
 
     /**
      * Returns only this item's max time sand, does not take into account internal temporal cores.
      * @param item Item to check.
      * @return The max time sand for this item.
      */
-    public long getMaxTimeSand(ItemStack item);
-    public void setTimeSand(ItemStack item, EntityPlayer player, long timeSand);
-    public void setTimeSand(ItemStack item, long timeSand); //Overloaded version for when there is no player involved.
+    public int getMaxTimeSand(ItemStack item);
+    public void setTimeSand(ItemStack item, EntityPlayer player, int timeSand);
+    public void setTimeSand(ItemStack item, int timeSand); //Overloaded version for when there is no player involved.
     /**
      * Called to add time sand to the given itemstack.
      * @param item The itemstack to add timesand to.
@@ -22,8 +22,8 @@ public interface ITimeSand
      * @param amount The amount of time sand to add.
      * @return The amount of time sand that was successfully added.
      */
-    public long addTimeSand(ItemStack item, EntityPlayer player, long amount);
-    public long addTimeSand(ItemStack item, long amount); //Overloaded version for when there is no player involved.
+    public int addTimeSand(ItemStack item, EntityPlayer player, int amount);
+    public int addTimeSand(ItemStack item, int amount); //Overloaded version for when there is no player involved.
 
     /**
      * Called to remove time sand from the given itemstack.
@@ -32,6 +32,6 @@ public interface ITimeSand
      * @param amount The amount of time sand to consume.
      * @return The amount of time sand that was successfully consumed.
      */
-    public long consumeTimeSand(ItemStack item, EntityPlayer player, long amount);
-    public long consumeTimeSand(ItemStack item, long amount); //Overloaded version for when there is no player involved.
+    public int consumeTimeSand(ItemStack item, EntityPlayer player, int amount);
+    public int consumeTimeSand(ItemStack item, int amount); //Overloaded version for when there is no player involved.
 }

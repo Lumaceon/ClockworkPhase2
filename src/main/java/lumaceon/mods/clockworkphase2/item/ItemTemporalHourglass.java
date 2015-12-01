@@ -16,9 +16,9 @@ import java.util.List;
 
 public class ItemTemporalHourglass extends ItemClockworkPhase implements ITimeSupplierItem
 {
-    public long capacity;
+    public int capacity;
 
-    public ItemTemporalHourglass(int maxStack, int maxDamage, long capacity, String unlocalizedName) {
+    public ItemTemporalHourglass(int maxStack, int maxDamage, int capacity, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
         this.capacity = capacity;
     }
@@ -32,40 +32,40 @@ public class ItemTemporalHourglass extends ItemClockworkPhase implements ITimeSu
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        list.add("Time Stored: " + Colors.AQUA + TimeConverter.parseNumber(NBTHelper.LONG.get(is, NBTTags.TIME), 3));
+        list.add("Time Stored: " + Colors.AQUA + TimeConverter.parseNumber(NBTHelper.INT.get(is, NBTTags.TIME), 3));
     }
 
     @Override
-    public long receiveTime(ItemStack timeItem, long maxReceive, boolean simulate)
+    public int receiveTime(ItemStack timeItem, int maxReceive, boolean simulate)
     {
-        long currentTime = NBTHelper.LONG.get(timeItem, NBTTags.TIME);
-        long timeReceived = Math.min(getEmptySpace(timeItem), maxReceive);
+        int currentTime = NBTHelper.INT.get(timeItem, NBTTags.TIME);
+        int timeReceived = Math.min(getEmptySpace(timeItem), maxReceive);
         if(!simulate)
-            NBTHelper.LONG.set(timeItem, NBTTags.TIME, currentTime + timeReceived);
+            NBTHelper.INT.set(timeItem, NBTTags.TIME, currentTime + timeReceived);
         return timeReceived;
     }
 
     @Override
-    public long extractTime(ItemStack timeItem, long maxExtract, boolean simulate)
+    public int extractTime(ItemStack timeItem, int maxExtract, boolean simulate)
     {
-        long currentTime = NBTHelper.LONG.get(timeItem, NBTTags.TIME);
-        long timeExtracted = Math.min(currentTime, maxExtract);
+        int currentTime = NBTHelper.INT.get(timeItem, NBTTags.TIME);
+        int timeExtracted = Math.min(currentTime, maxExtract);
         if(!simulate)
-            NBTHelper.LONG.set(timeItem, NBTTags.TIME, currentTime - timeExtracted);
+            NBTHelper.INT.set(timeItem, NBTTags.TIME, currentTime - timeExtracted);
         return timeExtracted;
     }
 
     @Override
-    public long getMaxCapacity(ItemStack timeItem) {
+    public int getMaxCapacity(ItemStack timeItem) {
         return capacity;
     }
 
     @Override
-    public long getTimeStored(ItemStack timeItem) {
-        return NBTHelper.LONG.get(timeItem, NBTTags.TIME);
+    public int getTimeStored(ItemStack timeItem) {
+        return NBTHelper.INT.get(timeItem, NBTTags.TIME);
     }
 
-    public long getEmptySpace(ItemStack timeItem) {
+    public int getEmptySpace(ItemStack timeItem) {
         return getMaxCapacity(timeItem) - getTimeStored(timeItem);
     }
 }

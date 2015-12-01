@@ -4,8 +4,10 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.container.ContainerClockworkFurnace;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
 import lumaceon.mods.clockworkphase2.container.ContainerTimeWell;
+import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkFurnace;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimeWell;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +31,8 @@ public class GuiHandler implements IGuiHandler
                 return new ContainerAssemblyTable(player.inventory, world);
             case 1:
                 return new ContainerTimeWell(player.inventory, (TileTimeWell) te, world);
+            case 2:
+                return new ContainerClockworkFurnace(player.inventory, (TileClockworkFurnace) te, world);
             case 4:
                 return new ContainerTemporalFurnace(player.inventory, (TileTemporalFurnace) te, world);
         }
@@ -45,6 +49,8 @@ public class GuiHandler implements IGuiHandler
                 return new GuiAssemblyTable(player.inventory, world, x, y, z);
             case 1:
                 return new GuiTimeWell(player.inventory, (TileTimeWell) te, world);
+            case 2:
+                return new GuiClockworkFurnace(player.inventory, (TileClockworkFurnace) te, world);
             case 4:
                 return new GuiTemporalFurnace(player.inventory, (TileTemporalFurnace) te, world);
         }

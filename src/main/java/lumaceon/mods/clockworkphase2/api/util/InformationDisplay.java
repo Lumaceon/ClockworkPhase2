@@ -23,6 +23,11 @@ public class InformationDisplay
 
     public static int defaultTensionPerBlock = 50;
 
+    /**
+     * Adds information based on a simple clockwork component (such as a gear).
+     * @param component
+     * @param list
+     */
     public static void addClockworkComponentInformation(ItemStack component, List list)
     {
         if(component.getItem() instanceof IClockworkComponent)
@@ -30,7 +35,7 @@ public class InformationDisplay
             IClockworkComponent clockworkComponent = (IClockworkComponent) component.getItem();
             int quality = clockworkComponent.getQuality(component);
             int speed = clockworkComponent.getSpeed(component);
-            int harvestLevel = clockworkComponent.getHarvestLevel(component);
+            int harvestLevel = clockworkComponent.getTier(component);
             String color = getColorFromComponentStat(quality);
 
             if(quality > 0)
@@ -42,7 +47,13 @@ public class InformationDisplay
         }
     }
 
-    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean isTool)
+    /**
+     * Used as a conventional tool-tip for clockwork itemstacks. Call during addInformation() in a custom Item class.
+     * @param construct Itemstack representing the construct.
+     * @param player Player looking at the itemstack.
+     * @param list A list of information to add to.
+     */
+    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean flag)
     {
         if(construct.getItem() instanceof IClockworkConstruct)
         {
@@ -57,7 +68,7 @@ public class InformationDisplay
             {
                 list.add("");
                 list.add(Colors.BLUE + "~/Construct Details\\~");
-                clockworkConstruct.addClockworkInformation(construct, player, list);
+                clockworkConstruct.addConstructInformation(construct, player, list);
                 list.add(Colors.BLUE + "~/Construct Details\\~");
                 list.add("");
             }
@@ -83,17 +94,14 @@ public class InformationDisplay
 
     public static void addClockworkToolInformation(ItemStack tool, EntityPlayer player, List list)
     {
-        if(tool.getItem() instanceof IClockworkConstruct)
-        {
-            IClockworkConstruct clockworkComponent = (IClockworkConstruct) tool.getItem();
-            int quality = clockworkComponent.getQuality(tool);
-            int speed = clockworkComponent.getSpeed(tool);
-            int harvestLevel = Math.max(Math.max(tool.getItem().getHarvestLevel(tool, "pickaxe"), tool.getItem().getHarvestLevel(tool, "axe")), tool.getItem().getHarvestLevel(tool, "shovel"));
+        IClockworkConstruct clockworkComponent = (IClockworkConstruct) tool.getItem();
+        int quality = clockworkComponent.getQuality(tool);
+        int speed = clockworkComponent.getSpeed(tool);
+        int harvestLevel = Math.max(Math.max(tool.getItem().getHarvestLevel(tool, "pickaxe"), tool.getItem().getHarvestLevel(tool, "axe")), tool.getItem().getHarvestLevel(tool, "shovel"));
 
-            list.add(Colors.WHITE + "Harvest Level: " + Colors.GOLD + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
-            list.add(Colors.WHITE + "Mining Speed: " + Colors.GOLD + speed / 25);
-            list.add(Colors.WHITE + "Tension Per Block: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(defaultTensionPerBlock, quality, speed));
-        }
+        list.add(Colors.WHITE + "Harvest Level: " + Colors.GOLD + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
+        list.add(Colors.WHITE + "Mining Speed: " + Colors.GOLD + speed / 25);
+        list.add(Colors.WHITE + "Tension Per Block: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(defaultTensionPerBlock, quality, speed));
     }
 
     public static void addMainspringInformation(ItemStack is, List list)

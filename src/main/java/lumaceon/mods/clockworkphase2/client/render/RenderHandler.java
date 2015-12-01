@@ -3,7 +3,7 @@ package lumaceon.mods.clockworkphase2.client.render;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.block.BlockCelestialCompassSB;
 import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
@@ -117,7 +117,7 @@ public class RenderHandler
         {
             for(int[] area : TimezoneHandler.timezones)
             {
-                ITimezone timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
+                ITimezoneProvider timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
                 if(timezone != null)
                 {
                     ItemStack coreStack = timezone.getTimezoneModule(8);
@@ -139,9 +139,9 @@ public class RenderHandler
 
     public static class TIMEZONE
     {
-        public static Map<ITimezone, ParticleSequence> timezoneSequences = new HashMap<ITimezone, ParticleSequence>();
+        public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
 
-        public static void renderGlyph(int[] area, double x, double y, double z, ITimezone timezone)
+        public static void renderGlyph(int[] area, double x, double y, double z, ITimezoneProvider timezone)
         {
             if(mc.renderViewEntity != null)
             {

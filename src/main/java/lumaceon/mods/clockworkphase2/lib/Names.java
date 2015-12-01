@@ -7,6 +7,9 @@ public class Names
 {
     public class BLOCK
     {
+        public static final String CRANK = "crank";
+        public static final String CLOCKWORK_FURNACE = "clockwork_furnace";
+
         public static final String TIME_SAND = "time_sand";
         public static final String BASIC_WINDING_BOX = "basic_winding_box";
         public static final String ASSEMBLY_TABLE = "assembly_table";

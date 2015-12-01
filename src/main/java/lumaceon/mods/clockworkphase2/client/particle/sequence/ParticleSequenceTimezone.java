@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.particle.sequence;
 
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.client.particle.ParticleSpawn;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -10,10 +10,10 @@ import java.util.Random;
 public class ParticleSequenceTimezone extends ParticleSequence
 {
     public Random rand = new Random();
-    public ITimezone timezone;
+    public ITimezoneProvider timezone;
     public EntityFX entityFX;
 
-    public ParticleSequenceTimezone(ITimezone timezone, double x, double y, double z) {
+    public ParticleSequenceTimezone(ITimezoneProvider timezone, double x, double y, double z) {
         super(x, y, z);
         this.timezone = timezone;
     }

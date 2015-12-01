@@ -37,7 +37,8 @@ public class ItemClockworkAxe extends ItemClockworkTool
     }
 
     @Override
-    public void setHarvestLevels(ItemStack item, int harvestLevel) {
-        NBTHelper.INT.set(item, NBTTags.HARVEST_LEVEL_AXE, harvestLevel);
+    public void setTier(ItemStack item, int tier) {
+        super.setTier(item, tier);
+        NBTHelper.INT.set(item, NBTTags.HARVEST_LEVEL_AXE, tier);
     }
 }

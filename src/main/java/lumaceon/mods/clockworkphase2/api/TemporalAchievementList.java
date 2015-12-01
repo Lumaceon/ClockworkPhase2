@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TemporalAchievementList
 {
-    public static Map<Achievement, Long> achievementValues = new HashMap<Achievement, Long>(AchievementList.achievementList.size());
+    public static Map<Achievement, Integer> achievementValues = new HashMap<Achievement, Integer>(AchievementList.achievementList.size());
 
     public static boolean isAchievementListed(Achievement achievement) {
         return achievementValues.containsKey(achievement) && achievementValues.get(achievement) > 0;
@@ -27,9 +27,9 @@ public class TemporalAchievementList
 
     public static class INTERNAL
     {
-        public static long totalWeight = 0;
-        public static long specialAchievementCount = 0;
-        public static long maxPageMultiplier = 1;
+        public static int totalWeight = 0;
+        public static int specialAchievementCount = 0;
+        public static int maxPageMultiplier = 1;
         public static double specialAchievementMultiplierExponent = 1;
 
         /**
@@ -39,11 +39,11 @@ public class TemporalAchievementList
          * @param achievement The achievement to calculate.
          * @return The weight of this achievement.
          */
-        public static long registerAchievement(Achievement achievement)
+        public static int registerAchievement(Achievement achievement)
         {
             if(achievement.isIndependent || !achievement.isAchievement())
                 return 0;
-            long calculatedWeight = 60;
+            int calculatedWeight = 60;
             Achievement temp = achievement.parentAchievement;
 
             while(temp != null)
@@ -76,7 +76,7 @@ public class TemporalAchievementList
         }
 
         public static void setupSpecialMultiplier() {
-            long maxValueWithoutSpecialMultipliers = totalWeight * maxPageMultiplier;
+            int maxValueWithoutSpecialMultipliers = totalWeight * maxPageMultiplier;
             specialAchievementMultiplierExponent = Math.log(TimeConverter.INFINITE / maxValueWithoutSpecialMultipliers) / Math.log(specialAchievementCount + 1);
         }
     }

@@ -5,21 +5,21 @@ import io.netty.buffer.ByteBuf;
 
 public class MessageTemporalInfluence implements IMessage
 {
-    public long newTemporalInfluence;
+    public int newTemporalInfluence;
 
     public MessageTemporalInfluence() {}
 
-    public MessageTemporalInfluence(long newTemporalInfluence) {
+    public MessageTemporalInfluence(int newTemporalInfluence) {
         this.newTemporalInfluence = newTemporalInfluence;
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeLong(newTemporalInfluence);
+        buf.writeInt(newTemporalInfluence);
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        newTemporalInfluence = buf.readLong();
+        newTemporalInfluence = buf.readInt();
     }
 }

@@ -44,7 +44,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addClockworkConstructInformation(is, player, list, true);
+        InformationDisplay.addClockworkConstructInformation(is, player, list, flag);
     }
 
     @Override
@@ -121,6 +121,11 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
+    public int getTier(ItemStack item) {
+        return ClockworkHelper.getTier(item);
+    }
+
+    @Override
     public int getTension(ItemStack item) {
         return ClockworkHelper.getTension(item);
     }
@@ -146,7 +151,9 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
-    public void setHarvestLevels(ItemStack item, int harvestLevel) {}
+    public void setTier(ItemStack item, int tier) {
+        ClockworkHelper.setTier(item, tier);
+    }
 
     @Override
     public int addTension(ItemStack item, int tension) {
@@ -159,7 +166,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     }
 
     @Override
-    public void addClockworkInformation(ItemStack item, EntityPlayer player, List list) {
+    public void addConstructInformation(ItemStack item, EntityPlayer player, List list) {
         InformationDisplay.addClockworkToolInformation(item, player, list);
     }
 
@@ -208,6 +215,6 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
 
     @Override
     public void onInventoryChange(ContainerAssemblyTable container) {
-        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkTool(container, 0, 1);
+        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 1);
     }
 }

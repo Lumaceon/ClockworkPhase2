@@ -41,17 +41,17 @@ public class TileTimeCollector extends TileClockworkPhase implements ITimeProvid
     }
 
     @Override
-    public long extractTime(long maxExtract, boolean simulate) {
+    public int extractTime(int maxExtract, boolean simulate) {
         return timeStorage.extractTime(maxExtract, simulate);
     }
 
     @Override
-    public long getMaxCapacity() {
+    public int getMaxCapacity() {
         return timeStorage.getMaxCapacity();
     }
 
     @Override
-    public long getTimeStored() {
+    public int getTimeStored() {
         return timeStorage.getTimeStored();
     }
 

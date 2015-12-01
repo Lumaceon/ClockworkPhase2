@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.tile;
 
 import lumaceon.mods.clockworkphase2.api.item.ITimeSand;
 import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class TileCelestialCompass extends TileClockworkPhase implements ITimezone
+public class TileCelestialCompass extends TileClockworkPhase implements ITimezoneProvider
 {
     private int blocksToPlace = 96;
     private boolean registerTimezone = true;
@@ -242,7 +242,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public long getMaxTimeSand()
+    public int getMaxTimeSand()
     {
         if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
             return ((ITimeSand) timestreamItems[8].getItem()).getMaxTimeSand(timestreamItems[8]);
@@ -250,7 +250,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public long getTimeSand()
+    public int getTimeSand()
     {
         if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
             return ((ITimeSand) timestreamItems[8].getItem()).getTimeSand(timestreamItems[8]);
@@ -258,7 +258,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public void setTimeSand(long timeSand)
+    public void setTimeSand(int timeSand)
     {
         if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
         {
@@ -268,7 +268,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public long addTimeSand(long timeSand)
+    public int addTimeSand(int timeSand)
     {
         if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
         {
@@ -279,7 +279,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public long consumeTimeSand(long timeSand)
+    public int consumeTimeSand(int timeSand)
     {
         if(timestreamItems[8] != null && timestreamItems[8].getItem() instanceof ITimeSand)
         {

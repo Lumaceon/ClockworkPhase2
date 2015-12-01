@@ -2,9 +2,13 @@ package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
+import lumaceon.mods.clockworkphase2.block.clockwork.BlockClockworkFurnace;
+import lumaceon.mods.clockworkphase2.block.clockwork.BlockCrank;
+import lumaceon.mods.clockworkphase2.block.itemblock.ItemBlockClockworkFurnace;
 import lumaceon.mods.clockworkphase2.block.steammachine.BlockBoiler;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.tile.*;
+import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkFurnace;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidImporter;
@@ -19,6 +23,7 @@ public class ModBlocks
     public static void init()
     {
         //initSteamMachines();
+        initClockworkMachines();
         initTimeMachines();
         initFluids();
         initOres();
@@ -33,6 +38,17 @@ public class ModBlocks
         boiler = new BlockBoiler(Material.iron, Names.BLOCK.BOILER);
 
         GameRegistry.registerBlock(boiler, Names.BLOCK.BOILER);
+    }
+
+    public static Block crank;
+    public static Block clockworkFurnace;
+    public static void initClockworkMachines()
+    {
+        crank = new BlockCrank(Material.iron, Names.BLOCK.CRANK);
+        clockworkFurnace = new BlockClockworkFurnace(Material.iron, Names.BLOCK.CLOCKWORK_FURNACE);
+
+        GameRegistry.registerBlock(crank, Names.BLOCK.CRANK);
+        GameRegistry.registerBlock(clockworkFurnace, ItemBlockClockworkFurnace.class, Names.BLOCK.CLOCKWORK_FURNACE);
     }
 
     public static Block celestialCompass;
@@ -156,6 +172,7 @@ public class ModBlocks
 
     public static void initTE()
     {
+        GameRegistry.registerTileEntity(TileClockworkFurnace.class, Names.BLOCK.CLOCKWORK_FURNACE);
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerTileEntity(TileTemporalDisplacementAltar.class, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
         GameRegistry.registerTileEntity(TileTDA.class, Names.BLOCK.TDA);

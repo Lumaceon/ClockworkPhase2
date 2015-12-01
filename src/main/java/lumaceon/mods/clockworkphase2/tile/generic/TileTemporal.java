@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.tile.generic;
 
-import lumaceon.mods.clockworkphase2.api.time.ITimezone;
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public abstract class TileTemporal extends TileClockworkPhase
 {
-    private ITimezone timezone;
+    private ITimezoneProvider timezone;
     public TimeStorage timeStorage;
     protected int tz_x, tz_y, tz_z;
 
@@ -28,20 +28,20 @@ public abstract class TileTemporal extends TileClockworkPhase
             timeStorage.readFromNBT(nbt);
     }
 
-    public ITimezone getTimezone()
+    public ITimezoneProvider getTimezone()
     {
         if(timezone != null && Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) <= timezone.getRange())
             return timezone;
         TileEntity te = worldObj.getTileEntity(tz_x, tz_y, tz_z);
-        if(te != null && te instanceof ITimezone)
+        if(te != null && te instanceof ITimezoneProvider)
         {
             if(Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) > timezone.getRange())
                 return null;
-            timezone = (ITimezone) te;
+            timezone = (ITimezoneProvider) te;
             return timezone;
         }
 
-        ITimezone timezone = TimezoneHandler.getTimeZone(xCoord, yCoord, zCoord, worldObj);
+        ITimezoneProvider timezone = TimezoneHandler.getTimeZone(xCoord, yCoord, zCoord, worldObj);
         if(timezone != null)
             this.timezone = timezone;
         if(timezone == null || Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) <= timezone.getRange())

@@ -12,29 +12,29 @@ import java.util.Iterator;
  */
 public class TimeStorage implements ITimeStorage
 {
-    protected long time, capacity;
+    protected int time, capacity;
 
-    public TimeStorage(long capacity) {
+    public TimeStorage(int capacity) {
         this.capacity = capacity;
     }
 
     public TimeStorage writeToNBT(NBTTagCompound nbt)
     {
-        nbt.setLong("time_stored", time);
-        nbt.setLong("storage_cap", capacity);
+        nbt.setInteger("time_stored", time);
+        nbt.setInteger("storage_cap", capacity);
         return this;
     }
 
     public NBTTagCompound readFromNBT(NBTTagCompound nbt)
     {
         if(nbt.hasKey("time_stored"))
-            time = nbt.getLong("time_stored");
+            time = nbt.getInteger("time_stored");
         if(nbt.hasKey("storage_cap"))
-            capacity = nbt.getLong("storage_cap");
+            capacity = nbt.getInteger("storage_cap");
         return nbt;
     }
 
-    public void setCapacity(long capacity)
+    public void setCapacity(int capacity)
     {
         this.capacity = capacity;
         if(getTimeStored() > getMaxCapacity())
@@ -42,34 +42,34 @@ public class TimeStorage implements ITimeStorage
     }
 
     @Override
-    public long receiveTime(long maxReceive, boolean simulate)
+    public int receiveTime(int maxReceive, boolean simulate)
     {
-        long timeReceived = Math.min(getEmptySpace(), maxReceive);
+        int timeReceived = Math.min(getEmptySpace(), maxReceive);
         if(!simulate)
             time += timeReceived;
         return timeReceived;
     }
 
     @Override
-    public long extractTime(long maxExtract, boolean simulate)
+    public int extractTime(int maxExtract, boolean simulate)
     {
-        long timeExtracted = Math.min(time, maxExtract);
+        int timeExtracted = Math.min(time, maxExtract);
         if(!simulate)
             time -= timeExtracted;
         return timeExtracted;
     }
 
     @Override
-    public long getMaxCapacity() {
+    public int getMaxCapacity() {
         return capacity;
     }
 
     @Override
-    public long getTimeStored() {
+    public int getTimeStored() {
         return time;
     }
 
-    public long getEmptySpace() {
+    public int getEmptySpace() {
         return getMaxCapacity() - getTimeStored();
     }
 }

@@ -17,7 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver, ITimeProvider, IInventory
 {
-    long maxDrainPerTick = TimeConverter.SECOND * 10;
+    int maxDrainPerTick = TimeConverter.SECOND * 10;
 
     public TileTimeWell() {
         super();
@@ -49,22 +49,22 @@ public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver
     }
 
     @Override
-    public long extractTime(long maxExtract, boolean simulate) {
+    public int extractTime(int maxExtract, boolean simulate) {
         return timeStorage.extractTime(maxExtract, simulate);
     }
 
     @Override
-    public long receiveTime(long maxReceive, boolean simulate) {
+    public int receiveTime(int maxReceive, boolean simulate) {
         return timeStorage.receiveTime(maxReceive, simulate);
     }
 
     @Override
-    public long getMaxCapacity() {
+    public int getMaxCapacity() {
         return timeStorage.getMaxCapacity();
     }
 
     @Override
-    public long getTimeStored() {
+    public int getTimeStored() {
         return timeStorage.getTimeStored();
     }
 

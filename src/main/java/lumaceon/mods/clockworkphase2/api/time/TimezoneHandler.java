@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.api.time;
 
+import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -13,7 +14,7 @@ public class TimezoneHandler
      * @param world The world to search.
      * @return A Timezone class that holds timesand and other time-streams.
      */
-    public static ITimezone getTimeZone(double x, double y, double z, World world)
+    public static ITimezoneProvider getTimeZone(double x, double y, double z, World world)
     {
         for(int[] timezone : timezones)
         {
@@ -21,9 +22,9 @@ public class TimezoneHandler
             if(sameWorld)
             {
                 TileEntity te = world.getTileEntity(timezone[0], timezone[1], timezone[2]);
-                if(te != null && te instanceof ITimezone)
+                if(te != null && te instanceof ITimezoneProvider)
                 {
-                    ITimezone tz = (ITimezone) te;
+                    ITimezoneProvider tz = (ITimezoneProvider) te;
                     double dist = Math.sqrt(Math.pow(x - timezone[0], 2) + Math.pow(z - timezone[2], 2));
                     boolean inRange = dist <= tz.getRange();
 
@@ -41,7 +42,7 @@ public class TimezoneHandler
      * Returns the timezone encompassing the given area on the given dimension, or null if none exist.
      * @return A Timezone class that holds timesand and other time-streams.
      */
-    public static ITimezone getTimeZone(double x, double y, double z, int dimensionId)
+    public static ITimezoneProvider getTimeZone(double x, double y, double z, int dimensionId)
     {
         for(int[] timezone : timezones)
         {
@@ -49,9 +50,9 @@ public class TimezoneHandler
             if(sameWorld)
             {
                 TileEntity te = DimensionManager.getWorld(dimensionId).getTileEntity(timezone[0], timezone[1], timezone[2]);
-                if(te != null && te instanceof ITimezone)
+                if(te != null && te instanceof ITimezoneProvider)
                 {
-                    ITimezone tz = (ITimezone) te;
+                    ITimezoneProvider tz = (ITimezoneProvider) te;
                     double dist = Math.sqrt(Math.pow(x - timezone[0], 2) + Math.pow(z - timezone[2], 2));
                     boolean inRange = dist <= tz.getRange();
 
@@ -117,7 +118,7 @@ public class TimezoneHandler
                 timezone = timezones.get(n);
                 World world = DimensionManager.getWorld(timezone[3]);
                 TileEntity te = world.getTileEntity(timezone[0], timezone[1], timezone[2]);
-                boolean tzExists = te != null && te instanceof ITimezone;
+                boolean tzExists = te != null && te instanceof ITimezoneProvider;
                 if(!tzExists)
                 {
                     timezones.remove(n);

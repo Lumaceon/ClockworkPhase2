@@ -16,15 +16,15 @@ public interface ITimeReceiver extends ITimeConnection
      * @param simulate If true, a simulation will occur, but no time will actually be added.
      * @return The amount of time that was added successfully (or would have been added if simulated).
      */
-    public long receiveTime(long maxReceive, boolean simulate);
+    public int receiveTime(int maxReceive, boolean simulate);
 
     /**
      * Returns the maximum amount of time that can be stored.
      */
-    public long getMaxCapacity();
+    public int getMaxCapacity();
 
     /**
      * Returns the amount of time that's stored.
      */
-    public long getTimeStored();
+    public int getTimeStored();
 }

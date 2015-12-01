@@ -15,7 +15,7 @@ public interface ITimeStorage
      * @param simulate If true, a simulation will occur, but no time will actually be added.
      * @return The amount of time that was added successfully (or would have been added if simulated).
      */
-    public long receiveTime(long maxReceive, boolean simulate);
+    public int receiveTime(int maxReceive, boolean simulate);
 
     /**
      * Extract time from this storage.
@@ -23,15 +23,15 @@ public interface ITimeStorage
      * @param simulate If true, a simulation will occur, but no time will actually be removed.
      * @return The amount of time that was removed successfully (or would have been removed if simulated).
      */
-    public long extractTime(long maxExtract, boolean simulate);
+    public int extractTime(int maxExtract, boolean simulate);
 
     /**
      * Returns the maximum amount of time that can be stored.
      */
-    public long getMaxCapacity();
+    public int getMaxCapacity();
 
     /**
      * Returns the amount of time that's in this storage.
      */
-    public long getTimeStored();
+    public int getTimeStored();
 }

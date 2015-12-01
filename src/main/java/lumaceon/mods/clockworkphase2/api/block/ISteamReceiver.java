@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.api.steammachine;
+package lumaceon.mods.clockworkphase2.api.block;
 
 import net.minecraftforge.common.util.ForgeDirection;
 

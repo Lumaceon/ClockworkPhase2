@@ -11,7 +11,7 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
 {
     public ArrayList<InfluenceIncrease> additionList = new ArrayList<InfluenceIncrease>(5);
 
-    public long displayInfluence;
+    public int displayInfluence;
     public int sleepTimer = 0;
 
     public int yTranslation = -100;
@@ -41,7 +41,7 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
                     if(!additionList.isEmpty() && additionList.get(0).tweening == 10)
                     {
                         InfluenceIncrease ii = additionList.get(0);
-                        displayInfluence = Math.min((long) (ii.previousInfluence + ((ii.newInfluence - ii.previousInfluence) * (ii.ticksIncreased / 200.0))), ii.newInfluence);
+                        displayInfluence = Math.min((int) (ii.previousInfluence + ((ii.newInfluence - ii.previousInfluence) * (ii.ticksIncreased / 200.0))), ii.newInfluence);
                         ii.ticksIncreased++;
                         additionList.get(0).show = false;
 
@@ -66,7 +66,7 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
 
     }
 
-    public void displayInfluenceIncrease(long previousInfluence, long newInfluence)
+    public void displayInfluenceIncrease(int previousInfluence, int newInfluence)
     {
         additionList.add(new InfluenceIncrease(previousInfluence, newInfluence));
         if(!RenderHandler.overlayRenderList.contains(this))
@@ -75,12 +75,12 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
 
     public class InfluenceIncrease
     {
-        public long previousInfluence, newInfluence;
+        public int previousInfluence, newInfluence;
         public int tweening = 0;
         public int ticksIncreased = 0;
         public boolean show = true;
 
-        public InfluenceIncrease(long previousInfluence, long newInfluence)
+        public InfluenceIncrease(int previousInfluence, int newInfluence)
         {
             this.previousInfluence = previousInfluence;
             this.newInfluence = newInfluence;

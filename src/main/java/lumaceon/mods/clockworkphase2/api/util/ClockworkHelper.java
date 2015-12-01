@@ -2,33 +2,37 @@ package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.item.ItemStack;
 
 public class ClockworkHelper
 {
-    public static final String MAX_TENSION = "max_tension";
-    public static final String CURRENT_TENSION = "current_tension";
-    public static final String QUALITY = "cp_quality";
-    public static final String SPEED = "cp_speed";
-
     public static int getMaxTension(ItemStack item) {
-        return NBTHelper.hasTag(item, MAX_TENSION) ? NBTHelper.INT.get(item, MAX_TENSION) : 0;
+        return NBTHelper.hasTag(item, NBTTags.MAX_TENSION) ? NBTHelper.INT.get(item, NBTTags.MAX_TENSION) : 0;
     }
 
     public static int getTension(ItemStack item) {
-        return NBTHelper.hasTag(item, CURRENT_TENSION) ? NBTHelper.INT.get(item, CURRENT_TENSION) : 0;
+        return NBTHelper.hasTag(item, NBTTags.CURRENT_TENSION) ? NBTHelper.INT.get(item, NBTTags.CURRENT_TENSION) : 0;
     }
 
     public static int getQuality(ItemStack item) {
-        return NBTHelper.hasTag(item, QUALITY) ? NBTHelper.INT.get(item, QUALITY) : 0;
+        return NBTHelper.hasTag(item, NBTTags.QUALITY) ? NBTHelper.INT.get(item, NBTTags.QUALITY) : 0;
     }
 
     public static int getSpeed(ItemStack item) {
-        return NBTHelper.hasTag(item, SPEED) ? NBTHelper.INT.get(item, SPEED) : 0;
+        return NBTHelper.hasTag(item, NBTTags.SPEED) ? NBTHelper.INT.get(item, NBTTags.SPEED) : 0;
+    }
+
+    public static int getTier(ItemStack item) {
+        return NBTHelper.hasTag(item, NBTTags.TIER) ? NBTHelper.INT.get(item, NBTTags.TIER) : 0;
     }
 
     public static void setTension(ItemStack item, int tension) {
-        NBTHelper.INT.set(item, CURRENT_TENSION, tension);
+        NBTHelper.INT.set(item, NBTTags.CURRENT_TENSION, tension);
+    }
+
+    public static void setTier(ItemStack item, int tier) {
+        NBTHelper.INT.set(item, NBTTags.TIER, tier);
     }
 
     public static int addTension(ItemStack item, int tension)
@@ -100,5 +104,19 @@ public class ClockworkHelper
     public static int getTensionCostFromStats(int baseCost, int quality, int speed) {
         float efficiency = (float) speed / quality;
         return (int) Math.round(baseCost * Math.pow(efficiency, 2));
+    }
+
+    /**
+     * Used by machines (or items) that wish to have work speed increase exponentially with the speed stat. This method
+     * provides a standard most clockwork machines follow, which assumes a 'par' speed of 200.
+     * @param speed The speed of the clockwork.
+     * @return A multiplier for the work done per tick, which can be less than 1 in cases where speed is poor (<200).
+     */
+    public static double getStandardExponentialSpeedMultiplier(int speed)
+    {
+        if(speed <= 0)
+            return 0;
+        double d = (double) speed;
+        return Math.pow(d/200.0, 3.5);
     }
 }

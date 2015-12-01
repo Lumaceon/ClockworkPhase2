@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
-import lumaceon.mods.clockworkphase2.api.item.ITemporalToolModule;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
@@ -57,15 +56,15 @@ public class AssemblyHelper
                 {
                     quality += ((IClockworkComponent) item.getItem()).getQuality(item);
                     speed += ((IClockworkComponent) item.getItem()).getSpeed(item);
-                    harvestLevel = Math.max(harvestLevel, ((IClockworkComponent) item.getItem()).getHarvestLevel(item));
+                    harvestLevel = Math.max(harvestLevel, ((IClockworkComponent) item.getItem()).getTier(item));
                 }
             }
             NBTHelper.INT.set(mainItem, NBTTags.QUALITY, quality);
             NBTHelper.INT.set(mainItem, NBTTags.SPEED, speed);
-            NBTHelper.INT.set(mainItem, NBTTags.HARVEST_LEVEL, harvestLevel);
+            NBTHelper.INT.set(mainItem, NBTTags.TIER, harvestLevel);
         }
 
-        public static void assembleClockworkTool(ContainerAssemblyTable container, int mainspringSlotIndex, int clockworkSlotIndex)
+        public static void assembleClockworkConstruct(ContainerAssemblyTable container, int mainspringSlotIndex, int clockworkSlotIndex)
         {
             ItemStack mainItem = container.mainInventory.getStackInSlot(0);
             ItemStack mainspring = container.componentInventory.getStackInSlot(mainspringSlotIndex);
@@ -89,14 +88,14 @@ public class AssemblyHelper
                 NBTHelper.INT.set(mainItem, NBTTags.QUALITY, NBTHelper.INT.get(clockwork, NBTTags.QUALITY));
                 NBTHelper.INT.set(mainItem, NBTTags.SPEED, NBTHelper.INT.get(clockwork, NBTTags.SPEED));
                 if(mainItem.getItem() instanceof IClockworkConstruct)
-                    ((IClockworkConstruct) mainItem.getItem()).setHarvestLevels(mainItem, NBTHelper.INT.get(clockwork, NBTTags.HARVEST_LEVEL));
+                    ((IClockworkConstruct) mainItem.getItem()).setTier(mainItem, NBTHelper.INT.get(clockwork, NBTTags.TIER));
             }
             else
             {
                 NBTHelper.INT.set(mainItem, NBTTags.QUALITY, 0);
                 NBTHelper.INT.set(mainItem, NBTTags.SPEED, 0);
                 if(mainItem.getItem() instanceof IClockworkConstruct)
-                    ((IClockworkConstruct) mainItem.getItem()).setHarvestLevels(mainItem, -1);
+                    ((IClockworkConstruct) mainItem.getItem()).setTier(mainItem, -1);
             }
         }
     }

@@ -1,8 +1,8 @@
-package lumaceon.mods.clockworkphase2.api.time;
+package lumaceon.mods.clockworkphase2.api.block;
 
 import net.minecraft.item.ItemStack;
 
-public interface ITimezone
+public interface ITimezoneProvider
 {
     public float getRange();
     public int getX();
@@ -17,21 +17,21 @@ public interface ITimezone
 
     public void setTimestream(int index, ItemStack item);
 
-    public long getMaxTimeSand();
-    public long getTimeSand();
-    public void setTimeSand(long timeSand);
+    public int getMaxTimeSand();
+    public int getTimeSand();
+    public void setTimeSand(int timeSand);
 
     /**
      * Adds time sand to this timezone.
      * @param timeSand Amount of time sand to add to this timezone.
      * @return The amount of time sand successfully added.
      */
-    public long addTimeSand(long timeSand);
+    public int addTimeSand(int timeSand);
 
     /**
      * Consumes time sand from this timezone.
      * @param timeSand Amount of time sand to remove from this timezone.
      * @return The amount of time sand successfully consumed.
      */
-    public long consumeTimeSand(long timeSand);
+    public int consumeTimeSand(int timeSand);
 }

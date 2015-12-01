@@ -15,10 +15,10 @@ public class TimeHelper
      * from any of them, and this method will return false.
      * @return True if all the time was consumed, false if there isn't enough and none was consumed.
      */
-    public static boolean consumeTimeAllOrNothing(IInventory inventory, long timeToConsume)
+    public static boolean consumeTimeAllOrNothing(IInventory inventory, int timeToConsume)
     {
         ArrayList<ItemStack> timeSuppliers = new ArrayList<ItemStack>();
-        long timeAvailable = 0;
+        int timeAvailable = 0;
         for(int n = 0; n < inventory.getSizeInventory(); n++)
         {
             ItemStack is = inventory.getStackInSlot(n);
@@ -33,7 +33,7 @@ public class TimeHelper
             return false;
         else
         {
-            long timeConsumed = 0;
+            int timeConsumed = 0;
             for(ItemStack is : timeSuppliers)
             {
                 timeConsumed += ((ITimeSupplierItem) is.getItem()).extractTime(is, timeToConsume - timeConsumed, false);
@@ -50,9 +50,9 @@ public class TimeHelper
      * @param timeToConsume The amount of time to attempt to consume.
      * @return The amount of time that was successfully consumed.
      */
-    public static long consumeTimeMostPossible(IInventory inventory, long timeToConsume)
+    public static int consumeTimeMostPossible(IInventory inventory, int timeToConsume)
     {
-        long timeConsumed = 0;
+        int timeConsumed = 0;
         for(int n = 0; n < inventory.getSizeInventory(); n++)
         {
             ItemStack is = inventory.getStackInSlot(n);
@@ -66,9 +66,9 @@ public class TimeHelper
         return timeConsumed;
     }
 
-    public static long getTimeInInventory(IInventory inventory)
+    public static int getTimeInInventory(IInventory inventory)
     {
-        long timeFound = 0;
+        int timeFound = 0;
         for(int n = 0; n < inventory.getSizeInventory(); n++)
         {
             ItemStack is = inventory.getStackInSlot(n);
@@ -86,13 +86,13 @@ public class TimeHelper
      * @param temporalExcavator The temporal excavator itemstack.
      * @return The time, in ticks, it takes to break the block.
      */
-    public static long timeToBreakBlock(float blockHardness, EntityPlayer player, ItemStack temporalExcavator)
+    public static int timeToBreakBlock(float blockHardness, EntityPlayer player, ItemStack temporalExcavator)
     {
         float timeCostInSeconds = blockHardness * 1.5F / 8.0F;
         if(player.isInWater())
             timeCostInSeconds *= 5.0F;
         if(player.isAirBorne)
             timeCostInSeconds *= 5.0F;
-        return (long) (timeCostInSeconds * 20);
+        return (int) (timeCostInSeconds * 20);
     }
 }

@@ -42,7 +42,8 @@ public class ItemClockworkPickaxe extends ItemClockworkTool
     }
 
     @Override
-    public void setHarvestLevels(ItemStack item, int harvestLevel) {
-        NBTHelper.INT.set(item, NBTTags.HARVEST_LEVEL_PICKAXE, harvestLevel);
+    public void setTier(ItemStack item, int tier) {
+        super.setTier(item, tier);
+        NBTHelper.INT.set(item, NBTTags.HARVEST_LEVEL_PICKAXE, tier);
     }
 }

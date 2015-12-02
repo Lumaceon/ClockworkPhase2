@@ -1,6 +1,6 @@
-package lumaceon.mods.clockworkphase2.item.components.tool.temporal;
+package lumaceon.mods.clockworkphase2.item.components.clockworktool;
 
-import lumaceon.mods.clockworkphase2.api.item.ITemporalToolModule;
+import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
@@ -12,9 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public class ItemTemporalToolModuleHarvestTeleport extends ItemClockworkPhase implements ITemporalToolModule
+public class ItemToolUpgradeRelocate extends ItemClockworkPhase implements IToolUpgrade
 {
-    public ItemTemporalToolModuleHarvestTeleport(int maxStack, int maxDamage, String unlocalizedName) {
+    public ItemToolUpgradeRelocate(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 
@@ -36,7 +36,12 @@ public class ItemTemporalToolModuleHarvestTeleport extends ItemClockworkPhase im
     }
 
     @Override
-    public boolean isEnabled(ItemStack item) {
+    public void setActive(ItemStack item, boolean active) {
+        NBTHelper.BOOLEAN.set(item, NBTTags.ACTIVE, active);
+    }
+
+    @Override
+    public boolean getActive(ItemStack item) {
         return NBTHelper.BOOLEAN.get(item, NBTTags.ACTIVE);
     }
 
@@ -48,25 +53,5 @@ public class ItemTemporalToolModuleHarvestTeleport extends ItemClockworkPhase im
     @Override
     public float getSpeedMultiplier(ItemStack item) {
         return 1F;
-    }
-
-    @Override
-    public float getMemoryMultiplier(ItemStack item) {
-        return 1.5F;
-    }
-
-    @Override
-    public int getColorRed(ItemStack item) {
-        return 210;
-    }
-
-    @Override
-    public int getColorGreen(ItemStack item) {
-        return 0;
-    }
-
-    @Override
-    public int getColorBlue(ItemStack item) {
-        return 230;
     }
 }

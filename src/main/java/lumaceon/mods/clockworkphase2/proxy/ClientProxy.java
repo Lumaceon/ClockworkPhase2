@@ -6,6 +6,8 @@ import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
+import lumaceon.mods.clockworkphase2.client.keybind.KeyHandler;
+import lumaceon.mods.clockworkphase2.client.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTDA;
@@ -45,7 +47,9 @@ public class ClientProxy extends CommonProxy
     public void registerModels() {}
 
     @Override
-    public void registerKeybindings() {}
+    public void registerKeybindings() {
+        ClientRegistry.registerKeyBinding(Keybindings.activate);
+    }
 
     @Override
     public void initSideHandlers()
@@ -55,6 +59,7 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(renderer);
         FMLCommonHandler.instance().bus().register(renderer);
         FMLCommonHandler.instance().bus().register(new ClientTickHandler());
+        FMLCommonHandler.instance().bus().register(new KeyHandler());
     }
 
     @Override

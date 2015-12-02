@@ -21,7 +21,7 @@ public class BlockTemporalFurnace extends BlockClockworkPhase implements ITileEn
         if(player.isSneaking())
             return false;
         if(!world.isRemote)
-            player.openGui(ClockworkPhase2.instance, 4, world, x, y, z);
+            player.openGui(ClockworkPhase2.instance, 3, world, x, y, z);
         return true;
     }
 

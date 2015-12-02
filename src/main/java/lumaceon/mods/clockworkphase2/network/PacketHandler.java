@@ -26,5 +26,7 @@ public class PacketHandler
         INSTANCE.registerMessage(HandlerLightningSwordActivate.class, MessageLightningSwordActivate.class, nextID, Side.SERVER);
         nextID++;
         INSTANCE.registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, nextID, Side.SERVER);
+        nextID++;
+        INSTANCE.registerMessage(HandlerToolUpgradeActivate.class, MessageToolUpgradeActivate.class, nextID, Side.SERVER);
     }
 }

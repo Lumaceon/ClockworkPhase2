@@ -71,7 +71,6 @@ public class ClockworkPhase2
         ModEntities.init();
 
         proxy.registerKeybindings();
-
     }
 
     @Mod.EventHandler

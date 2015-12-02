@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.item.construct.misc;
+package lumaceon.mods.clockworkphase2.item;
 
 import lumaceon.mods.clockworkphase2.entity.EntityPAC;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;

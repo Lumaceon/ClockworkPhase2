@@ -69,11 +69,6 @@ public class Names
         public static final String GEAR_COPPER = "copper_gear";
         public static final String GEAR_ZINC = "zinc_gear";
         public static final String GEAR_BRASS = "brass_gear";
-        public static final String PRECIOUS_CHARM = "precious_charm";
-        public static final String DREAM_CATCHER = "dream_catcher";
-        public static final String ANCIENT_COIN = "ancient_coin";
-        public static final String NOTE_BOTTLE = "note_bottle";
-        public static final String GEAR_RUSTY = "rusty_gear";
         public static final String GEAR_BROKEN_ELYSIAN = "broken_elysian_gear";
         public static final String TEMPORAL_CORE = "temporal_core";
         public static final String TEMPORAL_DRIVE_SIMULATE = "temporal_drive_simulate";
@@ -90,9 +85,9 @@ public class Names
         public static final String TIMESTREAM_MOB_REPULSER = "timestream_mob_repulser";
         public static final String TIMESTREAM_LIGHTNING = "timestream_lightning";
 
-        public static final String TEMPORAL_TOOL_MODULE_SILK = "temporal_tool_module_silky";
-        public static final String TEMPORAL_TOOL_MODULE_SMELT = "temporal_tool_module_smelt";
-        public static final String TEMPORAL_TOOL_MODULE_TELEPORT = "temporal_tool_module_teleport";
+        public static final String TOOL_UPGRADE_SILK = "tool_upgrade_silk";
+        public static final String TOOL_UPGRADE_FURNACE = "tool_upgrade_furnace";
+        public static final String TOOL_UPGRADE_RELOCATE = "tool_upgrade_relocate";
 
         public static final String TIMEZONE_MODULE_TANK = "timezone_module_tank";
         public static final String TIMEZONE_MODULE_MOB_REPELL = "timezone_module_mob_repell";

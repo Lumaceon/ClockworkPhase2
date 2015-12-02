@@ -1,20 +1,18 @@
 package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.item.*;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleHarvestTeleport;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSilkHarvest;
-import lumaceon.mods.clockworkphase2.item.components.tool.temporal.ItemTemporalToolModuleSmelt;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeFurnace;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeRelocate;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeSilk;
 import lumaceon.mods.clockworkphase2.item.construct.tool.*;
 import lumaceon.mods.clockworkphase2.item.timestream.*;
-import lumaceon.mods.clockworkphase2.item.components.tool.ItemClockworkCore;
-import lumaceon.mods.clockworkphase2.item.components.tool.ItemMainspring;
+import lumaceon.mods.clockworkphase2.item.components.ItemClockworkCore;
+import lumaceon.mods.clockworkphase2.item.components.ItemMainspring;
 import lumaceon.mods.clockworkphase2.item.components.ItemTemporalCore;
-import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemGear;
-import lumaceon.mods.clockworkphase2.item.components.tool.clockwork.ItemMemoryComponent;
-import lumaceon.mods.clockworkphase2.item.construct.misc.ItemPAC;
+import lumaceon.mods.clockworkphase2.item.components.ItemGear;
+import lumaceon.mods.clockworkphase2.item.ItemPAC;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleMobRepellent;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
@@ -27,7 +25,7 @@ public class ModItems
 {
     public static void init()
     {
-        initTemporalToolModules();
+        initToolUpgrades();
         initTimezoneModules();
         initClockworkComponents();
         initTemporalComponents();
@@ -38,18 +36,18 @@ public class ModItems
         initMisc();
     }
 
-    public static Item temporalToolModuleSilkTouch;
-    public static Item temporalToolModuleSmelt;
-    public static Item temporalToolModuleTeleport;
-    public static void initTemporalToolModules()
+    public static Item toolUpgradeSilk;
+    public static Item toolUpgradeFurnace;
+    public static Item toolUpgradeRelocate;
+    public static void initToolUpgrades()
     {
-        temporalToolModuleSilkTouch = new ItemTemporalToolModuleSilkHarvest(1, 100, Names.ITEM.TEMPORAL_TOOL_MODULE_SILK);
-        temporalToolModuleSmelt = new ItemTemporalToolModuleSmelt(1, 100, Names.ITEM.TEMPORAL_TOOL_MODULE_SMELT);
-        temporalToolModuleTeleport = new ItemTemporalToolModuleHarvestTeleport(1, 100, Names.ITEM.TEMPORAL_TOOL_MODULE_TELEPORT);
+        toolUpgradeSilk = new ItemToolUpgradeSilk(1, 100, Names.ITEM.TOOL_UPGRADE_SILK);
+        toolUpgradeFurnace = new ItemToolUpgradeFurnace(1, 100, Names.ITEM.TOOL_UPGRADE_FURNACE);
+        toolUpgradeRelocate = new ItemToolUpgradeRelocate(1, 100, Names.ITEM.TOOL_UPGRADE_RELOCATE);
 
-        GameRegistry.registerItem(temporalToolModuleSilkTouch, Names.ITEM.TEMPORAL_TOOL_MODULE_SILK);
-        GameRegistry.registerItem(temporalToolModuleSmelt, Names.ITEM.TEMPORAL_TOOL_MODULE_SMELT);
-        GameRegistry.registerItem(temporalToolModuleTeleport, Names.ITEM.TEMPORAL_TOOL_MODULE_TELEPORT);
+        GameRegistry.registerItem(toolUpgradeSilk, Names.ITEM.TOOL_UPGRADE_SILK);
+        GameRegistry.registerItem(toolUpgradeFurnace, Names.ITEM.TOOL_UPGRADE_FURNACE);
+        GameRegistry.registerItem(toolUpgradeRelocate, Names.ITEM.TOOL_UPGRADE_RELOCATE);
     }
 
     public static Item timezoneModuleTank;
@@ -75,32 +73,22 @@ public class ModItems
     public static Item gearCopper;
     public static Item gearZinc;
     public static Item gearBrass;
-    public static Item preciousCharm;
-    public static Item dreamCatcher;
-    public static Item ancientCoin;
-    public static Item noteBottle;
-    public static Item gearRusty;
     public static Item gearElysianBroken;
     public static void initClockworkComponents()
     {
         mainspring = new ItemMainspring(1, 20, Names.ITEM.MAINSPRING);
         clockworkCore = new ItemClockworkCore(1, 20, Names.ITEM.CLOCKWORK_CORE);
-        gearWood = new ItemGear(Names.ITEM.GEAR_WOOD, 10, 15, 0, 0);
-        gearStone = new ItemGear(Names.ITEM.GEAR_STONE, 15, 10, 0, 1);
-        gearIron = new ItemGear(Names.ITEM.GEAR_IRON, 25, 25, 0, 2);
-        gearGold = new ItemGear(Names.ITEM.GEAR_GOLD, 10, 70, 0, 0);
-        gearDiamond = new ItemGear(Names.ITEM.GEAR_DIAMOND, 50, 40, 0, 3);
-        gearEmerald = new ItemGear(Names.ITEM.GEAR_EMERALD, 40, 50, 0, 3);
-        gearQuartz = new ItemGear(Names.ITEM.GEAR_QUARTZ, 70, 10, 0, 2);
-        gearCopper = new ItemGear(Names.ITEM.GEAR_COPPER, 20, 30, 0, 2);
-        gearZinc = new ItemGear(Names.ITEM.GEAR_ZINC, 30, 20, 0, 2);
-        gearBrass = new ItemGear(Names.ITEM.GEAR_BRASS, 40, 35, 0, 2);
-        preciousCharm = new ItemMemoryComponent(Names.ITEM.PRECIOUS_CHARM, 0, 0, 50, -1);
-        dreamCatcher = new ItemMemoryComponent(Names.ITEM.DREAM_CATCHER, 0, 0, 40, -1);
-        ancientCoin = new ItemMemoryComponent(Names.ITEM.ANCIENT_COIN, 0, 0, 30, -1);
-        noteBottle = new ItemMemoryComponent(Names.ITEM.NOTE_BOTTLE, 0, 0, 20, -1);
-        gearRusty = new ItemMemoryComponent(Names.ITEM.GEAR_RUSTY, 10, 30, 10, 0);
-        gearElysianBroken = new ItemMemoryComponent(Names.ITEM.GEAR_BROKEN_ELYSIAN, 100, 100, 1000, 5);
+        gearWood = new ItemGear(Names.ITEM.GEAR_WOOD, 10, 15, 0);
+        gearStone = new ItemGear(Names.ITEM.GEAR_STONE, 15, 10, 1);
+        gearIron = new ItemGear(Names.ITEM.GEAR_IRON, 25, 25, 2);
+        gearGold = new ItemGear(Names.ITEM.GEAR_GOLD, 10, 70, 0);
+        gearDiamond = new ItemGear(Names.ITEM.GEAR_DIAMOND, 50, 40, 3);
+        gearEmerald = new ItemGear(Names.ITEM.GEAR_EMERALD, 40, 50, 3);
+        gearQuartz = new ItemGear(Names.ITEM.GEAR_QUARTZ, 70, 10, 2);
+        gearCopper = new ItemGear(Names.ITEM.GEAR_COPPER, 20, 30, 2);
+        gearZinc = new ItemGear(Names.ITEM.GEAR_ZINC, 30, 20, 2);
+        gearBrass = new ItemGear(Names.ITEM.GEAR_BRASS, 40, 35, 2);
+        gearElysianBroken = new ItemGear(Names.ITEM.GEAR_BROKEN_ELYSIAN, 100, 100, 5);
 
         GameRegistry.registerItem(mainspring, Names.ITEM.MAINSPRING);
         GameRegistry.registerItem(clockworkCore, Names.ITEM.CLOCKWORK_CORE);
@@ -114,18 +102,13 @@ public class ModItems
         GameRegistry.registerItem(gearCopper, Names.ITEM.GEAR_COPPER);
         GameRegistry.registerItem(gearZinc, Names.ITEM.GEAR_ZINC);
         GameRegistry.registerItem(gearBrass, Names.ITEM.GEAR_BRASS);
-        GameRegistry.registerItem(preciousCharm, Names.ITEM.PRECIOUS_CHARM);
-        GameRegistry.registerItem(dreamCatcher, Names.ITEM.DREAM_CATCHER);
-        GameRegistry.registerItem(ancientCoin, Names.ITEM.ANCIENT_COIN);
-        GameRegistry.registerItem(noteBottle, Names.ITEM.NOTE_BOTTLE);
-        GameRegistry.registerItem(gearRusty, Names.ITEM.GEAR_RUSTY);
         GameRegistry.registerItem(gearElysianBroken, Names.ITEM.GEAR_BROKEN_ELYSIAN);
 
-        MemoryItemRegistry.registerMemoryItem(preciousCharm);
+        /*MemoryItemRegistry.registerMemoryItem(preciousCharm);
         MemoryItemRegistry.registerMemoryItem(dreamCatcher);
         MemoryItemRegistry.registerMemoryItem(ancientCoin);
         MemoryItemRegistry.registerMemoryItem(noteBottle);
-        MemoryItemRegistry.registerMemoryItem(gearRusty);
+        MemoryItemRegistry.registerMemoryItem(gearRusty);*/
         //Elysian gear not registered as a memory item because it's considerably more rare and dropped separately.
 
         OreDictionary.registerOre("gearWood", gearWood);

@@ -18,12 +18,6 @@ item.clockworkphase2:gold_gear.name=Golden Gear
 item.clockworkphase2:diamond_gear.name=Diamond Gear
 item.clockworkphase2:emerald_gear.name=Emerald Gear
 item.clockworkphase2:quartz_gear.name=Quartz Gear
-
-item.clockworkphase2:precious_charm.name=Precious Charm
-item.clockworkphase2:dream_catcher.name=Dream Catcher
-item.clockworkphase2:ancient_coin.name=Ancient Coin
-item.clockworkphase2:note_bottle.name=Note-In-A-Bottle
-item.clockworkphase2:rusty_gear.name=Rusty Gear
 item.clockworkphase2:broken_elysian_gear.name=Elysian Gear (Broken)
 
 item.clockworkphase2:temporal_core.name=Temporal Core
@@ -40,9 +34,9 @@ item.clockworkphase2:timestream_mob_repulser.name=Timestream of Mob Repulsion
 item.clockworkphase2:timestream_lightning.name=Timestream of Lightning
 item.clockworkphase2:timestream_lightning_rod.name=Timestream of Lightning {Cannibalized}
 
-item.clockworkphase2:temporal_tool_module_silky.name=Temporal Tool Module: Silk Touch
-item.clockworkphase2:temporal_tool_module_smelt.name=Temporal Tool Module: Smelt
-item.clockworkphase2:temporal_tool_module_teleport.name=Temporal Tool Module: Teleport
+item.clockworkphase2:tool_upgrade_silk.name=Tool Module: Silk Touch
+item.clockworkphase2:tool_upgrade_furnace.name=Tool Module: Internal Furnace
+item.clockworkphase2:tool_upgrade_relocate.name=Tool Module: Relocation Matrix
 
 item.clockworkphase2:timezone_module_tank.name=Timezone Function: Fluid Tank
 

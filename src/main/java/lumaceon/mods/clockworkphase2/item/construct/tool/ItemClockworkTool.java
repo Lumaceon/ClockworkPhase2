@@ -6,10 +6,12 @@ import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
+import lumaceon.mods.clockworkphase2.api.item.IKeybindActivation;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.util.*;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotToolUpgrade;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
@@ -30,7 +32,7 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.List;
 import java.util.Set;
 
-public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct
+public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct, IKeybindActivation
 {
     public ItemClockworkTool(float var1, ToolMaterial toolMaterial, Set set, String unlocalizedName)
     {
@@ -95,6 +97,11 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
             return (float) speed / 25;
         }
         return func_150893_a(stack, block);
+    }
+
+    @Override
+    public boolean hitEntity(ItemStack p_77644_1_, EntityLivingBase p_77644_2_, EntityLivingBase p_77644_3_) {
+        return true;
     }
 
     @Override
@@ -193,7 +200,7 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
 
     @Override
     public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 2, 1);
+        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 7, 1);
         AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
         return inventory;
     }
@@ -205,6 +212,11 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
                 {
                         new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring),
                         new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore),
+                        new SlotToolUpgrade(inventory, 2, 20, 20),
+                        new SlotToolUpgrade(inventory, 3, 20, 40),
+                        new SlotToolUpgrade(inventory, 4, 20, 60),
+                        new SlotToolUpgrade(inventory, 5, 20, 80),
+                        new SlotToolUpgrade(inventory, 6, 20, 100),
                 };
     }
 
@@ -216,5 +228,10 @@ public class ItemClockworkTool extends ItemTool implements IAssemblable, IClockw
     @Override
     public void onInventoryChange(ContainerAssemblyTable container) {
         AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 1);
+    }
+
+    @Override
+    public void onKeyPressed(ItemStack item, EntityPlayer player) {
+        player.openGui(ClockworkPhase2.instance, 4, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 }

@@ -4,7 +4,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
-import lumaceon.mods.clockworkphase2.item.components.tool.ItemMainspring;
+import lumaceon.mods.clockworkphase2.item.components.ItemMainspring;
 import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

@@ -1,11 +1,14 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import lumaceon.mods.clockworkphase2.api.item.ITemporalToolModule;
+import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedMapData;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeFurnace;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeRelocate;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeSilk;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -39,25 +42,25 @@ public class WorldHandler
         ItemStack heldItem = event.harvester.inventory.getStackInSlot(event.harvester.inventory.currentItem);
         if(!event.isSilkTouching)
         {
-            ITemporalToolModule silk = null;
+            IToolUpgrade silk = null;
             ItemStack silkStack = null;
-            ITemporalToolModule smelt = null;
+            IToolUpgrade smelt = null;
 
-            if(heldItem != null) //&& heldItem.getItem() instanceof ITemporalableTool && ((ITemporalableTool) heldItem.getItem()).isTemporal(heldItem))
+            if(heldItem != null)
             {
                 if(NBTHelper.hasTag(heldItem, NBTTags.COMPONENT_INVENTORY))
                 {
                     ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
                     for(ItemStack item : inventory)
                     {
-                        if(item != null && item.getItem().equals(ModItems.temporalToolModuleSilkTouch))
+                        if(item != null && item.getItem().equals(ModItems.toolUpgradeSilk) && ((ItemToolUpgradeSilk) item.getItem()).getActive(item))
                         {
-                            silk = (ITemporalToolModule) item.getItem();
+                            silk = (IToolUpgrade) item.getItem();
                             silkStack = item;
                         }
 
-                        if(item != null && item.getItem().equals(ModItems.temporalToolModuleSmelt))
-                            smelt = (ITemporalToolModule) item.getItem();
+                        if(item != null && item.getItem().equals(ModItems.toolUpgradeFurnace) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item))
+                            smelt = (IToolUpgrade) item.getItem();
                     }
                 }
 
@@ -103,7 +106,7 @@ public class WorldHandler
 
             for(ItemStack item : items)
             {
-                if(item != null && item.getItem().equals(ModItems.temporalToolModuleTeleport))
+                if(item != null && item.getItem().equals(ModItems.toolUpgradeRelocate) && ((ItemToolUpgradeRelocate) item.getItem()).getActive(item))
                 {
                     int x = NBTHelper.INT.get(item, "cp_x");
                     int y = NBTHelper.INT.get(item, "cp_y");
@@ -116,7 +119,6 @@ public class WorldHandler
                         if(te instanceof ISidedInventory) //Inventory is side-specific.
                         {
                             ISidedInventory inventory = (ISidedInventory) te;
-
                             for(int n = 0; n < event.drops.size(); n++) //Each drop.
                             {
                                 ItemStack drop = event.drops.get(n);
@@ -128,9 +130,9 @@ public class WorldHandler
                                         ItemStack inventorySlotItem = inventory.getStackInSlot(currentSlot);
                                         if(inventorySlotItem != null)
                                         {
-                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.stackSize + 1)
+                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.stackSize + drop.stackSize)
                                             {
-                                                inventorySlotItem.stackSize++;
+                                                inventorySlotItem.stackSize += drop.stackSize;
                                                 inventory.setInventorySlotContents(currentSlot, inventorySlotItem);
                                                 event.drops.remove(n);
                                                 --n;
@@ -162,9 +164,9 @@ public class WorldHandler
                                         ItemStack inventorySlotItem = inventory.getStackInSlot(i);
                                         if(inventorySlotItem != null)
                                         {
-                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.stackSize + 1)
+                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.stackSize + drop.stackSize)
                                             {
-                                                inventorySlotItem.stackSize++;
+                                                inventorySlotItem.stackSize += drop.stackSize;
                                                 inventory.setInventorySlotContents(i, inventorySlotItem);
                                                 event.drops.remove(n);
                                                 --n;

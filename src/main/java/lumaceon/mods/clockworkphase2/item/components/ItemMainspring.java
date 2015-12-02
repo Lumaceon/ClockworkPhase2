@@ -1,11 +1,10 @@
-package lumaceon.mods.clockworkphase2.item.components.tool;
+package lumaceon.mods.clockworkphase2.item.components;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblableButtons;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;

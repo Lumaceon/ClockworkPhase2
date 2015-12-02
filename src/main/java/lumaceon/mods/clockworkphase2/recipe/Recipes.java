@@ -47,11 +47,11 @@ public class Recipes
     public static void initTemporalClockworkModules()
     {
         ItemStack result;
-        result = new ItemStack(ModItems.temporalToolModuleSmelt);
+        result = new ItemStack(ModItems.toolUpgradeFurnace);
         GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDriveSimulate, 'S', ModItems.timestreamSmelt));
-        result = new ItemStack(ModItems.temporalToolModuleSilkTouch);
+        result = new ItemStack(ModItems.toolUpgradeSilk);
         GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDriveSimulate, 'S', ModItems.timestreamSilkyHarvest));
-        result = new ItemStack(ModItems.temporalToolModuleTeleport);
+        result = new ItemStack(ModItems.toolUpgradeRelocate);
         GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDriveSimulate, 'S', ModItems.timestreamRelocation));
     }
 

@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.item.components.tool.clockwork;
+package lumaceon.mods.clockworkphase2.item.components;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,14 +12,13 @@ import java.util.List;
 
 public class ItemGear extends ItemClockworkPhase implements IClockworkComponent
 {
-    public int quality, speed, memory, harvestLevel;
+    public int quality, speed, harvestLevel;
 
-    public ItemGear(String unlocalizedName, int quality, int speed, int memory, int harvestLevel)
+    public ItemGear(String unlocalizedName, int quality, int speed, int harvestLevel)
     {
         super(64, 100, unlocalizedName);
         this.quality = quality;
         this.speed = speed;
-        this.memory = memory;
         this.harvestLevel = harvestLevel;
     }
 

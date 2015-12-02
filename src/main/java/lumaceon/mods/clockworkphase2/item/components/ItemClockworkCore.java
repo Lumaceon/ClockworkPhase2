@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.item.components.tool;
+package lumaceon.mods.clockworkphase2.item.components;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -2,6 +2,8 @@ package lumaceon.mods.clockworkphase2.tile.clockwork;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
@@ -59,6 +61,7 @@ public class TileClockworkFurnace extends TileClockwork implements ISidedInvento
     @Override
     public void updateEntity()
     {
+        currentTension += 50; //TODO remove this when done testing.
         boolean furnaceOn = isBurning();
         boolean isChanged = false;
 
@@ -229,17 +232,12 @@ public class TileClockworkFurnace extends TileClockwork implements ISidedInvento
         return slotID == 1;
     }
 
-    @Override
-    public int wind(int tension) {
-        int amountToAdd = Math.min(this.maxTension - this.currentTension, tension);
-        currentTension += amountToAdd;
-        return amountToAdd;
-    }
-
     public void setTileDataFromItemStack(ItemStack item)
     {
         this.itemBlock = item.copy();
         ItemStack[] items = NBTHelper.INVENTORY.get(item, NBTTags.COMPONENT_INVENTORY);
+        if(items == null)
+            return;
         if(items[0] != null && items[0].getItem() instanceof ItemMainspring)
             this.maxTension = NBTHelper.INT.get(items[0], NBTTags.MAX_TENSION);
         if(items[1] != null && items[1].getItem() instanceof IClockwork)
@@ -248,4 +246,14 @@ public class TileClockworkFurnace extends TileClockwork implements ISidedInvento
             this.speed = ((IClockwork) items[1].getItem()).getSpeed(items[1]);
         }
     }
+
+    @Override
+    public ClockworkNetworkContainer getGui() {
+        return ClockworkPhase2.proxy.getClockworkNetworkGui(this, 0);
+    }
+
+    @Override
+    public void setState(int state) {}
+    @Override
+    public void setStateAndUpdate(int state) {}
 }

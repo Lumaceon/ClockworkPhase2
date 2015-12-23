@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
@@ -20,6 +21,16 @@ public class ItemClockworkShovel extends ItemClockworkTool
     @Override
     public boolean func_150897_b(Block p_150897_1_) {
         return p_150897_1_ == Blocks.snow_layer ? true : p_150897_1_ == Blocks.snow;
+    }
+
+    @Override
+    public String getHarvestType() {
+        return "shovel";
+    }
+
+    @Override
+    public Material[] getEffectiveMaterials() {
+        return new Material[] { Material.ground, Material.grass, Material.sand, Material.snow };
     }
 
     @Override

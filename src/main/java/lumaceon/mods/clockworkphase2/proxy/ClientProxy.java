@@ -3,9 +3,12 @@ package lumaceon.mods.clockworkphase2.proxy;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
-import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
+import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkBreweryClient;
+import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkFurnaceClient;
+import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkMixerClient;
 import lumaceon.mods.clockworkphase2.client.keybind.KeyHandler;
 import lumaceon.mods.clockworkphase2.client.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
@@ -20,6 +23,7 @@ import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
 import net.minecraft.client.Minecraft;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
@@ -114,5 +118,20 @@ public class ClientProxy extends CommonProxy
     @Override
     public File getMinecraftDataDirectory() {
         return Minecraft.getMinecraft().mcDataDir;
+    }
+
+    @Override
+    public ClockworkNetworkContainer getClockworkNetworkGui(TileEntity te, int id)
+    {
+        switch(id)
+        {
+            case 0: //Clockwork Furnace
+                return new GuiClockworkFurnaceClient(te, 172, 22);
+            case 1: //Clockwork Brewery
+                return new GuiClockworkBreweryClient(te, 80, 74);
+            case 2: //Clockwork Mixer
+                return new GuiClockworkMixerClient(te, 172, 80);
+        }
+        return null;
     }
 }

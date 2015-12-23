@@ -18,6 +18,9 @@ item.clockworkphase2:gold_gear.name=Golden Gear
 item.clockworkphase2:diamond_gear.name=Diamond Gear
 item.clockworkphase2:emerald_gear.name=Emerald Gear
 item.clockworkphase2:quartz_gear.name=Quartz Gear
+item.clockworkphase2:zinc_gear.name=Zinc Gear
+item.clockworkphase2:copper_gear.name=Copper Gear
+item.clockworkphase2:brass_gear.name=Brass Gear
 item.clockworkphase2:broken_elysian_gear.name=Elysian Gear (Broken)
 
 item.clockworkphase2:temporal_core.name=Temporal Core
@@ -26,17 +29,11 @@ item.clockworkphase2:temporal_hourglass.name=Temporal Hourglass
 item.clockworkphase2:temporal_drive_simulate.name=Temporal Simulation Drive
 item.clockworkphase2:temporal_drive_modify.name=Temporal Modification Drive
 item.clockworkphase2:temporal_drive_duplicate.name=Temporal Duplication Drive
-item.clockworkphase2:timestream_relocation.name=Timestream of Teleportation
-item.clockworkphase2:timestream_silky_harvest.name=Timestream of Silky Excavation
-item.clockworkphase2:timestream_smelt.name=Timestream of Smelting
-item.clockworkphase2:timestream_tank.name=Timestream of Fluidic Storage
-item.clockworkphase2:timestream_mob_repulser.name=Timestream of Mob Repulsion
-item.clockworkphase2:timestream_lightning.name=Timestream of Lightning
-item.clockworkphase2:timestream_lightning_rod.name=Timestream of Lightning {Cannibalized}
 
 item.clockworkphase2:tool_upgrade_silk.name=Tool Module: Silk Touch
 item.clockworkphase2:tool_upgrade_furnace.name=Tool Module: Internal Furnace
 item.clockworkphase2:tool_upgrade_relocate.name=Tool Module: Relocation Matrix
+item.clockworkphase2:tool_upgrade_area.name=Tool Module: Area Miner
 
 item.clockworkphase2:timezone_module_tank.name=Timezone Function: Fluid Tank
 
@@ -47,10 +44,19 @@ item.clockworkphase2:brass_ingot.name=Brass Ingot
 item.clockworkphase2:brass_lump.name=Brass Lump
 
 item.clockworkphase2:schematic_tool.name=Schematic Maker
+item.clockworkphase2:bug_swatter.name=Bug Swatter
+item.clockworkphase2:age_developer.name=Developer Time Turner (Developers Only)
+item.clockworkphase2:wire_duster.name=Wire Duster
+item.clockworkphase2:wooden_trowel.name=Wooden Trowel
+item.clockworkphase2:stone_trowel.name=Stone Trowel
+item.clockworkphase2:iron_trowel.name=Iron Trowel
+item.clockworkphase2:diamond_trowel.name=Diamond Trowel
 
 #Block
 tile.clockworkphase2:time_sand.name=Time Sand
 tile.clockworkphase2:basic_winding_box.name=Manual Winding Box
+tile.clockworkphase2:clockwork_furnace.name=Clockwork Furnace
+tile.clockworkphase2:temporal_furnace.name=Temporal Furnace
 tile.clockworkphase2:assembly_table.name=Worktable
 tile.clockworkphase2:assembly_table_sb.name=Worktable
 

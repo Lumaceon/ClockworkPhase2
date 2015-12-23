@@ -27,8 +27,7 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     @SideOnly(Side.CLIENT)
     private IIcon[] blockIcons;
 
-    public BlockMoonFlower(Material blockMaterial, String unlocalizedName)
-    {
+    public BlockMoonFlower(Material blockMaterial, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);
         this.setHardness(0.0F);
         this.setTickRandomly(true);
@@ -48,8 +47,7 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block)
-    {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         super.onNeighborBlockChange(world, x, y, z, block);
         this.checkAndDropBlock(world, x, y, z);
     }
@@ -59,22 +57,23 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     {
         this.checkAndDropBlock(world, x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
-        if(meta < 3)
+        if(world.canBlockSeeTheSky(x, y, z))
         {
-            if(world.canBlockSeeTheSky(x, y, z) && !world.isDaytime() && random.nextInt(2) == 0)
+            if(!world.isDaytime()) //It's nighttime, plant can grow taller if lucky.
             {
-                ++meta;
-                world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+                if(meta <= 3 && random.nextInt(5) == 0)
+                {
+                    ++meta;
+                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+                }
             }
-        }
-        else if(meta == 3)
-        {
-            if(world.canBlockSeeTheSky(x, y, z) && !world.isDaytime())
+            else //It's daytime, plant WILL grow backwards if possible
             {
-                if(Phases.isPhaseActive(world, x, y, z, Phases.elysianComet))
-                    world.setBlockMetadataWithNotify(x, y, z, 5, 2); //Set meta to 5 (temporal material)
-                else
-                    world.setBlockMetadataWithNotify(x, y, z, 4, 2); //Set meta to 4 (moon pearl)
+                if(meta > 0)
+                {
+                    --meta;
+                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+                }
             }
         }
     }
@@ -117,14 +116,7 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     }
 
     protected Item getProduce(int metadata) {
-        switch(metadata)
-        {
-            case 4:
-                return ModItems.moonPearl;
-            case 5:
-                return ModItems.elysianGem;
-        }
-        return null;
+        return metadata == 4 ? ModItems.temporalPearl : null;
     }
 
     public void dropBlockAsItemWithChance(World world, int x, int y, int z, int p_149690_5_, float p_149690_6_, int p_149690_7_) {

@@ -24,21 +24,13 @@ public class ItemClockworkPickaxe extends ItemClockworkTool
     }
 
     @Override
-    public float func_150893_a(ItemStack is, Block block)
-    {
-        float efficiency = block.getMaterial() != Material.iron && block.getMaterial() != Material.anvil && block.getMaterial() != Material.rock ? super.func_150893_a(is, block) : this.efficiencyOnProperMaterial;
-        if(efficiency == 1.0F)
-            return efficiency;
+    public String getHarvestType() {
+        return "pickaxe";
+    }
 
-        int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
-        if(tension <= 0)
-            return 1.0F;
-
-        int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
-        if(speed <= 0)
-            return 1.0F;
-
-        return (float) speed / 25;
+    @Override
+    public Material[] getEffectiveMaterials() {
+        return new Material[] { Material.rock, Material.iron, Material.anvil };
     }
 
     @Override

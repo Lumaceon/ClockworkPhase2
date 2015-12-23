@@ -82,6 +82,7 @@ public class Recipes
         GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.ingotCopper), 0.7F);
         GameRegistry.addSmelting(ModBlocks.oreZinc, new ItemStack(ModItems.ingotZinc), 0.7F);
         GameRegistry.addSmelting(ModItems.lumpBrass, new ItemStack(ModItems.ingotBrass), 1.5F);
+        GameRegistry.addSmelting(ModItems.temporalPearl, new ItemStack(ModItems.ingotTemporal), 10F);
     }
 
     public static void addGearRecipe(ItemStack result, String materialName) {

@@ -2,13 +2,17 @@ package lumaceon.mods.clockworkphase2.init;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
-import lumaceon.mods.clockworkphase2.block.clockwork.BlockClockworkFurnace;
-import lumaceon.mods.clockworkphase2.block.clockwork.BlockCrank;
+import lumaceon.mods.clockworkphase2.block.clockwork.*;
+import lumaceon.mods.clockworkphase2.block.itemblock.ItemBlockClockworkBrewery;
 import lumaceon.mods.clockworkphase2.block.itemblock.ItemBlockClockworkFurnace;
+import lumaceon.mods.clockworkphase2.block.itemblock.ItemBlockClockworkMixer;
 import lumaceon.mods.clockworkphase2.block.steammachine.BlockBoiler;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.tile.*;
+import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkBrewery;
+import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkController;
 import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkFurnace;
+import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkMixer;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidImporter;
@@ -41,14 +45,29 @@ public class ModBlocks
     }
 
     public static Block crank;
+    public static Block clockworkController;
     public static Block clockworkFurnace;
+    public static Block clockworkLiquefier;
+    public static Block clockworkSewingMachine;
+    public static Block clockworkBrewery;
+    public static Block clockworkMixer;
     public static void initClockworkMachines()
     {
         crank = new BlockCrank(Material.iron, Names.BLOCK.CRANK);
+        clockworkController = new BlockClockworkController(Material.iron, Names.BLOCK.CLOCKWORK_CONTROLLER);
         clockworkFurnace = new BlockClockworkFurnace(Material.iron, Names.BLOCK.CLOCKWORK_FURNACE);
+        //clockworkLiquefier = new BlockClockworkLiquedier(Material.iron, Names.BLOCK.CLOCKWORK_LIQUEFIER);
+        //clockworkSewingMachine = new BlockClockworkSewingMachine(Material.iron, Names.BLOCK.CLOCKWORK_SEWING_MACHINE);
+        clockworkBrewery = new BlockClockworkBrewery(Material.iron, Names.BLOCK.CLOCKWORK_BREWERY);
+        clockworkMixer = new BlockClockworkMixer(Material.iron, Names.BLOCK.CLOCKWORK_MIXER);
 
         GameRegistry.registerBlock(crank, Names.BLOCK.CRANK);
         GameRegistry.registerBlock(clockworkFurnace, ItemBlockClockworkFurnace.class, Names.BLOCK.CLOCKWORK_FURNACE);
+        GameRegistry.registerBlock(clockworkController, Names.BLOCK.CLOCKWORK_CONTROLLER);
+        //GameRegistry.registerBlock(clockworkLiquefier, ItemBlockClockworkLiquedier.class, Names.BLOCK.CLOCKWORK_LIQUEFIER);
+        //GameRegistry.registerBlock(clockworkSewingMachine, ItemBlockClockworkSewingMachine.class, Names.BLOCK.CLOCKWORK_SEWING_MACHINE);
+        GameRegistry.registerBlock(clockworkBrewery, ItemBlockClockworkBrewery.class, Names.BLOCK.CLOCKWORK_BREWERY);
+        GameRegistry.registerBlock(clockworkMixer, ItemBlockClockworkMixer.class, Names.BLOCK.CLOCKWORK_MIXER);
     }
 
     public static Block celestialCompass;
@@ -172,7 +191,10 @@ public class ModBlocks
 
     public static void initTE()
     {
+        GameRegistry.registerTileEntity(TileClockworkController.class, Names.BLOCK.CLOCKWORK_CONTROLLER);
         GameRegistry.registerTileEntity(TileClockworkFurnace.class, Names.BLOCK.CLOCKWORK_FURNACE);
+        GameRegistry.registerTileEntity(TileClockworkBrewery.class, Names.BLOCK.CLOCKWORK_BREWERY);
+        GameRegistry.registerTileEntity(TileClockworkMixer.class, Names.BLOCK.CLOCKWORK_MIXER);
         GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
         GameRegistry.registerTileEntity(TileTemporalDisplacementAltar.class, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
         GameRegistry.registerTileEntity(TileTDA.class, Names.BLOCK.TDA);

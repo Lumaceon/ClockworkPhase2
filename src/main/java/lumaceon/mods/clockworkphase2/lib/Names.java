@@ -8,13 +8,17 @@ public class Names
     public class BLOCK
     {
         public static final String CRANK = "crank";
+        public static final String CLOCKWORK_CONTROLLER = "clockwork_controller";
         public static final String CLOCKWORK_FURNACE = "clockwork_furnace";
+        public static final String CLOCKWORK_LIQUEFIER = "clockwork_liquefier";
+        public static final String CLOCKWORK_SEWING_MACHINE = "clockwork_sewing_machine";
+        public static final String CLOCKWORK_BREWERY = "clockwork_brewery";
+        public static final String CLOCKWORK_MIXER = "clockwork_mixer";
 
         public static final String TIME_SAND = "time_sand";
         public static final String BASIC_WINDING_BOX = "basic_winding_box";
         public static final String ASSEMBLY_TABLE = "assembly_table";
         public static final String ASSEMBLY_TABLE_SB = "assembly_table_sb";
-        public static final String TEMPORAL_CONDUIT = "temporal_conduit";
         public static final String CELESTIAL_COMPASS = "celestial_compass";
         public static final String CELESTIAL_COMPASS_SB = "celestial_compass_sb";
         public static final String TEMPORAL_DISPLACEMENT_ALTAR = "temporal_displacement_altar";
@@ -75,8 +79,7 @@ public class Names
         public static final String TEMPORAL_DRIVE_MODIFY = "temporal_drive_modify";
         public static final String TEMPORAL_DRIVE_DUPLICATE = "temporal_drive_duplicate";
         public static final String MOON_FLOWER_SEEDS = "moon_flower_seeds";
-        public static final String MOON_PEARL = "moon_pearl";
-        public static final String ELYSIAN_GEM = "elysian_gem";
+        public static final String TEMPORAL_PEARL = "temporal_pearl";
 
         public static final String TIMESTREAM_RELOCATION = "timestream_relocation";
         public static final String TIMESTREAM_SILKY_HARVEST = "timestream_silky_harvest";
@@ -88,6 +91,9 @@ public class Names
         public static final String TOOL_UPGRADE_SILK = "tool_upgrade_silk";
         public static final String TOOL_UPGRADE_FURNACE = "tool_upgrade_furnace";
         public static final String TOOL_UPGRADE_RELOCATE = "tool_upgrade_relocate";
+        public static final String TOOL_UPGRADE_AREA = "tool_upgrade_area";
+        public static final String TOOL_UPGRADE_FORTUNE = "tool_upgrade_fortune";
+        public static final String TOOL_UPGRADE_XP = "tool_upgrade_xp";
 
         public static final String TIMEZONE_MODULE_TANK = "timezone_module_tank";
         public static final String TIMEZONE_MODULE_MOB_REPELL = "timezone_module_mob_repell";

@@ -53,13 +53,13 @@ public class WorldHandler
                     ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
                     for(ItemStack item : inventory)
                     {
-                        if(item != null && item.getItem().equals(ModItems.toolUpgradeSilk) && ((ItemToolUpgradeSilk) item.getItem()).getActive(item))
+                        if(item != null && item.getItem().equals(ModItems.toolUpgradeSilk) && ((ItemToolUpgradeSilk) item.getItem()).getActive(item, heldItem))
                         {
                             silk = (IToolUpgrade) item.getItem();
                             silkStack = item;
                         }
 
-                        if(item != null && item.getItem().equals(ModItems.toolUpgradeFurnace) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item))
+                        if(item != null && item.getItem().equals(ModItems.toolUpgradeFurnace) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item, heldItem))
                             smelt = (IToolUpgrade) item.getItem();
                     }
                 }
@@ -106,7 +106,7 @@ public class WorldHandler
 
             for(ItemStack item : items)
             {
-                if(item != null && item.getItem().equals(ModItems.toolUpgradeRelocate) && ((ItemToolUpgradeRelocate) item.getItem()).getActive(item))
+                if(item != null && item.getItem().equals(ModItems.toolUpgradeRelocate) && ((ItemToolUpgradeRelocate) item.getItem()).getActive(item, heldItem))
                 {
                     int x = NBTHelper.INT.get(item, "cp_x");
                     int y = NBTHelper.INT.get(item, "cp_y");

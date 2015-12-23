@@ -29,7 +29,7 @@ public class HandlerToolUpgradeActivate implements IMessageHandler<MessageToolUp
                     if(upgrade != null && upgrade.getItem() instanceof IToolUpgrade)
                     {
                         IToolUpgrade upgradeItem = (IToolUpgrade) upgrade.getItem();
-                        upgradeItem.setActive(upgrade, !upgradeItem.getActive(upgrade));
+                        upgradeItem.setActive(upgrade, item, !upgradeItem.getActive(upgrade, item));
                         NBTHelper.INVENTORY.set(item, NBTTags.COMPONENT_INVENTORY, items);
                     }
                 }

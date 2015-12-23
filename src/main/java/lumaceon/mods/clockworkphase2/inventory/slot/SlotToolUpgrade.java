@@ -20,7 +20,7 @@ public class SlotToolUpgrade extends Slot
     {
         for(int i = 0; i < inventory.getSizeInventory(); i++)
         {
-            if(i == slotNumber)
+            if(i == getSlotIndex())
                 continue;
             ItemStack item = inventory.getStackInSlot(i);
             if(item != null && item.getItem().equals(is.getItem()))

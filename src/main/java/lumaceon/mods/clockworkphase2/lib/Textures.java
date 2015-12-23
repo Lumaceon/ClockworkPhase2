@@ -23,6 +23,18 @@ public class Textures
 
         public static ResourceLocation ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
         public static ResourceLocation ASSEMBLY_TABLE_MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_mainspring.png");
+
+        public static ResourceLocation PLAYER_INVENTORY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/player_inventory.png");
+        public static ResourceLocation POWER_METER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power.png");
+        public static ResourceLocation POWER_METER_HAND = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power_hand.png");
+        public static ResourceLocation POWER_METER_CENTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power_center.png");
+
+        public static ResourceLocation FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/furnace.png");
+        public static ResourceLocation BREWERY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/brewery.png");
+        public static ResourceLocation ALLOY_FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/alloy_furnace.png");
+        public static ResourceLocation MELTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/melter.png");
+        public static ResourceLocation MIXER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/mixer.png");
+        public static ResourceLocation CHEST = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/chest.png");
     }
 
     public static class GLYPH

@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.block.clockwork;
 
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkTile;
+import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkTile;
 import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,42 +18,42 @@ public class BlockCrank extends BlockClockworkPhase
     {
         if(!player.isSneaking())
         {
-            TileEntity te = world.getTileEntity(x + 1, y, z);
-            if(te != null && te instanceof IClockworkTile)
+            /*TileEntity te = world.getTileEntity(x + 1, y, z);
+            if(te != null && te instanceof IClockworkNetworkTile)
             {
-                ((IClockworkTile) te).wind(1000 * 10);
+                ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
             }
             te = world.getTileEntity(x - 1, y, z);
-            if(te != null && te instanceof IClockworkTile)
+            if(te != null && te instanceof IClockworkNetworkTile)
             {
-                ((IClockworkTile) te).wind(1000 * 10);
+                ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
             }
             te = world.getTileEntity(x, y + 1, z);
-            if(te != null && te instanceof IClockworkTile)
+            if(te != null && te instanceof IClockworkNetworkTile)
             {
-                ((IClockworkTile) te).wind(1000 * 10);
+                ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
             }
             te = world.getTileEntity(x, y - 1, z);
-            if(te != null && te instanceof IClockworkTile)
+            if(te != null && te instanceof IClockworkNetworkTile)
             {
-                ((IClockworkTile) te).wind(1000 * 10);
+                ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
             }
             te = world.getTileEntity(x, y, z + 1);
-            if(te != null && te instanceof IClockworkTile)
+            if(te != null && te instanceof IClockworkNetworkTile)
             {
-                ((IClockworkTile) te).wind(1000 * 10);
+                ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
             }
             te = world.getTileEntity(x, y, z - 1);
-            if(te != null && te instanceof IClockworkTile)
+            if(te != null && te instanceof IClockworkNetworkTile)
             {
-                ((IClockworkTile) te).wind(1000 * 10);
+                ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
-            }
+            }*/
         }
         return false;
     }

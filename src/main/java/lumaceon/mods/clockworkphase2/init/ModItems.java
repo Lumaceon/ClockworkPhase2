@@ -3,9 +3,7 @@ package lumaceon.mods.clockworkphase2.init;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.item.*;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeFurnace;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeRelocate;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeSilk;
+import lumaceon.mods.clockworkphase2.item.components.clockworktool.*;
 import lumaceon.mods.clockworkphase2.item.construct.tool.*;
 import lumaceon.mods.clockworkphase2.item.timestream.*;
 import lumaceon.mods.clockworkphase2.item.components.ItemClockworkCore;
@@ -39,15 +37,24 @@ public class ModItems
     public static Item toolUpgradeSilk;
     public static Item toolUpgradeFurnace;
     public static Item toolUpgradeRelocate;
+    public static Item toolUpgradeArea;
+    public static Item toolUpgradeFortune;
+    public static Item toolUpgradeXp;
     public static void initToolUpgrades()
     {
         toolUpgradeSilk = new ItemToolUpgradeSilk(1, 100, Names.ITEM.TOOL_UPGRADE_SILK);
         toolUpgradeFurnace = new ItemToolUpgradeFurnace(1, 100, Names.ITEM.TOOL_UPGRADE_FURNACE);
         toolUpgradeRelocate = new ItemToolUpgradeRelocate(1, 100, Names.ITEM.TOOL_UPGRADE_RELOCATE);
+        toolUpgradeArea = new ItemToolUpgradeArea(1, 100, Names.ITEM.TOOL_UPGRADE_AREA);
+        toolUpgradeFortune = new ItemToolUpgradeFortune(1, 100, Names.ITEM.TOOL_UPGRADE_FORTUNE);
+        toolUpgradeXp = new ItemToolUpgradeXP(1, 100, Names.ITEM.TOOL_UPGRADE_XP);
 
         GameRegistry.registerItem(toolUpgradeSilk, Names.ITEM.TOOL_UPGRADE_SILK);
         GameRegistry.registerItem(toolUpgradeFurnace, Names.ITEM.TOOL_UPGRADE_FURNACE);
         GameRegistry.registerItem(toolUpgradeRelocate, Names.ITEM.TOOL_UPGRADE_RELOCATE);
+        GameRegistry.registerItem(toolUpgradeArea, Names.ITEM.TOOL_UPGRADE_AREA);
+        GameRegistry.registerItem(toolUpgradeFortune, Names.ITEM.TOOL_UPGRADE_FORTUNE);
+        GameRegistry.registerItem(toolUpgradeXp, Names.ITEM.TOOL_UPGRADE_XP);
     }
 
     public static Item timezoneModuleTank;
@@ -235,8 +242,7 @@ public class ModItems
     public static Item temporalDriveModify;
     public static Item temporalDriveDuplicate;
     public static Item moonFlowerSeeds;
-    public static Item moonPearl;
-    public static Item elysianGem;
+    public static Item temporalPearl;
     public static void initMisc()
     {
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
@@ -246,8 +252,7 @@ public class ModItems
         temporalDriveModify = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         temporalDriveDuplicate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
         moonFlowerSeeds = new ItemMoonFlowerSeeds(64, 0, Names.ITEM.MOON_FLOWER_SEEDS);
-        moonPearl = new ItemClockworkPhase(64, 0, Names.ITEM.MOON_PEARL);
-        elysianGem = new ItemClockworkPhase(64, 0, Names.ITEM.ELYSIAN_GEM);
+        temporalPearl = new ItemClockworkPhase(64, 0, Names.ITEM.TEMPORAL_PEARL);
 
         GameRegistry.registerItem(bugSwatter, "bug_swatter");
         GameRegistry.registerItem(ageDev, "age_developer");
@@ -256,7 +261,6 @@ public class ModItems
         GameRegistry.registerItem(temporalDriveModify, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
         GameRegistry.registerItem(temporalDriveDuplicate, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
         GameRegistry.registerItem(moonFlowerSeeds, Names.ITEM.MOON_FLOWER_SEEDS);
-        GameRegistry.registerItem(moonPearl, Names.ITEM.MOON_PEARL);
-        GameRegistry.registerItem(elysianGem, Names.ITEM.ELYSIAN_GEM);
+        GameRegistry.registerItem(temporalPearl, Names.ITEM.TEMPORAL_PEARL);
     }
 }

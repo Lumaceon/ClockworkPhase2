@@ -13,13 +13,13 @@ public class ItemToolUpgradeFurnace extends ItemClockworkPhase implements IToolU
     }
 
     @Override
-    public void setActive(ItemStack item, boolean active) {
-        NBTHelper.BOOLEAN.set(item, NBTTags.ACTIVE, active);
+    public void setActive(ItemStack upgradeStack, ItemStack toolStack, boolean active) {
+        NBTHelper.BOOLEAN.set(upgradeStack, NBTTags.ACTIVE, active);
     }
 
     @Override
-    public boolean getActive(ItemStack item) {
-        return NBTHelper.BOOLEAN.get(item, NBTTags.ACTIVE);
+    public boolean getActive(ItemStack upgradeStack, ItemStack toolStack) {
+        return NBTHelper.BOOLEAN.get(upgradeStack, NBTTags.ACTIVE);
     }
 
     @Override

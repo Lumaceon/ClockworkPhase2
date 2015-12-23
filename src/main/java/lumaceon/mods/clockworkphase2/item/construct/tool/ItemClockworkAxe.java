@@ -19,21 +19,13 @@ public class ItemClockworkAxe extends ItemClockworkTool
     }
 
     @Override
-    public float func_150893_a(ItemStack is, Block block)
-    {
-        float efficiency = block.getMaterial() != Material.wood && block.getMaterial() != Material.plants && block.getMaterial() != Material.vine ? super.func_150893_a(is, block) : this.efficiencyOnProperMaterial;
-        if(efficiency == 1.0F)
-            return efficiency;
+    public String getHarvestType() {
+        return "axe";
+    }
 
-        int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
-        if(tension <= 0)
-            return 1.0F;
-
-        int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
-        if(speed <= 0)
-            return 1.0F;
-
-        return (float) speed / 25;
+    @Override
+    public Material[] getEffectiveMaterials() {
+        return new Material[] { Material.wood, Material.plants, Material.vine, Material.gourd };
     }
 
     @Override

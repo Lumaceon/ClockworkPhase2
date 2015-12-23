@@ -1,14 +1,17 @@
 package lumaceon.mods.clockworkphase2.tile.clockwork;
 
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkDestination;
+import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
+import lumaceon.mods.clockworkphase2.api.util.ClockworkNetwork;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileClockwork extends TileClockworkPhase implements IClockworkDestination
+public abstract class TileClockwork extends TileClockworkPhase implements IClockworkNetworkMachine
 {
+    private ClockworkNetwork clockworkNetwork;
     public ItemStack itemBlock;
     public int quality; //Tension efficiency; higher = less tension used per operation.
     public int speed; //Work speed; higher = faster machines.
@@ -48,31 +51,10 @@ public class TileClockwork extends TileClockworkPhase implements IClockworkDesti
     }
 
     @Override
-    public boolean canReceiveFrom(ForgeDirection direction) {
-        return ForgeDirection.getOrientation(blockMetadata).ordinal() != direction.getOpposite().ordinal();
+    public ClockworkNetwork getClockworkNetwork() {
+        return clockworkNetwork;
     }
 
     @Override
-    public int receiveClockworkEnergy(ForgeDirection from, int maxReception) {
-        int energyTaken = canReceiveFrom(from) ? Math.min(maxTension - currentTension, maxReception) : 0;
-        currentTension += energyTaken;
-        return energyTaken;
-    }
-
-    @Override
-    public int getMaxCapacity() { return maxTension; }
-    @Override
-    public int getEnergyStored() { return currentTension; }
-
-    @Override
-    public int wind(int tension) {
-        int amountToAdd = Math.min(this.maxTension - this.currentTension, tension);
-        currentTension += amountToAdd;
-        return amountToAdd;
-    }
-
-    @Override
-    public void setState(int state) {}
-    @Override
-    public void setStateAndUpdate(int state) {}
+    public abstract ClockworkNetworkContainer getGui();
 }

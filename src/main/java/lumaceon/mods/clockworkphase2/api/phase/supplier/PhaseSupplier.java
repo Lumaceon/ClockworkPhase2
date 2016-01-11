@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class PhaseSupplier
 {
     /**
-     * Higher priority suppliers are called first. Priority defaults to 0 and can be negative. Suppliers that effect
+     * Higher priority suppliers are called zeroth. Priority defaults to 0 and can be negative. Suppliers that effect
      * other phases should occur after the others have added their phases (negative priority).
      */
     public int priority;

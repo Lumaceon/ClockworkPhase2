@@ -17,9 +17,9 @@ public class ItemAgeDev extends ItemClockworkPhase
         if(world.provider.dimensionId == 0)
         {
             if(player.isSneaking())
-                player.travelToDimension(Defaults.DIM_ID.FIRST_AGE);
+                player.travelToDimension(Defaults.DIM_ID.ZEROTH_AGE);
             else
-                player.travelToDimension(Defaults.DIM_ID.SECOND_AGE);
+                player.travelToDimension(Defaults.DIM_ID.FIRST_AGE);
         }
         else
             player.travelToDimension(0);
@@ -33,9 +33,9 @@ public class ItemAgeDev extends ItemClockworkPhase
         if(world.provider.dimensionId == 0)
         {
             if(player.isSneaking())
-                player.travelToDimension(Defaults.DIM_ID.THIRD_AGE);
+                player.travelToDimension(Defaults.DIM_ID.SECOND_AGE);
             else
-                player.travelToDimension(Defaults.DIM_ID.FORTH_AGE);
+                player.travelToDimension(Defaults.DIM_ID.THIRD_AGE);
         }
         else
             player.travelToDimension(0);

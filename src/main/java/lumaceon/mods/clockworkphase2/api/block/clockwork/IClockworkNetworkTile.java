@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.api.block.clockwork;
 
-import lumaceon.mods.clockworkphase2.api.util.ClockworkNetwork;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
 
 /**
  * Tiles implementing this are marked as being part of a clockwork network.

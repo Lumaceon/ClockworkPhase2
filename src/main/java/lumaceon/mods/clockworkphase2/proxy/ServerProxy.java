@@ -2,10 +2,10 @@ package lumaceon.mods.clockworkphase2.proxy;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkFurnaceClient;
-import lumaceon.mods.clockworkphase2.container.clockworknetwork.ContainerCNBrewery;
-import lumaceon.mods.clockworkphase2.container.clockworknetwork.ContainerCNFurnace;
-import lumaceon.mods.clockworkphase2.container.clockworknetwork.ContainerCNMixer;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.ContainerCNBrewery;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.ContainerCNFurnace;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.ContainerCNMelter;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.ContainerCNMixer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -48,6 +48,8 @@ public class ServerProxy extends CommonProxy
                 return new ContainerCNBrewery(te, 80, 76);
             case 2: //Clockwork Mixer
                 return new ContainerCNMixer(te, 172, 80);
+            case 3: //Clockwork Melter
+                return new ContainerCNMelter(te, 172, 80);
         }
         return null;
     }

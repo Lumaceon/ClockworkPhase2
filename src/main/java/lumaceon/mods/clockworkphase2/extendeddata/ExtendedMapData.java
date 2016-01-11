@@ -17,11 +17,11 @@ public class ExtendedMapData extends WorldSavedData
 {
     private static final String ID = Reference.MOD_ID + "_savedata";
     private boolean ruinMapGenerated;
+    public ArrayList<Ruins> zerothAgeRuins = new ArrayList<Ruins>();
     public ArrayList<Ruins> firstAgeRuins = new ArrayList<Ruins>();
     public ArrayList<Ruins> secondAgeRuins = new ArrayList<Ruins>();
     public ArrayList<Ruins> thirdAgeRuins = new ArrayList<Ruins>();
-    public ArrayList<Ruins> forthAgeRuins = new ArrayList<Ruins>();
-    public ArrayList<Ruins> fifthAgeRuins = new ArrayList<Ruins>();
+    public ArrayList<Ruins> overworldRuins = new ArrayList<Ruins>();
 
     public ExtendedMapData() {
         super(ID);
@@ -54,8 +54,8 @@ public class ExtendedMapData extends WorldSavedData
 
             }
         }*/
-        //fifthAgeRuins.add(new Ruins(ModRuins.testRuins, 50, 64, 200));
-        //fifthAgeRuins.add(new Ruins(ModRuins.smallerRuins, 300, 64, -20));
+        //overworldRuins.add(new Ruins(ModRuins.testRuins, 50, 64, 200));
+        //overworldRuins.add(new Ruins(ModRuins.smallerRuins, 300, 64, -20));
         this.ruinMapGenerated = true;
         markDirty();
     }
@@ -67,10 +67,7 @@ public class ExtendedMapData extends WorldSavedData
     {
         int dimID = world.provider.dimensionId;
         if(dimID == 0) //OVERWORLD.
-            for(Ruins ruin : fifthAgeRuins)
-                ruin.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-        else if(dimID == Defaults.DIM_ID.FORTH_AGE)
-            for(Ruins ruin : forthAgeRuins)
+            for(Ruins ruin : overworldRuins)
                 ruin.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         else if(dimID == Defaults.DIM_ID.THIRD_AGE)
             for(Ruins ruin : thirdAgeRuins)
@@ -81,22 +78,25 @@ public class ExtendedMapData extends WorldSavedData
         else if(dimID == Defaults.DIM_ID.FIRST_AGE)
             for(Ruins ruin : firstAgeRuins)
                 ruin.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+        else if(dimID == Defaults.DIM_ID.ZEROTH_AGE)
+            for(Ruins ruin : zerothAgeRuins)
+                ruin.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
     {
         nbt.setBoolean("ruin_map_generated", this.ruinMapGenerated);
-        if(!forthAgeRuins.isEmpty())
+        if(!thirdAgeRuins.isEmpty())
         {
             NBTTagList tagList = new NBTTagList();
-            for(Ruins ruin : forthAgeRuins)
+            for(Ruins ruin : thirdAgeRuins)
             {
                 NBTTagCompound nbtTag = new NBTTagCompound();
                 ruin.writeToNBT(nbtTag);
                 tagList.appendTag(nbtTag);
             }
-            nbt.setTag("forth_age_ruins", tagList);
+            nbt.setTag("third_age_ruins", tagList);
         }
     }
 
@@ -104,14 +104,14 @@ public class ExtendedMapData extends WorldSavedData
     public void readFromNBT(NBTTagCompound nbt)
     {
         this.ruinMapGenerated = nbt.getBoolean("ruin_map_generated");
-        if(nbt.hasKey("forth_age_ruins"))
+        if(nbt.hasKey("third_age_ruins"))
         {
-            NBTTagList tagList = nbt.getTagList("forth_age_ruins", 10);
+            NBTTagList tagList = nbt.getTagList("third_age_ruins", 10);
             for(int n = 0; n < tagList.tagCount(); n++)
             {
                 NBTTagCompound nbtTag = tagList.getCompoundTagAt(n);
                 Ruins newRuins = new Ruins(RuinRegistry.getRuinTemplate(nbtTag.getString("template")), nbtTag.getInteger("x"), nbtTag.getInteger("y"), nbtTag.getInteger("z"));
-                forthAgeRuins.add(newRuins);
+                thirdAgeRuins.add(newRuins);
             }
         }
     }

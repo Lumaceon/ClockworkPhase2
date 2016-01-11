@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.client.tesr;
 
 import lumaceon.mods.clockworkphase2.lib.Reference;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

@@ -8,9 +8,9 @@ public class Defaults
     }
 
     public static class DIM_ID {
+        public static int ZEROTH_AGE;
         public static int FIRST_AGE;
         public static int SECOND_AGE;
         public static int THIRD_AGE;
-        public static int FORTH_AGE;
     }
 }

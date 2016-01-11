@@ -113,6 +113,9 @@ public class RenderHandler
         if(RenderManager.instance.renderEngine == null)
             return;
 
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glColor3f(1.0F, 1.0F, 1.0F);
         if(mc.theWorld != null)
         {
             for(int[] area : TimezoneHandler.timezones)
@@ -135,6 +138,7 @@ public class RenderHandler
                     if(Math.sqrt(Math.pow(Math.abs(wre.xPos - camera.posX), 2) + Math.pow(Math.abs(wre.yPos - camera.posY), 2) + Math.pow(Math.abs(wre.zPos - camera.posZ), 2)) <= wre.maxRenderDistance())
                         wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
         }
+        GL11.glPopMatrix();
     }
 
     public static class TIMEZONE

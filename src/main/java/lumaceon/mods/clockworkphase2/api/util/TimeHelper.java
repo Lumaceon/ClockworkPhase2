@@ -79,7 +79,7 @@ public class TimeHelper
     }
 
     /**
-     * Gets the time to break the block in seconds (1 = 1 second). This defaults to the speed of diamond tools if there
+     * Gets the time to break the block in seconds (1 = 1 first). This defaults to the speed of diamond tools if there
      * is no override tool in the excavator.
      * @param blockHardness The hardness of the block.
      * @param player The player trying to break the block.

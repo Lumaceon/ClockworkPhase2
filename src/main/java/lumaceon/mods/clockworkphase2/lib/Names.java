@@ -10,7 +10,7 @@ public class Names
         public static final String CRANK = "crank";
         public static final String CLOCKWORK_CONTROLLER = "clockwork_controller";
         public static final String CLOCKWORK_FURNACE = "clockwork_furnace";
-        public static final String CLOCKWORK_LIQUEFIER = "clockwork_liquefier";
+        public static final String CLOCKWORK_MELTER = "clockwork_melter";
         public static final String CLOCKWORK_SEWING_MACHINE = "clockwork_sewing_machine";
         public static final String CLOCKWORK_BREWERY = "clockwork_brewery";
         public static final String CLOCKWORK_MIXER = "clockwork_mixer";

@@ -35,8 +35,8 @@ public class TodoList
     //TODO ? Create light series (angelic theme, manipulate light into physical forms, probably with lasers as well).
     //TODO ? Create crystal series (high-tier, grow crystals instantly for a variety of effects).
     //TODO ? Create mobile home (maybe; depends on technical limitations and the potential for being worthwhile).
-    //TODO ? Create past dimension (questionable, as this may be hard to implement).
-    //TODO ? Create time seeds to be placed in the past dimension (questionable, as this may be hard to implement).
+    //TODO ? Create timetravel dimension (questionable, as this may be hard to implement).
+    //TODO ? Create time seeds to be placed in the timetravel dimension (questionable, as this may be hard to implement).
     //TODO ? Create steam powered machines (may or may not be necessary).
     //TODO ? Create natural wonders (1-shot world generation with special properties like a regeneration area).
     //TODO ? Create flugal-horn because flugal-horns.

@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidImporter;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidImporter;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;

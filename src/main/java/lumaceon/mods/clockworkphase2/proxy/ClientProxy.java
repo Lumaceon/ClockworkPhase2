@@ -6,9 +6,10 @@ import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
-import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkBreweryClient;
-import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkFurnaceClient;
-import lumaceon.mods.clockworkphase2.client.gui.cngui.GuiClockworkMixerClient;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkBreweryClient;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkFurnaceClient;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkMelterClient;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkMixerClient;
 import lumaceon.mods.clockworkphase2.client.keybind.KeyHandler;
 import lumaceon.mods.clockworkphase2.client.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
@@ -20,8 +21,8 @@ import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
-import lumaceon.mods.clockworkphase2.tile.machine.TileTimezoneFluidExporter;
-import lumaceon.mods.clockworkphase2.world.provider.forthage.WorldProviderForthAge;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
+import lumaceon.mods.clockworkphase2.timetravel.third.world.WorldProviderThirdAge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -99,7 +100,7 @@ public class ClientProxy extends CommonProxy
 
     @Override
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) {
-        if(worldProvider instanceof WorldProviderForthAge)
+        if(worldProvider instanceof WorldProviderThirdAge)
             return new SkyRendererForthAge();
         return null;
     }
@@ -131,6 +132,8 @@ public class ClientProxy extends CommonProxy
                 return new GuiClockworkBreweryClient(te, 80, 74);
             case 2: //Clockwork Mixer
                 return new GuiClockworkMixerClient(te, 172, 80);
+            case 3: //Clockwork Melter
+                return new GuiClockworkMelterClient(te, 172, 80);
         }
         return null;
     }

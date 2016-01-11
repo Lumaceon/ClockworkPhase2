@@ -9,6 +9,7 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeFurnace;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeRelocate;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeSilk;
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -76,7 +77,7 @@ public class WorldHandler
                 {
                     for(int n = 0; n < event.drops.size(); n++)
                     {
-                        ItemStack smeltedOutput = FurnaceRecipes.smelting().getSmeltingResult(event.drops.get(n).copy());
+                        ItemStack smeltedOutput = FurnaceRecipes.smelting().getSmeltingResult(event.drops.get(n)).copy();
 
                         //Fortune code from BlockOre\\
                         int j = event.world.rand.nextInt(event.fortuneLevel + 2) - 1;
@@ -87,8 +88,11 @@ public class WorldHandler
                         if(smeltedOutput != null)
                         {
                             //Only drop 1 if the smelted item is a block or the same as the block broken
-                            if(Item.getItemFromBlock(event.block).equals(smeltedOutput.getItem()))
+                            if(Block.getBlockFromItem(smeltedOutput.getItem()) != null || Item.getItemFromBlock(event.block).equals(smeltedOutput.getItem()))
+                            {
+                                System.out.println("yes");
                                 size = 1;
+                            }
                             smeltedOutput.stackSize = size;
                             event.drops.remove(n);
                             event.drops.add(n, smeltedOutput);

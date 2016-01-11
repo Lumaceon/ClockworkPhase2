@@ -3,7 +3,7 @@ package lumaceon.mods.clockworkphase2.container;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotInventoryValid;
-import lumaceon.mods.clockworkphase2.tile.clockwork.TileClockworkFurnace;
+import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

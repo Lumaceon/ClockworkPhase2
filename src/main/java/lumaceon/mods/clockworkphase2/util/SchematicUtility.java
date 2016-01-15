@@ -110,7 +110,7 @@ public class SchematicUtility
                 name = tempTag.getString("UI_Name");
 
                 targetBlock = GameRegistry.findBlock(modId, name);
-                Logger.info(modId + ":" + name);
+                //Logger.info(modId + ":" + name);
                 if(targetBlock == null) //Block no longer exists.
                 {
                     missingBlocks.add(modId + ":" + name);
@@ -128,8 +128,8 @@ public class SchematicUtility
             Logger.info("Width: " + width + ", Height: " + height + ", Length: " + length + ", Tile Entity Count: " + tileEntities.tagCount());
 
             Set<Integer> set = idMatrix.keySet();
-            for(int i : set)
-                Logger.info("Old: " + i + ", New: " + idMatrix.get(i));
+            //for(int i : set)
+            //    Logger.info("Old: " + i + ", New: " + idMatrix.get(i));
             return new ModSchematic(tileEntities, width, height, length, horizon, blocks, metadata, missingBlocks.toArray(new String[missingBlocks.size()]));
         }
         catch(Exception ex)

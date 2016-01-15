@@ -24,7 +24,7 @@ public class WorldHandler
     @SubscribeEvent
     public void onWorldLoaded(WorldEvent.Load event)
     {
-        if(event.world != null && event.world.provider.dimensionId == 0) //Is this the main world?
+        if(event.world != null)
         {
             ExtendedMapData worldData = ExtendedMapData.get(event.world);
             if(!worldData.isRuinMapGenerated() && !event.world.isRemote)

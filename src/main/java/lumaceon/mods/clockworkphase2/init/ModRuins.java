@@ -1,19 +1,22 @@
 package lumaceon.mods.clockworkphase2.init;
 
-import lumaceon.mods.clockworkphase2.api.RuinRegistry;
-import lumaceon.mods.clockworkphase2.api.RuinTemplate;
-import lumaceon.mods.clockworkphase2.lib.RuinTemplates;
-import lumaceon.mods.clockworkphase2.ruins.templates.RuinTemplateTest;
+import lumaceon.mods.clockworkphase2.structure.StructureRegistry;
+import lumaceon.mods.clockworkphase2.structure.StructureTemplate;
 
 public class ModRuins
 {
     public static void init()
     {
-        initFifthAge();
         initForthAge();
         initThirdAge();
         initSecondAge();
         initFirstAge();
+        initZerothAge();
+    }
+
+    public static void initZerothAge()
+    {
+
     }
 
     public static void initFirstAge()
@@ -26,23 +29,18 @@ public class ModRuins
 
     }
 
+    public static StructureTemplate testRuins;
     public static void initThirdAge()
     {
+        testRuins = new StructureTemplate("testRuins", "NewSchematic", true);
 
-    }
-
-    //public static RuinTemplate testRuins;
-    public static void initForthAge()
-    {
-        //testRuins = new RuinTemplateTest(RuinTemplates.FORTH.TEST, "TEEEEESSSSSST");
-
-        //RuinRegistry.registerRuins(testRuins, "TEEEEESSSSSST");
+        StructureRegistry.registerStructure(testRuins, "testRuins");
     }
 
     //public static RuinTemplate smallerRuins;
-    public static void initFifthAge()
+    public static void initForthAge()
     {
         //smallerRuins = new RuinTemplateTest(RuinTemplates.FIFTH.TEST, "A Small Test");
-        //RuinRegistry.registerRuins(smallerRuins, "A Small Test");
+        //RuinRegistry.registerStructure(smallerRuins, "A Small Test");
     }
 }

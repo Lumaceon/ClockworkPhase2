@@ -10,6 +10,7 @@ import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidImporter;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimeCollector;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimeWell;
+import lumaceon.mods.clockworkphase2.timetravel.third.InitializerThirdAge;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.oredict.OreDictionary;
@@ -26,6 +27,8 @@ public class ModBlocks
         initPlants();
         initMetalBlocks();
         initMisc();
+
+        InitializerThirdAge.initBlocks();
     }
 
     public static Block celestialCompass;
@@ -160,5 +163,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileAssemblyTable.class, Names.BLOCK.ASSEMBLY_TABLE);
         GameRegistry.registerTileEntity(TileTemporalFurnace.class, Names.BLOCK.TEMPORAL_FURNACE);
         GameRegistry.registerTileEntity(TileTimeWell.class, Names.BLOCK.TIME_WELL);
+
+        InitializerThirdAge.registerTileEntities();
     }
 }

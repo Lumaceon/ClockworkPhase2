@@ -26,6 +26,6 @@ public class RuinTemplates
 
     public static class FIFTH //Overworld.
     {
-        public static final ResourceLocation TEST = new ResourceLocation(Reference.MOD_ID, "schematics/NewSchematic.modschematic");
+        //public static final ResourceLocation TEST = new ResourceLocation(Reference.MOD_ID, "schematics/NewSchematic.modschematic");
     }
 }

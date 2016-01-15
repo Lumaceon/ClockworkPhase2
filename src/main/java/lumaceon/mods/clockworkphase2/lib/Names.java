@@ -45,6 +45,8 @@ public class Names
         public static final String BLOCK_ZINC = "zinc_block";
         public static final String BLOCK_BRASS = "brass_block";
         public static final String BLOCK_TEMPORAL = "temporal_block";
+
+        public static final String GHOSTLY_LANTERN = "ghostly_lantern";
     }
 
     public class ITEM

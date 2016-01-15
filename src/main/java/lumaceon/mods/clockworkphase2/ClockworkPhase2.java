@@ -49,7 +49,6 @@ public class ClockworkPhase2
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         SchematicUtility.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
         SchematicUtility.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
-        SchematicUtility.INSTANCE.loadModSchematic("NewSchematic", false);
 
         ModFluids.init();
 

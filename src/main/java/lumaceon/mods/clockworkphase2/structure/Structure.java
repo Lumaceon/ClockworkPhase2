@@ -1,23 +1,27 @@
-package lumaceon.mods.clockworkphase2.ruins;
+package lumaceon.mods.clockworkphase2.structure;
 
-import lumaceon.mods.clockworkphase2.api.RuinTemplate;
 import lumaceon.mods.clockworkphase2.util.Area;
-import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.util.SchematicUtility;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.Random;
 
-public class Ruins
+/**
+ * A specific structure waiting to be generated in the given position in the world.
+ * Big thanks to Tombenpotter and Elec332 for making this run considerably faster.
+ */
+public class Structure
 {
-    public final RuinTemplate template;
-    public int x, y, z; //Represents the center of the ruins, except for 'y' which represents the horizon.
+    public final StructureTemplate template;
+    public int x, y, z; //Represents the center of the structure, except for 'y' which represents the horizon.
 
-    public Ruins(RuinTemplate template, int x, int y, int z) {
+    public Structure(StructureTemplate template, int x, int y, int z) {
         this.template = template;
         this.x = x;
         this.y = y;
@@ -26,7 +30,7 @@ public class Ruins
 
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-        Area chunkArea = new Area(chunkX * 16, 0, chunkZ * 16, chunkX * 16 + 16, 255, chunkZ * 16 + 16);
+        /*Area chunkArea = new Area(chunkX * 16, 0, chunkZ * 16, chunkX * 16 + 16, 255, chunkZ * 16 + 16);
         Area schematicArea = template.ruinSchematic.getAreaFromWorldCoordinates(this.x, this.y, this.z);
         if(schematicArea.doAreasIntersect(chunkArea))
         {
@@ -45,9 +49,9 @@ public class Ruins
                         zTemp = z + offset[2];
 
                         if(xTemp > -1 && yTemp > -1 && zTemp > -1
-                        && xTemp < template.ruinSchematic.width
-                        && yTemp < template.ruinSchematic.height - template.ruinSchematic.horizon
-                        && zTemp < template.ruinSchematic.length)
+                                && xTemp < template.ruinSchematic.width
+                                && yTemp < template.ruinSchematic.height - template.ruinSchematic.horizon
+                                && zTemp < template.ruinSchematic.length)
                         {
                             block = template.ruinSchematic.getBlock(xTemp, yTemp, zTemp);
                             if(block != null)
@@ -58,7 +62,7 @@ public class Ruins
                             }
                         }
                     }
-        }
+        }*/
     }
 
     public void writeToNBT(NBTTagCompound nbt)

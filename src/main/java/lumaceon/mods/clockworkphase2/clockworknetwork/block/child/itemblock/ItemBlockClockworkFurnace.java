@@ -43,7 +43,7 @@ public class ItemBlockClockworkFurnace extends ItemBlock implements IAssemblable
 
     @Override
     public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 2, 1);
+        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 1, 1);
         AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
         return inventory;
     }
@@ -53,8 +53,7 @@ public class ItemBlockClockworkFurnace extends ItemBlock implements IAssemblable
     {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring),
-                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore),
+                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.clockworkCore)
                 };
     }
 
@@ -65,7 +64,7 @@ public class ItemBlockClockworkFurnace extends ItemBlock implements IAssemblable
 
     @Override
     public void onInventoryChange(ContainerAssemblyTable container) {
-        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 1);
+        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 0);
     }
 
     @Override

@@ -36,8 +36,8 @@ public class GuiClockworkFurnaceClient extends ClockworkNetworkGuiClient
         {
             furnace = (TileClockworkFurnace) te;
 
-            Slot input = new SlotInventoryValid((IInventory) te, 0, 3, 3);
-            Slot output = new SlotInventoryValid((IInventory) te, 1, 154, 3);
+            Slot input = new SlotInventoryValid((IInventory) te, 0, 1, 1);
+            Slot output = new SlotInventoryValid((IInventory) te, 1, 151, 1);
 
             slots = new Slot[] { input, output };
         }
@@ -53,7 +53,7 @@ public class GuiClockworkFurnaceClient extends ClockworkNetworkGuiClient
         {
             ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(input);
             float distance = slots[1].xDisplayPosition - slots[0].xDisplayPosition;
-            float scaledCookProgress = furnace.getCookProgressScaled((int) distance);
+            float scaledCookProgress = furnace.getProgressScaled((int) distance);
             if(result != null && itemRenderer != null)
             {
                 GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -73,7 +73,10 @@ public class GuiClockworkFurnaceClient extends ClockworkNetworkGuiClient
     }
 
     @Override
-    public void drawForeground(int left, int top, float zLevel) {}
+    public void drawForeground(int left, int top, float zLevel) {
+        mc.renderEngine.bindTexture(Textures.GUI.FURNACE_FORE);
+        this.drawTexturedModalRect(left, top, xSize, ySize, zLevel);
+    }
 
     @Override
     public Slot[] getSlots() {

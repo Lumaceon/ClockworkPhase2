@@ -43,7 +43,7 @@ public class ServerProxy extends CommonProxy
         switch(id)
         {
             case 0: //Clockwork Furnace
-                return new ContainerCNFurnace(te, 174, 22);
+                return new ContainerCNFurnace(te, 168, 18);
             case 1: //Clockwork Brewery
                 return new ContainerCNBrewery(te, 80, 76);
             case 2: //Clockwork Mixer

@@ -20,7 +20,7 @@ public class ContainerCNFurnace extends ClockworkNetworkContainer
         super(te, xSize, ySize);
         if(te != null && te instanceof IInventory)
         {
-            slots = new Slot[] { new SlotInventoryValid((IInventory) te, 0, 3, 3), new SlotInventoryValid((IInventory) te, 1, 154, 3)};
+            slots = new Slot[] { new SlotInventoryValid((IInventory) te, 0, 1, 1), new SlotInventoryValid((IInventory) te, 1, 151, 1)};
             furnace = (TileClockworkFurnace) te;
         }
     }

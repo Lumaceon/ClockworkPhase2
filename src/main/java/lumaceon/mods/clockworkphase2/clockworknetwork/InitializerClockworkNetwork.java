@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork;
 import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.BlockClockworkController;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.BlockCrank;
+import lumaceon.mods.clockworkphase2.clockworknetwork.block.BlockCreativeMainspring;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.child.BlockClockworkBrewery;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.child.BlockClockworkFurnace;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.child.BlockClockworkMelter;
@@ -12,6 +13,7 @@ import lumaceon.mods.clockworkphase2.clockworknetwork.block.child.itemblock.Item
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.child.itemblock.ItemBlockClockworkMelter;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.child.itemblock.ItemBlockClockworkMixer;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkController;
+import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileCreativeMainspring;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkBrewery;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkFurnace;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkMelter;
@@ -23,6 +25,7 @@ import net.minecraft.block.material.Material;
 public class InitializerClockworkNetwork
 {
     public static Block crank;
+    public static Block mainspring;
     public static Block clockworkController;
     public static Block clockworkFurnace;
     public static Block clockworkMelter;
@@ -32,6 +35,7 @@ public class InitializerClockworkNetwork
     public static void initBlocks()
     {
         crank = new BlockCrank(Material.iron, Names.BLOCK.CRANK);
+        mainspring = new BlockCreativeMainspring(Material.iron, Names.BLOCK.CREATIVE_MAINSPRING);
         clockworkController = new BlockClockworkController(Material.iron, Names.BLOCK.CLOCKWORK_CONTROLLER);
         clockworkFurnace = new BlockClockworkFurnace(Material.iron, Names.BLOCK.CLOCKWORK_FURNACE);
         clockworkMelter = new BlockClockworkMelter(Material.iron, Names.BLOCK.CLOCKWORK_MELTER);
@@ -40,6 +44,7 @@ public class InitializerClockworkNetwork
         //clockworkSewingMachine = new BlockClockworkSewingMachine(Material.iron, Names.BLOCK.CLOCKWORK_SEWING_MACHINE);
 
         GameRegistry.registerBlock(crank, Names.BLOCK.CRANK);
+        GameRegistry.registerBlock(mainspring, Names.BLOCK.CREATIVE_MAINSPRING);
         GameRegistry.registerBlock(clockworkFurnace, ItemBlockClockworkFurnace.class, Names.BLOCK.CLOCKWORK_FURNACE);
         GameRegistry.registerBlock(clockworkController, Names.BLOCK.CLOCKWORK_CONTROLLER);
         GameRegistry.registerBlock(clockworkMelter, ItemBlockClockworkMelter.class, Names.BLOCK.CLOCKWORK_MELTER);
@@ -50,6 +55,7 @@ public class InitializerClockworkNetwork
 
     public static void registerTileEntities()
     {
+        GameRegistry.registerTileEntity(TileCreativeMainspring.class, Names.BLOCK.CREATIVE_MAINSPRING);
         GameRegistry.registerTileEntity(TileClockworkController.class, Names.BLOCK.CLOCKWORK_CONTROLLER);
         GameRegistry.registerTileEntity(TileClockworkFurnace.class, Names.BLOCK.CLOCKWORK_FURNACE);
         GameRegistry.registerTileEntity(TileClockworkBrewery.class, Names.BLOCK.CLOCKWORK_BREWERY);

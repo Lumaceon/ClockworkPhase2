@@ -8,6 +8,7 @@ public class Names
     public class BLOCK
     {
         public static final String CRANK = "crank";
+        public static final String CREATIVE_MAINSPRING = "mainspring_creative";
         public static final String CLOCKWORK_CONTROLLER = "clockwork_controller";
         public static final String CLOCKWORK_FURNACE = "clockwork_furnace";
         public static final String CLOCKWORK_MELTER = "clockwork_melter";

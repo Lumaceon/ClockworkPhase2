@@ -10,11 +10,31 @@ public class ClockworkNetwork
     private ArrayList<IMainspringTile> mainsprings = new ArrayList<IMainspringTile>(2);
     private ArrayList<IClockworkNetworkMachine> machines = new ArrayList<IClockworkNetworkMachine>(5);
 
+    private int currentTension = 0;
+
+    public int getCurrentTension() {
+        return currentTension;
+    }
+
+    /**
+     * @return The amount of tension consumed from this network.
+     */
+    public int consumeTension(int tensionToConsume) {
+        int initialTensionToConsume = tensionToConsume;
+        for(IMainspringTile mainspring : mainsprings)
+            if(mainspring != null && tensionToConsume > 0)
+                tensionToConsume -= mainspring.consumeTension(tensionToConsume);
+        currentTension -= (initialTensionToConsume - tensionToConsume);
+        return initialTensionToConsume - tensionToConsume;
+    }
+
     public void addMainspring(IMainspringTile mainspring) {
         for(IMainspringTile m : mainsprings)
             if(m.equals(mainspring))
                 return;
         mainsprings.add(mainspring);
+        currentTension += mainspring.getTension();
+        mainspring.setClockworkNetwork(this);
     }
 
     public void addMachine(IClockworkNetworkMachine clockworkMachine) {
@@ -22,6 +42,7 @@ public class ClockworkNetwork
             if(m.equals(clockworkMachine))
                 return;
         machines.add(clockworkMachine);
+        clockworkMachine.setClockworkNetwork(this);
     }
 
     public ArrayList<IMainspringTile> getMainsprings() { return mainsprings; }

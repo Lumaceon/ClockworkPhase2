@@ -40,7 +40,6 @@ public class ContainerClockworkFurnace extends Container
     public void addCraftingToCrafters(ICrafting crafting) {
         super.addCraftingToCrafters(crafting);
         crafting.sendProgressBarUpdate(this, 0, te.furnaceCookTime);
-        crafting.sendProgressBarUpdate(this, 1, te.currentTension);
     }
 
     @Override
@@ -55,13 +54,10 @@ public class ContainerClockworkFurnace extends Container
                 crafting = (ICrafting) i;
                 if(this.previousCookTime != te.furnaceCookTime)
                     crafting.sendProgressBarUpdate(this, 0, te.furnaceCookTime);
-                if(this.previousCurrentTension != te.currentTension)
-                    crafting.sendProgressBarUpdate(this, 1, te.currentTension);
             }
         }
 
         this.previousCookTime = te.furnaceCookTime;
-        this.previousCurrentTension = te.currentTension;
     }
 
     @Override
@@ -72,9 +68,6 @@ public class ContainerClockworkFurnace extends Container
         {
             case 0:
                 te.furnaceCookTime = value;
-                break;
-            case 1:
-                te.currentTension = value;
                 break;
         }
     }

@@ -127,7 +127,7 @@ public class ClientProxy extends CommonProxy
         switch(id)
         {
             case 0: //Clockwork Furnace
-                return new GuiClockworkFurnaceClient(te, 172, 22);
+                return new GuiClockworkFurnaceClient(te, 168, 18);
             case 1: //Clockwork Brewery
                 return new GuiClockworkBreweryClient(te, 80, 74);
             case 2: //Clockwork Mixer

@@ -33,7 +33,7 @@ public class GuiClockworkFurnace extends GuiContainer
 
     @Override
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
-        this.drawCenteredString(fontRendererObj, "Cooking Progress: " + String.valueOf(te.getCookProgressScaled(100)) + "%", 150, 23 - fontRendererObj.FONT_HEIGHT / 2, 0x00D0FF);
+        this.drawCenteredString(fontRendererObj, "Cooking Progress: " + String.valueOf(te.getProgressScaled(100)) + "%", 150, 23 - fontRendererObj.FONT_HEIGHT / 2, 0x00D0FF);
     }
 
     @Override

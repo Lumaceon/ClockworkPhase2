@@ -30,6 +30,7 @@ public class Textures
         public static ResourceLocation POWER_METER_CENTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power_center.png");
 
         public static ResourceLocation FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/furnace.png");
+        public static ResourceLocation FURNACE_FORE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/furnace_fore.png");
         public static ResourceLocation BREWERY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/brewery.png");
         public static ResourceLocation ALLOY_FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/alloy_furnace.png");
         public static ResourceLocation MELTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/melter.png");

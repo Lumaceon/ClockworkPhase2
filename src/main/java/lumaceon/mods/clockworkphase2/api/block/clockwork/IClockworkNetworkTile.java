@@ -8,4 +8,5 @@ import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
 public interface IClockworkNetworkTile
 {
     public ClockworkNetwork getClockworkNetwork();
+    public void setClockworkNetwork(ClockworkNetwork clockworkNetwork);
 }

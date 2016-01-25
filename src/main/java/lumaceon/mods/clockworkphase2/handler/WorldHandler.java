@@ -90,7 +90,6 @@ public class WorldHandler
                             //Only drop 1 if the smelted item is a block or the same as the block broken
                             if(Block.getBlockFromItem(smeltedOutput.getItem()) != null || Item.getItemFromBlock(event.block).equals(smeltedOutput.getItem()))
                             {
-                                System.out.println("yes");
                                 size = 1;
                             }
                             smeltedOutput.stackSize = size;

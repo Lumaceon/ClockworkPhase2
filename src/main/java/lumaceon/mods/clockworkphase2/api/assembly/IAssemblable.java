@@ -29,9 +29,14 @@ public interface IAssemblable
     /**
      * The individual slots to be added alongside the inventory.
      *
-     * Conventional index list:
+     * Conventional index list for ITEMs:
      * 0 - Mainspring,
      * 1 - Clockwork.
+     * 2+ - Custom stuff.
+     *
+     * Clockwork tile entities tend to use index 0 for either the mainspring or the clockwork only (depending on the
+     * tile). After 0 it's usually just custom stuff, though the tiles are theoretically capable of having both a
+     * clockwork and a mainspring.
      */
     public Slot[] getContainerSlots(IInventory inventory);
 

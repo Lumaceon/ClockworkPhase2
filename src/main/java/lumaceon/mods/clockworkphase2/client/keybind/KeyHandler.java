@@ -7,6 +7,7 @@ import lumaceon.mods.clockworkphase2.lib.KeyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Keyboard;
 
 public class KeyHandler
 {

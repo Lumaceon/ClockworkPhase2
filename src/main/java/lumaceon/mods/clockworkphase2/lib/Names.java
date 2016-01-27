@@ -15,6 +15,7 @@ public class Names
         public static final String CLOCKWORK_SEWING_MACHINE = "clockwork_sewing_machine";
         public static final String CLOCKWORK_BREWERY = "clockwork_brewery";
         public static final String CLOCKWORK_MIXER = "clockwork_mixer";
+        public static final String CLOCKWORK_SUPER_ALLOY_FURNACE = "clockwork_super_alloy_furnace";
 
         public static final String TIME_SAND = "time_sand";
         public static final String BASIC_WINDING_BOX = "basic_winding_box";
@@ -101,10 +102,13 @@ public class Names
         public static final String TIMEZONE_MODULE_TANK = "timezone_module_tank";
         public static final String TIMEZONE_MODULE_MOB_REPELL = "timezone_module_mob_repell";
 
-        public static final String TEMPORAL_INGOT = "temporal_ingot";
         public static final String COPPER_INGOT = "copper_ingot";
         public static final String ZINC_INGOT = "zinc_ingot";
         public static final String BRASS_INGOT = "brass_ingot";
+        public static final String TEMPORAL_INGOT = "temporal_ingot";
+        public static final String ETERNIUM_INGOT = "eternium_ingot";
+        public static final String MOMENTIUM_INGOT = "momentium_ingot";
+        public static final String CAPRICIUM_INGOT = "capricium_ingot";
         public static final String BRASS_LUMP = "brass_lump";
     }
 

@@ -313,9 +313,12 @@ public class GuiClockworkController extends GuiContainer
 
         if(isDefault)
         {
+            int angle = -134;
+            if(cn.getMaxTension() > 0)
+                angle = (cn.getCurrentTension() / cn.getMaxTension()) * 268;
             GL11.glPushMatrix();
             GL11.glTranslatef(guiLeft + 42F, guiTop + ySize - 42F, 0F);
-            GL11.glRotatef(-134, 0F, 0F, 1F);
+            GL11.glRotatef(angle-134, 0F, 0F, 1F);
             GL11.glTranslatef(-guiLeft - 42F, -guiTop - ySize + 42F, 0F);
             mc.renderEngine.bindTexture(Textures.GUI.POWER_METER_HAND);
             this.drawTexturedModalRect(this.guiLeft, this.guiTop + this.ySize - 84, 0, 0, 84, 84);

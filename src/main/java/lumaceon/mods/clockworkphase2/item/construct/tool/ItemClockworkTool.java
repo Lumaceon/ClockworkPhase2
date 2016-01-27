@@ -57,7 +57,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addClockworkConstructInformation(is, player, list, flag);
+        InformationDisplay.addClockworkConstructInformation(is, player, list, true);
     }
 
     @Override

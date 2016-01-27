@@ -14,6 +14,11 @@ public class TileCreativeMainspring extends TileClockworkPhase implements IMains
     }
 
     @Override
+    public int getMaxTension() {
+        return 10000000;
+    }
+
+    @Override
     public int consumeTension(int tensionToConsume) {
         return tensionToConsume;
     }

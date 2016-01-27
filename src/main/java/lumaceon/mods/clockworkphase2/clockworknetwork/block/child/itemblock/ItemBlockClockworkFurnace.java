@@ -33,7 +33,7 @@ public class ItemBlockClockworkFurnace extends ItemBlock implements IAssemblable
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addClockworkConstructInformation(is, player, list, flag);
+        InformationDisplay.addClockworkConstructInformation(is, player, list, false);
     }
 
     @Override

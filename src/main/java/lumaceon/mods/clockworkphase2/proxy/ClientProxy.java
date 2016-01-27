@@ -6,10 +6,7 @@ import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkBreweryClient;
-import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkFurnaceClient;
-import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkMelterClient;
-import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.GuiClockworkMixerClient;
+import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.*;
 import lumaceon.mods.clockworkphase2.client.keybind.KeyHandler;
 import lumaceon.mods.clockworkphase2.client.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
@@ -134,6 +131,8 @@ public class ClientProxy extends CommonProxy
                 return new GuiClockworkMixerClient(te, 172, 80);
             case 3: //Clockwork Melter
                 return new GuiClockworkMelterClient(te, 172, 80);
+            case 4: //Clockwork Super Alloy Furnace
+                return new GuiClockworkSuperAlloyFurnace(te, 200, 18);
         }
         return null;
     }

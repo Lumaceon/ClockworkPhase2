@@ -11,6 +11,7 @@ public class ClockworkNetwork
     private ArrayList<IClockworkNetworkMachine> machines = new ArrayList<IClockworkNetworkMachine>(5);
 
     private int currentTension = 0;
+    private int maxTension = 0;
 
     public int getCurrentTension() {
         return currentTension;
@@ -28,12 +29,17 @@ public class ClockworkNetwork
         return initialTensionToConsume - tensionToConsume;
     }
 
+    public int getMaxTension() {
+        return maxTension;
+    }
+
     public void addMainspring(IMainspringTile mainspring) {
         for(IMainspringTile m : mainsprings)
             if(m.equals(mainspring))
                 return;
         mainsprings.add(mainspring);
         currentTension += mainspring.getTension();
+        maxTension += mainspring.getMaxTension();
         mainspring.setClockworkNetwork(this);
     }
 

@@ -210,29 +210,42 @@ public class ModItems
 
     }
 
-    public static Item ingotTemporal;
     public static Item ingotCopper;
     public static Item ingotZinc;
-    public static Item lumpBrass;
     public static Item ingotBrass;
+    public static Item ingotTemporal;
+    public static Item ingotEternium; //Eternal metal; everlasting, durable, unchanging.
+    public static Item ingotMomentium; //Momentary metal; fast, momentary, build-up.
+    public static Item ingotCapricium; //Capricious metal; random, unreliable, changing.
+    public static Item lumpBrass;
     public static void initMetals()
     {
-        ingotTemporal = new ItemTemporalIngot(64, 100, Names.ITEM.TEMPORAL_INGOT);
         ingotCopper = new ItemClockworkPhase(64, 100, Names.ITEM.COPPER_INGOT);
         ingotZinc = new ItemClockworkPhase(64, 100, Names.ITEM.ZINC_INGOT);
-        lumpBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_LUMP);
         ingotBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_INGOT);
+        ingotTemporal = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_INGOT);
+        ingotEternium = new ItemClockworkPhase(64, 100, Names.ITEM.ETERNIUM_INGOT);
+        ingotMomentium = new ItemClockworkPhase(64, 100, Names.ITEM.MOMENTIUM_INGOT);
+        ingotCapricium = new ItemCapriciumIngot(64, 100, Names.ITEM.CAPRICIUM_INGOT);
+        lumpBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_LUMP);
 
-        GameRegistry.registerItem(ingotTemporal, Names.ITEM.TEMPORAL_INGOT);
         GameRegistry.registerItem(ingotCopper, Names.ITEM.COPPER_INGOT);
         GameRegistry.registerItem(ingotZinc, Names.ITEM.ZINC_INGOT);
-        GameRegistry.registerItem(lumpBrass, Names.ITEM.BRASS_LUMP);
         GameRegistry.registerItem(ingotBrass, Names.ITEM.BRASS_INGOT);
+        GameRegistry.registerItem(ingotTemporal, Names.ITEM.TEMPORAL_INGOT);
+        GameRegistry.registerItem(ingotEternium, Names.ITEM.ETERNIUM_INGOT);
+        GameRegistry.registerItem(ingotMomentium, Names.ITEM.MOMENTIUM_INGOT);
+        GameRegistry.registerItem(ingotCapricium, Names.ITEM.CAPRICIUM_INGOT);
+        GameRegistry.registerItem(lumpBrass, Names.ITEM.BRASS_LUMP);
 
-        OreDictionary.registerOre("ingotTemporal", ingotTemporal);
         OreDictionary.registerOre("ingotCopper", ingotCopper);
         OreDictionary.registerOre("ingotZinc", ingotZinc);
         OreDictionary.registerOre("ingotBrass", ingotBrass);
+        OreDictionary.registerOre("ingotTemporal", ingotTemporal);
+
+        OreDictionary.registerOre("ingotEternium", ingotEternium); //These 3 probably don't need oreDict compatibility.
+        OreDictionary.registerOre("ingotMomentium", ingotMomentium); //We'll do anyways, just in case.
+        OreDictionary.registerOre("ingotCapricium", ingotCapricium); //Capricium ingots love watermelons.
     }
 
     public static Item bugSwatter;

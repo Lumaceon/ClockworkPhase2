@@ -22,7 +22,7 @@ public class WorldRenderElementTDA extends WorldRenderElement
     @Override
     public void render(double x, double y, double z) {
         GL11.glPushMatrix();
-
+        GL11.glDepthMask(true);
         GL11.glTranslated(x, y, z);
         if(te.blockMetadata == ForgeDirection.EAST.ordinal() || te.blockMetadata == ForgeDirection.WEST.ordinal())
         {
@@ -50,11 +50,32 @@ public class WorldRenderElementTDA extends WorldRenderElement
         tessy.addVertexWithUV(0, 0, 1, 0, 0);
         tessy.draw();
 
+        //CLOCK
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
+        GL11.glDepthMask(false);
+        //GL11.glScalef(0.8F, 0.8F, 0.8F);
+        mc.renderEngine.bindTexture(Textures.GUI.CLOCK);
+        tessy.startDrawingQuads();
+        tessy.addVertexWithUV(0, 0, 0.5, 0, 0);
+        tessy.addVertexWithUV(0, 1, 0.5, 0, 1);
+        tessy.addVertexWithUV(1, 1, 0.5, 1, 1);
+        tessy.addVertexWithUV(1, 0, 0.5, 1, 0);
+        tessy.draw();
+
+        tessy.startDrawingQuads();
+        tessy.addVertexWithUV(1, 0, 0.5, 1, 0);
+        tessy.addVertexWithUV(1, 1, 0.5, 1, 1);
+        tessy.addVertexWithUV(0, 1, 0.5, 0, 1);
+        tessy.addVertexWithUV(0, 0, 0.5, 0, 0);
+        tessy.draw();
+        //CLOCK
+
         GL11.glPopMatrix();
 
 
         GL11.glPushMatrix();
-
+        GL11.glDepthMask(true);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslated(x, y, z);
         if(te.blockMetadata == ForgeDirection.EAST.ordinal() || te.blockMetadata == ForgeDirection.WEST.ordinal())
         {

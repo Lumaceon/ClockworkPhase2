@@ -53,11 +53,17 @@ public class InformationDisplay
      * @param player Player looking at the itemstack.
      * @param list A list of information to add to.
      */
-    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean flag)
+    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean displayTension)
     {
         if(construct.getItem() instanceof IClockworkConstruct)
         {
             IClockworkConstruct clockworkConstruct = (IClockworkConstruct) construct.getItem();
+            if(displayTension)
+            {
+                String color = getColorFromTension(clockworkConstruct.getTension(construct), clockworkConstruct.getMaxTension(construct));
+                list.add("Tension: " + color + clockworkConstruct.getTension(construct) + "/" + clockworkConstruct.getMaxTension(construct));
+            }
+
             int quality = clockworkConstruct.getQuality(construct);
             int speed = clockworkConstruct.getSpeed(construct);
 

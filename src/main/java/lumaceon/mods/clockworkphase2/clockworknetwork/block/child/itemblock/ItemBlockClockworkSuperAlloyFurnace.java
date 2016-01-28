@@ -1,11 +1,18 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.block.child.itemblock;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 
-public class ItemBlockClockworkSuperAlloyFurnace extends ItemBlock
+import java.util.List;
+
+public class ItemBlockClockworkSuperAlloyFurnace extends ItemBlockCN
 {
     public ItemBlockClockworkSuperAlloyFurnace(Block p_i45328_1_) {
         super(p_i45328_1_);
     }
+
+    @Override
+    public void addConstructInformation(ItemStack item, EntityPlayer player, List list) {}
 }

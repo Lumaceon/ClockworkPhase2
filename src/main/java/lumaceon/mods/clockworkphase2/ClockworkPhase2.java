@@ -19,6 +19,7 @@ import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
+import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.util.SchematicUtility;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
@@ -65,6 +66,8 @@ public class ClockworkPhase2
 
         ModEntities.init();
 
+        SuperAlloyRecipes.preInit();
+
         proxy.registerKeybindings();
     }
 
@@ -94,6 +97,8 @@ public class ClockworkPhase2
         ModWorlds.init();
 
         ModRuins.init();
+
+        SuperAlloyRecipes.postInit();
     }
 
     @Mod.EventHandler

@@ -1,13 +1,11 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.block.child;
 
-import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkMixer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockClockworkMixer extends BlockClockworkPhase implements ITileEntityProvider
+public class BlockClockworkMixer extends BlockCN
 {
     public BlockClockworkMixer(Material blockMaterial, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);

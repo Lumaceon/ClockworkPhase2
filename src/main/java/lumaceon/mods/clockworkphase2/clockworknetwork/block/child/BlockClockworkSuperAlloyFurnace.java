@@ -1,13 +1,11 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.block.child;
 
-import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkSuperAlloyFurnace;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockClockworkSuperAlloyFurnace extends BlockClockworkPhase implements ITileEntityProvider
+public class BlockClockworkSuperAlloyFurnace extends BlockCN
 {
     public BlockClockworkSuperAlloyFurnace(Material blockMaterial, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);

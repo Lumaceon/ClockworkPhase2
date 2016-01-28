@@ -105,10 +105,11 @@ public class Names
         public static final String COPPER_INGOT = "copper_ingot";
         public static final String ZINC_INGOT = "zinc_ingot";
         public static final String BRASS_INGOT = "brass_ingot";
+        public static final String STEEL_INGOT = "steel_ingot";
         public static final String TEMPORAL_INGOT = "temporal_ingot";
         public static final String ETERNIUM_INGOT = "eternium_ingot";
         public static final String MOMENTIUM_INGOT = "momentium_ingot";
-        public static final String CAPRICIUM_INGOT = "capricium_ingot";
+        public static final String PARADOXIUM_INGOT = "paradoxium_ingot";
         public static final String BRASS_LUMP = "brass_lump";
     }
 

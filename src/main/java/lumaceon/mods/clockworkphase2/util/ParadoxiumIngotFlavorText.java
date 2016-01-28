@@ -9,7 +9,7 @@ import scala.actors.threadpool.Arrays;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class CapriciumIngotFlavorText
+public class ParadoxiumIngotFlavorText
 {
     private static Random random = new Random();
     public static int index = -1;

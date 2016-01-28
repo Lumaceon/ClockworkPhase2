@@ -2,16 +2,16 @@ package lumaceon.mods.clockworkphase2.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.util.CapriciumIngotFlavorText;
+import lumaceon.mods.clockworkphase2.util.ParadoxiumIngotFlavorText;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemCapriciumIngot extends ItemClockworkPhase
+public class ItemParadoxiumIngot extends ItemClockworkPhase
 {
-    public ItemCapriciumIngot(int maxStack, int maxDamage, String unlocalizedName) {
+    public ItemParadoxiumIngot(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 
@@ -20,8 +20,8 @@ public class ItemCapriciumIngot extends ItemClockworkPhase
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
     {
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
-            list.add("\"" + CapriciumIngotFlavorText.howDoIFeelYouAsk(is, player) + "\"");
+            list.add("\"" + ParadoxiumIngotFlavorText.howDoIFeelYouAsk(is, player) + "\"");
         else
-            CapriciumIngotFlavorText.index = -1;
+            ParadoxiumIngotFlavorText.index = -1;
     }
 }

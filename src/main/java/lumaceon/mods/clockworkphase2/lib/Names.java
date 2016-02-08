@@ -16,6 +16,8 @@ public class Names
         public static final String CLOCKWORK_BREWERY = "clockwork_brewery";
         public static final String CLOCKWORK_MIXER = "clockwork_mixer";
         public static final String CLOCKWORK_SUPER_ALLOY_FURNACE = "clockwork_super_alloy_furnace";
+        public static final String CLOCKWORK_ALLOY_FURNACE = "clockwork_alloy_furnace";
+        public static final String CLOCKWORK_CRAFTING_TABLE = "clockwork_crafting_table";
 
         public static final String TIME_SAND = "time_sand";
         public static final String BASIC_WINDING_BOX = "basic_winding_box";

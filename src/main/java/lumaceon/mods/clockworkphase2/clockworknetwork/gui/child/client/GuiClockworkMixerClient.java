@@ -1,12 +1,10 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client;
 
-import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkGuiClient;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
-public class GuiClockworkMixerClient extends ClockworkNetworkGuiClient
+public class GuiClockworkMixerClient extends GuiCN
 {
     public GuiClockworkMixerClient(TileEntity te, int xSize, int ySize) {
         super(te, xSize, ySize);
@@ -20,9 +18,4 @@ public class GuiClockworkMixerClient extends ClockworkNetworkGuiClient
 
     @Override
     public void drawForeground(int left, int top, float zLevel) {}
-
-    @Override
-    public Slot[] getSlots() {
-        return new Slot[7];
-    }
 }

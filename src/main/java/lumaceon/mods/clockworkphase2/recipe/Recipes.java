@@ -4,7 +4,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -87,5 +89,72 @@ public class Recipes
 
     public static void addGearRecipe(ItemStack result, String materialName) {
         GameRegistry.addRecipe(new ShapedOreRecipe(result, " m ", "msm", " m ", 'm', materialName, 's', "stickWood"));
+    }
+
+    /**
+     * Called during post-init as opposed to the initialization phase for the rest of the recipes.
+     */
+    public static void initAlloyRecipes()
+    {
+        boolean copper = OreDictionary.doesOreNameExist("ingotCopper");
+        boolean zinc = OreDictionary.doesOreNameExist("ingotZinc");
+        boolean tin = OreDictionary.doesOreNameExist("ingotTin");
+        boolean brass = OreDictionary.doesOreNameExist("ingotBrass");
+        boolean bronze = OreDictionary.doesOreNameExist("ingotBronze");
+        boolean nickel = OreDictionary.doesOreNameExist("ingotNickel");
+        boolean invar = OreDictionary.doesOreNameExist("ingotInvar");
+        boolean aluminum = OreDictionary.doesOreNameExist("ingotAluminum");
+        boolean aluminumBrass = OreDictionary.doesOreNameExist("ingotAluminumBrass");
+        boolean cobalt = OreDictionary.doesOreNameExist("ingotCobalt");
+        boolean ardite = OreDictionary.doesOreNameExist("ingotArdite");
+        boolean manyullyn = OreDictionary.doesOreNameExist("ingotManyullyn");
+
+        AlloyRecipes.RecipeComponent first;
+        AlloyRecipes.RecipeComponent second;
+        ItemStack output;
+        if(copper && zinc && brass)
+        {
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
+            second = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotZinc), (byte) 1);
+            output = new ItemStack(ModItems.ingotBrass);
+            output.stackSize = 4;
+            AlloyRecipes.addAlloyRecipe(first, second, output);
+        }
+
+        if(copper && tin && bronze)
+        {
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
+            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotTin").get(0), (byte) 1);
+            output = OreDictionary.getOres("ingotBronze").get(0).copy();
+            output.stackSize = 4;
+            AlloyRecipes.addAlloyRecipe(first, second, output);
+        }
+
+        if(nickel && invar)
+        {
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(Items.iron_ingot), (byte) 2);
+            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotNickel").get(0), (byte) 1);
+            output = OreDictionary.getOres("ingotInvar").get(0).copy();
+            output.stackSize = 3;
+            AlloyRecipes.addAlloyRecipe(first, second, output);
+        }
+
+        if(copper && aluminum && aluminumBrass)
+        {
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 1);
+            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotAluminum").get(0), (byte) 3);
+            output = OreDictionary.getOres("ingotAluminumBrass").get(0).copy();
+            output.stackSize = 4;
+            AlloyRecipes.addAlloyRecipe(first, second, output);
+        }
+
+        if(cobalt && ardite && manyullyn)
+        {
+            first = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotCobalt").get(0), (byte) 1);
+            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotArdite").get(0), (byte) 1);
+            output = OreDictionary.getOres("ingotManyullyn").get(0).copy();
+            output.stackSize = 2;
+            AlloyRecipes.addAlloyRecipe(first, second, output);
+        }
     }
 }

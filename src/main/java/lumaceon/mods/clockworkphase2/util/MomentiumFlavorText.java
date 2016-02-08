@@ -277,7 +277,7 @@ public class MomentiumFlavorText
                                 list.add("Find Etna and place her in your inventory with me.");
                                 list.add("You already found me, so this should be easy enough.");
                                 list.add("Once you have her, talk to me again.");
-                                nextSubStoryPath = 1;
+                                progressSubStory();
                                 break;
                             }
                         case 1: //Second time.
@@ -294,7 +294,7 @@ public class MomentiumFlavorText
                                 list.add("Find Etna the Eternium Ingot.");
                                 list.add("Put her in your inventory with me.");
                                 list.add("Then talk to me again.");
-                                nextSubStoryPath = 2;
+                                progressSubStory();
                                 break;
                             }
                         case 2: //3rd time and up.
@@ -429,6 +429,14 @@ public class MomentiumFlavorText
         {
             ++nextDialogueIndex;
             nextSubStoryPath = 0;
+            shouldProgress = false;
+        }
+    }
+
+    private static void progressSubStory() {
+        if(shouldProgress)
+        {
+            ++nextSubStoryPath;
             shouldProgress = false;
         }
     }

@@ -1,14 +1,11 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.gui.child;
 
-import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCNBrewery extends ClockworkNetworkContainer
+public class ContainerCNBrewery extends ContainerCN
 {
-    protected Slot[] slots;
-
     public ContainerCNBrewery(TileEntity te, int xSize, int ySize) {
         super(te, xSize, ySize);
         if(te != null && te instanceof IInventory)
@@ -20,10 +17,5 @@ public class ContainerCNBrewery extends ClockworkNetworkContainer
                     new Slot((IInventory) te, 3, 61, 1)
             };
         }
-    }
-
-    @Override
-    public Slot[] getSlots() {
-        return slots;
     }
 }

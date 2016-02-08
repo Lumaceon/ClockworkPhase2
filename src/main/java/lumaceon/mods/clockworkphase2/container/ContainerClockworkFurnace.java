@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.container;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotInventoryValid;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkFurnace;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +16,9 @@ import net.minecraft.world.World;
 public class ContainerClockworkFurnace extends Container
 {
     private World world;
-    private TileClockworkFurnace te;
+    private TileClockworkNetworkMachine te;
 
     private int previousCookTime;
-    private int previousCurrentTension;
 
     public ContainerClockworkFurnace(InventoryPlayer ip, TileClockworkFurnace te, World world)
     {
@@ -39,7 +39,7 @@ public class ContainerClockworkFurnace extends Container
     @Override
     public void addCraftingToCrafters(ICrafting crafting) {
         super.addCraftingToCrafters(crafting);
-        crafting.sendProgressBarUpdate(this, 0, te.furnaceCookTime);
+        crafting.sendProgressBarUpdate(this, 0, te.getProgress());
     }
 
     @Override
@@ -52,12 +52,12 @@ public class ContainerClockworkFurnace extends Container
             if(i instanceof ICrafting)
             {
                 crafting = (ICrafting) i;
-                if(this.previousCookTime != te.furnaceCookTime)
-                    crafting.sendProgressBarUpdate(this, 0, te.furnaceCookTime);
+                if(this.previousCookTime != te.getProgress())
+                    crafting.sendProgressBarUpdate(this, 0, te.getProgress());
             }
         }
 
-        this.previousCookTime = te.furnaceCookTime;
+        this.previousCookTime = te.getProgress();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ContainerClockworkFurnace extends Container
         switch(id)
         {
             case 0:
-                te.furnaceCookTime = value;
+                te.setProgress(value);
                 break;
         }
     }

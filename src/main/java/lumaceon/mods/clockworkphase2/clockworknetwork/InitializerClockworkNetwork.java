@@ -24,6 +24,8 @@ public class InitializerClockworkNetwork
     public static Block clockworkBrewery;
     public static Block clockworkMixer;
     public static Block clockworkSuperAlloyFurnace;
+    public static Block clockworkAlloyFurnace;
+    public static Block clockworkCraftingTable;
     public static void initBlocks()
     {
         crank = new BlockCrank(Material.iron, Names.BLOCK.CRANK);
@@ -34,6 +36,8 @@ public class InitializerClockworkNetwork
         clockworkBrewery = new BlockClockworkBrewery(Material.iron, Names.BLOCK.CLOCKWORK_BREWERY);
         clockworkMixer = new BlockClockworkMixer(Material.iron, Names.BLOCK.CLOCKWORK_MIXER);
         clockworkSuperAlloyFurnace = new BlockClockworkSuperAlloyFurnace(Material.iron, Names.BLOCK.CLOCKWORK_SUPER_ALLOY_FURNACE);
+        clockworkAlloyFurnace = new BlockClockworkAlloyFurnace(Material.iron, Names.BLOCK.CLOCKWORK_ALLOY_FURNACE);
+        clockworkCraftingTable = new BlockClockworkCraftingTable(Material.iron, Names.BLOCK.CLOCKWORK_CRAFTING_TABLE);
         //clockworkSewingMachine = new BlockClockworkSewingMachine(Material.iron, Names.BLOCK.CLOCKWORK_SEWING_MACHINE);
 
         GameRegistry.registerBlock(crank, Names.BLOCK.CRANK);
@@ -44,6 +48,8 @@ public class InitializerClockworkNetwork
         GameRegistry.registerBlock(clockworkBrewery, ItemBlockClockworkBrewery.class, Names.BLOCK.CLOCKWORK_BREWERY);
         GameRegistry.registerBlock(clockworkMixer, ItemBlockClockworkMixer.class, Names.BLOCK.CLOCKWORK_MIXER);
         GameRegistry.registerBlock(clockworkSuperAlloyFurnace, ItemBlockClockworkSuperAlloyFurnace.class, Names.BLOCK.CLOCKWORK_SUPER_ALLOY_FURNACE);
+        GameRegistry.registerBlock(clockworkAlloyFurnace, ItemBlockClockworkAlloyFurnace.class, Names.BLOCK.CLOCKWORK_ALLOY_FURNACE);
+        GameRegistry.registerBlock(clockworkCraftingTable, Names.BLOCK.CLOCKWORK_CRAFTING_TABLE);
         //GameRegistry.registerBlock(clockworkSewingMachine, ItemBlockClockworkSewingMachine.class, Names.BLOCK.CLOCKWORK_SEWING_MACHINE);
     }
 
@@ -56,5 +62,7 @@ public class InitializerClockworkNetwork
         GameRegistry.registerTileEntity(TileClockworkMixer.class, Names.BLOCK.CLOCKWORK_MIXER);
         GameRegistry.registerTileEntity(TileClockworkMelter.class, Names.BLOCK.CLOCKWORK_MELTER);
         GameRegistry.registerTileEntity(TileClockworkSuperAlloyFurnace.class, Names.BLOCK.CLOCKWORK_SUPER_ALLOY_FURNACE);
+        GameRegistry.registerTileEntity(TileClockworkAlloyFurnace.class, Names.BLOCK.CLOCKWORK_ALLOY_FURNACE);
+        GameRegistry.registerTileEntity(TileClockworkCraftingTable.class, Names.BLOCK.CLOCKWORK_CRAFTING_TABLE);
     }
 }

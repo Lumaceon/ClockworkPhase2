@@ -1,16 +1,13 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client;
 
-import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkGuiClient;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
-public class GuiClockworkSuperAlloyFurnace extends ClockworkNetworkGuiClient
+public class GuiClockworkSuperAlloyFurnace extends GuiCN
 {
-    protected Slot[] slots;
-
     public GuiClockworkSuperAlloyFurnace(TileEntity te, int xSize, int ySize) {
         super(te, xSize, ySize);
         if(te != null && te instanceof IInventory)
@@ -35,9 +32,4 @@ public class GuiClockworkSuperAlloyFurnace extends ClockworkNetworkGuiClient
 
     @Override
     public void drawForeground(int left, int top, float zLevel) {}
-
-    @Override
-    public Slot[] getSlots() {
-        return slots;
-    }
 }

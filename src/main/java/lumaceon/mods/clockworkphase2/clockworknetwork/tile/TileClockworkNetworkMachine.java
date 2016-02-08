@@ -147,6 +147,14 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
         return this.workProgress * maxValue / getBaseProgressSpeed();
     }
 
+    public int getProgress() {
+        return workProgress;
+    }
+
+    public void setProgress(int newProgress) {
+        workProgress = newProgress;
+    }
+
     @Override
     public ClockworkNetwork getClockworkNetwork() {
         return clockworkNetwork;

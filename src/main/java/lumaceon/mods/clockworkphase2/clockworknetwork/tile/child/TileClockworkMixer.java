@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockwork;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
 import net.minecraft.item.ItemStack;
 

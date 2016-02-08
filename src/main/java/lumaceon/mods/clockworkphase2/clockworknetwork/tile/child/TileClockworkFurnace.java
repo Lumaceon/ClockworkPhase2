@@ -8,9 +8,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class TileClockworkFurnace extends TileClockworkNetworkMachine
 {
-    /** The number of ticks that the current item has been cooking for */
-    public int furnaceCookTime;
-
     public TileClockworkFurnace() {
         inventory = new ItemStack[2];
     }

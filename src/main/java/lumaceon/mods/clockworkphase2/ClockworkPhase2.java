@@ -106,6 +106,7 @@ public class ClockworkPhase2
     {
         MainspringMetalRegistry.INTERNAL.initDefaults();
         TemporalHarvestRegistry.init();
+        Recipes.initAlloyRecipes();
 
         long value;
         Logger.info("||Detecting Individual Achievements||");

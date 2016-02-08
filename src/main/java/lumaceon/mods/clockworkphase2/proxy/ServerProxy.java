@@ -49,6 +49,10 @@ public class ServerProxy extends CommonProxy
                 return new ContainerCNMelter(te, 172, 80);
             case 4: //Clockwork Super Alloy Furnace
                 return new ContainerCNSuperAlloyFurnace(te, 200, 18);
+            case 5: //Clockwork Alloy Furnace
+                return new ContainerCNAlloyFurnace(te, 100, 18);
+            case 6: //Clockwork Crafting Table
+                return new ContainerCNCraftingTable(te, 100, 60);
         }
         return null;
     }

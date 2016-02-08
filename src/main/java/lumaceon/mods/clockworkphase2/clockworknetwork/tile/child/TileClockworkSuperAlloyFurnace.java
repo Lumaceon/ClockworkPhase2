@@ -15,7 +15,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
     }
 
     @Override
-    public boolean canWork() {
+    public boolean canWork() { //TODO check for duplicates.
         for(int n = 0; n < 6; n++)
             if(inventory[n] == null)
                 return false;
@@ -67,7 +67,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
             }
             else if(hasAllItems(SuperAlloyRecipes.capriciumRecipe))
             {
-                ItemStack itemstack = new ItemStack(ModItems.ingotCapricium);
+                ItemStack itemstack = new ItemStack(ModItems.ingotParadoxium);
 
                 if(this.inventory[6] == null)
                     this.inventory[6] = itemstack;

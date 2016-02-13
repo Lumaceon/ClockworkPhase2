@@ -1,12 +1,5 @@
 package lumaceon.mods.clockworkphase2;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.TemporalAchievementList;
 import lumaceon.mods.clockworkphase2.api.TemporalHarvestRegistry;
@@ -21,7 +14,6 @@ import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
 import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
 import lumaceon.mods.clockworkphase2.util.Logger;
-import lumaceon.mods.clockworkphase2.util.SchematicUtility;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorRuins;
 import net.minecraft.creativetab.CreativeTabs;
@@ -29,6 +21,13 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class ClockworkPhase2
@@ -48,8 +47,8 @@ public class ClockworkPhase2
     public void preInitialize(FMLPreInitializationEvent event)
     {
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
-        SchematicUtility.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
-        SchematicUtility.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
+        //SchematicUtility.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
+        //SchematicUtility.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
 
         ModFluids.init();
 
@@ -74,13 +73,14 @@ public class ClockworkPhase2
     @Mod.EventHandler
     public void initialize(FMLInitializationEvent event)
     {
-        proxy.registerTESR();
+        ModItems.initModels();
+        ModBlocks.initModels();
 
-        proxy.registerModels();
+        proxy.registerTESR();
 
         Recipes.init();
 
-        BucketHandler.INSTANCE.buckets.put(ModBlocks.timeSand, ModItems.bucketTimeSand);
+        //BucketHandler.INSTANCE.buckets.put(ModBlocks.timeSand, ModItems.bucketTimeSand);
 
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new EntityHandler());

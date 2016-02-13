@@ -1,12 +1,9 @@
 package lumaceon.mods.clockworkphase2.network.message.handler;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
-import lumaceon.mods.clockworkphase2.client.particle.fx.EntityTimeSandExtractionFX;
 import lumaceon.mods.clockworkphase2.network.message.MessageStandardParticleSpawn;
-import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class HandlerStandardParticleSpawn implements IMessageHandler<MessageStandardParticleSpawn, IMessage>
 {

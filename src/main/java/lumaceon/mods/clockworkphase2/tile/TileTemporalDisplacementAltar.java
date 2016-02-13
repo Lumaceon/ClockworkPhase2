@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.tile;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
@@ -9,9 +8,12 @@ import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileTemporalDisplacementAltar extends TileClockworkPhase
+public class TileTemporalDisplacementAltar extends TileClockworkPhase implements ITickable
 {
     private int blocksToPlace = 96;
     private int machineState = 0; //0 - not assembled, 1 - Assembled no gears, 2 through 5 - assembled with gears.
@@ -36,7 +38,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if(!isAvailable())
         {
@@ -46,7 +48,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase
 
         if(worldObj.isRemote && !rendererSetup)
         {
-            ClockworkPhase2.proxy.addWorldRenderer(worldObj, xCoord, yCoord, zCoord, 1);
+            ClockworkPhase2.proxy.addWorldRenderer(worldObj, pos.getX(), pos.getY(), pos.getZ(), 1);
             rendererSetup = true;
         }
     }
@@ -60,10 +62,10 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase
                 for(int n = 0; n < BlockPatterns.CELESTIAL_COMPASS.length; n++)
                 {
                     int x, y, z;
-                    x = this.xCoord + BlockPatterns.CELESTIAL_COMPASS[n].x;
-                    y = this.yCoord + BlockPatterns.CELESTIAL_COMPASS[n].y;
-                    z = this.zCoord + BlockPatterns.CELESTIAL_COMPASS[n].z;
-                    this.worldObj.markBlockForUpdate(x, y, z);
+                    x = pos.getX() + BlockPatterns.CELESTIAL_COMPASS[n].x;
+                    y = pos.getY() + BlockPatterns.CELESTIAL_COMPASS[n].y;
+                    z = pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[n].z;
+                    this.worldObj.markBlockForUpdate(new BlockPos(x, y, z));
                     blocksToPlace--;
                 }
                 setStateAndUpdate(1);
@@ -71,20 +73,20 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase
             else if(blocksToPlace > 0)
             {
                 int x, y, z, meta;
-                x = this.xCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].x;
-                y = this.yCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].y;
-                z = this.zCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
+                x = pos.getX() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].x;
+                y = pos.getY() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].y;
+                z = pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
                 meta = BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].meta;
 
-                if(worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).equals(ModBlocks.temporalDisplacementAltarSB) || worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z))
+                /*if(worldObj.isAirBlock(new BlockPos(x, y, z)) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().equals(ModBlocks.temporalDisplacementAltarSB) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().isReplaceable(worldObj, new BlockPos(x, y, z)))
                 {
-                    this.getWorldObj().setBlock(x, y, z, ModBlocks.temporalDisplacementAltarSB, meta, 2);
-                    blocksToPlace--;
-                }
-                else
-                {
+                    worldObj.setBlockState(new BlockPos(x, y, z), ModBlocks.temporalDisplacementAltarSB.getDefaultState());
+                }*/
+                blocksToPlace--;
+                //else
+                //{
                     //PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(x + 0.5, y + 0.5, z + 0.5, 0), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 48));
-                }
+                //}
             }
         }
     }
@@ -100,7 +102,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase
         if(!worldObj.isRemote)
         {
             setState(state);
-            PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(xCoord, yCoord, zCoord, state), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 200));
+            PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(pos.getX(), pos.getY(), pos.getZ(), state), new NetworkRegistry.TargetPoint(worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 200));
             markDirty();
         }
     }
@@ -114,8 +116,8 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase
             currentY = y + BlockPatterns.CELESTIAL_COMPASS[n].y;
             currentZ = z + BlockPatterns.CELESTIAL_COMPASS[n].z;
 
-            if(world.getBlock(currentX, currentY, currentZ).equals(ModBlocks.temporalDisplacementAltarSB))
-                world.setBlock(currentX, currentY, currentZ, Blocks.air);
+            //if(world.getBlockState(new BlockPos(currentX, currentY, currentZ)).equals(ModBlocks.temporalDisplacementAltarSB))
+            //    world.setBlockState(new BlockPos(currentX, currentY, currentZ), Blocks.air.getDefaultState());
         }
         ClockworkPhase2.proxy.clearWorldRenderers(world, x, y, z);
     }

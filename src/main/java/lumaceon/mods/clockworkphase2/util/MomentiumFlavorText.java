@@ -265,7 +265,7 @@ public class MomentiumFlavorText
                     switch(subStoryPath)
                     {
                         case 0: //First time
-                            if(inventoryHasItem(ModItems.ingotEternium, player.inventory))
+                            if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory))
                             {
                                 list.add("You have to fi-- wait a minute...");
                                 list.add("Etna?! How long have you been laying there?");
@@ -281,7 +281,7 @@ public class MomentiumFlavorText
                                 break;
                             }
                         case 1: //Second time.
-                            if(inventoryHasItem(ModItems.ingotEternium, player.inventory))
+                            if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory))
                             {
                                 list.add("Nice work, meat body; that was actually pretty fast.");
                                 list.add("Etna! It's me, Moni!");
@@ -298,7 +298,7 @@ public class MomentiumFlavorText
                                 break;
                             }
                         case 2: //3rd time and up.
-                            if(inventoryHasItem(ModItems.ingotEternium, player.inventory))
+                            if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory))
                             {
                                 list.add("Well that took you long enough...");
                                 list.add("Etna! It's me, Moni!");
@@ -318,7 +318,7 @@ public class MomentiumFlavorText
                     }
                     break;
                 case 32:
-                    if(inventoryHasItem(ModItems.ingotEternium, player.inventory) && inventoryHasItem(ModItems.ingotMomentium, player.inventory))
+                    if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory) && inventoryHasItem(ModItems.ingotMomentium.getItem(), player.inventory))
                     {
                         list.add("I know, right? It's been forever...");
                         progress();
@@ -327,7 +327,7 @@ public class MomentiumFlavorText
                         list.add(Colors.DARK_GREY + "*Moni is looking around for Etna*");
                     break;
                 case 33:
-                    if(inventoryHasItem(ModItems.ingotEternium, player.inventory) && inventoryHasItem(ModItems.ingotMomentium, player.inventory))
+                    if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory) && inventoryHasItem(ModItems.ingotMomentium.getItem(), player.inventory))
                     {
                         list.add("Listen to this though:");
                         list.add("Meat body here agreed to take me exploring!");
@@ -337,7 +337,7 @@ public class MomentiumFlavorText
                         list.add(Colors.DARK_GREY + "*Moni is looking around for Etna*");
                     break;
                 case 35:
-                    if(inventoryHasItem(ModItems.ingotEternium, player.inventory) && inventoryHasItem(ModItems.ingotMomentium, player.inventory))
+                    if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory) && inventoryHasItem(ModItems.ingotMomentium.getItem(), player.inventory))
                     {
                         list.add("Okay, okay, I'll be careful.");
                         list.add("Thanks Etna!");
@@ -377,7 +377,7 @@ public class MomentiumFlavorText
                     nextSubStoryPath = 0;
                     break;
                 default:
-                    if(inventoryHasItem(ModItems.ingotEternium, player.inventory) && inventoryHasItem(ModItems.ingotMomentium, player.inventory))
+                    if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory) && inventoryHasItem(ModItems.ingotMomentium.getItem(), player.inventory))
                         list.add(Colors.DARK_GREY + "*Moni is listening to Etna*");
                     else
                         list.add(Colors.DARK_GREY + "*Moni is looking around for Etna*");
@@ -389,7 +389,7 @@ public class MomentiumFlavorText
             switch(dialogueIndex)
             {
                 case 31:
-                    if(inventoryHasItem(ModItems.ingotEternium, player.inventory) && inventoryHasItem(ModItems.ingotMomentium, player.inventory))
+                    if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory) && inventoryHasItem(ModItems.ingotMomentium.getItem(), player.inventory))
                     {
                         list.add("\".....!\"");
                         progress();
@@ -398,7 +398,7 @@ public class MomentiumFlavorText
                         list.add(Colors.DARK_GREY + "*Etna is looking around for Moni*");
                     break;
                 case 34:
-                    if(inventoryHasItem(ModItems.ingotEternium, player.inventory) && inventoryHasItem(ModItems.ingotMomentium, player.inventory))
+                    if(inventoryHasItem(ModItems.ingotEternium.getItem(), player.inventory) && inventoryHasItem(ModItems.ingotMomentium.getItem(), player.inventory))
                     {
                         list.add("\"..,....;.....'...!\"");
                         progress();

@@ -1,8 +1,6 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
@@ -16,8 +14,13 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileClockworkNetworkMachine extends TileClockworkPhase implements IClockworkNetworkMachine, ISidedInventory
+public abstract class TileClockworkNetworkMachine extends TileClockworkPhase implements IClockworkNetworkMachine, ISidedInventory, ITickable
 {
     protected ItemStack[] inventory; //Typically, the first number(s) is input and the last number(s) is output.
 
@@ -27,6 +30,10 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
     public int speed; //Work speed; higher = faster machines.
 
     protected int workProgress = 0;
+
+    public TileClockworkNetworkMachine() {
+        inventory = new ItemStack[0];
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
@@ -80,7 +87,7 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         int tensionCost = getTensionCostPerTick();
         boolean working = isWorking(tensionCost);
@@ -164,6 +171,10 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
         clockworkNetwork = cn;
     }
 
+    public BlockPos getPosition() {
+        return getPos();
+    }
+
     @Override
     public abstract ClockworkNetworkContainer getGui();
 
@@ -198,18 +209,6 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if(inventory[slot] != null)
-        {
-            ItemStack itemStack = inventory[slot];
-            inventory[slot] = null;
-            return itemStack;
-        }
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(int slot, ItemStack item)
     {
         inventory[slot] = item;
@@ -226,7 +225,7 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return player.getDistance((double) xCoord, (double) yCoord, (double) zCoord) <= 8;
+        return player.getDistance((double) pos.getX(), (double) pos.getY(), (double) pos.getZ()) <= 8;
     }
 
     @Override
@@ -235,13 +234,51 @@ public abstract class TileClockworkNetworkMachine extends TileClockworkPhase imp
     }
 
     @Override
-    public void openInventory() {}
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack item = inventory[index];
+        inventory[index] = null;
+        return item;
+    }
+
     @Override
-    public void closeInventory() {}
+    public void openInventory(EntityPlayer player) {}
+
     @Override
-    public String getInventoryName() { return null; }
+    public void closeInventory(EntityPlayer player) {}
+
     @Override
-    public boolean hasCustomInventoryName() { return false; }
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        for(int n = 0; n < inventory.length; n++)
+            inventory[n] = null;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
+    }
 
     // ********* SIDED INVENTORY IMPLEMENTATION END ********* \\
 

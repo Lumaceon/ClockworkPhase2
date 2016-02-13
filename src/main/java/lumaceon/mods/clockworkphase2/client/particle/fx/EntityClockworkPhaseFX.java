@@ -1,12 +1,11 @@
 package lumaceon.mods.clockworkphase2.client.particle.fx;
 
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class EntityClockworkPhaseFX extends EntityFX
 {
@@ -26,7 +25,7 @@ public class EntityClockworkPhaseFX extends EntityFX
     }
 
     @Override
-    public void renderParticle(Tessellator t, float par2, float par3, float par4, float par5, float par6, float par7)
+    public void renderParticle(WorldRenderer worldRendererIn, Entity entityIn, float partialTicks, float p_180434_4_, float p_180434_5_, float p_180434_6_, float p_180434_7_, float p_180434_8_)
     {
         if(firstTick)
             return;
@@ -34,18 +33,18 @@ public class EntityClockworkPhaseFX extends EntityFX
 
         float f10 = 0.1F * this.particleScale;
 
-        float f11 = (float)(prevPosX + (posX - prevPosX) * (double)par2 - RenderHandler.interpolatedPosX);
-        float f12 = (float)(prevPosY + (posY - prevPosY) * (double)par2 - RenderHandler.interpolatedPosY);
-        float f13 = (float)(prevPosZ + (posZ - prevPosZ) * (double)par2 - RenderHandler.interpolatedPosZ);
+        float f11 = (float)(prevPosX + (posX - prevPosX) * (double)partialTicks - RenderHandler.interpolatedPosX);
+        float f12 = (float)(prevPosY + (posY - prevPosY) * (double)partialTicks - RenderHandler.interpolatedPosY);
+        float f13 = (float)(prevPosZ + (posZ - prevPosZ) * (double)partialTicks - RenderHandler.interpolatedPosZ);
         float f14 = 1.0F;
 
-        t.startDrawingQuads();
+        /*t.startDrawingQuads();
         t.setColorRGBA_F(particleRed * f14, particleGreen * f14, particleBlue * f14, particleAlpha);
         t.addVertexWithUV((double)(f11 - par3 * f10 - par6 * f10), (double)(f12 - par4 * f10), (double)(f13 - par5 * f10 - par7 * f10), 1, 1);
         t.addVertexWithUV((double)(f11 - par3 * f10 + par6 * f10), (double)(f12 + par4 * f10), (double)(f13 - par5 * f10 + par7 * f10), 1, 0);
         t.addVertexWithUV((double)(f11 + par3 * f10 + par6 * f10), (double)(f12 + par4 * f10), (double)(f13 + par5 * f10 + par7 * f10), 0, 0);
         t.addVertexWithUV((double)(f11 + par3 * f10 - par6 * f10), (double)(f12 - par4 * f10), (double)(f13 + par5 * f10 - par7 * f10), 0, 1);
-        t.draw();
+        t.draw();*/
     }
 
     public ResourceLocation getResourceLocation()

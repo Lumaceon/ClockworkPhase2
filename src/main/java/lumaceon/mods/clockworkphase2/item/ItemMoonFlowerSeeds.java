@@ -1,14 +1,15 @@
 package lumaceon.mods.clockworkphase2.item;
 
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemMoonFlowerSeeds extends ItemClockworkPhase implements IPlantable
 {
@@ -16,14 +17,15 @@ public class ItemMoonFlowerSeeds extends ItemClockworkPhase implements IPlantabl
         super(maxStack, maxDamage, unlocalizedName);
     }
 
-    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int metadata, float p_77648_8_, float p_77648_9_, float p_77648_10_)
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(player.canPlayerEdit(x, y, z, metadata, item) && player.canPlayerEdit(x, y + 1, z, metadata, item))
+        BlockPos above = pos.up();
+        if(playerIn.canPlayerEdit(pos, side, stack) && playerIn.canPlayerEdit(above, side, stack))
         {
-            if(world.getBlock(x, y, z).canSustainPlant(world, x, y, z, ForgeDirection.UP, this) && world.isAirBlock(x, y + 1, z))
+            if(worldIn.getBlockState(pos).getBlock().canSustainPlant(worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(above))
             {
-                world.setBlock(x, y + 1, z, ModBlocks.moonFlower);
-                --item.stackSize;
+                worldIn.setBlockState(above, ModBlocks.moonFlower.getBlock().getDefaultState());
+                --stack.stackSize;
                 return true;
             }
             else
@@ -34,17 +36,12 @@ public class ItemMoonFlowerSeeds extends ItemClockworkPhase implements IPlantabl
     }
 
     @Override
-    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
         return EnumPlantType.Crop;
     }
 
     @Override
-    public Block getPlant(IBlockAccess world, int x, int y, int z) {
-        return ModBlocks.moonFlower;
-    }
-
-    @Override
-    public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {
-        return 0;
+    public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
+        return ModBlocks.moonFlower.getBlock().getDefaultState();
     }
 }

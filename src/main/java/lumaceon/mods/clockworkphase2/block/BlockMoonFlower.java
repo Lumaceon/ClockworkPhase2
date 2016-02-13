@@ -1,45 +1,120 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import lumaceon.mods.clockworkphase2.api.phase.Phases;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, IGrowable
 {
-    @SideOnly(Side.CLIENT)
-    private IIcon[] blockIcons;
+    public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 5);
 
     public BlockMoonFlower(Material blockMaterial, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);
-        this.setHardness(0.0F);
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AGE, 0));
         this.setTickRandomly(true);
         float f = 0.5F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.25F, 0.5F + f);
+        this.setHardness(0.0F);
         this.setStepSound(soundTypeGrass);
         this.disableStats();
     }
 
     @Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        return super.canPlaceBlockAt(world, x, y, z) && this.canBlockStay(world, x, y, z);
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    {
+        this.checkAndDropBlock(worldIn, pos, state);
+        if(worldIn.canBlockSeeSky(pos))
+        {
+            int meta = state.getValue(AGE);
+            if(!worldIn.isDaytime())
+            {
+                if(meta < 4 && rand.nextInt(50) == 0)
+                     worldIn.setBlockState(pos, state.withProperty(AGE, meta + 1), 2);
+            }
+            else if(meta > 0 && rand.nextInt(2) == 0)
+                worldIn.setBlockState(pos, state.withProperty(AGE, meta - 1), 2);
+        }
+    }
+
+    public boolean canBlockStay(World worldIn, BlockPos pos, IBlockState state) {
+        return worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
+    }
+
+    protected Item getSeed() { return ModItems.moonFlowerSeeds.getItem(); }
+    protected Item getCrop() { return ModItems.temporalPearl.getItem(); }
+
+    @Override
+    public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {
+        super.dropBlockAsItemWithChance(worldIn, pos, state, chance, 0);
+    }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return state.getValue(AGE) == 4 ? this.getCrop() : this.getSeed();
+    }
+
+    @Override
+    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+        return state.getValue(AGE) < 4;
+    }
+
+    @Override
+    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Item getItem(World worldIn, BlockPos pos) {
+        return this.getSeed();
+    }
+
+    @Override
+    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {}
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(AGE, meta);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(AGE);
+    }
+
+    @Override
+    protected BlockState createBlockState() {
+        return new BlockState(this, AGE);
+    }
+
+    @Override
+    public List<ItemStack> getDrops(net.minecraft.world.IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        return super.getDrops(world, pos, state, fortune);
+    }
+
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return super.canPlaceBlockAt(worldIn, pos) && worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
     }
 
     protected boolean canPlaceBlockOn(Block block) {
@@ -47,52 +122,22 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        super.onNeighborBlockChange(world, x, y, z, block);
-        this.checkAndDropBlock(world, x, y, z);
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
+        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+        this.checkAndDropBlock(worldIn, pos, state);
     }
 
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random random)
+    protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
     {
-        this.checkAndDropBlock(world, x, y, z);
-        int meta = world.getBlockMetadata(x, y, z);
-        if(world.canBlockSeeTheSky(x, y, z))
+        if(!this.canBlockStay(worldIn, pos, state))
         {
-            if(!world.isDaytime()) //It's nighttime, plant can grow taller if lucky.
-            {
-                if(meta <= 3 && random.nextInt(5) == 0)
-                {
-                    ++meta;
-                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-                }
-            }
-            else //It's daytime, plant WILL grow backwards if possible
-            {
-                if(meta > 0)
-                {
-                    --meta;
-                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-                }
-            }
-        }
-    }
-
-    protected void checkAndDropBlock(World world, int x, int y, int z)
-    {
-        if(!this.canBlockStay(world, x, y, z))
-        {
-            this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-            world.setBlock(x, y, z, getBlockById(0), 0, 2);
+            this.dropBlockAsItem(worldIn, pos, state, 0);
+            worldIn.setBlockState(pos, Blocks.air.getDefaultState(), 3);
         }
     }
 
     @Override
-    public boolean canBlockStay(World world, int x, int y, int z) {
-        return world.getBlock(x, y - 1, z).canSustainPlant(world, x, y - 1, z, ForgeDirection.UP, this);
-    }
-
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state) {
         return null;
     }
 
@@ -102,94 +147,25 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isFullCube() {
         return false;
     }
 
     @Override
-    public int getRenderType() {
-        return 1;
-    }
-
-    protected Item getSeeds() {
-        return ModItems.moonFlowerSeeds;
-    }
-
-    protected Item getProduce(int metadata) {
-        return metadata == 4 ? ModItems.temporalPearl : null;
-    }
-
-    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int p_149690_5_, float p_149690_6_, int p_149690_7_) {
-        super.dropBlockAsItemWithChance(world, x, y, z, p_149690_5_, p_149690_6_, 0);
-    }
-
-    @Override
-    public Item getItemDropped(int metadata, Random p_149650_2_, int p_149650_3_) {
-        return metadata > 3 ? this.getProduce(metadata) : this.getSeeds();
-    }
-
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int metadata) {
-        return this.blockIcons[metadata];
+    public EnumWorldBlockLayer getBlockLayer() {
+        return EnumWorldBlockLayer.CUTOUT;
     }
 
     @Override
-    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z) {
+    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
         return EnumPlantType.Crop;
     }
 
     @Override
-    public Block getPlant(IBlockAccess world, int x, int y, int z) {
-        return this;
-    }
-
-    @Override
-    public int getPlantMetadata(IBlockAccess world, int x, int y, int z) {
-        return world.getBlockMetadata(x, y, z);
-    }
-
-    @Override
-    public boolean func_149851_a(World world, int x, int y, int z, boolean p_149851_5_) {
-        return world.getBlockMetadata(x, y, z) < 3;
-    }
-
-    @Override
-    public boolean func_149852_a(World world, Random p_149852_2_, int x, int y, int z) {
-        return true;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World p_149694_1_, int p_149694_2_, int p_149694_3_, int p_149694_4_) {
-        return this.getSeeds();
-    }
-
-    /**
-     * When fertilized (typically with bonemeal).
-     */
-    @Override
-    public void func_149853_b(World p_149853_1_, Random p_149853_2_, int p_149853_3_, int p_149853_4_, int p_149853_5_) {}
-
-    //TODO - Possibly add a condition for duplicating seeds?
-    @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
-    {
-        return super.getDrops(world, x, y, z, metadata, fortune);
-        /*ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-
-        if(metadata >= 3)
-        {
-            Do some stuff with special drops.
-        }
-
-        return ret;*/
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister registry)
-    {
-        blockIcons = new IIcon[6];
-        for(int n = 0; n < blockIcons.length; n++)
-            this.blockIcons[n] = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + n);
+    public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() != this) return getDefaultState();
+        return state;
     }
 }

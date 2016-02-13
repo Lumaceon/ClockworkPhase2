@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.gui;
 
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 
 public class ChildGuiData

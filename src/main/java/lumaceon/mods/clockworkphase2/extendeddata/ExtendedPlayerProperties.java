@@ -79,7 +79,7 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties
             int specialAchievements = 0;
             for(Object object : AchievementList.achievementList)
             {
-                if(object instanceof Achievement && TemporalAchievementList.isAchievementListed((Achievement) object) && (playerMP.func_147099_x().hasAchievementUnlocked((Achievement) object) || (achievement != null && achievement.equals(object))))
+                if(object instanceof Achievement && TemporalAchievementList.isAchievementListed((Achievement) object) && (playerMP.getStatFile().hasAchievementUnlocked((Achievement) object) || (achievement != null && achievement.equals(object))))
                 {
                     baseInfluence += TemporalAchievementList.achievementValues.get(object);
                     if(((Achievement) object).getSpecial())
@@ -92,7 +92,7 @@ public class ExtendedPlayerProperties implements IExtendedEntityProperties
                 boolean isComplete = true;
                 for(Achievement ach : page.getAchievements())
                 {
-                    if(TemporalAchievementList.isAchievementListed(ach) && (!playerMP.func_147099_x().hasAchievementUnlocked(ach) && (achievement == null || !ach.equals(achievement))))
+                    if(TemporalAchievementList.isAchievementListed(ach) && (!playerMP.getStatFile().hasAchievementUnlocked(ach) && (achievement == null || !ach.equals(achievement))))
                         isComplete = false;
                 }
 

@@ -3,6 +3,8 @@ package lumaceon.mods.clockworkphase2.proxy;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.*;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -18,7 +20,9 @@ public class ServerProxy extends CommonProxy
     @Override
     public void registerTESR() {}
     @Override
-    public void registerModels() {}
+    public void registerBlockModel(Block block, String unlocalizedName) {}
+    @Override
+    public void registerItemModel(Item item, String unlocalizedName) {}
     @Override
     public void registerKeybindings() {}
     @Override

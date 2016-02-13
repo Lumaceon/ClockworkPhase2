@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.api.assembly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class InventoryAssemblyTableComponents implements IInventory
 {
@@ -63,29 +64,21 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if(this.inventory[slot] != null)
-        {
-            ItemStack itemstack = this.inventory[slot];
-            this.inventory[slot] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack item = inventory[index];
+        inventory[index] = null;
+        this.eventHandler.onCraftMatrixComponentChanged();
+        return item;
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_)
-    {
+    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
         this.inventory[p_70299_1_] = p_70299_2_;
         this.eventHandler.onCraftMatrixComponentChanged();
     }
 
     /**
-     * Used to set items before inventory initialization.
+     * Used to set item before inventory initialization.
      * @param slot Target slot.
      * @param item New item to set.
      */
@@ -95,20 +88,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public String getInventoryName()
-    {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName()
-    {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
+    public int getInventoryStackLimit() {
         return stackLimit;
     }
 
@@ -116,20 +96,54 @@ public class InventoryAssemblyTableComponents implements IInventory
     public void markDirty() {}
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_)
-    {
+    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
         return true;
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack is)
-    {
+    public boolean isItemValidForSlot(int p_94041_1_, ItemStack is) {
         return false;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        for(int n = 0; n < inventory.length; n++)
+            inventory[n] = null;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

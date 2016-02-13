@@ -4,6 +4,7 @@ import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -15,7 +16,7 @@ public class WorldRenderElementTemporalClock extends WorldRenderElement
     public WorldRenderElementTemporalClock(World world, int x, int y, int z) {
         super(world, x, y, z);
         this.mc = Minecraft.getMinecraft();
-        this.te = world.getTileEntity(x, y, z);
+        this.te = world.getTileEntity(new BlockPos(x, y, z));
     }
 
     @Override
@@ -25,8 +26,8 @@ public class WorldRenderElementTemporalClock extends WorldRenderElement
         GL11.glTranslated(x, y, z);
         GL11.glTranslatef(0, 1.02F, 0);
         GL11.glEnable(GL11.GL_BLEND);
-        mc.renderEngine.bindTexture(Textures.GUI.CLOCK);
-        Tessellator tessy = Tessellator.instance;
+        //mc.renderEngine.bindTexture(Textures.GUI.CLOCK);
+        /*Tessellator tessy = Tessellator.instance;
         tessy.startDrawingQuads();
         tessy.addVertexWithUV(0, 0, 0, 0, 0);
         tessy.addVertexWithUV(0, 0, 1, 0, 1);
@@ -37,7 +38,7 @@ public class WorldRenderElementTemporalClock extends WorldRenderElement
         tessy.addVertexWithUV(1, 0, 1, 0, 1);
         tessy.addVertexWithUV(0, 0, 1, 1, 1);
         tessy.addVertexWithUV(0, 0, 0, 1, 0);
-        tessy.draw();
+        tessy.draw();*/
         GL11.glPopMatrix();
     }
 }

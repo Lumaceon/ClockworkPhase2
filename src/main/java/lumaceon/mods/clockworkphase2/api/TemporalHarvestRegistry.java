@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TemporalHarvestRegistry
 {
@@ -72,7 +73,7 @@ public class TemporalHarvestRegistry
     public static void init()
     {
         String[] oreNames = OreDictionary.getOreNames();
-        ArrayList<ItemStack> ores;
+        List<ItemStack> ores;
 
         for(String name : oreNames)
         {

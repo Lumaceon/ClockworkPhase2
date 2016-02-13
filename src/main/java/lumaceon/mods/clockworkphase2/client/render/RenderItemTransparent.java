@@ -1,25 +1,18 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.resources.model.ModelManager;
 
 public class RenderItemTransparent extends RenderItem
 {
-    private RenderBlocks renderBlocksRi = new RenderBlocks();
+    //private RenderBlocks renderBlocksRi = new RenderBlocks();
 
-    public void renderItemIntoGUIAlpha(FontRenderer p_77015_1_, TextureManager p_77015_2_, ItemStack p_77015_3_, int p_77015_4_, int p_77015_5_, boolean renderEffect, float alpha)
+    public RenderItemTransparent(TextureManager textureManager, ModelManager modelManager) {
+        super(textureManager, modelManager);
+    }
+
+    /*public void renderItemIntoGUIAlpha(FontRenderer p_77015_1_, TextureManager p_77015_2_, ItemStack p_77015_3_, int p_77015_4_, int p_77015_5_, boolean renderEffect, float alpha)
     {
         int k = p_77015_3_.getItemDamage();
         Object object = p_77015_3_.getIconIndex();
@@ -178,9 +171,9 @@ public class RenderItemTransparent extends RenderItem
      * don't care about the interaction of other objects on the current state of the RenderItem they are using.
      * @return A global instance of RenderItem
      */
-    public static RenderItemTransparent getInstance()
+    /*public static RenderItemTransparent getInstance()
     {
         if (instance == null) instance = new RenderItemTransparent();
         return instance;
-    }
+    }*/
 }

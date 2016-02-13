@@ -5,9 +5,10 @@ import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 
-public class TileTimeCollector extends TileClockworkPhase implements ITimeProvider
+public class TileTimeCollector extends TileClockworkPhase implements ITimeProvider, ITickable
 {
     public TimeStorage timeStorage;
 
@@ -16,7 +17,7 @@ public class TileTimeCollector extends TileClockworkPhase implements ITimeProvid
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if(!worldObj.isRemote)
             timeStorage.receiveTime(1, false);
@@ -56,13 +57,13 @@ public class TileTimeCollector extends TileClockworkPhase implements ITimeProvid
     }
 
     @Override
-    public boolean canConnectFrom(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
     public void setState(int state) {}
 
     @Override
     public void setStateAndUpdate(int state) {}
+
+    @Override
+    public boolean canConnectFrom(EnumFacing from) {
+        return false;
+    }
 }

@@ -1,10 +1,10 @@
 package lumaceon.mods.clockworkphase2.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.util.TimeHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerHandler
 {
@@ -15,7 +15,7 @@ public class PlayerHandler
         {
             ItemStack currentItem = event.entityPlayer.inventory.getCurrentItem();
             if(currentItem != null && currentItem.getItem().equals(ModItems.temporalExcavator))
-                if(TimeHelper.getTimeInInventory(event.entityPlayer.inventory) < TimeHelper.timeToBreakBlock(event.block.getBlockHardness(event.entityPlayer.worldObj, event.x, event.y, event.z), event.entityPlayer, currentItem))
+                if(TimeHelper.getTimeInInventory(event.entityPlayer.inventory) < TimeHelper.timeToBreakBlock(event.state.getBlock().getBlockHardness(event.entityPlayer.worldObj, event.pos), event.entityPlayer, currentItem))
                     event.setCanceled(true);
         }
     }

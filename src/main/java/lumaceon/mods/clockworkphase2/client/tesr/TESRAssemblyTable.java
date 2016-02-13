@@ -15,9 +15,9 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer
     public static final ModelBase MODEL = new ModelAssemblyTable();
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_)
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if(te != null && te instanceof TileAssemblyTable)
+        /*if(te != null && te instanceof TileAssemblyTable)
         {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -28,6 +28,6 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer
             MODEL.render(null, 0F, 0F, 0F, 0F, 0F, 0.0625F);
 
             GL11.glPopMatrix();
-        }
+        }*/
     }
 }

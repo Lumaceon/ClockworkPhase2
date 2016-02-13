@@ -53,20 +53,9 @@ item.clockworkphase2:iron_trowel.name=Iron Trowel
 item.clockworkphase2:diamond_trowel.name=Diamond Trowel
 
 #Block
+
 tile.clockworkphase2:time_sand.name=Time Sand
-tile.clockworkphase2:basic_winding_box.name=Manual Winding Box
 tile.clockworkphase2:clockwork_furnace.name=Clockwork Furnace
-tile.clockworkphase2:temporal_furnace.name=Temporal Furnace
-tile.clockworkphase2:assembly_table.name=Worktable
-tile.clockworkphase2:assembly_table_sb.name=Worktable
-
-tile.clockworkphase2:copper_ore.name=Copper Ore
-tile.clockworkphase2:zinc_ore.name=Zinc Ore
-tile.clockworkphase2:copper_block.name=Copper Block
-tile.clockworkphase2:zinc_block.name=Zinc Block
-tile.clockworkphase2:brass_block.name=Brass Block
-tile.clockworkphase2:temporal_block.name=Temporal Block
-
 tile.clockworkphase2:celestial_compass.name=Celestial Compass
 tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
 tile.clockworkphase2:temporal_displacement_altar.name=Temporal Displacement Altar
@@ -74,11 +63,35 @@ tile.clockworkphase2:temporal_displacement_altar_sb.name=Temporal Displacement A
 tile.clockworkphase2:timezone_fluid_importer.name=Timezone Fluid Importer
 tile.clockworkphase2:timezone_fluid_exporter.name=Timezone Fluid Exporter
 tile.clockworkphase2:time_well.name=Time Well
+tile.clockworkphase2:clockwork_melter.name=Clockwork Network Melter
+tile.clockworkphase2:clockwork_mixer.name=Clockwork Network Mixer
 
-tile.clockworkphase2:forth_age_fossil.name=Fossil (4th Age)
-tile.clockworkphase2:third_age_fossil.name=Fossil (3rd Age)
-tile.clockworkphase2:second_age_fossil.name=Fossil (2st Age)
-tile.clockworkphase2:first_age_fossil.name=Fossil (1st Age)
+//ORES
+tile.clockworkphase2:copper_ore.name=Copper Ore
+tile.clockworkphase2:zinc_ore.name=Zinc Ore
+tile.clockworkphase2:third_age_fossil.name=Third Age Relic
+tile.clockworkphase2:second_age_fossil.name=Second Age Relic
+tile.clockworkphase2:first_age_fossil.name=First Age Relic
+//METAL BLOCKS
+tile.clockworkphase2:copper_block.name=Copper Block
+tile.clockworkphase2:zinc_block.name=Zinc Block
+tile.clockworkphase2:brass_block.name=Brass Block
+tile.clockworkphase2:temporal_block.name=Temporal Block
+//PLANTS
+tile.clockworkphase2:moon_flower.name=Moon Flower
+//MISC
+tile.clockworkphase2:basic_winding_box.name=Winding Box
+tile.clockworkphase2:assembly_table.name=Worktable
+tile.clockworkphase2:assembly_table_sb.name=Worktable
+//CLOCKWORK NETWORK
+tile.clockworkphase2:crank.name=Crank
+tile.clockworkphase2:mainspring_creative.name=Mainspring Block (Creative)
+tile.clockworkphase2:clockwork_controller.name=Clockwork Network Controller
+tile.clockworkphase2:clockwork_furnace.name=Clockwork Network Furnace
+tile.clockworkphase2:clockwork_brewery.name=Clockwork Network Brewery
+tile.clockworkphase2:clockwork_alloy_furnace.name=Clockwork Network Alloy Furnace
+tile.clockworkphase2:clockwork_super_alloy_furnace.name=Clockwork Network Mega-alloy Furnace
+tile.clockworkphase2:clockwork_crafting_table.name=Clockwork Network Crafting Table
 
 #Entity
 entity.personal_assistant_cube.name=Personal Assistant Cube

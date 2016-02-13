@@ -12,17 +12,17 @@ public class WorldProviderZerothAge extends WorldProviderSurface
     public void registerWorldChunkManager()
     {
         this.dimensionId = Defaults.DIM_ID.ZEROTH_AGE;
-        this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT);
+        this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT, "OriginWorld");
     }
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        return new ChunkProviderZerothAge(this.worldObj, getSeed(), false);
+        return new ChunkProviderZerothAge(this.worldObj, getSeed(), false, worldObj.getWorldInfo().getGeneratorOptions());
     }
 
     @Override
     public String getDimensionName() {
-        return "The 0th Age";
+        return "OriginWorld";
     }
 
     @Override

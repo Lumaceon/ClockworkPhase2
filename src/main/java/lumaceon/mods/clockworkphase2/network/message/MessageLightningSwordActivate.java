@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.network.message;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
@@ -15,7 +15,7 @@ public class MessageLightningSwordActivate implements IMessage
 
     public MessageLightningSwordActivate(EntityPlayer player, int charge) {
         this.charge = charge;
-        this.pos = player.getPosition(0);
+        this.pos = player.getPositionVector();
         this.look = player.getLook(0);
     }
 
@@ -33,7 +33,7 @@ public class MessageLightningSwordActivate implements IMessage
     @Override
     public void fromBytes(ByteBuf buf) {
         charge = buf.readInt();
-        pos = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
-        look = Vec3.createVectorHelper(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        pos = new Vec3 (buf.readDouble(), buf.readDouble(), buf.readDouble());
+        look = new Vec3 (buf.readDouble(), buf.readDouble(), buf.readDouble());
     }
 }

@@ -107,9 +107,9 @@ public class ClockworkHelper
     }
 
     /**
-     * Used by machines (or items) that wish to have work speed increase exponentially with the speed stat. This method
-     * provides a standard most clockwork machines follow, which assumes a 'par' speed of 200.
-     * @param speed The speed of the clockwork.
+     * Used by machines (or item) that wish to have work speed increase exponentially with the speed stat. This method
+     * provides a standard most tiles machines follow, which assumes a 'par' speed of 200.
+     * @param speed The speed of the tiles.
      * @return A multiplier for the work done per tick, which can be less than 1 in cases where speed is poor (<200).
      */
     public static double getStandardExponentialSpeedMultiplier(int speed)

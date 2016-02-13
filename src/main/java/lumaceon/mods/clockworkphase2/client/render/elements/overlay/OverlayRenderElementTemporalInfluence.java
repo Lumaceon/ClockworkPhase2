@@ -28,11 +28,11 @@ public class OverlayRenderElementTemporalInfluence extends OverlayRenderElement
             if(yTranslation == -100)
                 return false;
 
-            Minecraft.getMinecraft().fontRenderer.drawString(TimeConverter.parseNumber(displayInfluence, 2), event.resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(TimeConverter.parseNumber(displayInfluence, 2)) / 2, 30 + yTranslation, 125576);
+            Minecraft.getMinecraft().fontRendererObj.drawString(TimeConverter.parseNumber(displayInfluence, 2), event.resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(TimeConverter.parseNumber(displayInfluence, 2)) / 2, 30 + yTranslation, 125576);
             for(int n = 1; n < additionList.size(); n++) //Draw additional strings.
             {
                 InfluenceIncrease ii = additionList.get(n);
-                Minecraft.getMinecraft().fontRenderer.drawString(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2), event.resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRenderer.getStringWidth(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2)) / 2, (40 - ii.tweening) + yTranslation + n * 30, 125576);
+                Minecraft.getMinecraft().fontRendererObj.drawString(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2), event.resolution.getScaledWidth() / 2 - Minecraft.getMinecraft().fontRendererObj.getStringWidth(TimeConverter.parseNumber(ii.newInfluence - ii.previousInfluence, 2)) / 2, (40 - ii.tweening) + yTranslation + n * 30, 125576);
             }
             if(yTranslation == 0)
             {

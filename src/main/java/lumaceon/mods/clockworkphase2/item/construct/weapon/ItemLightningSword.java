@@ -1,22 +1,22 @@
 package lumaceon.mods.clockworkphase2.item.construct.weapon;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageLightningSwordActivate;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLightningSword extends ItemSword
 {
@@ -52,12 +52,12 @@ public class ItemLightningSword extends ItemSword
         {
             if(MOB.typeOfHit.equals(MovingObjectPosition.MovingObjectType.BLOCK))
             {
-                int xCoord = MOB.blockX;
-                int yCoord = MOB.blockY + 1;
-                int zCoord = MOB.blockZ;
-                Block block = world.getBlock(xCoord, yCoord, zCoord);
-                Block block2 = world.getBlock(xCoord, yCoord + 1, zCoord);
-                if(block != null && block2 != null && block.isAir(world, xCoord, yCoord, zCoord) && block2.isAir(world, xCoord, yCoord + 1, zCoord))
+                int xCoord = MOB.getBlockPos().getX();
+                int yCoord = MOB.getBlockPos().getY() + 1;
+                int zCoord = MOB.getBlockPos().getZ();
+                Block block = world.getBlockState(new BlockPos(xCoord, yCoord, zCoord)).getBlock();
+                Block block2 = world.getBlockState(new BlockPos(xCoord, yCoord+1, zCoord)).getBlock();
+                if(block != null && block2 != null && block.isAir(world, new BlockPos(xCoord, yCoord, zCoord)) && block2.isAir(world, new BlockPos(xCoord, yCoord+1, zCoord)))
                 {
                     newPlayerX = xCoord + 0.5;
                     newPlayerY = yCoord;
@@ -69,9 +69,9 @@ public class ItemLightningSword extends ItemSword
                     while(!exitFlag && yCoord < 256)
                     {
                         yCoord++;
-                        block = world.getBlock(xCoord, yCoord, zCoord);
-                        block2 = world.getBlock(xCoord, yCoord + 1, zCoord);
-                        if(block != null && block.isAir(world, xCoord, yCoord, zCoord) && block2 != null && block2.isAir(world, xCoord, yCoord + 1, zCoord))
+                        block = world.getBlockState(new BlockPos(xCoord, yCoord, zCoord)).getBlock();
+                        block2 = world.getBlockState(new BlockPos(xCoord, yCoord + 1, zCoord)).getBlock();
+                        if(block != null && block.isAir(world, new BlockPos(xCoord, yCoord, zCoord)) && block2 != null && block2.isAir(world, new BlockPos(xCoord, yCoord + 1, zCoord)))
                             exitFlag = true;
                     }
                     newPlayerX = xCoord + 0.5;
@@ -97,7 +97,7 @@ public class ItemLightningSword extends ItemSword
         if(world.isRemote)
         {
             PacketHandler.INSTANCE.sendToServer(new MessageLightningSwordActivate(player, charge));
-            lightningTeleport(is, world, player, charge, player.getPosition(0), player.getLook(0));
+            lightningTeleport(is, world, player, charge, player.getPositionVector(), player.getLook(0));
         }
     }
 
@@ -105,18 +105,17 @@ public class ItemLightningSword extends ItemSword
         return 10.0F;
     }
 
-    public ItemStack onEaten(ItemStack is, World world, EntityPlayer player) {
-        return is;
-    }
-
+    @Override
     public EnumAction getItemUseAction(ItemStack is) {
-        return EnumAction.bow;
+        return EnumAction.BOW;
     }
 
+    @Override
     public int getMaxItemUseDuration(ItemStack is) {
         return 72000;
     }
 
+    @Override
     public ItemStack onItemRightClick(ItemStack is, World world, EntityPlayer player) {
         player.setItemInUse(is, this.getMaxItemUseDuration(is));
         return is;
@@ -124,7 +123,7 @@ public class ItemLightningSword extends ItemSword
 
     public MovingObjectPosition getRayTrace(Vec3 pos, Vec3 look, World world, float range) {
         Vec3 vec32 = pos.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-        return world.func_147447_a(pos, vec32, false, false, true);
+        return world.rayTraceBlocks(pos, vec32, false, false, true);
     }
 
     @Override
@@ -135,11 +134,5 @@ public class ItemLightningSword extends ItemSword
     @Override
     public String getUnlocalizedName(ItemStack is) {
         return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister registry) {
-        this.itemIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 public interface IClockworkComponent extends IClockwork
 {
     /**
-     * Default clockwork tools will take on the greatest 'tier' found in their components as their harvest level.
+     * Default tiles tools will take on the greatest 'tier' found in their components as their harvest level.
      * Machines may ignore this depending on the machine in question. There is no standard convention for component tier
      * use in machines, so base your tier off of the (sometimes theoretical) pickaxe mining level.
      * -1 - Hand.

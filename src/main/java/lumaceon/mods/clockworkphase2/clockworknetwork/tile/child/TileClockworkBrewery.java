@@ -8,6 +8,7 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.potion.PotionHelper;
+import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
@@ -110,21 +111,21 @@ public class TileClockworkBrewery extends TileClockworkNetworkMachine
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
+    public int[] getSlotsForFace(EnumFacing side) {
         return new int[] { 0, 1, 2, 3 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack inputStack, int side) {
+    public boolean canInsertItem(int slotID, ItemStack inputStack, EnumFacing side) {
         return
                 inputStack != null
-                        && FurnaceRecipes.smelting().getSmeltingResult(inputStack) != null
+                        && FurnaceRecipes.instance().getSmeltingResult(inputStack) != null
                         && (inventory[0] == null || inventory[0].stackSize < inventory[0].getMaxStackSize())
                         && slotID == 0;
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack outputStack, int side) {
+    public boolean canExtractItem(int slotID, ItemStack outputStack, EnumFacing side) {
         return slotID > 0 && slotID < 4;
     }
 

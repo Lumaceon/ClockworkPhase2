@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.tile.generic;
 
 import lumaceon.mods.clockworkphase2.init.ModFluids;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -14,7 +14,7 @@ public class TileSteamPowered extends TileClockworkPhase implements IFluidHandle
     public int steamBuffer = 0;
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         if(canFill(from, resource.getFluid()))
         {
@@ -27,21 +27,21 @@ public class TileSteamPowered extends TileClockworkPhase implements IFluidHandle
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) { return null; }
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) { return null; }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) { return null; }
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) { return null; }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(EnumFacing from, Fluid fluid) {
         return fluid.equals(ModFluids.steam); //TODO - OreDictionary support
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) { return false; }
+    public boolean canDrain(EnumFacing from, Fluid fluid) { return false; }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(EnumFacing from) {
         return new FluidTankInfo[] {new FluidTankInfo(new FluidStack(ModFluids.steam, 0), steamUsePerTick)};
     }
 

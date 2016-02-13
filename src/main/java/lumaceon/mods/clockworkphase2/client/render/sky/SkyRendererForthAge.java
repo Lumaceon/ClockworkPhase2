@@ -29,7 +29,7 @@ public class SkyRendererForthAge extends IRenderHandler
         this.renderStars();
         GL11.glEndList();
         GL11.glPopMatrix();
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
         this.glSkyList = this.starGLCallList + 1;
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         byte b2 = 64;
@@ -42,12 +42,12 @@ public class SkyRendererForthAge extends IRenderHandler
         {
             for (k = -b2 * i; k <= b2 * i; k += b2)
             {
-                tessellator.startDrawingQuads();
+                /*tessellator.startDrawingQuads();
                 tessellator.addVertex((double)(j + 0), (double)f, (double)(k + 0));
                 tessellator.addVertex((double)(j + b2), (double)f, (double)(k + 0));
                 tessellator.addVertex((double)(j + b2), (double)f, (double)(k + b2));
                 tessellator.addVertex((double)(j + 0), (double)f, (double)(k + b2));
-                tessellator.draw();
+                tessellator.draw();*/
             }
         }
 
@@ -55,7 +55,7 @@ public class SkyRendererForthAge extends IRenderHandler
         this.glSkyList2 = this.starGLCallList + 2;
         GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
         f = -16.0F;
-        tessellator.startDrawingQuads();
+        /*tessellator.startDrawingQuads();
 
         for (j = -b2 * i; j <= b2 * i; j += b2)
         {
@@ -68,7 +68,7 @@ public class SkyRendererForthAge extends IRenderHandler
             }
         }
 
-        tessellator.draw();
+        tessellator.draw();*/
         GL11.glEndList();
     }
 
@@ -78,7 +78,7 @@ public class SkyRendererForthAge extends IRenderHandler
         if(mc.theWorld.provider.isSurfaceWorld())
         {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
-            Vec3 vec3 = world.getSkyColor(mc.renderViewEntity, partialTicks);
+            Vec3 vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
             float f1 = (float)vec3.xCoord;
             float f2 = (float)vec3.yCoord;
             float f3 = (float)vec3.zCoord;
@@ -95,7 +95,7 @@ public class SkyRendererForthAge extends IRenderHandler
             }
 
             GL11.glColor3f(f1 * 0.1F, f2 * 0.1F, f3 * 0.1F); //Also upper sky color? Not sure why it's set twice.
-            Tessellator tessellator1 = Tessellator.instance;
+            Tessellator tessellator1 = Tessellator.getInstance();
             GL11.glDepthMask(false);
             GL11.glEnable(GL11.GL_FOG);
             GL11.glColor3f(f1 * 0.1F, f2 * 0.1F, f3 * 0.1F); //Upper sky color, made darker for the 4th age.
@@ -134,21 +134,21 @@ public class SkyRendererForthAge extends IRenderHandler
                     f8 = f11;
                 }
 
-                tessellator1.startDrawing(6);
-                tessellator1.setColorRGBA_F(f4, f7, f8, afloat[3]); //Probably sunset.
-                tessellator1.addVertex(0.0D, 100.0D, 0.0D);
+                //tessellator1.startDrawing(6);
+                //tessellator1.setColorRGBA_F(f4, f7, f8, afloat[3]); //Probably sunset.
+                //tessellator1.addVertex(0.0D, 100.0D, 0.0D);
                 byte b0 = 16;
-                tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F); //Also part of the sunset?
+                //tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F); //Also part of the sunset?
 
                 for (int j = 0; j <= b0; ++j)
                 {
                     f11 = (float)j * (float)Math.PI * 2.0F / (float)b0;
                     float f12 = MathHelper.sin(f11);
                     float f13 = MathHelper.cos(f11);
-                    tessellator1.addVertex((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * afloat[3]));
+                    //tessellator1.addVertex((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * afloat[3]));
                 }
 
-                tessellator1.draw();
+                //tessellator1.draw();
                 GL11.glPopMatrix();
                 GL11.glShadeModel(GL11.GL_FLAT);
             }
@@ -166,12 +166,12 @@ public class SkyRendererForthAge extends IRenderHandler
             GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
             f10 = 30.0F;
             mc.renderEngine.bindTexture(Textures.VANILLA.SUN);
-            tessellator1.startDrawingQuads();
-            tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
-            tessellator1.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
-            tessellator1.addVertexWithUV((double)f10, 100.0D, (double)f10, 1.0D, 1.0D);
-            tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
-            tessellator1.draw();
+            //tessellator1.startDrawingQuads();
+            //tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
+            //tessellator1.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
+            //tessellator1.addVertexWithUV((double)f10, 100.0D, (double)f10, 1.0D, 1.0D);
+            //tessellator1.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
+            //tessellator1.draw();
             f10 = 20.0F;
             mc.renderEngine.bindTexture(Textures.VANILLA.MOON_PHASES);
             int k = mc.theWorld.getMoonPhase();
@@ -181,12 +181,12 @@ public class SkyRendererForthAge extends IRenderHandler
             float f15 = (float)(i1 + 0) / 2.0F;
             float f16 = (float)(l + 1) / 4.0F;
             float f17 = (float)(i1 + 1) / 2.0F;
-            tessellator1.startDrawingQuads();
+            /*tessellator1.startDrawingQuads();
             tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)f10, (double)f16, (double)f17);
             tessellator1.addVertexWithUV((double)f10, -100.0D, (double)f10, (double)f14, (double)f17);
             tessellator1.addVertexWithUV((double)f10, -100.0D, (double)(-f10), (double)f14, (double)f15);
             tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)(-f10), (double)f16, (double)f15);
-            tessellator1.draw();
+            tessellator1.draw();*/
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             float f18 = world.getStarBrightness(partialTicks) * f4;
 
@@ -203,7 +203,7 @@ public class SkyRendererForthAge extends IRenderHandler
             GL11.glPopMatrix();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor3f(0.0F, 0.0F, 0.0F);
-            double d0 = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
+            double d0 = mc.thePlayer.getPosition().getY() - world.getHorizon();
 
             if (d0 < 0.0D)
             {
@@ -214,7 +214,7 @@ public class SkyRendererForthAge extends IRenderHandler
                 f8 = 1.0F;
                 f9 = -((float)(d0 + 65.0D));
                 f10 = -f8;
-                tessellator1.startDrawingQuads();
+                /*tessellator1.startDrawingQuads();
                 tessellator1.setColorRGBA_I(0, 255);
                 tessellator1.addVertex((double)(-f8), (double)f9, (double)f8);
                 tessellator1.addVertex((double)f8, (double)f9, (double)f8);
@@ -236,7 +236,7 @@ public class SkyRendererForthAge extends IRenderHandler
                 tessellator1.addVertex((double)(-f8), (double)f10, (double)f8);
                 tessellator1.addVertex((double)f8, (double)f10, (double)f8);
                 tessellator1.addVertex((double)f8, (double)f10, (double)(-f8));
-                tessellator1.draw();
+                tessellator1.draw();*/
             }
 
             if (world.provider.isSkyColored())
@@ -265,8 +265,8 @@ public class SkyRendererForthAge extends IRenderHandler
     private void renderStars()
     {
         Random random = new Random(10842L);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
+        Tessellator tessellator = Tessellator.getInstance();
+        //tessellator.startDrawingQuads();
 
         for (int i = 0; i < 1500; ++i)
         {
@@ -306,11 +306,11 @@ public class SkyRendererForthAge extends IRenderHandler
                     double d23 = d17 * d12 - d20 * d13;
                     double d24 = d23 * d9 - d21 * d10;
                     double d25 = d21 * d9 + d23 * d10;
-                    tessellator.addVertex(d5 + d24, d6 + d22, d7 + d25);
+                    //tessellator.addVertex(d5 + d24, d6 + d22, d7 + d25);
                 }
             }
         }
 
-        tessellator.draw();
+        //tessellator.draw();
     }
 }

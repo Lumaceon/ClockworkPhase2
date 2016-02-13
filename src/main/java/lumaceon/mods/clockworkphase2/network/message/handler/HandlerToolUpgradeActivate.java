@@ -1,8 +1,6 @@
 package lumaceon.mods.clockworkphase2.network.message.handler;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
@@ -10,6 +8,8 @@ import lumaceon.mods.clockworkphase2.item.construct.tool.ItemClockworkTool;
 import lumaceon.mods.clockworkphase2.network.message.MessageToolUpgradeActivate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class HandlerToolUpgradeActivate implements IMessageHandler<MessageToolUpgradeActivate, IMessage>
 {

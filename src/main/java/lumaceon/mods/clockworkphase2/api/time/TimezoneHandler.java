@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.api.time;
 
 import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -18,10 +19,10 @@ public class TimezoneHandler
     {
         for(int[] timezone : timezones)
         {
-            boolean sameWorld = world.provider.dimensionId == timezone[3];
+            boolean sameWorld = world.provider.getDimensionId() == timezone[3];
             if(sameWorld)
             {
-                TileEntity te = world.getTileEntity(timezone[0], timezone[1], timezone[2]);
+                TileEntity te = world.getTileEntity(new BlockPos(timezone[0], timezone[1], timezone[2]));
                 if(te != null && te instanceof ITimezoneProvider)
                 {
                     ITimezoneProvider tz = (ITimezoneProvider) te;
@@ -49,7 +50,7 @@ public class TimezoneHandler
             boolean sameWorld = dimensionId == timezone[3];
             if(sameWorld)
             {
-                TileEntity te = DimensionManager.getWorld(dimensionId).getTileEntity(timezone[0], timezone[1], timezone[2]);
+                TileEntity te = DimensionManager.getWorld(dimensionId).getTileEntity(new BlockPos(timezone[0], timezone[1], timezone[2]));
                 if(te != null && te instanceof ITimezoneProvider)
                 {
                     ITimezoneProvider tz = (ITimezoneProvider) te;
@@ -92,7 +93,7 @@ public class TimezoneHandler
          */
         public static void registerTimezone(int x, int y, int z, World world)
         {
-            int dimensionId = world.provider.dimensionId;
+            int dimensionId = world.provider.getDimensionId();
             int[] timezone =
                     {
                             x,
@@ -117,7 +118,7 @@ public class TimezoneHandler
             {
                 timezone = timezones.get(n);
                 World world = DimensionManager.getWorld(timezone[3]);
-                TileEntity te = world.getTileEntity(timezone[0], timezone[1], timezone[2]);
+                TileEntity te = world.getTileEntity(new BlockPos(timezone[0], timezone[1], timezone[2]));
                 boolean tzExists = te != null && te instanceof ITimezoneProvider;
                 if(!tzExists)
                 {

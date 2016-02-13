@@ -1,22 +1,17 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCelestialCompassSB extends BlockClockworkPhase
 {
-    public IIcon[] icons = new IIcon[96];
-
     public BlockCelestialCompassSB(Material blockMaterial, String unlocalizedName)
     {
         super(blockMaterial, unlocalizedName);
@@ -27,9 +22,9 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float localX, float localY, float localZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(localY != 1.0F)
+        /*if(localY != 1.0F)
         {
             return false;
         }
@@ -72,13 +67,13 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
                 xOffset += -direction.offsetX;
                 zOffset += -direction.offsetZ;
             }
-        }
+        }*/
         return false;
     }
 
     private boolean handleBlockClick(EntityPlayer player, TileCelestialCompass te, double xOffset, double zOffset)
     {
-        if(!te.isAvailable() && !te.getWorldObj().isRemote)
+        if(!te.isAvailable() && !te.getWorld().isRemote)
             return false;
         if(Math.sqrt(Math.pow(xOffset - Ranges.CENTER_X, 2) + Math.pow(zOffset - Ranges.CENTER_Z, 2)) < 0.75F)
         {
@@ -120,74 +115,6 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
         {
             return te.onSubBlockClicked(player, -1);
         }
-    }
-
-    @Override
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-    {
-        return this.blockIcon;
-    }
-
-    @Override
-    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int meta)
-    {
-        if(meta != 0 && meta != 1)
-        {
-            return this.blockIcon;
-        }
-
-        boolean flag = true;
-
-        //Coordinates to be passed into the TextureHelper.
-        int xOffset = 0;
-        int zOffset = 0;
-
-        meta = blockAccess.getBlockMetadata(x, y, z);
-        ForgeDirection direction = ForgeDirection.getOrientation(meta);
-
-        x += direction.offsetX;
-        z += direction.offsetZ;
-
-        xOffset += -direction.offsetX;
-        zOffset += -direction.offsetZ;
-
-        for(int n = 0; n < 10 && flag; n++)
-        {
-            if(blockAccess.getBlock(x, y, z) == null)
-            {
-                return getIcon(0, 0);
-            }
-            else if(blockAccess.getBlock(x, y, z).equals(ModBlocks.celestialCompass))
-            {
-                flag = false;
-            }
-            else
-            {
-                meta = blockAccess.getBlockMetadata(x, y, z);
-                direction = ForgeDirection.getOrientation(meta);
-
-                x += direction.offsetX;
-                z += direction.offsetZ;
-
-                xOffset += -direction.offsetX;
-                zOffset += -direction.offsetZ;
-            }
-        }
-
-        int iconIndex = getTextureIndexFromCoordinates(xOffset, zOffset);
-        if(iconIndex < 0 || iconIndex > 96)
-        {
-            return this.blockIcon;
-        }
-        return this.icons[iconIndex];
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister registry) {
-        this.blockIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
-        for(int n = 0; n < 96; n++)
-            this.icons[n] = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "/" + n);
     }
 
     private static int getTextureIndexFromCoordinates(int x, int z)

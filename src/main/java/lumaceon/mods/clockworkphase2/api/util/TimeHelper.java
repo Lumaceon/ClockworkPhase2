@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class TimeHelper
 {
     /**
-     * Attempts to consume time from items implementing ITimeSupplierItem in the inventory. If enough time is found
+     * Attempts to consume time from item implementing ITimeSupplierItem in the inventory. If enough time is found
      * within the inventory, it will be consumed and this method will return true. Otherwise, no time will be consumed
      * from any of them, and this method will return false.
      * @return True if all the time was consumed, false if there isn't enough and none was consumed.
@@ -45,7 +45,7 @@ public class TimeHelper
     }
 
     /**
-     * Attempts to consume time from items implementing ITimeSupplierItem in the inventory. If there is less time
+     * Attempts to consume time from item implementing ITimeSupplierItem in the inventory. If there is less time
      * available than requested, as much as possible will be consumed.
      * @param timeToConsume The amount of time to attempt to consume.
      * @return The amount of time that was successfully consumed.

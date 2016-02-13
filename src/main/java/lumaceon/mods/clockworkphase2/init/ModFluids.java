@@ -22,6 +22,6 @@ public class ModFluids
 
     public static void bindBlocks()
     {
-        timeSand.setBlock(ModBlocks.timeSand);
+        //timeSand.setBlock(ModBlocks.timeSand);
     }
 }

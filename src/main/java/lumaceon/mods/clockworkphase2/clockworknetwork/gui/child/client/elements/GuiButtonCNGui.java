@@ -16,24 +16,24 @@ public class GuiButtonCNGui extends GuiButton
     }
 
     @Override
-    public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_)
+    public void drawButton(Minecraft mc, int mouseX, int mouseY)
     {
         if(this.visible)
         {
-            this.field_146123_n = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
-            int hoverState = this.getHoverState(this.field_146123_n);
+            this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
+            int hoverState = this.getHoverState(this.hovered);
             if(gui != null && gui instanceof ClockworkNetworkGuiClient)
             {
                 if(hoverState == 2)
-                    GL11.glColor4f(1.5F, 1.5F, 1.5F, 1.0F);
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 else if(hoverState == 1)
                     GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
                 else
-                    GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+                    GL11.glColor4f(0.2F, 0.2F, 0.2F, 1.0F);
                 ((ClockworkNetworkGuiClient) gui).drawBackground(this.xPosition, this.yPosition, this.zLevel);
                 ((ClockworkNetworkGuiClient) gui).drawForeground(this.xPosition, this.yPosition, this.zLevel);
             }
-            this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
+            this.mouseDragged(mc, mouseX, mouseY);
         }
     }
 }

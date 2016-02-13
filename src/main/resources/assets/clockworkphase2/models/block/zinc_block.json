@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "clockworkphase2:blocks/zinc_block"
+    }
+}

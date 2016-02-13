@@ -1,7 +1,5 @@
 package lumaceon.mods.clockworkphase2.container;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotInventoryValid;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkFurnace;
@@ -12,6 +10,8 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerClockworkFurnace extends Container
 {
@@ -37,8 +37,8 @@ public class ContainerClockworkFurnace extends Container
     }
 
     @Override
-    public void addCraftingToCrafters(ICrafting crafting) {
-        super.addCraftingToCrafters(crafting);
+    public void onCraftGuiOpened(ICrafting crafting) {
+        super.onCraftGuiOpened(crafting);
         crafting.sendProgressBarUpdate(this, 0, te.getProgress());
     }
 

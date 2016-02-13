@@ -24,7 +24,7 @@ public class InformationDisplay
     public static int defaultTensionPerBlock = 50;
 
     /**
-     * Adds information based on a simple clockwork component (such as a gear).
+     * Adds information based on a simple tiles component (such as a gear).
      * @param component
      * @param list
      */
@@ -48,7 +48,7 @@ public class InformationDisplay
     }
 
     /**
-     * Used as a conventional tool-tip for clockwork itemstacks. Call during addInformation() in a custom Item class.
+     * Used as a conventional tool-tip for tiles itemstacks. Call during addInformation() in a custom Item class.
      * @param construct Itemstack representing the construct.
      * @param player Player looking at the itemstack.
      * @param list A list of information to add to.

@@ -9,12 +9,8 @@ public class NBTTags
     public static final String TIME = "time_stored";
     public static final String QUALITY = "cp_quality";
     public static final String SPEED = "cp_speed";
-    public static final String MEMORY = "cp_memory";
     public static final String TIER = "cp_tier";
     public static final String HARVEST_LEVEL_PICKAXE = "harvest_lvl_pick";
     public static final String HARVEST_LEVEL_AXE = "harvest_lvl_axe";
     public static final String HARVEST_LEVEL_SHOVEL = "harvest_lvl_shovel";
-    public static final String TEMPORAL_STATE = "is_temporal";
-    public static final String MAGNITUDE = "timestream_magnitude";
-    public static final String TIMESTREAM_COUNT = "timestream_count";
 }

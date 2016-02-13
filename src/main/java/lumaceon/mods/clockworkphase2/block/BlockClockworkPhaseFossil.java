@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 
 import java.util.Random;
@@ -16,7 +16,7 @@ public class BlockClockworkPhaseFossil extends BlockClockworkPhase
     }
 
     @Override
-    public Item getItemDropped(int meta, Random random, int fortuneLevel) {
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         return Item.getItemFromBlock(this);
     }
 

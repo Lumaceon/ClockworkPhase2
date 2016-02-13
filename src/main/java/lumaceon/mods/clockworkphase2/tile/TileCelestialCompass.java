@@ -14,9 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
-public class TileCelestialCompass extends TileClockworkPhase implements ITimezoneProvider
+public class TileCelestialCompass extends TileClockworkPhase implements ITimezoneProvider, ITickable
 {
     private int blocksToPlace = 96;
     private boolean registerTimezone = true;
@@ -83,7 +85,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if(!isAvailable())
         {
@@ -94,7 +96,7 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
         if(registerTimezone && worldObj != null)
         {
             registerTimezone = false;
-            TimezoneHandler.INTERNAL.registerTimezone(xCoord, yCoord, zCoord, worldObj);
+            TimezoneHandler.INTERNAL.registerTimezone(pos.getX(), pos.getY(), pos.getZ(), worldObj);
         }
     }
 
@@ -159,51 +161,52 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
                 for(int n = 0; n < BlockPatterns.CELESTIAL_COMPASS.length; n++)
                 {
                     int x, y, z;
-                    x = this.xCoord + BlockPatterns.CELESTIAL_COMPASS[n].x;
-                    y = this.yCoord + BlockPatterns.CELESTIAL_COMPASS[n].y;
-                    z = this.zCoord + BlockPatterns.CELESTIAL_COMPASS[n].z;
-                    this.worldObj.markBlockForUpdate(x, y, z);
+                    x = pos.getX() + BlockPatterns.CELESTIAL_COMPASS[n].x;
+                    y = pos.getY() + BlockPatterns.CELESTIAL_COMPASS[n].y;
+                    z = pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[n].z;
+                    this.worldObj.markBlockForUpdate(new BlockPos(x, y, z));
                     blocksToPlace--;
                 }
             }
             else if(blocksToPlace > 0)
             {
                 int x, y, z, meta;
-                x = this.xCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].x;
-                y = this.yCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].y;
-                z = this.zCoord + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
+                x = this.pos.getX() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].x;
+                y = this.pos.getY() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].y;
+                z = this.pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
                 meta = BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].meta;
 
-                if(worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).equals(ModBlocks.celestialCompassSB) || worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z))
+                blocksToPlace--;
+                /*if(worldObj.isAirBlock(new BlockPos(x, y, z)) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().equals(ModBlocks.celestialCompassSB) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().isReplaceable(worldObj, new BlockPos(x, y, z)))
                 {
-                    this.getWorldObj().setBlock(x, y, z, ModBlocks.celestialCompassSB, meta, 2);
-                    blocksToPlace--;
+                    worldObj.setBlockState(new BlockPos(x, y, z), ModBlocks.celestialCompassSB.getDefaultState());
                 }
                 else
                 {
                     //PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(x + 0.5, y + 0.5, z + 0.5, 0), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 48));
-                }
+                }*/
             }
         }
     }
 
-    public static void destroyMultiblock(World world, int x, int y, int z)
+    public static void destroyMultiblock(World world, BlockPos pos)
     {
         for(int n = 0; n < 96; n++)
         {
             int currentX, currentY, currentZ;
-            currentX = x + BlockPatterns.CELESTIAL_COMPASS[n].x;
-            currentY = y + BlockPatterns.CELESTIAL_COMPASS[n].y;
-            currentZ = z + BlockPatterns.CELESTIAL_COMPASS[n].z;
+            currentX = pos.getX() + BlockPatterns.CELESTIAL_COMPASS[n].x;
+            currentY = pos.getY() + BlockPatterns.CELESTIAL_COMPASS[n].y;
+            currentZ = pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[n].z;
+            BlockPos tempPos = new BlockPos(currentX, currentY, currentZ);
 
-            if(world.getBlock(currentX, currentY, currentZ).equals(ModBlocks.celestialCompassSB))
-                world.setBlock(currentX, currentY, currentZ, Blocks.air);
+            //if(world.getBlockState(tempPos).getBlock().equals(ModBlocks.celestialCompassSB))
+            //    world.setBlockState(tempPos, Blocks.air.getDefaultState());
         }
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if(te != null && te instanceof TileCelestialCompass)
             for(ItemStack item : ((TileCelestialCompass) te).timestreamItems)
                 if(item != null)
-                    world.spawnEntityInWorld(new EntityItem(world, x, y, z, item));
+                    world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), item));
         TimezoneHandler.INTERNAL.pingAndCleanTimezones();
     }
 
@@ -217,17 +220,17 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
 
     @Override
     public int getX() {
-        return xCoord;
+        return pos.getX();
     }
 
     @Override
     public int getY() {
-        return yCoord;
+        return pos.getY();
     }
 
     @Override
     public int getZ() {
-        return zCoord;
+        return pos.getZ();
     }
 
     @Override

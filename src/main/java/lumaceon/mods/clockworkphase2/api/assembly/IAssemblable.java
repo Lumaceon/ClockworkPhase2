@@ -5,7 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * To be implemented on items which can be placed into the clockwork assembly table's main assembly slot. These methods
+ * To be implemented on item which can be placed into the tiles assembly table's main assembly slot. These methods
  * control various aspects of the sub-GUI
  */
 public interface IAssemblable
@@ -34,9 +34,9 @@ public interface IAssemblable
      * 1 - Clockwork.
      * 2+ - Custom stuff.
      *
-     * Clockwork tile entities tend to use index 0 for either the mainspring or the clockwork only (depending on the
+     * Clockwork tile entities tend to use index 0 for either the mainspring or the tiles only (depending on the
      * tile). After 0 it's usually just custom stuff, though the tiles are theoretically capable of having both a
-     * clockwork and a mainspring.
+     * tiles and a mainspring.
      */
     public Slot[] getContainerSlots(IInventory inventory);
 

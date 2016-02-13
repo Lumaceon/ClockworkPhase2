@@ -1,12 +1,12 @@
 package lumaceon.mods.clockworkphase2.item.components;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -22,6 +22,7 @@ public class ItemGear extends ItemClockworkPhase implements IClockworkComponent
         this.harvestLevel = harvestLevel;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
         InformationDisplay.addClockworkComponentInformation(is, list);

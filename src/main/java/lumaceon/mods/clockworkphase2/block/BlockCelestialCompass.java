@@ -4,8 +4,11 @@ import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class BlockCelestialCompass extends BlockClockworkPhase implements ITileEntityProvider
@@ -16,15 +19,15 @@ public class BlockCelestialCompass extends BlockClockworkPhase implements ITileE
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float localX, float localY, float localZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te != null && te instanceof TileCelestialCompass && ((TileCelestialCompass) te).onMainBlockClicked(player);
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileCelestialCompass.destroyMultiblock(world, x, y, z);
-        super.breakBlock(world, x, y, z, block, meta);
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileCelestialCompass.destroyMultiblock(worldIn, pos);
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override

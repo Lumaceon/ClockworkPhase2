@@ -4,6 +4,7 @@ import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -15,7 +16,7 @@ public class WorldRenderElementTemporalDisplacementAltar extends WorldRenderElem
     public WorldRenderElementTemporalDisplacementAltar(World world, int x, int y, int z) {
         super(world, x, y, z);
         this.mc = Minecraft.getMinecraft();
-        this.te = world.getTileEntity(x, y, z);
+        this.te = world.getTileEntity(new BlockPos(x, y, z));
     }
 
     @Override
@@ -26,8 +27,8 @@ public class WorldRenderElementTemporalDisplacementAltar extends WorldRenderElem
         GL11.glTranslatef(-5.0F, 0.01F, -5.0F);
         GL11.glScalef(11.0F, 1.0F, 11.0F);
         //GL11.glEnable(GL11.GL_BLEND);
-        mc.renderEngine.bindTexture(Textures.MISC.TDA_BOTTOM);
-        Tessellator tessy = Tessellator.instance;
+        //mc.renderEngine.bindTexture(Textures.MISC.TDA_BOTTOM);
+        /*Tessellator tessy = Tessellator.instance;
         tessy.startDrawingQuads();
         tessy.addVertexWithUV(0, 0, 0, 0, 0);
         tessy.addVertexWithUV(0, 0, 1, 0, 1);
@@ -80,13 +81,13 @@ public class WorldRenderElementTemporalDisplacementAltar extends WorldRenderElem
         tessy.addVertexWithUV(1, 0, 1, 0, 1);
         tessy.addVertexWithUV(0, 0, 1, 1, 1);
         tessy.addVertexWithUV(0, 0, 0, 1, 0);
-        tessy.draw();
+        tessy.draw();*/
         GL11.glPopMatrix();
     }
 
     @Override
     public boolean isFinished() {
-        return world == null || te == null || world.getTileEntity(xPos, yPos, zPos) == null || !world.getTileEntity(xPos, yPos, zPos).equals(te);
+        return world == null || te == null || world.getTileEntity(new BlockPos(xPos, yPos, zPos)) == null || !world.getTileEntity(new BlockPos(xPos, yPos, zPos)).equals(te);
     }
 
     @Override

@@ -19,8 +19,8 @@ public class ItemClockworkShovel extends ItemClockworkTool
     }
 
     @Override
-    public boolean func_150897_b(Block p_150897_1_) {
-        return p_150897_1_ == Blocks.snow_layer ? true : p_150897_1_ == Blocks.snow;
+    public boolean canHarvestBlock(Block p_150897_1_) {
+        return p_150897_1_ == Blocks.snow_layer || p_150897_1_ == Blocks.snow;
     }
 
     @Override

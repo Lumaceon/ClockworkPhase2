@@ -14,9 +14,9 @@ public class TESRTemporalFurnace extends TileEntitySpecialRenderer
     public static final ModelBase MODEL = new ModelTemporalFurnace();
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_)
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        boolean lightAlreadyActive = GL11.glIsEnabled(GL11.GL_LIGHTING);
+        /*boolean lightAlreadyActive = GL11.glIsEnabled(GL11.GL_LIGHTING);
 
         GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -30,6 +30,6 @@ public class TESRTemporalFurnace extends TileEntitySpecialRenderer
 
         if(!lightAlreadyActive)
             GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
+        GL11.glPopMatrix();*/
     }
 }

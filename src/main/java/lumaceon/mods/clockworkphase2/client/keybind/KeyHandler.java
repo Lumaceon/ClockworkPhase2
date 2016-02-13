@@ -1,13 +1,12 @@
 package lumaceon.mods.clockworkphase2.client.keybind;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent;
 import lumaceon.mods.clockworkphase2.api.item.IKeybindActivation;
 import lumaceon.mods.clockworkphase2.lib.KeyLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 
 public class KeyHandler
 {

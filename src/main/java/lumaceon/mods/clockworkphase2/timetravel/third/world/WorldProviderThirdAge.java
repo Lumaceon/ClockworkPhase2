@@ -1,7 +1,5 @@
 package lumaceon.mods.clockworkphase2.timetravel.third.world;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import net.minecraft.util.Vec3;
@@ -10,6 +8,8 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderThirdAge extends WorldProviderSurface
 {
@@ -18,17 +18,17 @@ public class WorldProviderThirdAge extends WorldProviderSurface
     @Override
     public void registerWorldChunkManager() {
         this.dimensionId = Defaults.DIM_ID.THIRD_AGE;
-        this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT);
+        this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT, "ThirdAge");
     }
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        return new ChunkProviderThirdAge(this.worldObj, getSeed(), false);
+        return new ChunkProviderThirdAge(this.worldObj, getSeed(), false, worldObj.getWorldInfo().getGeneratorOptions());
     }
 
     @Override
     public String getDimensionName() {
-        return "The 3rd Age";
+        return "ThirdAge";
     }
 
     @Override
@@ -61,9 +61,7 @@ public class WorldProviderThirdAge extends WorldProviderSurface
     public Vec3 getFogColor(float p_76562_1_, float p_76562_2_)
     {
         Vec3 vec = super.getFogColor(p_76562_1_, p_76562_2_);
-        vec.xCoord *= 0.2;
-        vec.yCoord *= 0.2;
-        vec.zCoord *= 0.2;
+        vec.subtract(0.7, 0.7, 0.7);
         return vec;
     }
 

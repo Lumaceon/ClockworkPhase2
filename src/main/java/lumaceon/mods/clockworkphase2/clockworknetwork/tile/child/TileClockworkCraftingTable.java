@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.EnumFacing;
 
 public class TileClockworkCraftingTable extends TileClockworkNetworkMachine
 {
@@ -30,17 +31,17 @@ public class TileClockworkCraftingTable extends TileClockworkNetworkMachine
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+    public int[] getSlotsForFace(EnumFacing side) {
         return new int[] { 9 };
     }
 
     @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, EnumFacing side) {
         return false;
     }
 
@@ -100,28 +101,6 @@ public class TileClockworkCraftingTable extends TileClockworkNetworkMachine
                 setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(new InventoryCraftingSub(inventory, 3, 3), worldObj));
                 return itemstack;
             }
-        }
-        return null;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if(slot == 9)
-        {
-            if(resultItem != null)
-            {
-                ItemStack itemStack = resultItem;
-                resultItem = null;
-                return itemStack;
-            }
-        }
-        else if(inventory[slot] != null)
-        {
-            ItemStack itemStack = inventory[slot];
-            inventory[slot] = null;
-            setInventorySlotContents(9, CraftingManager.getInstance().findMatchingRecipe(new InventoryCraftingSub(inventory, 3, 3), worldObj));
-            return itemStack;
         }
         return null;
     }

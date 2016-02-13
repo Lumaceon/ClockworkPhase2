@@ -2,6 +2,8 @@ package lumaceon.mods.clockworkphase2.api.clockworknetwork;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.List;
@@ -32,14 +34,15 @@ public abstract class ClockworkNetworkGuiClient extends ClockworkNetworkContaine
     public abstract void drawBackground(int left, int top, float zLevel);
     public abstract void drawForeground(int left, int top, float zLevel);
 
-    public void drawTexturedModalRect(int left, int top, int xSize, int ySize, float zLevel)
+    public void drawTexturedModalRect(int x, int y, int width, int height, float zLevel)
     {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double) left, (double)(top + ySize), (double) zLevel, 0, 1);
-        tessellator.addVertexWithUV((double)(left + xSize), (double)(top + ySize), (double) zLevel, 1, 1);
-        tessellator.addVertexWithUV((double) (left + xSize), (double) top, (double) zLevel, 1, 0);
-        tessellator.addVertexWithUV((double) left, (double) top, (double) zLevel, 0, 0);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        renderer.pos((double)(x + 0), (double)(y + height), (double)zLevel).tex(0, 1).endVertex();
+        renderer.pos((double)(x + width), (double)(y + height), (double)zLevel).tex(1, 1).endVertex();
+        renderer.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex(1, 0).endVertex();
+        renderer.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex(0, 0).endVertex();
         tessellator.draw();
     }
 }

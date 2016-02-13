@@ -12,17 +12,17 @@ public class WorldProviderFirstAge extends WorldProviderSurface
     @Override
     public void registerWorldChunkManager() {
         this.dimensionId = Defaults.DIM_ID.FIRST_AGE;
-        this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT);
+        this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT, "FirstAge");
     }
 
     @Override
     public IChunkProvider createChunkGenerator() {
-        return new ChunkProviderThirdAge(this.worldObj, getSeed(), false);
+        return new ChunkProviderThirdAge(this.worldObj, getSeed(), false, worldObj.getWorldInfo().getGeneratorOptions());
     }
 
     @Override
     public String getDimensionName() {
-        return "The 1st Age";
+        return "FirstAge";
     }
 
     @Override

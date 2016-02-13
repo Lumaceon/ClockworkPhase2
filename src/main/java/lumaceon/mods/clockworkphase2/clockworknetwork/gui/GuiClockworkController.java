@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.gui;
 
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkGuiClient;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
@@ -13,10 +13,13 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GuiClockworkController extends GuiContainer
@@ -40,7 +43,7 @@ public class GuiClockworkController extends GuiContainer
 
     public GuiClockworkController(InventoryPlayer ip, TileClockworkController te, World world) {
         super(null);
-        this.resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        this.resolution = new ScaledResolution(mc);
         this.inventorySlots = new ContainerClockworkController(ip, te, world, resolution.getScaledWidth(), resolution.getScaledHeight());
         this.te = te;
         this.ip = ip;
@@ -52,7 +55,7 @@ public class GuiClockworkController extends GuiContainer
     @Override
     public void initGui()
     {
-        resolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        resolution = new ScaledResolution(mc);
         this.xSize = resolution.getScaledWidth();
         this.ySize = resolution.getScaledHeight();
         super.initGui();
@@ -75,7 +78,7 @@ public class GuiClockworkController extends GuiContainer
                 for(ChildGuiData child : guiDataList)
                     if(child != null && child.gui != null && child.machine != null)
                     {
-                        buttonList.add(new GuiCNGuiElement(child, 2+iterations, child.getX(xSize), child.getY(ySize), child.gui.getSizeX(), child.gui.getSizeY()));
+                        buttonList.add(new GuiCNGuiElement(child, 2+iterations, child.getX(xSize), child.getY(ySize), child.gui.getSizeX(), child.gui.getSizeY(), buttonList));
                         ++iterations;
                     }
         }
@@ -146,6 +149,7 @@ public class GuiClockworkController extends GuiContainer
             for(ChildGuiData child : guiDataList)
                 if(child.gui != null && child.gui instanceof ClockworkNetworkGuiClient)
                     ((ClockworkNetworkGuiClient) child.gui).drawBackground(guiLeft + child.getX(xSize), guiTop + child.getY(ySize), zLevel);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     @Override
@@ -157,6 +161,7 @@ public class GuiClockworkController extends GuiContainer
             for(ChildGuiData child : guiDataList)
                 if(child.gui != null && child.gui instanceof ClockworkNetworkGuiClient)
                     ((ClockworkNetworkGuiClient) child.gui).drawForeground(guiLeft + child.getX(xSize), guiTop + child.getY(ySize), zLevel);
+        GL11.glDisable(GL11.GL_BLEND);
     }
 
     @Override
@@ -205,7 +210,7 @@ public class GuiClockworkController extends GuiContainer
                         return;
                     default: //Add a machine by returning to config state and adding the gui.
                         setGuiState(State.CONFIG);
-                        ChildGuiData child = inactiveGUIs.get(button.id - 3);
+                        ChildGuiData child = inactiveGUIs.get(button.id + pageNumber*4 - 3);
                         if(child == null || child.gui == null || child.machine == null)
                             return;
                         child.setLocation((xSize / 2) - child.gui.getSizeX() / 2, (ySize / 2) - 40 - child.gui.getSizeY() / 2, xSize, ySize);
@@ -217,24 +222,29 @@ public class GuiClockworkController extends GuiContainer
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int buttonID)
+    protected void mouseClicked(int x, int y, int buttonID) throws IOException
     {
         super.mouseClicked(x, y, buttonID);
+        boolean buttonFound = false;
         mouseClickedAtX = x;
         mouseClickedAtY = y;
         if(guiState.equals(State.CONFIG))
         {
-            for(int n = buttonList.size() - 1; n > 1; n--) //Loop backwards from draw order to select the top gui zeroth.
+            for(int n = buttonList.size() - 1; n > 1; n--) //Loop backwards from draw order to select the top gui.
             {
-                GuiButton button = (GuiButton) buttonList.get(n);
+                GuiButton button = buttonList.get(n);
                 if(button != null && button.mousePressed(mc, x, y) && button instanceof GuiCNGuiElement)
                 {
                     this.selectedConfigurationGui = (GuiCNGuiElement) button;
                     selectionOriginX = button.xPosition;
                     selectionOriginY = button.yPosition;
+                    buttonFound = true;
                     break;
                 }
             }
+
+            if(!buttonFound)
+                this.selectedConfigurationGui = null;
         }
     }
 
@@ -274,14 +284,15 @@ public class GuiClockworkController extends GuiContainer
     }
 
     @Override
-    public void drawTexturedModalRect(int p_73729_1_, int p_73729_2_, int p_73729_3_, int p_73729_4_, int p_73729_5_, int p_73729_6_)
+    public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
     {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double)(p_73729_1_ + 0), (double)(p_73729_2_ + p_73729_6_), (double)this.zLevel, 0, 1);
-        tessellator.addVertexWithUV((double)(p_73729_1_ + p_73729_5_), (double)(p_73729_2_ + p_73729_6_), (double)this.zLevel, 1, 1);
-        tessellator.addVertexWithUV((double) (p_73729_1_ + p_73729_5_), (double) (p_73729_2_ + 0), (double) this.zLevel, 1, 0);
-        tessellator.addVertexWithUV((double) (p_73729_1_ + 0), (double) (p_73729_2_ + 0), (double) this.zLevel, 0, 0);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        renderer.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
+        renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1, 1).endVertex();
+        renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(1, 0).endVertex();
+        renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(0, 0).endVertex();
         tessellator.draw();
     }
 

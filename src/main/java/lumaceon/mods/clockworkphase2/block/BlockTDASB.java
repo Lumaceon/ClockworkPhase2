@@ -1,14 +1,9 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 
 public class BlockTDASB extends BlockClockworkPhase
 {
-    //public IIcon[] icons = new IIcon[56];
     public BlockTDASB(Material blockMaterial, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);
         this.setCreativeTab(null);
@@ -20,14 +15,6 @@ public class BlockTDASB extends BlockClockworkPhase
     @Override
     public int getRenderType() {
         return -1;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister registry) {
-        this.blockIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
-        //for(int n = 0; n < 56; n++)
-            //this.icons[n] = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "/" + n);
     }
 
     /*@Override

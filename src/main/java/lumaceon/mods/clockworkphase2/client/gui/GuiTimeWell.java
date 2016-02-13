@@ -45,7 +45,7 @@ public class GuiTimeWell extends GuiContainer
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
-    @Override
+    /*@Override
     public void drawTexturedModalRect(int p_73729_1_, int p_73729_2_, int p_73729_3_, int p_73729_4_, int p_73729_5_, int p_73729_6_)
     {
         Tessellator tessellator = Tessellator.instance;
@@ -55,5 +55,5 @@ public class GuiTimeWell extends GuiContainer
         tessellator.addVertexWithUV((double) (p_73729_1_ + p_73729_5_), (double) (p_73729_2_ + 0), (double) this.zLevel, 1, 0);
         tessellator.addVertexWithUV((double) (p_73729_1_ + 0), (double) (p_73729_2_ + 0), (double) this.zLevel, 0, 0);
         tessellator.draw();
-    }
+    }*/
 }

@@ -1,11 +1,8 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -15,7 +12,7 @@ public class BlockTemporalFurnace extends BlockClockworkPhase implements ITileEn
         super(blockMaterial, unlocalizedName);
     }
 
-    @Override
+    /*@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float f0, float f1, float f2)
     {
         if(player.isSneaking())
@@ -23,13 +20,13 @@ public class BlockTemporalFurnace extends BlockClockworkPhase implements ITileEn
         if(!world.isRemote)
             player.openGui(ClockworkPhase2.instance, 3, world, x, y, z);
         return true;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         ClockworkPhase2.proxy.clearWorldRenderers(world, x, y, z);
         super.breakBlock(world, x, y, z, block, meta);
-    }
+    }*/
 
     @Override
     public int getRenderType() {
@@ -38,11 +35,6 @@ public class BlockTemporalFurnace extends BlockClockworkPhase implements ITileEn
 
     @Override
     public boolean isOpaqueCube() {
-        return false;
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
         return false;
     }
 

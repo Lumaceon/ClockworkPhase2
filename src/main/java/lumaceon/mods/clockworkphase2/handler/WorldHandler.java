@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedMapData;
@@ -16,8 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldHandler
 {
@@ -67,9 +68,9 @@ public class WorldHandler
 
                 if(silk != null && silkStack != null && !event.drops.isEmpty())
                 {
-                    if(event.block.canSilkHarvest(event.world, event.harvester, event.x, event.y, event.z, event.blockMetadata))
+                    if(event.state.getBlock().canSilkHarvest(event.world, event.pos, event.state, event.harvester))
                     {
-                        ItemStack result = new ItemStack(event.block, 1, event.block.damageDropped(event.blockMetadata));
+                        ItemStack result = new ItemStack(event.state.getBlock(), 1, event.state.getBlock().damageDropped(event.state));
                         event.drops.set(0, result);
                     }
                 }
@@ -77,7 +78,7 @@ public class WorldHandler
                 {
                     for(int n = 0; n < event.drops.size(); n++)
                     {
-                        ItemStack smeltedOutput = FurnaceRecipes.smelting().getSmeltingResult(event.drops.get(n)).copy();
+                        ItemStack smeltedOutput = FurnaceRecipes.instance().getSmeltingResult(event.drops.get(n)).copy();
 
                         //Fortune code from BlockOre\\
                         int j = event.world.rand.nextInt(event.fortuneLevel + 2) - 1;
@@ -88,7 +89,7 @@ public class WorldHandler
                         if(smeltedOutput != null)
                         {
                             //Only drop 1 if the smelted item is a block or the same as the block broken
-                            if(Block.getBlockFromItem(smeltedOutput.getItem()) != null || Item.getItemFromBlock(event.block).equals(smeltedOutput.getItem()))
+                            if(Block.getBlockFromItem(smeltedOutput.getItem()) != null || Item.getItemFromBlock(event.state.getBlock()).equals(smeltedOutput.getItem()))
                             {
                                 size = 1;
                             }
@@ -114,9 +115,9 @@ public class WorldHandler
                     int x = NBTHelper.INT.get(item, "cp_x");
                     int y = NBTHelper.INT.get(item, "cp_y");
                     int z = NBTHelper.INT.get(item, "cp_z");
-                    int side = NBTHelper.INT.get(item, "cp_side");
+                    EnumFacing side = EnumFacing.VALUES[NBTHelper.INT.get(item, "cp_side")];
 
-                    TileEntity te = event.world.getTileEntity(x, y, z);
+                    TileEntity te = event.world.getTileEntity(event.pos);
                     if(te != null && te instanceof IInventory)
                     {
                         if(te instanceof ISidedInventory) //Inventory is side-specific.
@@ -125,7 +126,7 @@ public class WorldHandler
                             for(int n = 0; n < event.drops.size(); n++) //Each drop.
                             {
                                 ItemStack drop = event.drops.get(n);
-                                int[] validSlots = inventory.getAccessibleSlotsFromSide(side);
+                                int[] validSlots = inventory.getSlotsForFace(side);
                                 for(int currentSlot : validSlots)
                                 {
                                     if(inventory.isItemValidForSlot(currentSlot, drop) && inventory.canInsertItem(currentSlot, drop, side))

@@ -29,7 +29,7 @@ public abstract class WorldRenderElement
     }
 
     public boolean isSameWorld(World world) {
-        return world.provider.dimensionId == this.world.provider.dimensionId;
+        return world.provider.getDimensionId() == this.world.provider.getDimensionId();
     }
 
     /**

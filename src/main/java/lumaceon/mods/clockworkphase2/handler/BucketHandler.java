@@ -1,13 +1,13 @@
 package lumaceon.mods.clockworkphase2.handler;
 
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,29 +20,28 @@ public class BucketHandler
     private BucketHandler() {}
 
     @SubscribeEvent
-    public void onBucketFill(FillBucketEvent event) {
-
+    public void onBucketFill(FillBucketEvent event)
+    {
         ItemStack stack = fillCustomBucket(event.world, event.target);
 
-        if(stack == null) { return; }
+        if(stack == null)
+            return;
 
         event.result = stack;
         event.setResult(Event.Result.ALLOW);
     }
 
-    private ItemStack fillCustomBucket(World world, MovingObjectPosition pos) {
-
-        Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+    private ItemStack fillCustomBucket(World world, MovingObjectPosition pos)
+    {
+        Block block = world.getBlockState(pos.getBlockPos()).getBlock();
         Item bucket = buckets.get(block);
 
-        if(bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0)
+        if(bucket != null)// && world.getBlockMetadata(pos.getBlockPos()) == 0)
         {
-            world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+            world.setBlockToAir(pos.getBlockPos());
             return new ItemStack(bucket);
         }
         else
-        {
             return null;
-        }
     }
 }

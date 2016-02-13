@@ -1,14 +1,15 @@
 package lumaceon.mods.clockworkphase2.tile.generic;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 
-/**
- * Credits to Azanor for the packet handling code.
- */
 public abstract class TileClockworkPhase extends TileEntity
 {
     public abstract void setState(int state);
@@ -24,27 +25,21 @@ public abstract class TileClockworkPhase extends TileEntity
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt) {
-        super.writeToNBT(nbt);
-        nbt.setInteger("meta", blockMetadata);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
-        blockMetadata = nbt.getInteger("meta");
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    {
+        return (oldState.getBlock() != newSate.getBlock());
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbttagcompound = new NBTTagCompound();
         writeCustomNBT(nbttagcompound);
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -999, nbttagcompound);
+        return new S35PacketUpdateTileEntity(this.getPos(), -999, nbttagcompound);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        readCustomNBT(pkt.func_148857_g());
+        readCustomNBT(pkt.getNbtCompound());
     }
 }

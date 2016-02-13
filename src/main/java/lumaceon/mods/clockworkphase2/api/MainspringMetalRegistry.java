@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainspringMetalRegistry
 {
@@ -39,7 +40,7 @@ public class MainspringMetalRegistry
         if(is == null)
             return 0;
 
-        ArrayList<ItemStack> ores;
+        List<ItemStack> ores;
         for(MainspringMetal metal : METALS)
         {
             if(metal.metal != null)

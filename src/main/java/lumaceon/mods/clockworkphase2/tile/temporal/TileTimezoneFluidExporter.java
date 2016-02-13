@@ -1,15 +1,14 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHandler
 {
@@ -43,9 +42,9 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
      */
     public String setNextTargetFluid()
     {
-        if(!worldObj.isRemote)
+        /*if(!worldObj.isRemote)
         {
-            FluidTankInfo[] tanks = getTankInfo(ForgeDirection.DOWN);
+            FluidTankInfo[] tanks = getTankInfo(EnumFacing.DOWN);
             boolean found = false;
             boolean anyFound = false;
             int indexFound = 0;
@@ -103,12 +102,12 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                 setStateAndUpdate(-1);
             }
         }
-        return targetFluid;
+        return targetFluid;*/ return null;
     }
 
     public ItemStack getTimezoneModule()
     {
-        ITimezoneProvider timezone = getTimezone();
+        /*ITimezoneProvider timezone = getTimezone();
         ItemStack timezoneModule;
         if(timezone != null)
         {
@@ -118,14 +117,14 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                 if(timezoneModule != null && timezoneModule.getItem() instanceof ItemTimezoneModuleTank)
                     return timezoneModule;
             }
-        }
+        }*/
         return null;
     }
 
     @Override
     public void setState(int state)
     {
-        Fluid fluid = FluidRegistry.getFluid(state);
+        /*Fluid fluid = FluidRegistry.getFluid(state);
         if(fluid != null)
         {
             targetFluid = FluidRegistry.getFluidName(state);
@@ -135,7 +134,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
         {
             targetFluid = "";
             renderStack = null;
-        }
+        }*/
     }
 
     @Override
@@ -144,17 +143,17 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
         if(!worldObj.isRemote)
         {
             setState(state);
-            PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(xCoord, yCoord, zCoord, state), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 200));
+            PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(pos.getX(), pos.getY(), pos.getZ(), state), new NetworkRegistry.TargetPoint(worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 200));
         }
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
         return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
         if(resource == null)
             return null;
@@ -165,7 +164,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         ItemStack timestream = getTimezoneModule();
         if(timestream != null)
@@ -174,17 +173,17 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(EnumFacing from, Fluid fluid) {
         return false;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(EnumFacing from, Fluid fluid) {
         return true;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from)
+    public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         ItemStack timestream = getTimezoneModule();
         if(timestream != null)

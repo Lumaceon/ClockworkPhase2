@@ -3,6 +3,8 @@ package lumaceon.mods.clockworkphase2.item;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ItemAgeDev extends ItemClockworkPhase
@@ -12,17 +14,17 @@ public class ItemAgeDev extends ItemClockworkPhase
     }
 
     @Override
-    public boolean onItemUse(ItemStack is, EntityPlayer player, World world, int x, int y, int z, int meta, float f1, float f2, float f3)
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(world.provider.dimensionId == 0)
+        if(worldIn.provider.getDimensionId() == 0)
         {
-            if(player.isSneaking())
-                player.travelToDimension(Defaults.DIM_ID.ZEROTH_AGE);
+            if(playerIn.isSneaking())
+                playerIn.travelToDimension(Defaults.DIM_ID.ZEROTH_AGE);
             else
-                player.travelToDimension(Defaults.DIM_ID.FIRST_AGE);
+                playerIn.travelToDimension(Defaults.DIM_ID.FIRST_AGE);
         }
         else
-            player.travelToDimension(0);
+            playerIn.travelToDimension(0);
 
         return true;
     }
@@ -30,7 +32,7 @@ public class ItemAgeDev extends ItemClockworkPhase
     @Override
     public ItemStack onItemRightClick(ItemStack is, World world, EntityPlayer player)
     {
-        if(world.provider.dimensionId == 0)
+        if(world.provider.getDimensionId() == 0)
         {
             if(player.isSneaking())
                 player.travelToDimension(Defaults.DIM_ID.SECOND_AGE);

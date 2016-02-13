@@ -1,7 +1,5 @@
 package lumaceon.mods.clockworkphase2.item.construct.tool;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
@@ -21,8 +19,9 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -32,11 +31,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.server.S23PacketBlockChange;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Set;
@@ -61,12 +63,12 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player)
+    public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player)
     {
-        Block block = player.worldObj.getBlock(x, y, z);
-        int metadata = player.worldObj.getBlockMetadata(x, y, z);
-        if(block == null || !isEffective(block, metadata)) //The tool is ineffective or non-functional.
-            return super.onBlockStartBreak(stack, x, y, z, player);
+        Block block = player.worldObj.getBlockState(pos).getBlock();
+        IBlockState blockState = player.worldObj.getBlockState(pos);
+        if(block == null || !isEffective(block, blockState)) //The tool is ineffective or non-functional.
+            return super.onBlockStartBreak(stack, pos, player);
 
         boolean found = false;
         int areaRadius = 1;
@@ -80,16 +82,16 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
                     break;
                 }
         if(!found) //No area upgrade found.
-            return super.onBlockStartBreak(stack, x, y, z, player);
+            return super.onBlockStartBreak(stack, pos, player);
 
         MovingObjectPosition mop = RayTraceHelper.rayTrace(player.worldObj, player, false, 4.5);
         if(mop == null)
-            return super.onBlockStartBreak(stack, x, y, z, player);
+            return super.onBlockStartBreak(stack, pos, player);
 
         int xRadius = areaRadius;
         int yRadius = areaRadius;
         int zRadius = 1;
-        switch(mop.sideHit)
+        switch(mop.sideHit.getIndex())
         {
             case 0:
             case 1:
@@ -108,60 +110,64 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
                 break;
         }
 
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+
         for(int x1 = x - xRadius + 1; x1 <= x + xRadius - 1; x1++)
             for(int y1 = y - yRadius + 1; y1 <= y + yRadius - 1; y1++)
                 for(int z1 = z - zRadius + 1; z1 <= z + zRadius - 1; z1++)
                 {
-                    if((x1 == x && y1 == y && z1 == z) || super.onBlockStartBreak(stack, x1, y1, z1, player))
+                    if((x1 == x && y1 == y && z1 == z) || super.onBlockStartBreak(stack, new BlockPos(x1, y1, z1), player))
                         continue;
-                    aoeBlockBreak(stack, player.worldObj, x1, y1, z1, player);
+                    aoeBlockBreak(stack, player.worldObj, new BlockPos(x1, y1, z1), player);
                 }
         return false;
     }
 
-    private void aoeBlockBreak(ItemStack stack, World world, int x, int y, int z, EntityPlayer player)
+    private void aoeBlockBreak(ItemStack stack, World world, BlockPos pos, EntityPlayer player)
     {
-        if(world.isAirBlock(x, y, z))
+        if(world.isAirBlock(pos))
             return;
 
         if(!(player instanceof EntityPlayerMP))
             return;
         EntityPlayerMP playerMP = (EntityPlayerMP) player;
 
-        Block block = world.getBlock(x, y, z);
-        int metadata = world.getBlockMetadata(x, y, z);
-        if(!isEffective(block, metadata) || !ForgeHooks.canHarvestBlock(block, player, metadata))
+        Block block = world.getBlockState(pos).getBlock();
+        IBlockState blockState = world.getBlockState(pos);
+        if(!isEffective(block, blockState) || !ForgeHooks.canHarvestBlock(block, player, world, pos))
             return;
 
-        BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, playerMP.theItemInWorldManager.getGameType(), playerMP, x, y, z);
-        if(event.isCanceled())
+        int event = ForgeHooks.onBlockBreakEvent(world, playerMP.theItemInWorldManager.getGameType(), playerMP, pos);
+        if(event == -1)
             return;
 
-        stack.func_150999_a(world, block, x, y, z, player);
+        stack.onBlockDestroyed(world, block, pos, player);
         if(!world.isRemote)
         {
-            block.onBlockHarvested(world, x, y, z, metadata, player);
-            if(block.removedByPlayer(world, player, x, y, z, true))
+            block.onBlockHarvested(world, pos, blockState, player);
+            if(block.removedByPlayer(world, pos, player, true))
             {
-                block.onBlockDestroyedByPlayer( world, x,y,z, metadata);
-                block.harvestBlock(world, player, x,y,z, metadata);
-                block.dropXpOnBlockBreak(world, x,y,z, event.getExpToDrop());
+                block.onBlockDestroyedByPlayer(world, pos, blockState);
+                block.harvestBlock(world, player, pos, blockState, world.getTileEntity(pos));
+                block.dropXpOnBlockBreak(world, pos, event);
             }
-            playerMP.playerNetServerHandler.sendPacket(new S23PacketBlockChange(x, y, z, world));
+            playerMP.playerNetServerHandler.sendPacket(new S23PacketBlockChange(world, pos));
         }
         else //CLIENT
         {
-            world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (metadata << 12));
-            if(block.removedByPlayer(world, player, x, y, z, true))
-                block.onBlockDestroyedByPlayer(world, x, y, z, metadata);
+            //world.playAuxSFX(2001, pos, Block.getIdFromBlock(block) + (metadata << 12));
+            if(block.removedByPlayer(world, pos, player, true))
+                block.onBlockDestroyedByPlayer(world, pos, blockState);
             ItemStack itemstack = player.getCurrentEquippedItem();
             if(itemstack != null)
             {
-                itemstack.func_150999_a(world, block, x, y, z, player);
+                itemstack.onBlockDestroyed(world, block, pos, player);
                 if(itemstack.stackSize == 0)
                     player.destroyCurrentEquippedItem();
             }
-            Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(2, x,y,z, Minecraft.getMinecraft().objectMouseOver.sideHit));
+            Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, Minecraft.getMinecraft().objectMouseOver.sideHit));
         }
     }
 
@@ -180,7 +186,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public float func_150893_a(ItemStack is, Block block)
+    public float getStrVsBlock(ItemStack is, Block block)
     {
         boolean correctMaterial = false;
         for(Material mat : getEffectiveMaterials())
@@ -190,7 +196,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         if(!correctMaterial)
             return 1.0F;
 
-        float efficiency = super.func_150893_a(is, block);
+        float efficiency = super.getStrVsBlock(is, block);
         if(efficiency == 1.0F)
             return 1.0F;
 
@@ -206,28 +212,15 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public float getDigSpeed(ItemStack stack, Block block, int meta)
-    {
-        if(ForgeHooks.isToolEffective(stack, block, meta))
-        {
-            int tension = NBTHelper.INT.get(stack, NBTTags.CURRENT_TENSION);
-            if(tension <= 0)
-                return 0.0F;
-
-            int speed = NBTHelper.INT.get(stack, NBTTags.SPEED);
-            if(speed <= 0)
-                return 0.0F;
-
-            return (float) speed / 25;
-        }
-        return func_150893_a(stack, block);
+    public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
+        return getStrVsBlock(stack, state.getBlock());
     }
 
     public abstract String getHarvestType();
     public abstract Material[] getEffectiveMaterials();
 
-    public boolean isEffective(Block block, int meta) {
-        return this.getHarvestType().equals(block.getHarvestTool(meta)) || isEffective(block.getMaterial());
+    public boolean isEffective(Block block, IBlockState blockState) {
+        return this.getHarvestType().equals(block.getHarvestTool(blockState)) || isEffective(block.getMaterial());
     }
 
     public boolean isEffective(Material material) {
@@ -243,12 +236,12 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack is, World world, Block block, int x, int y, int z, EntityLivingBase entity)
+    public boolean onBlockDestroyed(ItemStack is, World world, Block block, BlockPos pos, EntityLivingBase playerIn)
     {
-        if(block.getBlockHardness(world, x, y, z) <= 0 || !(is.getItem() instanceof IClockworkConstruct))
+        if(block.getBlockHardness(world, pos) <= 0 || !(is.getItem() instanceof IClockworkConstruct))
             return true;
 
-        if(!isEffective(block, world.getBlockMetadata(x, y, z)))
+        if(!isEffective(block, world.getBlockState(pos)))
             return true;
 
         IClockworkConstruct clockworkConstruct = (IClockworkConstruct) is.getItem();
@@ -326,12 +319,6 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister registry) {
-        this.itemIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
-    }
-
-    @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
         return Textures.GUI.ASSEMBLY_TABLE;
     }
@@ -348,8 +335,8 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring),
-                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore),
+                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring.getItem()),
+                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore.getItem()),
                         new SlotToolUpgrade(inventory, 2, 20, 20),
                         new SlotToolUpgrade(inventory, 3, 20, 40),
                         new SlotToolUpgrade(inventory, 4, 20, 60),

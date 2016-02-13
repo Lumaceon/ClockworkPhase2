@@ -6,6 +6,7 @@ import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkM
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
@@ -35,7 +36,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
         {
             if(hasAllItems(SuperAlloyRecipes.eterniumRecipe))
             {
-                ItemStack itemstack = new ItemStack(ModItems.ingotEternium);
+                ItemStack itemstack = new ItemStack(ModItems.ingotEternium.getItem());
 
                 if(this.inventory[6] == null)
                     this.inventory[6] = itemstack;
@@ -51,7 +52,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
             }
             else if(hasAllItems(SuperAlloyRecipes.momentiumRecipe))
             {
-                ItemStack itemstack = new ItemStack(ModItems.ingotMomentium);
+                ItemStack itemstack = new ItemStack(ModItems.ingotMomentium.getItem());
 
                 if(this.inventory[6] == null)
                     this.inventory[6] = itemstack;
@@ -67,7 +68,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
             }
             else if(hasAllItems(SuperAlloyRecipes.capriciumRecipe))
             {
-                ItemStack itemstack = new ItemStack(ModItems.ingotParadoxium);
+                ItemStack itemstack = new ItemStack(ModItems.ingotParadoxium.getItem());
 
                 if(this.inventory[6] == null)
                     this.inventory[6] = itemstack;
@@ -99,17 +100,17 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
+    public int[] getSlotsForFace(EnumFacing side) {
         return new int[] {0, 1, 2, 3, 4, 5, 6};
     }
 
     @Override
-    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+    public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+    public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, EnumFacing side) {
         return false;
     }
 

@@ -1,19 +1,100 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.time.ITimeProvider;
 import lumaceon.mods.clockworkphase2.api.time.ITimeReceiver;
-import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
-import lumaceon.mods.clockworkphase2.network.PacketHandler;
-import lumaceon.mods.clockworkphase2.network.message.MessageTemporalMachineSync;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporalInventory;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 
 public class TileTemporalFurnace extends TileTemporalInventory implements ITimeReceiver, ITimeProvider
 {
-    public int ticksPerAction = 200; //10 seconds, the time of a normal furnace.
+    @Override
+    public ItemStack removeStackFromSlot(int index) {
+        return null;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public int extractTime(int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int receiveTime(int maxReceive, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int getMaxCapacity() {
+        return 0;
+    }
+
+    @Override
+    public int getTimeStored() {
+        return 0;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
+    }
+
+    @Override
+    public void setState(int state) {
+
+    }
+
+    @Override
+    public void setStateAndUpdate(int state) {
+
+    }
+
+    @Override
+    public boolean canConnectFrom(EnumFacing from) {
+        return false;
+    }
+    /*public int ticksPerAction = 200; //10 seconds, the time of a normal furnace.
 
     public TileTemporalFurnace() {
         super();
@@ -81,7 +162,7 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
      * Consumes time from this tile as well as a timezone if necessary. Does not check if enough can be consumed.
      * @return Whether or not enough time for one action was consumed.
      */
-    private boolean consumeTime()
+    /*private boolean consumeTime()
     {
         int timeConsumed = Math.min(timeStorage.getTimeStored(), ticksPerAction);
         if(timeConsumed < ticksPerAction) //Could not consume all time required, take additional time from timezone.
@@ -127,5 +208,5 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
     @Override
     public boolean canConnectFrom(ForgeDirection from) {
         return true;
-    }
+    }*/
 }

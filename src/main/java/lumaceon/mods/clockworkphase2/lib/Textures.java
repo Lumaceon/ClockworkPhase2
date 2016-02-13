@@ -61,9 +61,9 @@ public class Textures
 
     public static class ITEM
     {
-        public static ResourceLocation MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/items/mainspring.png");
-        public static ResourceLocation CLOCKWORK_CORE = new ResourceLocation(Reference.MOD_ID, "textures/items/clockwork_core.png");
-        public static ResourceLocation WOOD_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/items/wood_gear.png");
+        public static ResourceLocation MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/item/mainspring.png");
+        public static ResourceLocation CLOCKWORK_CORE = new ResourceLocation(Reference.MOD_ID, "textures/item/clockwork_core.png");
+        public static ResourceLocation WOOD_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/item/wood_gear.png");
     }
 
     public static class MISC

@@ -1,11 +1,11 @@
 package lumaceon.mods.clockworkphase2.init;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.entity.EntityPAC;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class ModEntities
 {

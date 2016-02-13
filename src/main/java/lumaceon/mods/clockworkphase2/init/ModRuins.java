@@ -1,7 +1,5 @@
 package lumaceon.mods.clockworkphase2.init;
 
-import lumaceon.mods.clockworkphase2.structure.StructureRegistry;
-import lumaceon.mods.clockworkphase2.structure.StructureTemplate;
 
 public class ModRuins
 {
@@ -29,12 +27,12 @@ public class ModRuins
 
     }
 
-    public static StructureTemplate testRuins;
+    //public static StructureTemplate testRuins;
     public static void initThirdAge()
     {
-        testRuins = new StructureTemplate("testRuins", "NewSchematic", true);
+        //testRuins = new StructureTemplate("testRuins", "NewSchematic", true);
 
-        StructureRegistry.registerStructure(testRuins, "testRuins");
+        //StructureRegistry.registerStructure(testRuins, "testRuins");
     }
 
     //public static RuinTemplate smallerRuins;

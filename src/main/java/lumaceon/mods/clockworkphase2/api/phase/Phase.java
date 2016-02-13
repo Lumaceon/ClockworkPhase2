@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.api.phase;
 
-import cpw.mods.fml.relauncher.Side;
+
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * Base class for all "phases." Phases usually occur either periodically, or when something else causes one. In most

@@ -1,16 +1,14 @@
 package lumaceon.mods.clockworkphase2.item;
 
-import lumaceon.mods.clockworkphase2.util.Area;
-import lumaceon.mods.clockworkphase2.util.SchematicUtility;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ItemBugSwatter extends ItemClockworkPhase
 {
-    public static SchematicUtility.Schematic schematic;
+    //public static SchematicUtility.Schematic schematic;
     public static boolean go = false;
     public static int x;
     public static int y;
@@ -21,7 +19,7 @@ public class ItemBugSwatter extends ItemClockworkPhase
         super(maxStack, maxDamage, unlocalizedName);
     }
 
-    @Override
+    /*@Override
     public void onUpdate(ItemStack is, World world, Entity owner, int p_77663_4_, boolean p_77663_5_)
     {
         if(!world.isRemote && schematic != null && go)
@@ -66,17 +64,17 @@ public class ItemBugSwatter extends ItemClockworkPhase
             ++index;
         }
 
-    }
+    }*/
 
     @Override
-    public boolean onItemUse(ItemStack is, EntityPlayer player, World world, int x, int y, int z, int meta, float f1, float f2, float f3)
+    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(player.isSneaking() && !world.isRemote)
+        if(playerIn.isSneaking() && !worldIn.isRemote)
         {
-            if(schematic != null)
-                schematic = null;
-            else
-                schematic = SchematicUtility.INSTANCE.loadModSchematic("NewModSchematic", true);
+            //if(schematic != null)
+            //    schematic = null;
+            //else
+            //    schematic = SchematicUtility.INSTANCE.loadModSchematic("NewModSchematic", true);
         }
         else
         {
@@ -96,8 +94,8 @@ public class ItemBugSwatter extends ItemClockworkPhase
     @Override
     public ItemStack onItemRightClick(ItemStack bugSwatter, World world, EntityPlayer player)
     {
-        if(!world.isRemote)
-            SchematicUtility.INSTANCE.createModSchematic(world, new Area((int) player.posX - 50, (int) player.posY - 50, (int) player.posZ - 50, (int) player.posX + 50, (int) player.posY + 50, (int) player.posZ + 50), (short) 64, "NewModSchematic");
+        //if(!world.isRemote)
+        //    SchematicUtility.INSTANCE.createModSchematic(world, new Area((int) player.posX - 50, (int) player.posY - 50, (int) player.posZ - 50, (int) player.posX + 50, (int) player.posY + 50, (int) player.posZ + 50), (short) 64, "NewModSchematic");
         return bugSwatter;
     }
 }

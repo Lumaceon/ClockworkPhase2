@@ -1,11 +1,7 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.block;
 
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkTile;
 import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class BlockCrank extends BlockClockworkPhase
 {
@@ -13,7 +9,7 @@ public class BlockCrank extends BlockClockworkPhase
         super(blockMaterial, unlocalizedName);
     }
 
-    @Override
+    /*@Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float f0, float f1, float f2)
     {
         if(!player.isSneaking())
@@ -54,7 +50,7 @@ public class BlockCrank extends BlockClockworkPhase
                 ((IClockworkNetworkTile) te).wind(1000 * 10);
                 return false;
             }*/
-        }
+        /*}
         return false;
-    }
+    }*/
 }

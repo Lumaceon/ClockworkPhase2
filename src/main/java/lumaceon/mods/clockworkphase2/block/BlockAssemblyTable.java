@@ -1,7 +1,5 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.Textures;
@@ -10,14 +8,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAssemblyTable extends BlockDirectional implements ITileEntityProvider
 {
@@ -25,7 +26,7 @@ public class BlockAssemblyTable extends BlockDirectional implements ITileEntityP
         super(blockMaterial);
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
         this.setHardness(3.0F);
-        this.setBlockName(unlocalizedName);
+        this.setUnlocalizedName(unlocalizedName);
     }
 
     /*@Override
@@ -35,9 +36,10 @@ public class BlockAssemblyTable extends BlockDirectional implements ITileEntityP
     }*/
 
     @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        super.onBlockPlacedBy(world, x, y, z, entity, item);
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        /*super.onBlockPlacedBy(world, x, y, z, entity, item);
         int direction = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
         if(direction == 0)
@@ -59,21 +61,16 @@ public class BlockAssemblyTable extends BlockDirectional implements ITileEntityP
         {
             world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.WEST.ordinal(), 2);
             world.setBlock(x, y, z-1, ModBlocks.assemblyTableSB, ForgeDirection.SOUTH.ordinal(), 2);
-        }
+        }*/
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        super.breakBlock(world, x, y, z, block, meta);
-    }
-
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float f0, float f1, float f2)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if(!player.isSneaking())
         {
             if(!world.isRemote)
-                player.openGui(ClockworkPhase2.instance, 0, world, x, y, z);
+                player.openGui(ClockworkPhase2.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
         return false;
@@ -94,11 +91,6 @@ public class BlockAssemblyTable extends BlockDirectional implements ITileEntityP
         return false;
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
     public int getMobilityFlag() {
         return 1;
     }
@@ -106,11 +98,5 @@ public class BlockAssemblyTable extends BlockDirectional implements ITileEntityP
     @Override
     public String getUnlocalizedName() {
         return String.format("tile.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister registry) {
-        this.blockIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
     }
 }

@@ -1,10 +1,6 @@
 package lumaceon.mods.clockworkphase2.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
 
 public class BlockTemporalDisplacementAltarSB extends BlockClockworkPhase
 {
@@ -18,19 +14,8 @@ public class BlockTemporalDisplacementAltarSB extends BlockClockworkPhase
     }
 
     @Override
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return this.blockIcon;
-    }
-
-    @Override
     public boolean isOpaqueCube() {
         return false;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister registry) {
-        this.blockIcon = registry.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1) + "/transparent");
     }
 
     /*@Override

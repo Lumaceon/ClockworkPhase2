@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "age=0": { "model": "clockworkphase2:moon_flower_stage0" },
+        "age=1": { "model": "clockworkphase2:moon_flower_stage1" },
+        "age=2": { "model": "clockworkphase2:moon_flower_stage2" },
+        "age=3": { "model": "clockworkphase2:moon_flower_stage3" },
+        "age=4": { "model": "clockworkphase2:moon_flower_stage4" }
+    }
+}

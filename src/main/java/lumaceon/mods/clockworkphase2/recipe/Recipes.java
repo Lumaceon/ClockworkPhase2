@@ -1,11 +1,11 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -17,74 +17,72 @@ public class Recipes
         initClockworkComponentRecipes();
         initClockworkConstructs();
         initTemporalClockworkModules();
-        initTimezoneModules();
+        //initTimezoneModules();
         initMisc();
         initFurnaceRecipes();
     }
 
     public static void initClockworkComponentRecipes()
     {
-        addGearRecipe(new ItemStack(ModItems.gearWood), "plankWood");
-        addGearRecipe(new ItemStack(ModItems.gearStone), "cobblestone");
-        addGearRecipe(new ItemStack(ModItems.gearStone), "stone");
-        addGearRecipe(new ItemStack(ModItems.gearIron), "ingotIron");
-        addGearRecipe(new ItemStack(ModItems.gearGold), "ingotGold");
-        addGearRecipe(new ItemStack(ModItems.gearQuartz), "gemQuartz");
-        addGearRecipe(new ItemStack(ModItems.gearEmerald), "gemEmerald");
-        addGearRecipe(new ItemStack(ModItems.gearDiamond), "gemDiamond");
+        addGearRecipe(new ItemStack(ModItems.gearWood.getItem()), "plankWood");
+        addGearRecipe(new ItemStack(ModItems.gearStone.getItem()), "cobblestone");
+        addGearRecipe(new ItemStack(ModItems.gearStone.getItem()), "stone");
+        addGearRecipe(new ItemStack(ModItems.gearIron.getItem()), "ingotIron");
+        addGearRecipe(new ItemStack(ModItems.gearGold.getItem()), "ingotGold");
+        addGearRecipe(new ItemStack(ModItems.gearQuartz.getItem()), "gemQuartz");
+        addGearRecipe(new ItemStack(ModItems.gearEmerald.getItem()), "gemEmerald");
+        addGearRecipe(new ItemStack(ModItems.gearDiamond.getItem()), "gemDiamond");
     }
 
     public static void initClockworkConstructs()
     {
         ItemStack result;
-        result = new ItemStack(ModItems.clockworkPickaxe);
+        result = new ItemStack(ModItems.clockworkPickaxe.getItem());
         GameRegistry.addRecipe(new ShapedOreRecipe(result, "bbb", " i ", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
-        result = new ItemStack(ModItems.clockworkAxe);
+        result = new ItemStack(ModItems.clockworkAxe.getItem());
         GameRegistry.addRecipe(new ShapedOreRecipe(result, "bb ", "bi ", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
         GameRegistry.addRecipe(new ShapedOreRecipe(result, " bb", " ib", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
-        result = new ItemStack(ModItems.clockworkShovel);
+        result = new ItemStack(ModItems.clockworkShovel.getItem());
         GameRegistry.addRecipe(new ShapedOreRecipe(result, " b ", " i ", " i ", 'b', "ingotBrass", 'i', "ingotIron"));
     }
 
     public static void initTemporalClockworkModules()
     {
         ItemStack result;
-        result = new ItemStack(ModItems.toolUpgradeFurnace);
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDriveSimulate, 'S', ModItems.timestreamSmelt));
-        result = new ItemStack(ModItems.toolUpgradeSilk);
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDriveSimulate, 'S', ModItems.timestreamSilkyHarvest));
-        result = new ItemStack(ModItems.toolUpgradeRelocate);
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDriveSimulate, 'S', ModItems.timestreamRelocation));
+        result = new ItemStack(ModItems.toolUpgradeFurnace.getItem());
+        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDrive.getItem(), 'S', Items.lava_bucket));
+        result = new ItemStack(ModItems.toolUpgradeSilk.getItem());
+        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDrive.getItem(), 'S', Items.emerald));
+        result = new ItemStack(ModItems.toolUpgradeRelocate.getItem());
+        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDrive.getItem(), 'S', Items.ender_pearl));
     }
 
-    public static void initTimezoneModules()
+    /*public static void initTimezoneModules()
     {
         ItemStack result;
         result = new ItemStack(ModItems.timezoneModuleTank);
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bgb", "gTg", "bgb", 'b', "ingotBrass", 'g', "blockGlass", 'T', ModItems.timestreamExtradimensionalTank));
-    }
+        GameRegistry.addRecipe(new ShapedOreRecipe(result, "bgb", "gTg", "bgb", 'b', "ingotBrass", 'g', "blockGlass", 'T', Items.bucket));
+    }*/
 
     public static void initMisc()
     {
         ItemStack result;
-        result = new ItemStack(ModItems.lumpBrass);
+        result = new ItemStack(ModItems.lumpBrass.getItem());
         GameRegistry.addRecipe(new ShapelessOreRecipe(result, "oreCopper", "oreZinc"));
-        result = new ItemStack(ModBlocks.assemblyTable);
+        result = new ItemStack(ModBlocks.assemblyTable.getBlock());
         GameRegistry.addRecipe(new ShapedOreRecipe(result, "wcw", "cgc", "wcw", 'w', "plankWood", 'c', Blocks.crafting_table, 'g', "gearWood"));
-        result = new ItemStack(ModItems.temporalDriveSimulate);
+        result = new ItemStack(ModItems.temporalDrive.getItem());
         GameRegistry.addRecipe(new ShapedOreRecipe(result, " bb", "btb", "bb ", 'b', "ingotBrass", 't', "ingotTemporal"));
-        result = new ItemStack(ModItems.temporalDriveModify);
-        GameRegistry.addRecipe(new ShapedOreRecipe(result, "tbt", "bTb", "tbt", 't', "ingotTemporal", 'b', "ingotBrass", 'T', "blockTemporal"));
         //result = new ItemStack(ModItems.temporalDriveDuplicate);
         //GameRegistry.addRecipe(new ShapedOreRecipe(result, "", "", ""));
     }
 
     public static void initFurnaceRecipes()
     {
-        GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.ingotCopper), 0.7F);
-        GameRegistry.addSmelting(ModBlocks.oreZinc, new ItemStack(ModItems.ingotZinc), 0.7F);
-        GameRegistry.addSmelting(ModItems.lumpBrass, new ItemStack(ModItems.ingotBrass), 1.5F);
-        GameRegistry.addSmelting(ModItems.temporalPearl, new ItemStack(ModItems.ingotTemporal), 10F);
+        GameRegistry.addSmelting(ModBlocks.oreCopper.getBlock(), new ItemStack(ModItems.ingotCopper.getItem()), 0.7F);
+        GameRegistry.addSmelting(ModBlocks.oreZinc.getBlock(), new ItemStack(ModItems.ingotZinc.getItem()), 0.7F);
+        GameRegistry.addSmelting(ModItems.lumpBrass.getItem(), new ItemStack(ModItems.ingotBrass.getItem()), 1.5F);
+        GameRegistry.addSmelting(ModItems.temporalPearl.getItem(), new ItemStack(ModItems.ingotTemporal.getItem()), 10F);
     }
 
     public static void addGearRecipe(ItemStack result, String materialName) {
@@ -114,16 +112,16 @@ public class Recipes
         ItemStack output;
         if(copper && zinc && brass)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
-            second = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotZinc), (byte) 1);
-            output = new ItemStack(ModItems.ingotBrass);
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper.getItem()), (byte) 3);
+            second = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotZinc.getItem()), (byte) 1);
+            output = new ItemStack(ModItems.ingotBrass.getItem());
             output.stackSize = 4;
             AlloyRecipes.addAlloyRecipe(first, second, output);
         }
 
         if(copper && tin && bronze)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper.getItem()), (byte) 3);
             second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotTin").get(0), (byte) 1);
             output = OreDictionary.getOres("ingotBronze").get(0).copy();
             output.stackSize = 4;
@@ -141,7 +139,7 @@ public class Recipes
 
         if(copper && aluminum && aluminumBrass)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 1);
+            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper.getItem()), (byte) 1);
             second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotAluminum").get(0), (byte) 3);
             output = OreDictionary.getOres("ingotAluminumBrass").get(0).copy();
             output.stackSize = 4;

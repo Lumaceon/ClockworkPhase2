@@ -1,15 +1,10 @@
 package lumaceon.mods.clockworkphase2.block;
 
 import lumaceon.mods.clockworkphase2.tile.TileTDA;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockTDA extends BlockClockworkPhase implements ITileEntityProvider
 {
@@ -18,8 +13,8 @@ public class BlockTDA extends BlockClockworkPhase implements ITileEntityProvider
         this.setResistance(1000000.0F);
     }
 
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack item)
+    /*@Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         super.onBlockPlacedBy(world, x, y, z, entity, item);
         if(entity.rotationPitch < -50 || entity.rotationPitch > 50)
@@ -37,13 +32,13 @@ public class BlockTDA extends BlockClockworkPhase implements ITileEntityProvider
             world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.SOUTH.ordinal(), 2);
         else if(direction == 3)
             world.setBlockMetadataWithNotify(x, y, z, ForgeDirection.WEST.ordinal(), 2);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         TileTDA.destroyMultiblock(world, x, y, z, meta);
         super.breakBlock(world, x, y, z, block, meta);
-    }
+    }*/
 
     @Override
     public int getRenderType() {

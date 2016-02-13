@@ -1,0 +1,6 @@
+{
+    "parent": "block/crop",
+    "textures": {
+        "crop": "clockworkphase2:blocks/moon_flower_stage_3"
+    }
+}

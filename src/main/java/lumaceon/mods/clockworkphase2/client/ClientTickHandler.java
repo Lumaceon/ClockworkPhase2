@@ -1,13 +1,13 @@
 package lumaceon.mods.clockworkphase2.client;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
 import lumaceon.mods.clockworkphase2.api.phase.Phase;
 import lumaceon.mods.clockworkphase2.api.phase.Phases;
 import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ClientTickHandler
 {

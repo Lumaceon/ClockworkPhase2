@@ -1,11 +1,10 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
+import lumaceon.mods.clockworkphase2.client.render.ModelRegistry;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.*;
 import lumaceon.mods.clockworkphase2.client.keybind.KeyHandler;
 import lumaceon.mods.clockworkphase2.client.keybind.Keybindings;
@@ -20,12 +19,17 @@ import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.timetravel.third.world.WorldProviderThirdAge;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.File;
 import java.util.List;
@@ -46,7 +50,14 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void registerModels() {}
+    public void registerBlockModel(Block block, String unlocalizedName) {
+        ModelRegistry.registerItemBlockModel(block, unlocalizedName);
+    }
+
+    @Override
+    public void registerItemModel(Item item, String unlocalizedName) {
+        ModelRegistry.registerItemModel(item, unlocalizedName);
+    }
 
     @Override
     public void registerKeybindings() {

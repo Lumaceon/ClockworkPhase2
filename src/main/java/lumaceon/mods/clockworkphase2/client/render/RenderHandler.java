@@ -1,37 +1,27 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import lumaceon.mods.clockworkphase2.api.item.ITimezoneModule;
 import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
-import lumaceon.mods.clockworkphase2.block.BlockCelestialCompassSB;
 import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
-import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequenceTimezone;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RenderHandler
 {
@@ -43,11 +33,8 @@ public class RenderHandler
 
     public RenderHandler()
     {
-        renderItem = new RenderItem();
-        renderItem.renderWithColor = false;
-        renderItem.setRenderManager(RenderManager.instance);
-
         mc = Minecraft.getMinecraft();
+        renderItem = mc.getRenderItem();
 
         //registerWorldRenderElement(schematicRenderer);
     }
@@ -105,24 +92,24 @@ public class RenderHandler
                     --n;
                 }
                 else
-                    fx.renderParticle(Tessellator.instance, event.partialTicks, ActiveRenderInfo.rotationX, ActiveRenderInfo.rotationXZ, ActiveRenderInfo.rotationZ, ActiveRenderInfo.rotationYZ, ActiveRenderInfo.rotationXY);
+                    fx.renderParticle(Tessellator.getInstance().getWorldRenderer(), mc.getRenderViewEntity(), event.partialTicks, ActiveRenderInfo.getRotationX(), ActiveRenderInfo.getRotationXZ(), ActiveRenderInfo.getRotationZ(), ActiveRenderInfo.getRotationYZ(), ActiveRenderInfo.getRotationXY());
             }
             GL11.glPopMatrix();
         }
 
-        if(RenderManager.instance.renderEngine == null)
+        if(mc.getRenderManager().renderEngine == null)
             return;
 
         GL11.glPushMatrix();
-        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if(mc.theWorld != null)
         {
             for(int[] area : TimezoneHandler.timezones)
             {
                 ITimezoneProvider timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
-                if(timezone != null)
+                /*if(timezone != null)
                 {
                     ItemStack coreStack = timezone.getTimezoneModule(8);
                     //if(coreStack != null && coreStack.getItem() instanceof ITemporalCore)
@@ -130,21 +117,24 @@ public class RenderHandler
                     TIMEZONE.renderCelestialCompassItems(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ);
                     if(!TIMEZONE.timezoneSequences.containsKey(timezone) || TIMEZONE.timezoneSequences.get(timezone) == null)
                         TIMEZONE.timezoneSequences.put(timezone, ParticleSequence.spawnParticleSequence(new ParticleSequenceTimezone(timezone, area[0] + 0.5, area[1] + 0.5, area[2] + 0.5)));
-                }
+                }*/
             }
 
-            EntityLivingBase camera = mc.renderViewEntity;
+            Entity camera = mc.getRenderViewEntity();
             for(WorldRenderElement wre : worldRenderList)
                 if(wre != null && wre.isSameWorld(mc.theWorld))
                     if(Math.sqrt(Math.pow(Math.abs(wre.xPos - camera.posX), 2) + Math.pow(Math.abs(wre.yPos - camera.posY), 2) + Math.pow(Math.abs(wre.zPos - camera.posZ), 2)) <= wre.maxRenderDistance())
                         wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
         }
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glDepthMask(true);
         GL11.glPopMatrix();
     }
 
     public static class TIMEZONE
     {
-        public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
+        /*public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
 
         public static void renderGlyph(int[] area, double x, double y, double z, ITimezoneProvider timezone)
         {
@@ -300,7 +290,7 @@ public class RenderHandler
                     GL11.glPopMatrix();
                 }*/
 
-                ResourceLocation loc = null;
+                /*ResourceLocation loc = null;
                 for(int n = 0; n < 9; n++)
                 {
                     itemToRender = celestialCompass.getTimezoneModule(n);
@@ -449,6 +439,6 @@ public class RenderHandler
                     GL11.glPopMatrix();
                 }
             }
-        }
+        }*/
     }
 }

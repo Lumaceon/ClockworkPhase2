@@ -1,15 +1,10 @@
 package lumaceon.mods.clockworkphase2.client.tesr;
 
 import lumaceon.mods.clockworkphase2.lib.Reference;
-import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 public class TESRTimezoneFluidExporter extends TileEntitySpecialRenderer
 {
@@ -24,9 +19,9 @@ public class TESRTimezoneFluidExporter extends TileEntitySpecialRenderer
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_)
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        if(te != null && te instanceof TileTimezoneFluidExporter)
+        /*if(te != null && te instanceof TileTimezoneFluidExporter)
         {
             TileTimezoneFluidExporter fluidValve = (TileTimezoneFluidExporter) te;
             FluidStack fluid = fluidValve.renderStack;
@@ -161,6 +156,6 @@ public class TESRTimezoneFluidExporter extends TileEntitySpecialRenderer
             t.addVertexWithUV(0, 0, 0, 1, 1);
             t.draw();
             GL11.glPopMatrix();
-        }
+        }*/
     }
 }

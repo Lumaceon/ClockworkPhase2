@@ -1,10 +1,9 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -14,7 +13,7 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
 {
     public ItemStack getTimezoneModule()
     {
-        ITimezoneProvider timezone = getTimezone();
+        /*ITimezoneProvider timezone = getTimezone();
         ItemStack timezoneModule;
         if(timezone != null)
         {
@@ -24,7 +23,7 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
                 if(timezoneModule != null && timezoneModule.getItem() instanceof ItemTimezoneModuleTank)
                     return timezoneModule;
             }
-        }
+        }*/
         return null;
     }
 
@@ -39,7 +38,7 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
     }
 
     @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         ItemStack timestream = getTimezoneModule();
         if(timestream != null)
@@ -48,27 +47,27 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
+    public boolean canFill(EnumFacing from, Fluid fluid) {
         return true;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+    public boolean canDrain(EnumFacing from, Fluid fluid) {
         return false;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+    public FluidTankInfo[] getTankInfo(EnumFacing from) {
         return new FluidTankInfo[0];
     }
 }

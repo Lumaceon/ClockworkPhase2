@@ -20,9 +20,9 @@ public class AssemblyHelper
     {
         /**
          * Loads the component inventory from the main item into the inventory.
-         * Note that the inventory MUST be large enough to hold all of the items being loaded.
+         * Note that the inventory MUST be large enough to hold all of the item being loaded.
          * @param container The container to get the main item from.
-         * @param inventory The inventory to load the items into.
+         * @param inventory The inventory to load the item into.
          */
         public static void loadStandardComponentInventory(ContainerAssemblyTable container, InventoryAssemblyTableComponents inventory)
         {
@@ -83,7 +83,7 @@ public class AssemblyHelper
                 mainItem.setItemDamage(mainItem.getMaxDamage());
             }
 
-            if(clockwork != null) //There is clockwork.
+            if(clockwork != null) //There is tiles.
             {
                 NBTHelper.INT.set(mainItem, NBTTags.QUALITY, NBTHelper.INT.get(clockwork, NBTTags.QUALITY));
                 NBTHelper.INT.set(mainItem, NBTTags.SPEED, NBTHelper.INT.get(clockwork, NBTTags.SPEED));

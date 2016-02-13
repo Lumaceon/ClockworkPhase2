@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContai
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.util.EnumFacing;
 
 public class TileClockworkFurnace extends TileClockworkNetworkMachine
 {
@@ -19,7 +20,7 @@ public class TileClockworkFurnace extends TileClockworkNetworkMachine
             return false;
         else
         {
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.inventory[0]);
             if(itemstack == null) return false;
             if(this.inventory[1] == null) return true;
             if(!this.inventory[1].isItemEqual(itemstack)) return false;
@@ -33,7 +34,7 @@ public class TileClockworkFurnace extends TileClockworkNetworkMachine
     {
         if(this.canWork())
         {
-            ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.inventory[0]);
 
             if(this.inventory[1] == null)
                 this.inventory[1] = itemstack.copy();
@@ -48,21 +49,21 @@ public class TileClockworkFurnace extends TileClockworkNetworkMachine
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
+    public int[] getSlotsForFace(EnumFacing side) {
         return new int[] { 0, 1 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack inputStack, int side) {
+    public boolean canInsertItem(int slotID, ItemStack inputStack, EnumFacing side) {
         return
            inputStack != null
-        && FurnaceRecipes.smelting().getSmeltingResult(inputStack) != null
+        && FurnaceRecipes.instance().getSmeltingResult(inputStack) != null
         && (inventory[0] == null || inventory[0].stackSize < inventory[0].getMaxStackSize())
         && slotID == 0;
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack outputStack, int side) {
+    public boolean canExtractItem(int slotID, ItemStack outputStack, EnumFacing side) {
         return slotID == 1;
     }
 

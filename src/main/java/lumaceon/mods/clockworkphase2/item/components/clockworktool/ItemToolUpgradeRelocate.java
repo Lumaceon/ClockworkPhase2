@@ -9,7 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ItemToolUpgradeRelocate extends ItemClockworkPhase implements IToolUpgrade
@@ -19,17 +21,17 @@ public class ItemToolUpgradeRelocate extends ItemClockworkPhase implements ITool
     }
 
     @Override
-    public boolean onItemUse(ItemStack is, EntityPlayer player, World world, int x, int y, int z, int meta, float f1, float f2, float f3)
+    public boolean onItemUse(ItemStack is, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof IInventory)
         {
-            NBTHelper.INT.set(is, "cp_x", x);
-            NBTHelper.INT.set(is, "cp_y", y);
-            NBTHelper.INT.set(is, "cp_z", z);
-            NBTHelper.INT.set(is, "cp_side", meta);
-            if(!world.isRemote)
-                player.addChatComponentMessage(new ChatComponentText(Colors.AQUA + "Inventory location saved"));
+            NBTHelper.INT.set(is, "cp_x", pos.getX());
+            NBTHelper.INT.set(is, "cp_y", pos.getY());
+            NBTHelper.INT.set(is, "cp_z", pos.getZ());
+            NBTHelper.INT.set(is, "cp_side", side.ordinal());
+            if(!worldIn.isRemote)
+                playerIn.addChatComponentMessage(new ChatComponentText(Colors.AQUA + "Inventory location saved"));
             return true;
         }
         return false;

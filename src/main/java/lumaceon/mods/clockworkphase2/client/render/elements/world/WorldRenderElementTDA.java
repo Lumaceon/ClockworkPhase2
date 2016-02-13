@@ -3,9 +3,13 @@ package lumaceon.mods.clockworkphase2.client.render.elements.world;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class WorldRenderElementTDA extends WorldRenderElement
@@ -16,7 +20,7 @@ public class WorldRenderElementTDA extends WorldRenderElement
     public WorldRenderElementTDA(World world, int x, int y, int z) {
         super(world, x, y, z);
         this.mc = Minecraft.getMinecraft();
-        this.te = world.getTileEntity(x, y, z);
+        this.te = world.getTileEntity(new BlockPos(x, y, z));
     }
 
     @Override
@@ -24,12 +28,12 @@ public class WorldRenderElementTDA extends WorldRenderElement
         GL11.glPushMatrix();
         GL11.glDepthMask(true);
         GL11.glTranslated(x, y, z);
-        if(te.blockMetadata == ForgeDirection.EAST.ordinal() || te.blockMetadata == ForgeDirection.WEST.ordinal())
+        if(te.getBlockMetadata() == EnumFacing.EAST.ordinal() || te.getBlockMetadata() == EnumFacing.WEST.ordinal())
         {
             GL11.glTranslatef(0F, 0F, 1F);
             GL11.glRotatef(90, 0, 1, 0);
         }
-        else if(te.blockMetadata == ForgeDirection.DOWN.ordinal() || te.blockMetadata == ForgeDirection.UP.ordinal())
+        else if(te.getBlockMetadata() == EnumFacing.DOWN.ordinal() || te.getBlockMetadata() == EnumFacing.UP.ordinal())
         {
             GL11.glTranslatef(0F, 1F, 0F);
             GL11.glRotatef(90, 1, 0, 0);
@@ -37,43 +41,45 @@ public class WorldRenderElementTDA extends WorldRenderElement
         GL11.glTranslatef(-7.0F, 0.0F, -0.0F);
         GL11.glScalef(15.0F, 15.0F, 1.0F);
         mc.renderEngine.bindTexture(Textures.MISC.TDA);
-        Tessellator tessy = Tessellator.instance;
-        tessy.startDrawingQuads();
-        tessy.addVertexWithUV(0, 0, 0, 0, 0);
-        tessy.addVertexWithUV(0, 1, 0, 0, 1);
-        tessy.addVertexWithUV(1, 1, 0, 1, 1);
-        tessy.addVertexWithUV(1, 0, 0, 1, 0);
+        Tessellator tessy = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessy.getWorldRenderer();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(0, 0, 0).tex(0, 0).endVertex();
+        worldRenderer.pos(0, 1, 0).tex(0, 1).endVertex();
+        worldRenderer.pos(1, 1, 0).tex(1, 1).endVertex();
+        worldRenderer.pos(1, 0, 0).tex(1, 0).endVertex();
 
-        tessy.addVertexWithUV(1, 0, 1, 1, 0);
-        tessy.addVertexWithUV(1, 1, 1, 1, 1);
-        tessy.addVertexWithUV(0, 1, 1, 0, 1);
-        tessy.addVertexWithUV(0, 0, 1, 0, 0);
+        worldRenderer.pos(1, 0, 1).tex(1, 0).endVertex();
+        worldRenderer.pos(1, 1, 1).tex(1, 1).endVertex();
+        worldRenderer.pos(0, 1, 1).tex(0, 1).endVertex();
+        worldRenderer.pos(0, 0, 1).tex(0, 0).endVertex();
         tessy.draw();
 
         //CLOCK
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
         GL11.glDepthMask(false);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
         //GL11.glScalef(0.8F, 0.8F, 0.8F);
         mc.renderEngine.bindTexture(Textures.GUI.CLOCK);
-        tessy.startDrawingQuads();
-        tessy.addVertexWithUV(0, 0, 0.5, 0, 0);
-        tessy.addVertexWithUV(0, 1, 0.5, 0, 1);
-        tessy.addVertexWithUV(1, 1, 0.5, 1, 1);
-        tessy.addVertexWithUV(1, 0, 0.5, 1, 0);
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(0, 0, 0.5).tex(0, 0).endVertex();
+        worldRenderer.pos(0, 1, 0.5).tex(0, 1).endVertex();
+        worldRenderer.pos(1, 1, 0.5).tex(1, 1).endVertex();
+        worldRenderer.pos(1, 0, 0.5).tex(1, 0).endVertex();
         tessy.draw();
 
-        tessy.startDrawingQuads();
-        tessy.addVertexWithUV(1, 0, 0.5, 1, 0);
-        tessy.addVertexWithUV(1, 1, 0.5, 1, 1);
-        tessy.addVertexWithUV(0, 1, 0.5, 0, 1);
-        tessy.addVertexWithUV(0, 0, 0.5, 0, 0);
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.pos(1, 0, 0.5).tex(1, 0).endVertex();
+        worldRenderer.pos(1, 1, 0.5).tex(1, 1).endVertex();
+        worldRenderer.pos(0, 1, 0.5).tex(0, 1).endVertex();
+        worldRenderer.pos(0, 0, 0.5).tex(0, 0).endVertex();
         tessy.draw();
         //CLOCK
-
         GL11.glPopMatrix();
 
 
-        GL11.glPushMatrix();
+        /*GL11.glPushMatrix();
         GL11.glDepthMask(true);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glTranslated(x, y, z);
@@ -659,11 +665,11 @@ public class WorldRenderElementTDA extends WorldRenderElement
         //EASTS (seen by facing WEST)
         tessy.draw();
 
-        GL11.glPopMatrix();
+        GL11.glPopMatrix();*/
     }
 
     @Override
     public boolean isFinished() {
-        return world == null || te == null || world.getTileEntity(xPos, yPos, zPos) == null || !world.getTileEntity(xPos, yPos, zPos).equals(te);
+        return world == null || te == null || world.getTileEntity(new BlockPos(xPos, yPos, zPos)) == null || !world.getTileEntity(new BlockPos(xPos, yPos, zPos)).equals(te);
     }
 }

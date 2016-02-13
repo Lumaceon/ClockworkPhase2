@@ -1,15 +1,16 @@
 package lumaceon.mods.clockworkphase2.util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.server.FMLServerHandler;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -220,15 +221,15 @@ public class SchematicUtility
                 for(int z = Math.min(area.z1, area.z2); z <= Math.max(area.z1, area.z2); z++)
                     for(int x = Math.min(area.x1, area.x2); x <= Math.max(area.x1, area.x2); x++)
                     {
-                        blc = world.getBlock(x, y, z);
+                        blc = world.getBlockState(new BlockPos(x, y, z)).getBlock();
                         blocks[i] = Block.getIdFromBlock(blc);
 
                         //If we haven't encountered this block ID yet, add it's unique identifier to the ID map.
                         if(!blockIDMap.containsKey(blocks[i]))
                             blockIDMap.put(blocks[i], GameRegistry.findUniqueIdentifierFor(blc));
 
-                        data[i] = (byte) world.getBlockMetadata(x, y, z);
-                        te = world.getTileEntity(x, y, z);
+                        //data[i] = (byte) world.getBlockMetadata(x, y, z);
+                        te = world.getTileEntity(new BlockPos(x, y, z));
                         if(te != null)
                         {
                             NBTTagCompound tileNBT = new NBTTagCompound();

@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.util;
 
-import cpw.mods.fml.common.FMLLog;
 import lumaceon.mods.clockworkphase2.lib.Reference;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 /**

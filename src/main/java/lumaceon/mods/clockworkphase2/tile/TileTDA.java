@@ -6,10 +6,12 @@ import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileTDA extends TileClockworkPhase
+public class TileTDA extends TileClockworkPhase implements ITickable
 {
     private int blocksToPlace = 55;
     private boolean rendererSetup = false;
@@ -31,13 +33,13 @@ public class TileTDA extends TileClockworkPhase
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if(!isAvailable())
             handleMultiblockPlacement();
 
         if(worldObj.isRemote && !rendererSetup)
         {
-            ClockworkPhase2.proxy.addWorldRenderer(worldObj, xCoord, yCoord, zCoord, 2);
+            ClockworkPhase2.proxy.addWorldRenderer(worldObj, pos.getX(), pos.getY(), pos.getZ(), 2);
             rendererSetup = true;
         }
     }
@@ -51,61 +53,61 @@ public class TileTDA extends TileClockworkPhase
                 for(int n = 0; n < BlockPatterns.TDA.length; n++)
                 {
                     int x, y, z;
-                    if(blockMetadata == ForgeDirection.EAST.ordinal() || blockMetadata == ForgeDirection.WEST.ordinal())
+                    if(getBlockMetadata() == EnumFacing.EAST.ordinal() || getBlockMetadata() == EnumFacing.WEST.ordinal())
                     {
-                        x = this.xCoord + BlockPatterns.TDA[n].z;
-                        y = this.yCoord + 14 + BlockPatterns.TDA[n].y;
-                        z = this.zCoord + BlockPatterns.TDA[n].x;
+                        x = pos.getX() + BlockPatterns.TDA[n].z;
+                        y = pos.getY() + 14 + BlockPatterns.TDA[n].y;
+                        z = pos.getZ() + BlockPatterns.TDA[n].x;
                     }
-                    else if(blockMetadata == ForgeDirection.DOWN.ordinal() || blockMetadata == ForgeDirection.UP.ordinal())
+                    else if(getBlockMetadata() == EnumFacing.DOWN.ordinal() || getBlockMetadata() == EnumFacing.UP.ordinal())
                     {
-                        x = this.xCoord + BlockPatterns.TDA[n].x;
-                        y = this.yCoord + BlockPatterns.TDA[n].z;
-                        z = this.zCoord + 14 + BlockPatterns.TDA[n].y;
+                        x = pos.getX() + BlockPatterns.TDA[n].x;
+                        y = pos.getY() + BlockPatterns.TDA[n].z;
+                        z = pos.getZ() + 14 + BlockPatterns.TDA[n].y;
                     }
                     else
                     {
-                        x = this.xCoord + BlockPatterns.TDA[n].x;
-                        y = this.yCoord + 14 + BlockPatterns.TDA[n].y;
-                        z = this.zCoord + BlockPatterns.TDA[n].z;
+                        x = pos.getX() + BlockPatterns.TDA[n].x;
+                        y = pos.getY() + 14 + BlockPatterns.TDA[n].y;
+                        z = pos.getZ() + BlockPatterns.TDA[n].z;
                     }
-                    this.worldObj.markBlockForUpdate(x, y, z);
+                    this.worldObj.markBlockForUpdate(new BlockPos(x, y, z));
                     blocksToPlace--;
                 }
             }
             else if(blocksToPlace > 0)
             {
                 int x, y, z, meta;
-                if(blockMetadata == ForgeDirection.EAST.ordinal() || blockMetadata == ForgeDirection.WEST.ordinal())
+                if(getBlockMetadata() == EnumFacing.EAST.ordinal() || getBlockMetadata() == EnumFacing.WEST.ordinal())
                 {
-                    x = this.xCoord + BlockPatterns.TDA[blocksToPlace - 1].z;
-                    y = this.yCoord + 14 + BlockPatterns.TDA[blocksToPlace - 1].y;
-                    z = this.zCoord + BlockPatterns.TDA[blocksToPlace - 1].x;
+                    x = pos.getX() + BlockPatterns.TDA[blocksToPlace - 1].z;
+                    y = pos.getY() + 14 + BlockPatterns.TDA[blocksToPlace - 1].y;
+                    z = pos.getZ() + BlockPatterns.TDA[blocksToPlace - 1].x;
                 }
-                else if(blockMetadata == ForgeDirection.DOWN.ordinal() || blockMetadata == ForgeDirection.UP.ordinal())
+                else if(getBlockMetadata() == EnumFacing.DOWN.ordinal() || getBlockMetadata() == EnumFacing.UP.ordinal())
                 {
-                    x = this.xCoord + BlockPatterns.TDA[blocksToPlace - 1].x;
-                    y = this.yCoord + BlockPatterns.TDA[blocksToPlace - 1].z;
-                    z = this.zCoord + 14 + BlockPatterns.TDA[blocksToPlace - 1].y;
+                    x = pos.getX() + BlockPatterns.TDA[blocksToPlace - 1].x;
+                    y = pos.getY() + BlockPatterns.TDA[blocksToPlace - 1].z;
+                    z = pos.getZ() + 14 + BlockPatterns.TDA[blocksToPlace - 1].y;
                 }
                 else
                 {
-                    x = this.xCoord + BlockPatterns.TDA[blocksToPlace - 1].x;
-                    y = this.yCoord + 14 + BlockPatterns.TDA[blocksToPlace - 1].y;
-                    z = this.zCoord + BlockPatterns.TDA[blocksToPlace - 1].z;
+                    x = pos.getX() + BlockPatterns.TDA[blocksToPlace - 1].x;
+                    y = pos.getY() + 14 + BlockPatterns.TDA[blocksToPlace - 1].y;
+                    z = pos.getZ() + BlockPatterns.TDA[blocksToPlace - 1].z;
                 }
 
                 meta = BlockPatterns.TDA[blocksToPlace - 1].meta;
 
-                if(worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).equals(ModBlocks.tdaSB) || worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z))
+                blocksToPlace--;
+                /*if(worldObj.isAirBlock(new BlockPos(x, y, z)) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().equals(ModBlocks.tdaSB) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().isReplaceable(worldObj, new BlockPos(x, y, z)))
                 {
-                    this.getWorldObj().setBlock(x, y, z, ModBlocks.tdaSB, meta, 2);
-                    blocksToPlace--;
+                    worldObj.setBlockState(new BlockPos(x, y, z), ModBlocks.tdaSB.getDefaultState());
                 }
                 else
                 {
                     //PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(x + 0.5, y + 0.5, z + 0.5, 0), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 48));
-                }
+                }*/
             }
         }
     }
@@ -115,13 +117,13 @@ public class TileTDA extends TileClockworkPhase
         for(int n = 0; n < 55; n++)
         {
             int currentX, currentY, currentZ;
-            if(blockMetadata == ForgeDirection.EAST.ordinal() || blockMetadata == ForgeDirection.WEST.ordinal())
+            if(blockMetadata == EnumFacing.EAST.ordinal() || blockMetadata == EnumFacing.WEST.ordinal())
             {
                 currentX = x + BlockPatterns.TDA[n].z;
                 currentY = y + 14 + BlockPatterns.TDA[n].y;
                 currentZ = z + BlockPatterns.TDA[n].x;
             }
-            else if(blockMetadata == ForgeDirection.DOWN.ordinal() || blockMetadata == ForgeDirection.UP.ordinal())
+            else if(blockMetadata == EnumFacing.DOWN.ordinal() || blockMetadata == EnumFacing.UP.ordinal())
             {
                 currentX = x + BlockPatterns.TDA[n].x;
                 currentY = y + BlockPatterns.TDA[n].z;
@@ -135,8 +137,8 @@ public class TileTDA extends TileClockworkPhase
             }
 
 
-            if(world.getBlock(currentX, currentY, currentZ).equals(ModBlocks.tdaSB))
-                world.setBlock(currentX, currentY, currentZ, Blocks.air);
+            //if(world.getBlockState(new BlockPos(currentX, currentY, currentZ)).getBlock().equals(ModBlocks.tdaSB))
+            //    world.setBlockState(new BlockPos(currentX, currentY, currentZ), Blocks.air.getDefaultState());
         }
         ClockworkPhase2.proxy.clearWorldRenderers(world, x, y, z);
     }

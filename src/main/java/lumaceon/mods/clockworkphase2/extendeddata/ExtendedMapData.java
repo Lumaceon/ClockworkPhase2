@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.extendeddata;
 
-import lumaceon.mods.clockworkphase2.init.ModRuins;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.structure.Structure;
@@ -62,7 +61,7 @@ public class ExtendedMapData extends WorldSavedData
         }*/
         //overworldRuins.add(new Ruins(ModRuins.testRuins, 50, 64, 200));
         //overworldRuins.add(new Ruins(ModRuins.smallerRuins, 300, 64, -20));
-        thirdAgeRuins.add(new Structure(ModRuins.testRuins, 0, 10, 0));
+        //thirdAgeRuins.add(new Structure(ModRuins.testRuins, 0, 10, 0));
         this.ruinMapGenerated = true;
         markDirty();
     }
@@ -72,7 +71,7 @@ public class ExtendedMapData extends WorldSavedData
      */
     public void generateRuins(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
-        int dimID = world.provider.dimensionId;
+        int dimID = world.provider.getDimensionId();
         System.out.println(thirdAgeRuins.size());
         if(isDimensionAlreadyGenerated(dimID))
             return;

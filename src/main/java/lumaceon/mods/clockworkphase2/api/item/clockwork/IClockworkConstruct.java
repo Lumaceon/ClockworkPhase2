@@ -13,9 +13,9 @@ public interface IClockworkConstruct extends IClockwork
     public void setTension(ItemStack item, int tension);
 
     /**
-     * Sets the 'tier' of this construct's clockwork. This is context sensitive; in clockwork tools this sets the
+     * Sets the 'tier' of this construct's tiles. This is context sensitive; in tiles tools this sets the
      * appropriate harvest level, but in machines it's usually ignored or saved and referred to directly.
-     * @param tier The tier to set up, which is set by the highest tiered component in the clockwork.
+     * @param tier The tier to set up, which is set by the highest tiered component in the tiles.
      */
     public void setTier(ItemStack item, int tier);
 

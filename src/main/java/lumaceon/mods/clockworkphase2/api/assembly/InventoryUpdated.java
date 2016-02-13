@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IChatComponent;
 
 public class InventoryUpdated implements IInventory
 {
@@ -57,32 +58,17 @@ public class InventoryUpdated implements IInventory
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if(this.inventory[slot] != null)
-        {
-            ItemStack itemstack = this.inventory[slot];
-            this.inventory[slot] = null;
-            return itemstack;
-        }
-        else
-            return null;
+    public ItemStack removeStackFromSlot(int index) {
+        ItemStack item = inventory[index];
+        inventory[index] = null;
+        this.eventHandler.onCraftMatrixChanged(this);
+        return item;
     }
 
     @Override
     public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
         this.inventory[p_70299_1_] = p_70299_2_;
         this.eventHandler.onCraftMatrixChanged(this);
-    }
-
-    @Override
-    public String getInventoryName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
     }
 
     @Override
@@ -99,13 +85,54 @@ public class InventoryUpdated implements IInventory
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory(EntityPlayer player) {
+
+    }
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory(EntityPlayer player) {
+
+    }
 
     @Override
     public boolean isItemValidForSlot(int p_94041_1_, ItemStack is) {
         return false;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        for(int n = 0; n < inventory.length; n++)
+            inventory[n] = null;
+        this.eventHandler.onCraftMatrixChanged(this);
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

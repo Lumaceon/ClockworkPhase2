@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.client.gui.components.GuiButtonItem;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageToolUpgradeActivate;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -18,7 +19,7 @@ public class GuiClockworkTool extends GuiScreen
 
     public GuiClockworkTool(ItemStack[] itemStacks) {
         super();
-        itemRenders = new RenderItem();
+        itemRenders = Minecraft.getMinecraft().getRenderItem();
         if(itemStacks == null)
             itemStacks = new ItemStack[0];
         this.items = itemStacks;

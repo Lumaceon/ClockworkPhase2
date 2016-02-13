@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
 import lumaceon.mods.clockworkphase2.api.time.ITimeContainerItem;
 import lumaceon.mods.clockworkphase2.api.time.ITimeProvider;
 import lumaceon.mods.clockworkphase2.api.time.ITimeReceiver;
@@ -8,14 +7,15 @@ import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTemporalMachineSync;
-import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporalInventory;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver, ITimeProvider, IInventory
+public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver, ITimeProvider, ITickable
 {
     int maxDrainPerTick = TimeConverter.SECOND * 10;
 
@@ -26,7 +26,7 @@ public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver
     }
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if(!worldObj.isRemote)
         {
@@ -44,7 +44,7 @@ public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver
                         changeMade = true;
 
             if(changeMade)
-                PacketHandler.INSTANCE.sendToAllAround(new MessageTemporalMachineSync(timeStorage, xCoord, yCoord, zCoord), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 256));
+                PacketHandler.INSTANCE.sendToAllAround(new MessageTemporalMachineSync(timeStorage, pos.getX(), pos.getY(), pos.getZ()), new NetworkRegistry.TargetPoint(worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 256));
         }
     }
 
@@ -69,18 +69,68 @@ public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver
     }
 
     @Override
-    public boolean canConnectFrom(ForgeDirection from) {
-        return true;
-    }
-
-    @Override
     public void setState(int state) {}
 
     @Override
     public void setStateAndUpdate(int state) {}
 
     @Override
+    public ItemStack removeStackFromSlot(int index) {
+        return null;
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
     public boolean isItemValidForSlot(int slot, ItemStack item) {
         return item != null && item.getItem() instanceof ITimeContainerItem;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public boolean canConnectFrom(EnumFacing from) {
+        return false;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public IChatComponent getDisplayName() {
+        return null;
     }
 }

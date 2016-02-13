@@ -1,283 +1,222 @@
 package lumaceon.mods.clockworkphase2.init;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.item.*;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.*;
 import lumaceon.mods.clockworkphase2.item.construct.tool.*;
-import lumaceon.mods.clockworkphase2.item.timestream.*;
 import lumaceon.mods.clockworkphase2.item.components.ItemClockworkCore;
 import lumaceon.mods.clockworkphase2.item.components.ItemMainspring;
-import lumaceon.mods.clockworkphase2.item.components.ItemTemporalCore;
 import lumaceon.mods.clockworkphase2.item.components.ItemGear;
-import lumaceon.mods.clockworkphase2.item.ItemPAC;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
-import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleMobRepellent;
-import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
-import lumaceon.mods.clockworkphase2.lib.Names;
+import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 public class ModItems
 {
-    public static void init()
-    {
-        initToolUpgrades();
-        initTimezoneModules();
-        initClockworkComponents();
-        initTemporalComponents();
-        initTimestreams();
-        initTools();
-        initBuckets();
-        initMetals();
-        initMisc();
-    }
-
-    public static Item toolUpgradeSilk;
-    public static Item toolUpgradeFurnace;
-    public static Item toolUpgradeRelocate;
-    public static Item toolUpgradeArea;
-    public static Item toolUpgradeFortune;
-    public static Item toolUpgradeXp;
-    public static void initToolUpgrades()
-    {
-        toolUpgradeSilk = new ItemToolUpgradeSilk(1, 100, Names.ITEM.TOOL_UPGRADE_SILK);
-        toolUpgradeFurnace = new ItemToolUpgradeFurnace(1, 100, Names.ITEM.TOOL_UPGRADE_FURNACE);
-        toolUpgradeRelocate = new ItemToolUpgradeRelocate(1, 100, Names.ITEM.TOOL_UPGRADE_RELOCATE);
-        toolUpgradeArea = new ItemToolUpgradeArea(1, 100, Names.ITEM.TOOL_UPGRADE_AREA);
-        toolUpgradeFortune = new ItemToolUpgradeFortune(1, 100, Names.ITEM.TOOL_UPGRADE_FORTUNE);
-        toolUpgradeXp = new ItemToolUpgradeXP(1, 100, Names.ITEM.TOOL_UPGRADE_XP);
-
-        GameRegistry.registerItem(toolUpgradeSilk, Names.ITEM.TOOL_UPGRADE_SILK);
-        GameRegistry.registerItem(toolUpgradeFurnace, Names.ITEM.TOOL_UPGRADE_FURNACE);
-        GameRegistry.registerItem(toolUpgradeRelocate, Names.ITEM.TOOL_UPGRADE_RELOCATE);
-        GameRegistry.registerItem(toolUpgradeArea, Names.ITEM.TOOL_UPGRADE_AREA);
-        GameRegistry.registerItem(toolUpgradeFortune, Names.ITEM.TOOL_UPGRADE_FORTUNE);
-        GameRegistry.registerItem(toolUpgradeXp, Names.ITEM.TOOL_UPGRADE_XP);
-    }
-
-    public static Item timezoneModuleTank;
-    public static Item timezoneModuleMobRepell;
-    public static void initTimezoneModules()
-    {
-        timezoneModuleTank = new ItemTimezoneModuleTank(1, 100, Names.ITEM.TIMEZONE_MODULE_TANK);
-        timezoneModuleMobRepell = new ItemTimezoneModuleMobRepellent(1, 100, Names.ITEM.TIMEZONE_MODULE_MOB_REPELL);
-
-        GameRegistry.registerItem(timezoneModuleTank, Names.ITEM.TIMEZONE_MODULE_TANK);
-        GameRegistry.registerItem(timezoneModuleMobRepell, Names.ITEM.TIMEZONE_MODULE_MOB_REPELL);
-    }
-
-    public static ItemMainspring mainspring;
-    public static Item clockworkCore;
-    public static Item gearWood;
-    public static Item gearStone;
-    public static Item gearIron;
-    public static Item gearGold;
-    public static Item gearDiamond;
-    public static Item gearEmerald;
-    public static Item gearQuartz;
-    public static Item gearCopper;
-    public static Item gearZinc;
-    public static Item gearBrass;
-    public static Item gearElysianBroken;
-    public static void initClockworkComponents()
-    {
-        mainspring = new ItemMainspring(1, 20, Names.ITEM.MAINSPRING);
-        clockworkCore = new ItemClockworkCore(1, 20, Names.ITEM.CLOCKWORK_CORE);
-        gearWood = new ItemGear(Names.ITEM.GEAR_WOOD, 10, 15, 0);
-        gearStone = new ItemGear(Names.ITEM.GEAR_STONE, 15, 10, 1);
-        gearIron = new ItemGear(Names.ITEM.GEAR_IRON, 25, 25, 2);
-        gearGold = new ItemGear(Names.ITEM.GEAR_GOLD, 10, 70, 0);
-        gearDiamond = new ItemGear(Names.ITEM.GEAR_DIAMOND, 50, 40, 3);
-        gearEmerald = new ItemGear(Names.ITEM.GEAR_EMERALD, 40, 50, 3);
-        gearQuartz = new ItemGear(Names.ITEM.GEAR_QUARTZ, 70, 10, 2);
-        gearCopper = new ItemGear(Names.ITEM.GEAR_COPPER, 20, 30, 2);
-        gearZinc = new ItemGear(Names.ITEM.GEAR_ZINC, 30, 20, 2);
-        gearBrass = new ItemGear(Names.ITEM.GEAR_BRASS, 40, 35, 2);
-        gearElysianBroken = new ItemGear(Names.ITEM.GEAR_BROKEN_ELYSIAN, 100, 100, 5);
-
-        GameRegistry.registerItem(mainspring, Names.ITEM.MAINSPRING);
-        GameRegistry.registerItem(clockworkCore, Names.ITEM.CLOCKWORK_CORE);
-        GameRegistry.registerItem(gearWood, Names.ITEM.GEAR_WOOD);
-        GameRegistry.registerItem(gearStone, Names.ITEM.GEAR_STONE);
-        GameRegistry.registerItem(gearIron, Names.ITEM.GEAR_IRON);
-        GameRegistry.registerItem(gearGold, Names.ITEM.GEAR_GOLD);
-        GameRegistry.registerItem(gearDiamond, Names.ITEM.GEAR_DIAMOND);
-        GameRegistry.registerItem(gearEmerald, Names.ITEM.GEAR_EMERALD);
-        GameRegistry.registerItem(gearQuartz, Names.ITEM.GEAR_QUARTZ);
-        GameRegistry.registerItem(gearCopper, Names.ITEM.GEAR_COPPER);
-        GameRegistry.registerItem(gearZinc, Names.ITEM.GEAR_ZINC);
-        GameRegistry.registerItem(gearBrass, Names.ITEM.GEAR_BRASS);
-        GameRegistry.registerItem(gearElysianBroken, Names.ITEM.GEAR_BROKEN_ELYSIAN);
-
-        /*MemoryItemRegistry.registerMemoryItem(preciousCharm);
-        MemoryItemRegistry.registerMemoryItem(dreamCatcher);
-        MemoryItemRegistry.registerMemoryItem(ancientCoin);
-        MemoryItemRegistry.registerMemoryItem(noteBottle);
-        MemoryItemRegistry.registerMemoryItem(gearRusty);*/
-        //Elysian gear not registered as a memory item because it's considerably more rare and dropped separately.
-
-        OreDictionary.registerOre("gearWood", gearWood);
-        OreDictionary.registerOre("gearStone", gearStone);
-        OreDictionary.registerOre("gearIron", gearIron);
-        OreDictionary.registerOre("gearGold", gearGold);
-        OreDictionary.registerOre("gearQuartz", gearQuartz);
-        OreDictionary.registerOre("gearDiamond", gearDiamond);
-        OreDictionary.registerOre("gearEmerald", gearEmerald);
-        OreDictionary.registerOre("gearCopper", gearCopper);
-        OreDictionary.registerOre("gearZinc", gearZinc);
-        OreDictionary.registerOre("gearBrass", gearBrass);
-    }
-
-    public static Item temporalCore;
-    public static void initTemporalComponents()
-    {
-        temporalCore = new ItemTemporalCore(1, 50, Names.ITEM.TEMPORAL_CORE);
-
-        GameRegistry.registerItem(temporalCore, Names.ITEM.TEMPORAL_CORE);
-    }
-
-    public static ItemTimestreamRelocation timestreamRelocation;
-    public static ItemTimestreamSilkyHarvest timestreamSilkyHarvest;
-    public static ItemTimestreamSmelt timestreamSmelt;
-    public static ItemTimestreamExtradimensionalTank timestreamExtradimensionalTank;
-    public static ItemTimestreamMobRepulser timestreamMobRepulser;
-    public static ItemTimestreamLightning timestreamLightning;
-    public static void initTimestreams()
-    {
-        timestreamRelocation = new ItemTimestreamRelocation(1, 100, Names.ITEM.TIMESTREAM_RELOCATION);
-        timestreamSilkyHarvest = new ItemTimestreamSilkyHarvest(1, 100, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
-        timestreamSmelt = new ItemTimestreamSmelt(1, 100, Names.ITEM.TIMESTREAM_SMELT);
-        timestreamExtradimensionalTank = new ItemTimestreamExtradimensionalTank(1, 100, Names.ITEM.TIMESTREAM_EXTRA_TANK);
-        timestreamMobRepulser = new ItemTimestreamMobRepulser(1, 100, Names.ITEM.TIMESTREAM_MOB_REPULSER);
-        timestreamLightning = new ItemTimestreamLightning(1, 100, Names.ITEM.TIMESTREAM_LIGHTNING);
-
-        GameRegistry.registerItem(timestreamRelocation, Names.ITEM.TIMESTREAM_RELOCATION);
-        GameRegistry.registerItem(timestreamSilkyHarvest, Names.ITEM.TIMESTREAM_SILKY_HARVEST);
-        GameRegistry.registerItem(timestreamSmelt, Names.ITEM.TIMESTREAM_SMELT);
-        GameRegistry.registerItem(timestreamExtradimensionalTank, Names.ITEM.TIMESTREAM_EXTRA_TANK);
-        GameRegistry.registerItem(timestreamMobRepulser, Names.ITEM.TIMESTREAM_MOB_REPULSER);
-        GameRegistry.registerItem(timestreamLightning, Names.ITEM.TIMESTREAM_LIGHTNING);
-    }
+    public static ArrayList<ItemReference> itemsForModel = new ArrayList<ItemReference>(200);
 
     public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, 0, 0);
     public static Item.ToolMaterial temporalMaterial = EnumHelper.addToolMaterial("TEMPORAL", 3, 100, 3, 0, 0);
-    public static Item clockworkPickaxe;
-    public static Item clockworkAxe;
-    public static Item clockworkShovel;
-    public static Item temporalExcavator;
-    public static Item temporalHourglass;
-    public static Item trowelWood;
-    public static Item trowelStone;
-    public static Item trowelIron;
-    public static Item trowelDiamond;
-    public static Item wireDuster;
-    public static Item lightningSword;
-    public static Item PAC;
-    public static void initTools()
-    {
-        clockworkPickaxe = new ItemClockworkPickaxe(clockworkMaterial, Names.ITEM.CLOCKWORK_PICKAXE);
-        clockworkAxe = new ItemClockworkAxe(clockworkMaterial, Names.ITEM.CLOCKWORK_AXE);
-        clockworkShovel = new ItemClockworkShovel(clockworkMaterial, Names.ITEM.CLOCKWORK_SHOVEL);
-        temporalExcavator = new ItemTemporalExcavator(0, temporalMaterial, Names.ITEM.TEMPORAL_EXCAVATOR);
-        temporalHourglass = new ItemTemporalHourglass(1, 100, TimeConverter.MONTH, Names.ITEM.TEMPORAL_HOURGLASS);
-        trowelWood = new ItemTrowel(Item.ToolMaterial.WOOD, 1, Names.ITEM.WOOD_TROWEL);
-        trowelStone = new ItemTrowel(Item.ToolMaterial.STONE, 1, Names.ITEM.STONE_TROWEL);
-        trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, 1, Names.ITEM.IRON_TROWEL);
-        trowelDiamond = new ItemTrowel(Item.ToolMaterial.EMERALD, 1, Names.ITEM.DIAMOND_TROWEL); //Says emerald; is actually diamond.
-        wireDuster = new ItemWireDuster(1, 100, Names.ITEM.WIRE_DUSTER);
-        lightningSword = new ItemLightningSword(clockworkMaterial, Names.ITEM.LIGHTNING_SWORD);
-        PAC = new ItemPAC(1, 100, Names.ITEM.PAC);
 
-        GameRegistry.registerItem(clockworkPickaxe, Names.ITEM.CLOCKWORK_PICKAXE);
-        GameRegistry.registerItem(clockworkAxe, Names.ITEM.CLOCKWORK_AXE);
-        GameRegistry.registerItem(clockworkShovel, Names.ITEM.CLOCKWORK_SHOVEL);
-        GameRegistry.registerItem(temporalExcavator, Names.ITEM.TEMPORAL_EXCAVATOR);
-        GameRegistry.registerItem(temporalHourglass, Names.ITEM.TEMPORAL_HOURGLASS);
-        GameRegistry.registerItem(trowelWood, Names.ITEM.WOOD_TROWEL);
-        GameRegistry.registerItem(trowelStone, Names.ITEM.STONE_TROWEL);
-        GameRegistry.registerItem(trowelIron, Names.ITEM.IRON_TROWEL);
-        GameRegistry.registerItem(trowelDiamond, Names.ITEM.DIAMOND_TROWEL);
-        GameRegistry.registerItem(wireDuster, Names.ITEM.WIRE_DUSTER);
-        GameRegistry.registerItem(lightningSword, Names.ITEM.LIGHTNING_SWORD);
-        GameRegistry.registerItem(PAC, Names.ITEM.PAC);
+    //METALS
+    public static ItemReference ingotCopper = new ItemReference("copper_ingot");
+    public static ItemReference ingotZinc = new ItemReference("zinc_ingot");
+    public static ItemReference ingotBrass = new ItemReference("brass_ingot");
+    public static ItemReference ingotSteel = new ItemReference("steel_ingot");
+    public static ItemReference ingotTemporal = new ItemReference("temporal_ingot");
+    public static ItemReference ingotEternium = new ItemReference("eternium_ingot"); //Eternal metal; everlasting, durable, unchanging.
+    public static ItemReference ingotMomentium = new ItemReference("momentium_ingot"); //Momentary metal; fast, momentary, build-up.
+    public static ItemReference ingotParadoxium = new ItemReference("paradoxium_ingot"); //Paradoxical metal; random, unreliable, changing.
+    public static ItemReference lumpBrass = new ItemReference("brass_lump");
+    //CLOCKWORK COMPONENTS (GEARS/CLOCKWORK/MAINSPRING)
+    public static ItemReference mainspring = new ItemReference("mainspring");
+    public static ItemReference clockworkCore = new ItemReference("clockwork_core");
+    public static ItemReference gearWood = new ItemReference("wood_gear");
+    public static ItemReference gearStone = new ItemReference("stone_gear");
+    public static ItemReference gearIron = new ItemReference("iron_gear");
+    public static ItemReference gearGold = new ItemReference("gold_gear");
+    public static ItemReference gearDiamond = new ItemReference("diamond_gear");
+    public static ItemReference gearEmerald = new ItemReference("emerald_gear");
+    public static ItemReference gearQuartz = new ItemReference("quartz_gear");
+    public static ItemReference gearCopper = new ItemReference("copper_gear");
+    public static ItemReference gearZinc = new ItemReference("zinc_gear");
+    public static ItemReference gearBrass = new ItemReference("brass_gear");
+    public static ItemReference gearSecondAge = new ItemReference("second_age_gear");
+    //TOOLS
+    public static ItemReference clockworkPickaxe = new ItemReference("clockwork_pickaxe");
+    public static ItemReference clockworkAxe = new ItemReference("clockwork_axe");
+    public static ItemReference clockworkShovel = new ItemReference("clockwork_shovel");
+    public static ItemReference temporalExcavator = new ItemReference("temporal_excavator");
+    public static ItemReference temporalHourglass = new ItemReference("temporal_hourglass");
+    public static ItemReference trowelWood = new ItemReference("wood_trowel");
+    public static ItemReference trowelStone = new ItemReference("stone_trowel");
+    public static ItemReference trowelIron = new ItemReference("iron_trowel");
+    public static ItemReference trowelDiamond = new ItemReference("diamond_trowel");
+    public static ItemReference wireDuster = new ItemReference("wire_duster");
+    public static ItemReference lightningSword = new ItemReference("lightning_sword");
+    //TOOL UPGRADES
+    public static ItemReference toolUpgradeSilk = new ItemReference("tool_upgrade_silk");
+    public static ItemReference toolUpgradeFurnace = new ItemReference("tool_upgrade_furnace");
+    public static ItemReference toolUpgradeRelocate = new ItemReference("tool_upgrade_relocate");
+    public static ItemReference toolUpgradeArea = new ItemReference("tool_upgrade_area");
+    public static ItemReference toolUpgradeFortune = new ItemReference("tool_upgrade_fortune");
+    public static ItemReference toolUpgradeXp = new ItemReference("tool_upgrade_xp");
+    //MISC
+    public static ItemReference temporalCore = new ItemReference("temporal_core");
+    public static ItemReference bugSwatter = new ItemReference("bug_swatter");
+    public static ItemReference ageDev = new ItemReference("age_developer");
+    public static ItemReference schematicTool = new ItemReference("schematic_tool");
+    public static ItemReference temporalDrive = new ItemReference("temporal_drive");
+    public static ItemReference moonFlowerSeeds = new ItemReference("moon_flower_seeds");
+    public static ItemReference temporalPearl = new ItemReference("temporal_pearl");
+    public static void init()
+    {
+        Class[] stackDamageName = new Class[] {int.class, int.class, String.class};
+        Class[] nameQualitySpeedLevel = new Class[] {String.class, int.class, int.class, int.class};
+        Class[] matName = new Class[] {Item.ToolMaterial.class, String.class};
+
+        //METALS
+        registerItem(ingotCopper, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, ingotCopper.getUnlocalizedName()}, "ingotCopper");
+        registerItem(ingotZinc, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, ingotZinc.getUnlocalizedName()}, "ingotZinc");
+        registerItem(ingotBrass, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, ingotBrass.getUnlocalizedName()}, "ingotBrass");
+        registerItem(ingotSteel, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, ingotSteel.getUnlocalizedName()}, "ingotSteel");
+        registerItem(ingotTemporal, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, ingotTemporal.getUnlocalizedName()}, "ingotTemporal");
+        registerItem(ingotEternium, ItemEterniumIngot.class, stackDamageName, new Object[] {64, 100, ingotEternium.getUnlocalizedName()}, "ingotEternium");
+        registerItem(ingotMomentium, ItemMomentiumIngot.class, stackDamageName, new Object[] {64, 100, ingotMomentium.getUnlocalizedName()}, "ingotMomentium");
+        registerItem(ingotParadoxium, ItemParadoxiumIngot.class, stackDamageName, new Object[] {64, 100, ingotParadoxium.getUnlocalizedName()}, "ingotParadoxium");
+        registerItem(lumpBrass, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, lumpBrass.getUnlocalizedName()});
+        //CLOCKWORK COMPONENTS (GEARS/CLOCKWORK/MAINSPRING)
+        registerItem(mainspring, ItemMainspring.class, stackDamageName, new Object[] {1, 100, mainspring.getUnlocalizedName()});
+        registerItem(clockworkCore, ItemClockworkCore.class, stackDamageName, new Object[] {1, 100, clockworkCore.getUnlocalizedName()});
+        registerItem(gearWood, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearWood.getUnlocalizedName(), 10, 15, 0}, "gearWood");
+        registerItem(gearStone, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearStone.getUnlocalizedName(), 15, 10, 1}, "gearStone");
+        registerItem(gearIron, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearIron.getUnlocalizedName(), 35, 25, 2}, "gearIron");
+        registerItem(gearGold, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearGold.getUnlocalizedName(), 10, 70, 0}, "gearGold");
+        registerItem(gearDiamond, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearDiamond.getUnlocalizedName(), 50, 40, 3}, "gearDiamond");
+        registerItem(gearEmerald, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearEmerald.getUnlocalizedName(), 40, 50, 3}, "gearEmerald");
+        registerItem(gearQuartz, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearQuartz.getUnlocalizedName(), 70, 10, 2}, "gearQuartz");
+        registerItem(gearCopper, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearCopper.getUnlocalizedName(), 20, 30, 2}, "gearCopper");
+        registerItem(gearZinc, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearZinc.getUnlocalizedName(), 30, 20, 1}, "gearZinc");
+        registerItem(gearBrass, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearBrass.getUnlocalizedName(), 60, 30, 2}, "gearBrass");
+        registerItem(gearSecondAge, ItemGear.class, nameQualitySpeedLevel, new Object[] {gearSecondAge.getUnlocalizedName(), 80, 80, 5});
+        //TOOLS
+        registerItem(clockworkPickaxe, ItemClockworkPickaxe.class, matName, new Object[] {clockworkMaterial, clockworkPickaxe.getUnlocalizedName()});
+        registerItem(clockworkAxe, ItemClockworkAxe.class, matName, new Object[] {clockworkMaterial, clockworkAxe.getUnlocalizedName()});
+        registerItem(clockworkShovel, ItemClockworkShovel.class, matName, new Object[] {clockworkMaterial, clockworkShovel.getUnlocalizedName()});
+        registerItem(temporalExcavator, ItemTemporalExcavator.class, matName, new Object[] {temporalMaterial, temporalExcavator.getUnlocalizedName()});
+        registerItem(temporalHourglass, ItemTemporalHourglass.class, new Class[] {int.class, int.class, int.class, String.class}, new Object[] {1, 100, TimeConverter.MONTH, temporalHourglass.getUnlocalizedName()});
+        registerItem(trowelWood, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.WOOD, trowelWood.getUnlocalizedName()});
+        registerItem(trowelStone, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.STONE, trowelStone.getUnlocalizedName()});
+        registerItem(trowelIron, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.IRON, trowelIron.getUnlocalizedName()});
+        registerItem(trowelDiamond, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.EMERALD, trowelDiamond.getUnlocalizedName()}); //Says emerald; is actually diamond.
+        registerItem(wireDuster, ItemWireDuster.class, stackDamageName, new Object[] {1, 100, wireDuster.getUnlocalizedName()});
+        registerItem(lightningSword, ItemLightningSword.class, matName, new Object[] {clockworkMaterial, lightningSword.getUnlocalizedName()});
+        //TOOL UPGRADES
+        registerItem(toolUpgradeSilk, ItemToolUpgradeSilk.class, stackDamageName, new Object[] {1, 100, toolUpgradeSilk.getUnlocalizedName()});
+        registerItem(toolUpgradeFurnace, ItemToolUpgradeFurnace.class, stackDamageName, new Object[] {1, 100, toolUpgradeFurnace.getUnlocalizedName()});
+        registerItem(toolUpgradeRelocate, ItemToolUpgradeRelocate.class, stackDamageName, new Object[] {1, 100, toolUpgradeRelocate.getUnlocalizedName()});
+        registerItem(toolUpgradeArea, ItemToolUpgradeArea.class, stackDamageName, new Object[] {1, 100, toolUpgradeArea.getUnlocalizedName()});
+        registerItem(toolUpgradeFortune, ItemToolUpgradeFortune.class, stackDamageName, new Object[] {1, 100, toolUpgradeFortune.getUnlocalizedName()});
+        registerItem(toolUpgradeXp, ItemToolUpgradeXP.class, stackDamageName, new Object[] {1, 100, toolUpgradeXp.getUnlocalizedName()});
+        //MISC
+        registerItem(temporalCore, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, temporalCore.getUnlocalizedName()});
+        registerItem(bugSwatter, ItemBugSwatter.class, stackDamageName, new Object[] {1, 100, bugSwatter.getUnlocalizedName()});
+        registerItem(ageDev, ItemAgeDev.class, stackDamageName, new Object[] {1, 100, ageDev.getUnlocalizedName()});
+        registerItem(schematicTool, ItemCreativeModSchematicTool.class, stackDamageName, new Object[] {1, 100, schematicTool.getUnlocalizedName()});
+        registerItem(temporalDrive, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, temporalDrive.getUnlocalizedName()});
+        registerItem(moonFlowerSeeds, ItemMoonFlowerSeeds.class, stackDamageName, new Object[] {64, 100, moonFlowerSeeds.getUnlocalizedName()});
+        registerItem(temporalPearl, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, temporalPearl.getUnlocalizedName()});
     }
 
-    public static Item bucketTimeSand;
-    public static void initBuckets()
-    {
-
+    public static void initModels() {
+        if(itemsForModel != null)
+        {
+            for(ItemReference item : itemsForModel)
+                if(item != null && item.getItem() != null)
+                    ClockworkPhase2.proxy.registerItemModel(item.getItem(), item.getUnlocalizedName());
+            itemsForModel.clear();
+        }
+        itemsForModel = null;
     }
 
-    public static Item ingotCopper;
-    public static Item ingotZinc;
-    public static Item ingotBrass;
-    public static Item ingotSteel;
-    public static Item ingotTemporal;
-    public static Item ingotEternium; //Eternal metal; everlasting, durable, unchanging.
-    public static Item ingotMomentium; //Momentary metal; fast, momentary, build-up.
-    public static Item ingotParadoxium; //Paradoxical metal; random, unreliable, changing.
-    public static Item lumpBrass;
-    public static void initMetals()
+    //************ START HELPER METHODS ************\\
+
+    public static void registerItem(ItemReference itemReference, Class<? extends Item> itemClass, Class[] targetConstructor, Object[] parameters)
     {
-        ingotCopper = new ItemClockworkPhase(64, 100, Names.ITEM.COPPER_INGOT);
-        ingotZinc = new ItemClockworkPhase(64, 100, Names.ITEM.ZINC_INGOT);
-        ingotBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_INGOT);
-        ingotSteel = new ItemClockworkPhase(64, 100, Names.ITEM.STEEL_INGOT);
-        ingotTemporal = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_INGOT);
-        ingotEternium = new ItemEterniumIngot(64, 100, Names.ITEM.ETERNIUM_INGOT);
-        ingotMomentium = new ItemMomentiumIngot(64, 100, Names.ITEM.MOMENTIUM_INGOT);
-        ingotParadoxium = new ItemParadoxiumIngot(64, 100, Names.ITEM.PARADOXIUM_INGOT);
-        lumpBrass = new ItemClockworkPhase(64, 100, Names.ITEM.BRASS_LUMP);
-
-        GameRegistry.registerItem(ingotCopper, Names.ITEM.COPPER_INGOT);
-        GameRegistry.registerItem(ingotZinc, Names.ITEM.ZINC_INGOT);
-        GameRegistry.registerItem(ingotBrass, Names.ITEM.BRASS_INGOT);
-        GameRegistry.registerItem(ingotSteel, Names.ITEM.STEEL_INGOT);
-        GameRegistry.registerItem(ingotTemporal, Names.ITEM.TEMPORAL_INGOT);
-        GameRegistry.registerItem(ingotEternium, Names.ITEM.ETERNIUM_INGOT);
-        GameRegistry.registerItem(ingotMomentium, Names.ITEM.MOMENTIUM_INGOT);
-        GameRegistry.registerItem(ingotParadoxium, Names.ITEM.PARADOXIUM_INGOT);
-        GameRegistry.registerItem(lumpBrass, Names.ITEM.BRASS_LUMP);
-
-        OreDictionary.registerOre("ingotCopper", ingotCopper);
-        OreDictionary.registerOre("ingotZinc", ingotZinc);
-        OreDictionary.registerOre("ingotBrass", ingotBrass);
-        OreDictionary.registerOre("ingotSteel", ingotSteel);
-        OreDictionary.registerOre("ingotTemporal", ingotTemporal);
-
-        OreDictionary.registerOre("ingotEternium", ingotEternium); //These 3 probably don't need oreDict compatibility.
-        OreDictionary.registerOre("ingotMomentium", ingotMomentium); //We'll do anyways, just in case.
-        OreDictionary.registerOre("ingotParadoxium", ingotParadoxium); //Paradoxium ingots love watermelons.
+        try {
+            Constructor constructor = itemClass.getDeclaredConstructor(targetConstructor);
+            Item item = (Item) constructor.newInstance(parameters);
+            itemReference.setItem(item);
+            GameRegistry.registerItem(item, itemReference.getUnlocalizedName());
+            itemsForModel.add(itemReference);
+        } catch (NoSuchMethodException e) {
+            Logger.error("Tried to instantiate class for block '" + itemReference.getUnlocalizedName() + "' with invalid parameters.");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static Item bugSwatter;
-    public static Item ageDev;
-    public static Item schematicTool;
-    public static Item temporalDriveSimulate;
-    public static Item temporalDriveModify;
-    public static Item temporalDriveDuplicate;
-    public static Item moonFlowerSeeds;
-    public static Item temporalPearl;
-    public static void initMisc()
+    public static void registerItem(ItemReference itemReference, Class<? extends Item> itemClass, Class[] targetConstructor, Object[] parameters, String oreDictName)
     {
-        bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
-        ageDev = new ItemAgeDev(1, 100, "age_developer");
-        schematicTool = new ItemCreativeModSchematicTool(1, 100, "schematic_tool");
-        temporalDriveSimulate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
-        temporalDriveModify = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
-        temporalDriveDuplicate = new ItemClockworkPhase(64, 100, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
-        moonFlowerSeeds = new ItemMoonFlowerSeeds(64, 0, Names.ITEM.MOON_FLOWER_SEEDS);
-        temporalPearl = new ItemClockworkPhase(64, 0, Names.ITEM.TEMPORAL_PEARL);
+        try {
+            Constructor constructor = itemClass.getDeclaredConstructor(targetConstructor);
+            Item item = (Item) constructor.newInstance(parameters);
+            itemReference.setItem(item);
+            GameRegistry.registerItem(item, itemReference.getUnlocalizedName());
+            OreDictionary.registerOre(oreDictName, item);
+            itemsForModel.add(itemReference);
+        } catch (NoSuchMethodException e) {
+            Logger.error("Tried to instantiate class for block '" + itemReference.getUnlocalizedName() + "' with invalid parameters.");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
-        GameRegistry.registerItem(bugSwatter, "bug_swatter");
-        GameRegistry.registerItem(ageDev, "age_developer");
-        GameRegistry.registerItem(schematicTool, "schematic_tool");
-        GameRegistry.registerItem(temporalDriveSimulate, Names.ITEM.TEMPORAL_DRIVE_SIMULATE);
-        GameRegistry.registerItem(temporalDriveModify, Names.ITEM.TEMPORAL_DRIVE_MODIFY);
-        GameRegistry.registerItem(temporalDriveDuplicate, Names.ITEM.TEMPORAL_DRIVE_DUPLICATE);
-        GameRegistry.registerItem(moonFlowerSeeds, Names.ITEM.MOON_FLOWER_SEEDS);
-        GameRegistry.registerItem(temporalPearl, Names.ITEM.TEMPORAL_PEARL);
+    /**
+     * Gateway class to allow registerItem to modify the item references, simplifying the registration process somewhat.
+     */
+    public static class ItemReference
+    {
+        private Item item;
+        private String unlocalizedName = null;
+
+        public ItemReference(String unlocalizedName) {
+            item = null;
+            this.unlocalizedName = unlocalizedName;
+        }
+
+        public Item getItem() {
+            return this.item;
+        }
+
+        public void setItem(Item item) {
+            this.item = item;
+        }
+
+        public String getUnlocalizedName() {
+            return this.unlocalizedName;
+        }
+
+        public void setUnlocalizedName(String unlocalizedName) {
+            this.unlocalizedName = unlocalizedName;
+        }
     }
 }

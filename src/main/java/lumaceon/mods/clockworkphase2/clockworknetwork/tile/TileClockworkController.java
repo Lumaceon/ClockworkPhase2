@@ -1,43 +1,25 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.tile;
 
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkMachine;
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IClockworkNetworkTile;
-import lumaceon.mods.clockworkphase2.api.block.clockwork.IMainspringTile;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkTile;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 
-public class TileClockworkController extends TileClockworkPhase implements IClockworkNetworkTile
+public class TileClockworkController extends TileClockworkPhase implements IClockworkNetworkTile, ITickable
 {
     private ClockworkNetwork clockworkNetwork = new ClockworkNetwork();
     boolean setup = false;
 
     @Override
-    public void updateEntity()
+    public void update()
     {
         if(!setup)
         {
-            addNetworkTileAtLocation(xCoord + 1, yCoord, zCoord);
-            addNetworkTileAtLocation(xCoord - 1, yCoord, zCoord);
-            addNetworkTileAtLocation(xCoord, yCoord, zCoord + 1);
-            addNetworkTileAtLocation(xCoord, yCoord, zCoord - 1);
-            addNetworkTileAtLocation(xCoord + 2, yCoord, zCoord);
-            addNetworkTileAtLocation(xCoord - 2, yCoord, zCoord);
-            addNetworkTileAtLocation(xCoord, yCoord, zCoord + 2);
-            addNetworkTileAtLocation(xCoord, yCoord, zCoord - 2);
+            clockworkNetwork.addNetworkTile(this);
+            clockworkNetwork.loadNetwork(worldObj, false);
             setup = true;
-        }
-    }
-
-    private void addNetworkTileAtLocation(int x, int y, int z) {
-        TileEntity te = worldObj.getTileEntity(x, y, z);
-        if(te != null)
-        {
-            if(te instanceof IClockworkNetworkMachine)
-                clockworkNetwork.addMachine((IClockworkNetworkMachine) te);
-            if(te instanceof IMainspringTile)
-                clockworkNetwork.addMainspring((IMainspringTile) te);
         }
     }
 
@@ -51,8 +33,13 @@ public class TileClockworkController extends TileClockworkPhase implements ICloc
         this.clockworkNetwork = clockworkNetwork;
     }
 
+    @Override
+    public BlockPos getPosition() {
+        return getPos();
+    }
+
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return player.getDistance((double) xCoord, (double) yCoord, (double) zCoord) <= 8;
+        return player.getDistance((double) pos.getX(), (double) pos.getY(), (double) pos.getZ()) <= 8;
     }
 
     @Override

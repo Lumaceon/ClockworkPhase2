@@ -28,7 +28,7 @@ public abstract class TileTemporal extends TileClockworkPhase
             timeStorage.readFromNBT(nbt);
     }
 
-    public ITimezoneProvider getTimezone()
+    /*public ITimezoneProvider getTimezone()
     {
         if(timezone != null && Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) <= timezone.getRange())
             return timezone;
@@ -47,7 +47,7 @@ public abstract class TileTemporal extends TileClockworkPhase
         if(timezone == null || Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) <= timezone.getRange())
             return null;
         return timezone;
-    }
+    }*/
 
     public void updateClientTime(NBTTagCompound nbt) {
         if(timeStorage != null)

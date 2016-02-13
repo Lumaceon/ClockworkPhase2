@@ -76,7 +76,7 @@ public class ContainerAssemblyTable extends Container
 
         if(!this.world.isRemote)
         {
-            ItemStack itemstack = this.mainInventory.getStackInSlotOnClosing(0);
+            ItemStack itemstack = this.mainInventory.getStackInSlot(0);
             if(itemstack != null)
             {
                 p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);

@@ -74,18 +74,6 @@ public abstract class TileTemporalInventory extends TileTemporal implements IInv
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if(inventory[slot] != null)
-        {
-            ItemStack itemStack = inventory[slot];
-            inventory[slot] = null;
-            return itemStack;
-        }
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(int slot, ItemStack item)
     {
         inventory[slot] = item;
@@ -96,33 +84,13 @@ public abstract class TileTemporalInventory extends TileTemporal implements IInv
     }
 
     @Override
-    public String getInventoryName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return player.getDistance((double) xCoord, (double) yCoord, (double) zCoord) <= 8;
-    }
-
-    @Override
-    public void openInventory() {
-
-    }
-
-    @Override
-    public void closeInventory() {
-
+        return player.getDistance((double) getPos().getX(), (double) getPos().getY(), (double) getPos().getZ()) <= 8;
     }
 
     @Override

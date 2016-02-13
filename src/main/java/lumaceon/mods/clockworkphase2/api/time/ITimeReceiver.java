@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.api.time;
 
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Implemented on tile entity classes which should receive time.

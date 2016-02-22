@@ -142,9 +142,4 @@ public class TileTDA extends TileClockworkPhase implements ITickable
         }
         ClockworkPhase2.proxy.clearWorldRenderers(world, x, y, z);
     }
-
-    @Override
-    public void setState(int state) {}
-    @Override
-    public void setStateAndUpdate(int state) {}
 }

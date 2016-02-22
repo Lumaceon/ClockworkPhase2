@@ -12,10 +12,6 @@ import net.minecraft.world.World;
 
 public abstract class TileClockworkPhase extends TileEntity
 {
-    public abstract void setState(int state);
-
-    public abstract void setStateAndUpdate(int state);
-
     public void writeCustomNBT(NBTTagCompound nbt) {
         writeToNBT(nbt);
     }
@@ -25,8 +21,7 @@ public abstract class TileClockworkPhase extends TileEntity
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
-    {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return (oldState.getBlock() != newSate.getBlock());
     }
 

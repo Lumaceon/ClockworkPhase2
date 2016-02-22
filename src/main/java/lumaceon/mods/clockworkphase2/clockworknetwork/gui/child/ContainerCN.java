@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.gui.child;
 
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;

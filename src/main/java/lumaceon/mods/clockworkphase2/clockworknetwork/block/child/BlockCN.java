@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.clockworknetwork.block.child;
 
 import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 

@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
@@ -37,9 +37,4 @@ public class TileClockworkMixer extends TileClockworkNetworkMachine
     public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, EnumFacing side) {
         return false;
     }
-
-    @Override
-    public void setState(int state) {}
-    @Override
-    public void setStateAndUpdate(int state) {}
 }

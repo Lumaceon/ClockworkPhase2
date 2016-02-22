@@ -8,16 +8,29 @@ import net.minecraft.util.ITickable;
 
 public class TileCreativeMainspring extends TileClockworkPhase implements ITickable, IMainspringTile
 {
-    protected ClockworkNetwork clockworkNetwork = new ClockworkNetwork();
+    protected long uniqueID = -1;
+
+    protected ClockworkNetwork clockworkNetwork;
     boolean hasSetup = false;
 
     @Override
     public void update()
     {
+        if(uniqueID == -1)
+        {
+            uniqueID = System.currentTimeMillis();
+            markDirty();
+            worldObj.markBlockForUpdate(getPos());
+        }
+
         if(!hasSetup)
         {
-            clockworkNetwork.addNetworkTile(this);
-            clockworkNetwork.loadNetwork(worldObj, false);
+            if(clockworkNetwork == null)
+            {
+                clockworkNetwork = new ClockworkNetwork();
+                clockworkNetwork.addNetworkTile(this);
+                clockworkNetwork.loadNetwork(worldObj, false);
+            }
             hasSetup = true;
         }
     }
@@ -58,7 +71,14 @@ public class TileCreativeMainspring extends TileClockworkPhase implements ITicka
     }
 
     @Override
-    public void setState(int state) {}
+    public long getUniqueID() {
+        return uniqueID;
+    }
+
     @Override
-    public void setStateAndUpdate(int state) {}
+    public void setUniqueID(long uniqueID) {
+        this.uniqueID = uniqueID;
+        markDirty();
+        worldObj.markBlockForUpdate(getPos());
+    }
 }

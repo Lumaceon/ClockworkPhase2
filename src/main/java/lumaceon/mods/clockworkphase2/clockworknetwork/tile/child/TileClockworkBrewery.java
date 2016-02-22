@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
@@ -111,6 +111,11 @@ public class TileClockworkBrewery extends TileClockworkNetworkMachine
     }
 
     @Override
+    public boolean canExportToTargetInventory() {
+        return false;
+    }
+
+    @Override
     public int[] getSlotsForFace(EnumFacing side) {
         return new int[] { 0, 1, 2, 3 };
     }
@@ -128,11 +133,6 @@ public class TileClockworkBrewery extends TileClockworkNetworkMachine
     public boolean canExtractItem(int slotID, ItemStack outputStack, EnumFacing side) {
         return slotID > 0 && slotID < 4;
     }
-
-    @Override
-    public void setState(int state) {}
-    @Override
-    public void setStateAndUpdate(int state) {}
 
     /**
      * TileEntityBrewingStand has it's inventory set up with input being last (index 3) as opposed to my own convention

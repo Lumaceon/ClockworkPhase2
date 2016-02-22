@@ -11,13 +11,15 @@ import org.lwjgl.opengl.GL11;
 
 public class TESRAssemblyTable extends TileEntitySpecialRenderer
 {
-    private static final ResourceLocation mainTexture = new ResourceLocation(Reference.MOD_ID, "textures/blocks/model_textures/assembly_table.png");
-    public static final ModelBase MODEL = new ModelAssemblyTable();
+    private static final ResourceLocation mainTexture = new ResourceLocation(Reference.MOD_ID, ":textures/blocks/model_textures/assembly_table.png");
+    public static final ModelAssemblyTable MODEL = new ModelAssemblyTable();
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage)
     {
-        /*if(te != null && te instanceof TileAssemblyTable)
+        if(System.nanoTime() % 100 == 0)
+            System.out.println("AssemblyTable is rendering.");
+        if(te != null && te instanceof TileAssemblyTable)
         {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
@@ -28,6 +30,6 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer
             MODEL.render(null, 0F, 0F, 0F, 0F, 0F, 0.0625F);
 
             GL11.glPopMatrix();
-        }*/
+        }
     }
 }

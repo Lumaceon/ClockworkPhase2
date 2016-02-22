@@ -87,7 +87,7 @@ public class ClockworkPhase2
         MinecraftForge.EVENT_BUS.register(new PlayerHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());
         MinecraftForge.EVENT_BUS.register(new AchievementHandler());
-        FMLCommonHandler.instance().bus().register(new TickHandler());
+        MinecraftForge.EVENT_BUS.register(new TickHandler());
         proxy.initSideHandlers();
 
         new GuiHandler();

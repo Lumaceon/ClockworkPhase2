@@ -28,5 +28,9 @@ public class PacketHandler
         INSTANCE.registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, nextID, Side.SERVER);
         nextID++;
         INSTANCE.registerMessage(HandlerToolUpgradeActivate.class, MessageToolUpgradeActivate.class, nextID, Side.SERVER);
+        nextID++;
+        INSTANCE.registerMessage(HandlerClockworkControllerSetup.class, MessageClockworkControllerSetup.class, nextID, Side.SERVER);
+        nextID++;
+        INSTANCE.registerMessage(HandlerItemStorageResize.class, MessageItemStorageResize.class, nextID, Side.SERVER);
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 
 public abstract class ClockworkNetworkGuiClient extends ClockworkNetworkContainer
 {
+    protected float[] colors = new float[] { 1.0F, 1.0F, 1.0F };
+
     public ClockworkNetworkGuiClient(TileEntity te, int xSize, int ySize) {
         super(te, xSize, ySize);
     }
@@ -44,5 +46,13 @@ public abstract class ClockworkNetworkGuiClient extends ClockworkNetworkContaine
         renderer.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex(1, 0).endVertex();
         renderer.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex(0, 0).endVertex();
         tessellator.draw();
+    }
+
+    /**
+     * Get the colors to apply to the controller's output line. It will automatically look semi-transparent, so you
+     * should keep that in mind when choosing a color (typically brighter colors are better).
+     */
+    public float[] getColorRGB() {
+        return colors;
     }
 }

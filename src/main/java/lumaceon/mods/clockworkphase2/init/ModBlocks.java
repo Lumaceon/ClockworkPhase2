@@ -64,6 +64,7 @@ public class ModBlocks
     public static BlockReference clockworkAlloyFurnace = new BlockReference("clockwork_alloy_furnace");
     public static BlockReference clockworkSuperAlloyFurnace = new BlockReference("clockwork_super_alloy_furnace");
     public static BlockReference clockworkCraftingTable = new BlockReference("clockwork_crafting_table");
+    public static BlockReference clockworkItemStorage = new BlockReference("clockwork_item_storage");
     //THIRD AGE
     public static BlockReference ghostlyLantern = new BlockReference("ghostly_lanturn");
     public static void init()
@@ -100,6 +101,7 @@ public class ModBlocks
         registerBlock(clockworkAlloyFurnace, BlockClockworkAlloyFurnace.class, matName, new Object[] {Material.iron, clockworkAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkAlloyFurnace.class);
         registerBlock(clockworkSuperAlloyFurnace, BlockClockworkSuperAlloyFurnace.class, matName, new Object[] {Material.iron, clockworkSuperAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkSuperAlloyFurnace.class);
         registerBlock(clockworkCraftingTable, BlockClockworkCraftingTable.class, matName, new Object[] {Material.iron, clockworkCraftingTable.getUnlocalizedName()});
+        registerBlock(clockworkItemStorage, BlockClockworkItemStorage.class, matName, new Object[] {Material.iron, clockworkItemStorage.getUnlocalizedName()});
         //THIRD AGE
         registerBlock(ghostlyLantern, BlockGhostlyLantern.class, matName, new Object[] {Material.glass, ghostlyLantern.getUnlocalizedName()});
     }
@@ -165,6 +167,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileClockworkSuperAlloyFurnace.class, clockworkSuperAlloyFurnace.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkAlloyFurnace.class, clockworkAlloyFurnace.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkCraftingTable.class, clockworkCraftingTable.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileClockworkItemStorage.class, clockworkItemStorage.getUnlocalizedName());
     }
 
     public static void initModels() {

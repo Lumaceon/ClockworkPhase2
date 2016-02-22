@@ -15,6 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ContainerClockworkController extends Container
 {
@@ -37,8 +38,8 @@ public class ContainerClockworkController extends Container
 
         if(clockworkNetwork != null)
         {
-            ArrayList<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines();
-            if(machines != null && !machines.isEmpty())
+            Collection<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines().values();
+            if(!machines.isEmpty())
                 for(IClockworkNetworkMachine machine : machines)
                     if(machine != null)
                     {
@@ -61,8 +62,8 @@ public class ContainerClockworkController extends Container
         int startingIndex = 0;
         if(clockworkNetwork != null)
         {
-            ArrayList<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines();
-            if(machines != null && !machines.isEmpty())
+            Collection<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines().values();
+            if(!machines.isEmpty())
                 for (IClockworkNetworkMachine machine : machines)
                     if(machine != null)
                     {
@@ -84,8 +85,8 @@ public class ContainerClockworkController extends Container
         int startingIndex = 0;
         if(clockworkNetwork != null)
         {
-            ArrayList<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines();
-            if(machines != null && !machines.isEmpty())
+            Collection<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines().values();
+            if(!machines.isEmpty())
                 for(IClockworkNetworkMachine machine : machines)
                     if(machine != null)
                     {
@@ -111,8 +112,8 @@ public class ContainerClockworkController extends Container
         int startingIndex = 0;
         if(clockworkNetwork != null)
         {
-            ArrayList<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines();
-            if(machines != null && !machines.isEmpty())
+            Collection<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines().values();
+            if(!machines.isEmpty())
                 for(IClockworkNetworkMachine machine : machines)
                     if(machine != null)
                     {
@@ -144,8 +145,8 @@ public class ContainerClockworkController extends Container
 
             if(clockworkNetwork != null)
             {
-                ArrayList<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines();
-                if(machines != null && !machines.isEmpty())
+                Collection<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines().values();
+                if(!machines.isEmpty())
                     for(IClockworkNetworkMachine machine : machines)
                         if(machine != null)
                         {
@@ -176,8 +177,8 @@ public class ContainerClockworkController extends Container
 
             if(clockworkNetwork != null)
             {
-                ArrayList<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines();
-                if(machines != null && !machines.isEmpty())
+                Collection<IClockworkNetworkMachine> machines = clockworkNetwork.getMachines().values();
+                if(!machines.isEmpty())
                     for(IClockworkNetworkMachine machine : machines)
                         if(machine != null)
                         {

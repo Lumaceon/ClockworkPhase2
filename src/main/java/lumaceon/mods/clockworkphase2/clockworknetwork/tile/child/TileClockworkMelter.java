@@ -2,7 +2,8 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkTile;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.*;
@@ -19,12 +20,6 @@ public class TileClockworkMelter extends TileClockworkNetworkMachine implements 
     public ClockworkNetworkContainer getGui() {
         return ClockworkPhase2.proxy.getClockworkNetworkGui(this, 3);
     }
-
-    @Override
-    public void setState(int state) {}
-
-    @Override
-    public void setStateAndUpdate(int state) {}
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {

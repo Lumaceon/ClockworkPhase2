@@ -81,16 +81,6 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
     }
 
     @Override
-    public void setState(int state) {
-
-    }
-
-    @Override
-    public void setStateAndUpdate(int state) {
-
-    }
-
-    @Override
     public boolean canConnectFrom(EnumFacing from) {
         return false;
     }

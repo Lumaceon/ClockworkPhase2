@@ -33,9 +33,15 @@ public class Textures
         public static ResourceLocation FURNACE_FORE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/furnace_fore.png");
         public static ResourceLocation BREWERY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/brewery.png");
         public static ResourceLocation ALLOY_FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/alloy_furnace.png");
+        public static ResourceLocation SUPER_ALLOY_FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/super_alloy_furnace.png");
         public static ResourceLocation MELTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/melter.png");
         public static ResourceLocation MIXER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/mixer.png");
         public static ResourceLocation CHEST = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/chest.png");
+
+        public static ResourceLocation SLOT = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/slot.png");
+        public static ResourceLocation SLOT_GREEN = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/slotgreen.png");
+        public static ResourceLocation SLOT_RED = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/slotred.png");
+        public static ResourceLocation SLOT_BLUE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/slotblue.png");
     }
 
     public static class GLYPH

@@ -57,12 +57,6 @@ public class TileTimeCollector extends TileClockworkPhase implements ITimeProvid
     }
 
     @Override
-    public void setState(int state) {}
-
-    @Override
-    public void setStateAndUpdate(int state) {}
-
-    @Override
     public boolean canConnectFrom(EnumFacing from) {
         return false;
     }

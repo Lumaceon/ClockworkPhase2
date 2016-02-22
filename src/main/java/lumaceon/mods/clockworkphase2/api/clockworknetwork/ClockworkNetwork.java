@@ -7,7 +7,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class ClockworkNetwork
 {
@@ -15,9 +16,9 @@ public class ClockworkNetwork
     protected int currentTension = 0;
     protected int maxTension = 0;
 
-    protected ArrayList<IMainspringTile> mainsprings = new ArrayList<IMainspringTile>(1);
-    protected ArrayList<IClockworkNetworkMachine> machines = new ArrayList<IClockworkNetworkMachine>(1);
-    protected ArrayList<IClockworkNetworkTile> additionalTiles = new ArrayList<IClockworkNetworkTile>(1);
+    protected HashMap<Long, IMainspringTile> mainsprings = new HashMap<Long, IMainspringTile>(1);
+    protected HashMap<Long, IClockworkNetworkMachine> machines = new HashMap<Long, IClockworkNetworkMachine>(1);
+    protected HashMap<Long, IClockworkNetworkTile> additionalTiles = new HashMap<Long, IClockworkNetworkTile>(1);
 
 
     public int getCurrentTension() {
@@ -29,7 +30,8 @@ public class ClockworkNetwork
      */
     public int consumeTension(int tensionToConsume) {
         int initialTensionToConsume = tensionToConsume;
-        for(IMainspringTile mainspring : mainsprings)
+        Collection<IMainspringTile> mainspringTiles = mainsprings.values();
+        for(IMainspringTile mainspring : mainspringTiles)
             if(mainspring != null && tensionToConsume > 0)
                 tensionToConsume -= mainspring.consumeTension(tensionToConsume);
         currentTension -= (initialTensionToConsume - tensionToConsume);
@@ -41,7 +43,8 @@ public class ClockworkNetwork
      */
     public int addTension(int tensionToAdd) {
         int initialTensionToAdd = tensionToAdd;
-        for(IMainspringTile mainspring : mainsprings)
+        Collection<IMainspringTile> mainspringTiles = mainsprings.values();
+        for(IMainspringTile mainspring : mainspringTiles)
             if(mainspring != null && tensionToAdd > 0)
                 tensionToAdd -= mainspring.addTension(tensionToAdd);
         currentTension += (initialTensionToAdd - tensionToAdd);
@@ -55,44 +58,55 @@ public class ClockworkNetwork
     /**
      * @return True if added, false if not (usually because it already is a part of this network).
      */
-    public boolean addMainspring(IMainspringTile mainspring) {
-        for(IMainspringTile m : mainsprings)
-            if(m.equals(mainspring))
-                return false;
-        mainsprings.add(mainspring);
-        currentTension += mainspring.getTension();
-        maxTension += mainspring.getMaxTension();
-        mainspring.setClockworkNetwork(this);
-        return true;
-    }
+    public boolean addNetworkTile(IClockworkNetworkTile clockworkNetworkTile)
+    {
+        IClockworkNetworkTile dupe = getTile(clockworkNetworkTile.getUniqueID());
+        if(dupe != null) //A tile already exists with that ID but...
+        {
+            if(dupe.equals(clockworkNetworkTile)) //...is it the same tile we're trying to add now?
+                return false; //If it is, just return false and don't add it; no problem here.
+            else //...or is it a completely separate block?
+            {
+                //Keep increasing uniqueID until it actually is unique.
+                long uniqueID = System.currentTimeMillis();
+                while(getTile(uniqueID) != null)
+                    uniqueID++;
 
-    /**
-     * @return True if added, false if not (usually because it already is a part of this network).
-     */
-    public boolean addMachine(IClockworkNetworkMachine clockworkMachine) {
-        for(IClockworkNetworkMachine m : machines)
-            if(m.equals(clockworkMachine))
-                return false;
-        machines.add(clockworkMachine);
-        clockworkMachine.setClockworkNetwork(this);
-        return true;
-    }
+                clockworkNetworkTile.setUniqueID(uniqueID); //Give the new tile the unique ID.
+            }
+        }
 
-    /**
-     * @return True if added, false if not (usually because it already is a part of this network).
-     */
-    public boolean addNetworkTile(IClockworkNetworkTile clockworkNetworkTile) {
-        for(IClockworkNetworkTile tile : additionalTiles)
-            if(tile.equals(clockworkNetworkTile))
-                return false;
-        additionalTiles.add(clockworkNetworkTile);
+        if(clockworkNetworkTile instanceof IClockworkNetworkMachine)
+            machines.put(clockworkNetworkTile.getUniqueID(), (IClockworkNetworkMachine) clockworkNetworkTile);
+        else if(clockworkNetworkTile instanceof IMainspringTile)
+        {
+            mainsprings.put(clockworkNetworkTile.getUniqueID(), (IMainspringTile) clockworkNetworkTile);
+            currentTension += ((IMainspringTile) clockworkNetworkTile).getTension();
+            maxTension += ((IMainspringTile) clockworkNetworkTile).getMaxTension();
+        }
+        else
+            additionalTiles.put(clockworkNetworkTile.getUniqueID(), clockworkNetworkTile);
         clockworkNetworkTile.setClockworkNetwork(this);
         return true;
     }
 
-    public ArrayList<IMainspringTile> getMainsprings() { return mainsprings; }
-    public ArrayList<IClockworkNetworkMachine> getMachines() { return machines; }
-    public ArrayList<IClockworkNetworkTile> getAdditionalTiles() { return additionalTiles; }
+    public HashMap<Long, IMainspringTile> getMainsprings() { return mainsprings; }
+    public HashMap<Long, IClockworkNetworkMachine> getMachines() { return machines; }
+    public HashMap<Long, IClockworkNetworkTile> getAdditionalTiles() { return additionalTiles; }
+
+    public IClockworkNetworkTile getTile(long uniqueID)
+    {
+        IClockworkNetworkTile tile = machines.get(uniqueID);
+        if(tile != null)
+            return tile;
+
+        tile = mainsprings.get(uniqueID);
+        if(tile != null)
+            return tile;
+
+        tile = additionalTiles.get(uniqueID);
+        return tile;
+    }
 
     /**
      * Joins the tiles network passed in with this one. The parameter network will thus cease to exist in favor of
@@ -101,15 +115,17 @@ public class ClockworkNetwork
      */
     public void joinNetworks(ClockworkNetwork clockworkNetwork)
     {
-        ArrayList<IMainspringTile> newNetworkMainsprings = clockworkNetwork.getMainsprings();
-        ArrayList<IClockworkNetworkMachine> newNetworkMachines = clockworkNetwork.getMachines();
+        Collection<IMainspringTile> newNetworkMainsprings = clockworkNetwork.getMainsprings().values();
+        Collection<IClockworkNetworkMachine> newNetworkMachines = clockworkNetwork.getMachines().values();
+        Collection<IClockworkNetworkTile> newNetworkTiles = clockworkNetwork.getAdditionalTiles().values();
+
         for(IMainspringTile m : newNetworkMainsprings)
-            addMainspring(m);
+            addNetworkTile(m);
 
         for(IClockworkNetworkMachine m : newNetworkMachines)
-            addMachine(m);
+            addNetworkTile(m);
 
-        for(IClockworkNetworkTile tile : additionalTiles)
+        for(IClockworkNetworkTile tile : newNetworkTiles)
             addNetworkTile(tile);
     }
 
@@ -123,12 +139,14 @@ public class ClockworkNetwork
     {
         if(!forceLoad && hasLoaded)
             return;
+        hasLoaded = true;
 
         boolean addedSomething = false;
         BlockPos pos;
-        for(int n = 0 ; n < additionalTiles.size(); n++)
+        IMainspringTile[] springs = mainsprings.values().toArray(new IMainspringTile[mainsprings.size()]);
+        for(int n = 0 ; n < springs.length; n++)
         {
-            IClockworkNetworkTile t = additionalTiles.get(n);
+            IMainspringTile t = springs[n];
             if(t != null)
             {
                 pos = t.getPosition();
@@ -146,9 +164,10 @@ public class ClockworkNetwork
                     addedSomething = true;
             }
         }
-        for(int n = 0 ; n < mainsprings.size(); n++)
+        IClockworkNetworkMachine[] machs = machines.values().toArray(new IClockworkNetworkMachine[machines.size()]);
+        for(int n = 0 ; n < machs.length; n++)
         {
-            IMainspringTile t = mainsprings.get(n);
+            IClockworkNetworkMachine t = machs[n];
             if(t != null)
             {
                 pos = t.getPosition();
@@ -166,10 +185,10 @@ public class ClockworkNetwork
                     addedSomething = true;
             }
         }
-
-        for(int n = 0 ; n < machines.size(); n++)
+        IClockworkNetworkTile[] tiles = additionalTiles.values().toArray(new IClockworkNetworkTile[additionalTiles.size()]);
+        for(int n = 0 ; n < tiles.length; n++)
         {
-            IClockworkNetworkMachine t = machines.get(n);
+            IClockworkNetworkTile t = tiles[n];
             if(t != null)
             {
                 pos = t.getPosition();
@@ -187,8 +206,6 @@ public class ClockworkNetwork
                     addedSomething = true;
             }
         }
-
-        hasLoaded = true;
 
         if(addedSomething)
             loadNetwork(world, true);
@@ -203,7 +220,6 @@ public class ClockworkNetwork
     protected boolean checkAndAddTileAtPosition(World world, BlockPos pos)
     {
         TileEntity tile;
-        boolean isMachineOrMainspring = false;
         boolean addedSomething = false;
 
         tile = world.getTileEntity(pos);
@@ -211,27 +227,14 @@ public class ClockworkNetwork
         {
             IClockworkNetworkTile networkTile = (IClockworkNetworkTile) tile;
 
-            if(networkTile.getClockworkNetwork() != null && !networkTile.getClockworkNetwork().equals(this))
+            if(networkTile.getClockworkNetwork() != null && !(networkTile.getClockworkNetwork().equals(this)))
             {
                 joinNetworks(networkTile.getClockworkNetwork()); //Resistance is futile.
                 addedSomething = true;
             }
 
-            if(tile instanceof IClockworkNetworkMachine)
-            {
-                if(addMachine((IClockworkNetworkMachine) tile))
-                    addedSomething = true;
-                isMachineOrMainspring = true;
-            }
-            if(tile instanceof IMainspringTile)
-            {
-                if(addMainspring((IMainspringTile) tile))
-                    addedSomething = true;
-                isMachineOrMainspring = true;
-            }
-            if(!isMachineOrMainspring)
-                if(addNetworkTile((IClockworkNetworkTile) tile))
-                    addedSomething = true;
+            if(addNetworkTile((IClockworkNetworkTile) tile))
+                addedSomething = true;
             return addedSomething;
         }
         return false;

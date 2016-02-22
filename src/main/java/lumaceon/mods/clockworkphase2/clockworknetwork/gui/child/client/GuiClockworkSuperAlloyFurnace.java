@@ -13,20 +13,19 @@ public class GuiClockworkSuperAlloyFurnace extends GuiCN
         if(te != null && te instanceof IInventory)
         {
             slots = new Slot[] {
-                    new Slot((IInventory) te, 0, 0, 0),
-                    new Slot((IInventory) te, 1, 20, 0),
-                    new Slot((IInventory) te, 2, 40, 0),
-                    new Slot((IInventory) te, 3, 100, 0),
-                    new Slot((IInventory) te, 4, 120, 0),
-                    new Slot((IInventory) te, 5, 140, 0),
-                    new Slot((IInventory) te, 6, 70, 0)
+                    new Slot((IInventory) te, 0, 1, 1),
+                    new Slot((IInventory) te, 1, 23, 1),
+                    new Slot((IInventory) te, 2, 45, 1),
+                    new Slot((IInventory) te, 3, 67, 1),
+                    new Slot((IInventory) te, 4, 89, 1),
+                    new Slot((IInventory) te, 5, 111, 1)
             };
         }
     }
 
     @Override
     public void drawBackground(int left, int top, float zLevel) {
-        Minecraft.getMinecraft().renderEngine.bindTexture(Textures.GUI.ALLOY_FURNACE);
+        Minecraft.getMinecraft().renderEngine.bindTexture(Textures.GUI.SUPER_ALLOY_FURNACE);
         this.drawTexturedModalRect(left, top, xSize, ySize, zLevel);
     }
 

@@ -44,7 +44,7 @@ public class ServerProxy extends CommonProxy
         switch(id)
         {
             case 0: //Clockwork Furnace
-                return new ContainerCNFurnace(te, 168, 18);
+                return new ContainerCNFurnace(te, 18, 18);
             case 1: //Clockwork Brewery
                 return new ContainerCNBrewery(te, 80, 76);
             case 2: //Clockwork Mixer
@@ -59,5 +59,10 @@ public class ServerProxy extends CommonProxy
                 return new ContainerCNCraftingTable(te, 100, 60);
         }
         return null;
+    }
+
+    @Override
+    public ClockworkNetworkContainer getClockworkNetworkItemStorage(TileEntity te, int xSlots, int ySlots) {
+        return new ContainerCNItemStorage(te, xSlots*18, ySlots*18);
     }
 }

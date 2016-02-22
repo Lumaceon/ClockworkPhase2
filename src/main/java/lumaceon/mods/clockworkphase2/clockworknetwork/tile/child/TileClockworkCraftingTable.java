@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -28,6 +28,16 @@ public class TileClockworkCraftingTable extends TileClockworkNetworkMachine
     @Override
     public ClockworkNetworkContainer getGui() {
         return ClockworkPhase2.proxy.getClockworkNetworkGui(this, 6);
+    }
+
+    @Override
+    public boolean canExportToTargetInventory() {
+        return false;
+    }
+
+    @Override
+    public boolean isValidTargetInventory() {
+        return false;
     }
 
     @Override

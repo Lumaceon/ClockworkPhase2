@@ -16,8 +16,7 @@ public class ContainerCNSuperAlloyFurnace extends ContainerCN
                     new Slot((IInventory) te, 2, 40, 0),
                     new Slot((IInventory) te, 3, 100, 0),
                     new Slot((IInventory) te, 4, 120, 0),
-                    new Slot((IInventory) te, 5, 140, 0),
-                    new Slot((IInventory) te, 6, 70, 0)
+                    new Slot((IInventory) te, 5, 140, 0)
             };
         }
     }

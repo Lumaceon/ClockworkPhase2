@@ -291,10 +291,4 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITimezon
         }
         return 0;
     }
-
-    @Override
-    public void setState(int state) {} //NOOP
-
-    @Override
-    public void setStateAndUpdate(int state) {} //NOOP
 }

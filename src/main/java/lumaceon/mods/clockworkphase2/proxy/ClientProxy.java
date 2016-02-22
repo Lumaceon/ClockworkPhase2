@@ -21,7 +21,6 @@ import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.timetravel.third.world.WorldProviderThirdAge;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -70,9 +69,9 @@ public class ClientProxy extends CommonProxy
         RenderHandler renderer = new RenderHandler();
 
         MinecraftForge.EVENT_BUS.register(renderer);
-        FMLCommonHandler.instance().bus().register(renderer);
-        FMLCommonHandler.instance().bus().register(new ClientTickHandler());
-        FMLCommonHandler.instance().bus().register(new KeyHandler());
+        MinecraftForge.EVENT_BUS.register(renderer);
+        MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
+        MinecraftForge.EVENT_BUS.register(new KeyHandler());
     }
 
     @Override
@@ -135,7 +134,7 @@ public class ClientProxy extends CommonProxy
         switch(id)
         {
             case 0: //Clockwork Furnace
-                return new GuiClockworkFurnaceClient(te, 168, 18);
+                return new GuiClockworkFurnaceClient(te, 18, 18);
             case 1: //Clockwork Brewery
                 return new GuiClockworkBreweryClient(te, 80, 74);
             case 2: //Clockwork Mixer
@@ -143,12 +142,17 @@ public class ClientProxy extends CommonProxy
             case 3: //Clockwork Melter
                 return new GuiClockworkMelterClient(te, 172, 80);
             case 4: //Clockwork Super Alloy Furnace
-                return new GuiClockworkSuperAlloyFurnace(te, 200, 18);
+                return new GuiClockworkSuperAlloyFurnace(te, 128, 18);
             case 5: //Clockwork Alloy Furnace
-                return new GuiClockworkAlloyFurnace(te, 100, 18);
+                return new GuiClockworkAlloyFurnace(te, 40, 18);
             case 6: //Clockwork Crafting Table
                 return new GuiClockworkCraftingTable(te, 100, 60);
         }
         return null;
+    }
+
+    @Override
+    public ClockworkNetworkContainer getClockworkNetworkItemStorage(TileEntity te, int xSlots, int ySlots) {
+        return new GuiClockworkItemStorage(te, 18*xSlots, 18*ySlots);
     }
 }

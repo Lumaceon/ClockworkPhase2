@@ -68,7 +68,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase implements
                     this.worldObj.markBlockForUpdate(new BlockPos(x, y, z));
                     blocksToPlace--;
                 }
-                setStateAndUpdate(1);
+                //setStateAndUpdate(1);
             }
             else if(blocksToPlace > 0)
             {
@@ -91,7 +91,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase implements
         }
     }
 
-    @Override
+    /*@Override
     public void setState(int state) {
         machineState = state;
     }
@@ -105,7 +105,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase implements
             PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(pos.getX(), pos.getY(), pos.getZ(), state), new NetworkRegistry.TargetPoint(worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 200));
             markDirty();
         }
-    }
+    }*/
 
     public static void destroyMultiblock(World world, int x, int y, int z)
     {

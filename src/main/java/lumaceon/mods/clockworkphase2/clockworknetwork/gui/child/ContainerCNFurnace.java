@@ -10,6 +10,6 @@ public class ContainerCNFurnace extends ContainerCN
     public ContainerCNFurnace(TileEntity te, int xSize, int ySize) {
         super(te, xSize, ySize);
         if(te != null && te instanceof IInventory)
-            slots = new Slot[] { new SlotInventoryValid((IInventory) te, 0, 1, 1), new SlotInventoryValid((IInventory) te, 1, 151, 1)};
+            slots = new Slot[] { new SlotInventoryValid((IInventory) te, 0, 1, 1)};
     }
 }

@@ -69,12 +69,6 @@ public class TileTimeWell extends TileTemporalInventory implements ITimeReceiver
     }
 
     @Override
-    public void setState(int state) {}
-
-    @Override
-    public void setStateAndUpdate(int state) {}
-
-    @Override
     public ItemStack removeStackFromSlot(int index) {
         return null;
     }

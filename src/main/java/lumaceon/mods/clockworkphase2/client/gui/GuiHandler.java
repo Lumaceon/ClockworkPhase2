@@ -6,7 +6,9 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.ContainerClockworkController;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.GuiClockworkController;
+import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkItemStorage;
 import lumaceon.mods.clockworkphase2.container.ContainerClockworkFurnace;
+import lumaceon.mods.clockworkphase2.container.ContainerClockworkItemStorage;
 import lumaceon.mods.clockworkphase2.container.ContainerTemporalFurnace;
 import lumaceon.mods.clockworkphase2.container.ContainerTimeWell;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkController;
@@ -45,6 +47,8 @@ public class GuiHandler implements IGuiHandler
             //SKIP 4 as it is client only.
             case 5:
                 return new ContainerClockworkController(player.inventory, (TileClockworkController) te, world, 0, 0);
+            case 6:
+                return new ContainerClockworkItemStorage(player.inventory, (TileClockworkItemStorage) te, world);
         }
         return null;
     }
@@ -73,6 +77,8 @@ public class GuiHandler implements IGuiHandler
                 return new GuiClockworkTool(items);
             case 5:
                 return new GuiClockworkController(player.inventory, (TileClockworkController) te, world);
+            case 6:
+                return new GuiClockworkItemStorage(player.inventory, (TileClockworkItemStorage) te, world);
         }
         return null;
     }

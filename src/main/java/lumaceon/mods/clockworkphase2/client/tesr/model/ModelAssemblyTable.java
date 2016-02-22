@@ -75,26 +75,23 @@ public class ModelAssemblyTable extends ModelBase
         setRotation(footRest, 0F, 0F, 0F);
     }
 
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        super.render(entity, f, f1, f2, f3, f4, f5);
-        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        leftStand.render(f5);
-        rightStand.render(f5);
-        leftFrontLeg.render(f5);
-        leftBackLeg.render(f5);
-        rightFrontLeg.render(f5);
-        rightBackLeg.render(f5);
-        surfaceTable.render(f5);
-        footRest.render(f5);
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float scale) {
+        super.render(entity, f, f1, f2, f3, f4, scale);
+        setRotationAngles(f, f1, f2, f3, f4, scale, entity);
+        leftStand.render(scale);
+        rightStand.render(scale);
+        leftFrontLeg.render(scale);
+        leftBackLeg.render(scale);
+        rightFrontLeg.render(scale);
+        rightBackLeg.render(scale);
+        surfaceTable.render(scale);
+        footRest.render(scale);
     }
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
         model.rotateAngleZ = z;
-    }
-
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }
 }

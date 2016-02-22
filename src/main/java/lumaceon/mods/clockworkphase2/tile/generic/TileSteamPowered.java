@@ -44,14 +44,4 @@ public class TileSteamPowered extends TileClockworkPhase implements IFluidHandle
     public FluidTankInfo[] getTankInfo(EnumFacing from) {
         return new FluidTankInfo[] {new FluidTankInfo(new FluidStack(ModFluids.steam, 0), steamUsePerTick)};
     }
-
-    @Override
-    public void setState(int state) {
-
-    }
-
-    @Override
-    public void setStateAndUpdate(int state) {
-
-    }
 }

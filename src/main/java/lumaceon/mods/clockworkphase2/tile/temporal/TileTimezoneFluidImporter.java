@@ -28,16 +28,6 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
     }
 
     @Override
-    public void setState(int state) {
-
-    }
-
-    @Override
-    public void setStateAndUpdate(int state) {
-
-    }
-
-    @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         ItemStack timestream = getTimezoneModule();

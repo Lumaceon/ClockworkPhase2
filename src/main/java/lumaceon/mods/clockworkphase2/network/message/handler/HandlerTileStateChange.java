@@ -17,8 +17,8 @@ public class HandlerTileStateChange implements IMessageHandler<MessageTileStateC
         if(Minecraft.getMinecraft().theWorld != null)
         {
             TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(message.x, message.y, message.z));
-            if(te != null && te instanceof TileClockworkPhase)
-                ((TileClockworkPhase) te).setState(message.state);
+            //if(te != null && te instanceof TileClockworkPhase)
+                ///((TileClockworkPhase) te).setState(message.state);
         }
         return null;
     }

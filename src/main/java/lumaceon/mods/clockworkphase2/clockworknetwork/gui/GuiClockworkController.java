@@ -4,23 +4,28 @@ import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetwor
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkGuiClient;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkTile;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.elements.GuiButtonCNGui;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.elements.GuiCNGuiElement;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkController;
+import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageClockworkControllerSetup;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class GuiClockworkController extends GuiContainer
 {
@@ -37,6 +42,7 @@ public class GuiClockworkController extends GuiContainer
 
     private int mouseClickedAtX, mouseClickedAtY, selectionOriginX, selectionOriginY;
     private GuiCNGuiElement selectedConfigurationGui = null;
+    private boolean configuringOutput = false;
 
     //Fixes a bug where actionPerformed is called twice if the state changes and adds a button at the clicked location
     private boolean stateChangedThisTick = false;
@@ -107,29 +113,28 @@ public class GuiClockworkController extends GuiContainer
     {
         inactiveGUIs.clear();
         int iterations = 0;
-        ArrayList<IClockworkNetworkMachine> machines = cn.getMachines();
-        if(machines != null)
-            for(IClockworkNetworkMachine machine : machines)
-                if(machine != null)
+        Collection<IClockworkNetworkMachine> machines = cn.getMachines().values();
+        for(IClockworkNetworkMachine machine : machines)
+            if(machine != null)
+            {
+                ClockworkNetworkContainer gui = machine.getGui();
+                if(gui != null)
                 {
-                    ClockworkNetworkContainer gui = machine.getGui();
-                    if(gui != null)
-                    {
-                        boolean skip = false;
-                        for(ChildGuiData child : guiDataList) //Don't list active GUIs as inactive.
-                            if(child != null && child.machine != null && child.machine.equals(machine))
-                            {
-                                skip = true;
-                                break;
-                            }
-                        if(skip)
-                            continue;
-                        int x = iterations % 2 == 0 ? guiLeft : xSize - gui.getSizeX();
-                        int y = iterations % 4 >= 2 ? 160 : 40;
-                        inactiveGUIs.add(new ChildGuiData(machine, gui, x, y, xSize, ySize));
-                        ++iterations;
-                    }
+                    boolean skip = false;
+                    for(ChildGuiData child : guiDataList) //Don't list active GUIs as inactive.
+                        if(child != null && child.machine != null && child.machine.equals(machine))
+                        {
+                            skip = true;
+                            break;
+                        }
+                    if(skip)
+                        continue;
+                    int x = iterations % 2 == 0 ? guiLeft : xSize - gui.getSizeX();
+                    int y = iterations % 4 >= 2 ? 160 : 40;
+                    inactiveGUIs.add(new ChildGuiData(machine, gui, x, y, xSize, ySize));
+                    ++iterations;
                 }
+            }
     }
 
     @Override
@@ -139,21 +144,69 @@ public class GuiClockworkController extends GuiContainer
             stateChangedThisTick = false;
     }
 
+    private static final float[] WHITE_DEFAULT = { 1.0F, 1.0F, 1.0F };
     @Override
-    protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         GL11.glEnable(GL11.GL_BLEND);
         drawStaticBackgrounds();
         GL11.glColor4f(1F, 1F, 1F, 1F);
-        if(guiState.equals(State.DEFAULT))
-            for(ChildGuiData child : guiDataList)
+        for(ChildGuiData child : guiDataList)
+        {
+            if(guiState.equals(State.DEFAULT) || guiState.equals(State.CONFIG) && child.machine != null)
+            {
+                IClockworkNetworkTile targetInvy = child.machine.getTargetInventory();
+                if (targetInvy != null)
+                    for (ChildGuiData cld : guiDataList)
+                        if (cld != null && cld.machine != null && cld.machine.equals(targetInvy)) {
+                            float[] colors;
+                            if(child.gui instanceof ClockworkNetworkGuiClient)
+                                colors = ((ClockworkNetworkGuiClient) child.gui).getColorRGB();
+                            else
+                                colors = WHITE_DEFAULT;
+                            int guiComponentCenterX = child.getX(width) + child.gui.getSizeX() / 2;
+                            int guiComponentCenterY = child.getY(height) + child.gui.getSizeY() / 2;
+
+                            int guiComponentCenterX2 = cld.getX(width) + cld.gui.getSizeX() / 2;
+                            int guiComponentCenterY2 = cld.getY(height) + cld.gui.getSizeY() / 2;
+                            GL11.glLineWidth(5.0F);
+                            GL11.glPointSize(5.0F);
+                            GlStateManager.disableTexture2D();
+                            this.drawLine(guiComponentCenterX, guiComponentCenterY, guiComponentCenterX2, guiComponentCenterY2, colors[0], colors[1], colors[2], 0.3F);
+                            this.drawPointFlow(guiComponentCenterX, guiComponentCenterY, guiComponentCenterX2, guiComponentCenterY2, 7, 1.0F, 1.0F, 1.0F, 1.0F);
+                            GlStateManager.enableTexture2D();
+                            GL11.glLineWidth(1.0F);
+                            GL11.glPointSize(1.0F);
+                        }
+            }
+        }
+        for(ChildGuiData child : guiDataList)
+            if(guiState.equals(State.DEFAULT))
                 if(child.gui != null && child.gui instanceof ClockworkNetworkGuiClient)
                     ((ClockworkNetworkGuiClient) child.gui).drawBackground(guiLeft + child.getX(xSize), guiTop + child.getY(ySize), zLevel);
+        if(selectedConfigurationGui != null && configuringOutput)
+        {
+            float[] colors;
+            if(selectedConfigurationGui.guiData != null && selectedConfigurationGui.guiData.gui != null && selectedConfigurationGui.guiData.gui instanceof ClockworkNetworkGuiClient)
+                colors = ((ClockworkNetworkGuiClient) selectedConfigurationGui.guiData.gui).getColorRGB();
+            else
+                colors = WHITE_DEFAULT;
+            int guiComponentCenterX = selectedConfigurationGui.xPosition + selectedConfigurationGui.width / 2;
+            int guiComponentCenterY = selectedConfigurationGui.yPosition + selectedConfigurationGui.height / 2;
+            GL11.glLineWidth(5.0F);
+            GL11.glPointSize(5.0F);
+            GlStateManager.disableTexture2D();
+            this.drawLine(guiComponentCenterX, guiComponentCenterY, mouseX, mouseY, colors[0], colors[1], colors[2], 0.3F);
+            this.drawPointFlow(guiComponentCenterX, guiComponentCenterY, mouseX, mouseY, 7, 1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.enableTexture2D();
+            GL11.glLineWidth(1.0F);
+            GL11.glPointSize(1.0F);
+        }
         GL11.glDisable(GL11.GL_BLEND);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1F, 1F, 1F, 1F);
@@ -180,11 +233,14 @@ public class GuiClockworkController extends GuiContainer
                 {
                     case 0: //Save
                         setGuiState(State.DEFAULT);
+                        configuringOutput = false;
                         initGui();
+                        sendSettingsToServer();
                         return;
                     case 1: //Add machine
                         setGuiState(State.ADD_MACHINE);
                         pageNumber = 0;
+                        configuringOutput = false;
                         initGui();
                         return;
                 }
@@ -235,16 +291,33 @@ public class GuiClockworkController extends GuiContainer
                 GuiButton button = buttonList.get(n);
                 if(button != null && button.mousePressed(mc, x, y) && button instanceof GuiCNGuiElement)
                 {
+                    if(configuringOutput)
+                    {
+                        if(!this.selectedConfigurationGui.equals(button) && ((GuiCNGuiElement) button).guiData.machine.isValidTargetInventory())
+                            selectedConfigurationGui.guiData.machine.setTargetInventory(((GuiCNGuiElement) button).guiData.machine);
+                        configuringOutput = false;
+                        break;
+                    }
                     this.selectedConfigurationGui = (GuiCNGuiElement) button;
                     selectionOriginX = button.xPosition;
                     selectionOriginY = button.yPosition;
                     buttonFound = true;
+                    if(isShiftKeyDown() && selectedConfigurationGui.guiData.machine.canExportToTargetInventory())
+                    {
+                        configuringOutput = true;
+                        IClockworkNetworkTile target = selectedConfigurationGui.guiData.machine.getTargetInventory();
+                        if(target != null)
+                            selectedConfigurationGui.guiData.machine.setTargetInventory(null);
+                    }
                     break;
                 }
             }
 
             if(!buttonFound)
+            {
                 this.selectedConfigurationGui = null;
+                configuringOutput = false;
+            }
         }
     }
 
@@ -256,7 +329,7 @@ public class GuiClockworkController extends GuiContainer
     {
         super.mouseClickMove(mouseX, mouseY, lastButtonClicked, timeSinceMouseClick);
         if(guiState.equals(State.CONFIG))
-            if(selectedConfigurationGui != null)
+            if(selectedConfigurationGui != null && !configuringOutput)
             {
                 int newX = selectionOriginX + (mouseX - mouseClickedAtX);
                 int newY = selectionOriginY + (mouseY - mouseClickedAtY);
@@ -293,6 +366,39 @@ public class GuiClockworkController extends GuiContainer
         renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1, 1).endVertex();
         renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(1, 0).endVertex();
         renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(0, 0).endVertex();
+        tessellator.draw();
+    }
+
+    public void drawLine(int startX, int startY, int endX, int endY, float red, float green, float blue, float alpha)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+        renderer.pos((double)(startX), (double)(startY), (double)this.zLevel).color(red, green, blue, alpha).endVertex();
+        renderer.pos((double)(endX), (double)(endY), (double)this.zLevel).color(red, green, blue, alpha).endVertex();
+        tessellator.draw();
+    }
+
+    public void drawPointFlow(int startX, int startY, int endX, int endY, int numberOfPoints, float red, float green, float blue, float alpha)
+    {
+        if(numberOfPoints < 2)
+            return;
+        int pointIndex = 0;
+        int extraMovement = (int) (System.currentTimeMillis() % 1000);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.begin(0, DefaultVertexFormats.POSITION_COLOR);
+
+        double spaceApartX = ((double)endX - (double)startX) / (double)numberOfPoints;
+        double spaceApartY = ((double)endY - (double)startY) / (double)numberOfPoints;
+        while(pointIndex < numberOfPoints)
+        {
+            if(pointIndex < numberOfPoints)
+                renderer.pos(startX + spaceApartX * (pointIndex + extraMovement * 0.001), startY + spaceApartY * (pointIndex + extraMovement * 0.001), (double)this.zLevel).color(red, green, blue, alpha).endVertex();
+            ++pointIndex;
+        }
+
         tessellator.draw();
     }
 
@@ -358,6 +464,30 @@ public class GuiClockworkController extends GuiContainer
             this.drawTexturedModalRect(this.guiLeft + this.xSize - 84, this.guiTop + this.ySize - 84, 0, 0, 84, 84);
         }
         //POWER METER TIME
+    }
+
+    /**
+     * Updates the server with this GUI's settings when saved.
+     */
+    public void sendSettingsToServer()
+    {
+        NBTTagCompound nbt = new NBTTagCompound(); //The compound to update.
+        NBTTagList list = new NBTTagList();
+
+        NBTTagCompound temp;
+        for(ChildGuiData data : guiDataList)
+            if(data != null && data.gui != null && data.machine != null)
+            {
+                temp = new NBTTagCompound();
+                temp.setLong("cn_UID", data.machine.getUniqueID());
+                if(data.machine.getTargetInventory() != null)
+                    temp.setLong("cn_target_UID", data.machine.getTargetInventory().getUniqueID());
+                temp.setInteger("x", data.getRawX());
+                temp.setInteger("y", data.getRawY());
+                list.appendTag(temp);
+            }
+        nbt.setTag("components", list);
+        PacketHandler.INSTANCE.sendToServer(new MessageClockworkControllerSetup(te.getPos(), nbt));
     }
 
     public static enum State {

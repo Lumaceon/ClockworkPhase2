@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.container;
 
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotInventoryValid;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.child.TileClockworkFurnace;
 import net.minecraft.entity.player.EntityPlayer;

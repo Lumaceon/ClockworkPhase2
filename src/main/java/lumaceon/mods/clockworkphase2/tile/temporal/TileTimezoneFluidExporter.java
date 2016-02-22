@@ -29,10 +29,10 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
         if(nbt.hasKey("cp_state"))
         {
             String state = nbt.getString("cp_state");
-            if(!state.equals("") && FluidRegistry.isFluidRegistered(state))
-                setState(FluidRegistry.getFluidID(nbt.getString("cp_state")));
-            else
-                setState(-1);
+            //if(!state.equals("") && FluidRegistry.isFluidRegistered(state))
+            //    setState(FluidRegistry.getFluidID(nbt.getString("cp_state")));
+            //else
+            //    setState(-1);
         }
     }
 
@@ -121,9 +121,9 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
         return null;
     }
 
-    @Override
-    public void setState(int state)
-    {
+    //@Override
+    //public void setState(int state)
+    //{
         /*Fluid fluid = FluidRegistry.getFluid(state);
         if(fluid != null)
         {
@@ -135,9 +135,9 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
             targetFluid = "";
             renderStack = null;
         }*/
-    }
+    //}
 
-    @Override
+    /*@Override
     public void setStateAndUpdate(int state)
     {
         if(!worldObj.isRemote)
@@ -145,7 +145,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
             setState(state);
             PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(pos.getX(), pos.getY(), pos.getZ(), state), new NetworkRegistry.TargetPoint(worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 200));
         }
-    }
+    }*/
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {

@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
-import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
 import net.minecraft.item.ItemStack;
@@ -12,7 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
 {
     public TileClockworkSuperAlloyFurnace() {
-        inventory = new ItemStack[7];
+        inventory = new ItemStack[6];
     }
 
     @Override

@@ -37,4 +37,12 @@ public class ChildGuiData
     public int getY(int guiY) {
         return y + guiY;
     }
+
+    public int getRawX() {
+        return x;
+    }
+
+    public int getRawY() {
+        return y;
+    }
 }

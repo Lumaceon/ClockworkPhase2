@@ -26,4 +26,5 @@ public interface IProxy
     public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop);
     public File getMinecraftDataDirectory();
     public ClockworkNetworkContainer getClockworkNetworkGui(TileEntity te, int id);
+    public ClockworkNetworkContainer getClockworkNetworkItemStorage(TileEntity te, int xSlots, int ySlots);
 }

@@ -47,7 +47,8 @@ public class GuiClockworkController extends GuiContainer
     //Fixes a bug where actionPerformed is called twice if the state changes and adds a button at the clicked location
     private boolean stateChangedThisTick = false;
 
-    public GuiClockworkController(InventoryPlayer ip, TileClockworkController te, World world) {
+    public GuiClockworkController(InventoryPlayer ip, TileClockworkController te, World world)
+    {
         super(null);
         this.resolution = new ScaledResolution(mc);
         this.inventorySlots = new ContainerClockworkController(ip, te, world, resolution.getScaledWidth(), resolution.getScaledHeight());
@@ -56,6 +57,17 @@ public class GuiClockworkController extends GuiContainer
         this.cn = te.getClockworkNetwork();
         this.xSize = resolution.getScaledWidth();
         this.ySize = resolution.getScaledHeight();
+
+        calculateActiveGUIs();
+        for(TileClockworkController.SetupComponent c : te.config)
+            if(c != null && c.tile != null)
+                if(c.tile.getClockworkNetwork() == cn)
+                    for(ChildGuiData child : inactiveGUIs)
+                        if(child != null && child.machine != null && child.machine.equals(c.tile))
+                        {
+                            child.setRawLocation(c.x, c.y);
+                            guiDataList.add(child);
+                        }
     }
 
     @Override
@@ -235,7 +247,7 @@ public class GuiClockworkController extends GuiContainer
                         setGuiState(State.DEFAULT);
                         configuringOutput = false;
                         initGui();
-                        sendSettingsToServer();
+                        saveAndSendSettings();
                         return;
                     case 1: //Add machine
                         setGuiState(State.ADD_MACHINE);
@@ -469,7 +481,7 @@ public class GuiClockworkController extends GuiContainer
     /**
      * Updates the server with this GUI's settings when saved.
      */
-    public void sendSettingsToServer()
+    public void saveAndSendSettings()
     {
         NBTTagCompound nbt = new NBTTagCompound(); //The compound to update.
         NBTTagList list = new NBTTagList();
@@ -487,6 +499,7 @@ public class GuiClockworkController extends GuiContainer
                 list.appendTag(temp);
             }
         nbt.setTag("components", list);
+        te.newSettings(nbt);
         PacketHandler.INSTANCE.sendToServer(new MessageClockworkControllerSetup(te.getPos(), nbt));
     }
 

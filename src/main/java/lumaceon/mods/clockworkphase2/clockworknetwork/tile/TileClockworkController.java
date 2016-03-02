@@ -4,7 +4,6 @@ import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetwor
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetworkTile;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
-import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,14 +16,16 @@ import java.util.ArrayList;
 public class TileClockworkController extends TileClockworkPhase implements IClockworkNetworkTile, ITickable
 {
     protected ClockworkNetwork clockworkNetwork;
-    protected ArrayList<SetupComponent> config = new ArrayList<SetupComponent>();
+    public ArrayList<SetupComponent> config = new ArrayList<SetupComponent>();
 
     protected long uniqueID = -1;
+    private NBTTagCompound nbt;
     private boolean setup = false;
 
     @Override
-    public void writeCustomNBT(NBTTagCompound nbt) {
-        super.writeCustomNBT(nbt);
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
         if(uniqueID != -1)
             nbt.setLong("uniqueID_CP", uniqueID);
 
@@ -39,18 +40,20 @@ public class TileClockworkController extends TileClockworkPhase implements ICloc
                     temp.setLong("cn_target_UID", ((IClockworkNetworkMachine) data.tile).getTargetInventory().getUniqueID());
                 temp.setInteger("x", data.x);
                 temp.setInteger("y", data.y);
+                list.appendTag(temp);
             }
         nbt.setTag("components", list);
     }
 
     @Override
-    public void readCustomNBT(NBTTagCompound nbt) {
-        super.readCustomNBT(nbt);
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
         if(nbt.hasKey("uniqueID_CP"))
             uniqueID = nbt.getLong("uniqueID_CP");
 
         if(nbt.hasKey("components"))
-            newSettings(nbt);
+            this.nbt = nbt;
     }
 
     public void newSettings(NBTTagCompound nbt)
@@ -106,6 +109,8 @@ public class TileClockworkController extends TileClockworkPhase implements ICloc
                 clockworkNetwork.addNetworkTile(this);
                 clockworkNetwork.loadNetwork(worldObj, false);
             }
+            if(nbt != null)
+                newSettings(nbt);
             setup = true;
         }
     }

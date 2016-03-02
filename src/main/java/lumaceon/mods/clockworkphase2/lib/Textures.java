@@ -18,6 +18,8 @@ public class Textures
     {
         public static ResourceLocation CLOCK = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock.png");
         public static ResourceLocation BASE = new ResourceLocation(Reference.MOD_ID, "textures/gui/base_gui.png");
+        public static ResourceLocation BOOK_COVER = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook.png");
+        public static ResourceLocation BOOK_INSIDE = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook_open.png");
 
         public static ResourceLocation TIME_WELL = new ResourceLocation(Reference.MOD_ID, "textures/gui/time_well.png");
 

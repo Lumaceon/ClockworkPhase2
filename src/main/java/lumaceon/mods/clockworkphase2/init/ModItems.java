@@ -77,6 +77,8 @@ public class ModItems
     public static ItemReference temporalDrive = new ItemReference("temporal_drive");
     public static ItemReference moonFlowerSeeds = new ItemReference("moon_flower_seeds");
     public static ItemReference temporalPearl = new ItemReference("temporal_pearl");
+    public static ItemReference experimentalIngot = new ItemReference("experimental_ingot");
+    public static ItemReference guidebook = new ItemReference("guidebook");
     public static void init()
     {
         Class[] stackDamageName = new Class[] {int.class, int.class, String.class};
@@ -134,6 +136,8 @@ public class ModItems
         registerItem(temporalDrive, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, temporalDrive.getUnlocalizedName()});
         registerItem(moonFlowerSeeds, ItemMoonFlowerSeeds.class, stackDamageName, new Object[] {64, 100, moonFlowerSeeds.getUnlocalizedName()});
         registerItem(temporalPearl, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, temporalPearl.getUnlocalizedName()});
+        registerItem(experimentalIngot, ItemExperimentalIngot.class, stackDamageName, new Object[] {1, 100, experimentalIngot.getUnlocalizedName()});
+        registerItem(guidebook, ItemGuidebook.class, stackDamageName, new Object[] {1, 100, guidebook.getUnlocalizedName()}); //Most OP item in the game.
     }
 
     public static void initModels() {

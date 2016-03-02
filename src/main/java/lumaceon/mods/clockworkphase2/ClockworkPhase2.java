@@ -46,6 +46,7 @@ public class ClockworkPhase2
     @Mod.EventHandler
     public void preInitialize(FMLPreInitializationEvent event)
     {
+        Reference.MOD_DIRECTORY = event.getSourceFile();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         //SchematicUtility.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
         //SchematicUtility.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
@@ -55,6 +56,9 @@ public class ClockworkPhase2
         ModItems.init();
         ModBlocks.init();
         ModBlocks.initTE();
+
+        if(event.getSide().isClient()) //The guidebook is client only.
+            ModArticles.init(event.getSourceFile());
 
         GameRegistry.registerWorldGenerator(oreGenerator, 0);
         GameRegistry.registerWorldGenerator(ruinGenerator, 0);

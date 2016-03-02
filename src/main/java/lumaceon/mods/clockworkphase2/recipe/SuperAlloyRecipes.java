@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
 import lumaceon.mods.clockworkphase2.util.Logger;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -14,7 +15,21 @@ public class SuperAlloyRecipes
 
     public static String[] eterniumRecipe = new String[6];
     public static String[] momentiumRecipe = new String[6];
-    public static String[] capriciumRecipe = new String[6];
+    public static String[] paradoxiumRecipe = new String[6];
+
+    public static int getNumberOfValidMetals(String[] items, ItemStack[] inventory)
+    {
+        int foundItems = 0;
+        for(String s : items)
+            for(int n = 0; n < 6; n++)
+                if(OreDictionary.itemMatches(inventory[n], OreDictionary.getOres(s).get(0), false))
+                {
+                    ++foundItems;
+                    break;
+                }
+
+        return foundItems;
+    }
 
     /**
      * Lists the metals that we want to use if they are available in this MC instance.
@@ -99,7 +114,7 @@ public class SuperAlloyRecipes
             for(int n = 0; n < 6; n++)
             {
                 int metalIndex = random.nextInt(metals.size());
-                capriciumRecipe[n] = metals.get(metalIndex);
+                paradoxiumRecipe[n] = metals.get(metalIndex);
                 metals.remove(metalIndex);
             }
 
@@ -107,7 +122,7 @@ public class SuperAlloyRecipes
             for(String s : eterniumRecipe)
             {
                 boolean found = false;
-                for(String s2 : capriciumRecipe)
+                for(String s2 : paradoxiumRecipe)
                     if(s.equals(s2))
                         found = true;
                 if(!found) //We found a metal that isn't in eternium; the recipe doesn't conflict.
@@ -118,7 +133,7 @@ public class SuperAlloyRecipes
             for(String s : momentiumRecipe)
             {
                 boolean found = false;
-                for(String s2 : capriciumRecipe)
+                for(String s2 : paradoxiumRecipe)
                     if(s.equals(s2))
                         found = true;
                 if(!found) //We found a metal that isn't in momentium; the recipe doesn't conflict.

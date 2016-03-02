@@ -20,6 +20,11 @@ public class ChildGuiData
         this.y = y - guiY;
     }
 
+    public void setRawLocation(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     /**
      * Calculates the desired x coordinate from the left of the screen.
      * @param guiX The xSize of the gui.

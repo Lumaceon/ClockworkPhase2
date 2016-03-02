@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.tile.child;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
 {
+    private ItemStack[] dummyExIngot = new ItemStack[] {new ItemStack(ModItems.experimentalIngot.getItem())};
+    private ItemStack[] dummyEtIngot = new ItemStack[] {new ItemStack(ModItems.ingotEternium.getItem())};
+    private ItemStack[] dummyMoIngot = new ItemStack[] {new ItemStack(ModItems.ingotMomentium.getItem())};
+    private ItemStack[] dummyPaIngot = new ItemStack[] {new ItemStack(ModItems.ingotParadoxium.getItem())};
+
     public TileClockworkSuperAlloyFurnace() {
         inventory = new ItemStack[6];
     }
@@ -20,13 +26,13 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
         for(int n = 0; n < 6; n++)
             if(inventory[n] == null)
                 return false;
-        return true;
-        /*if(hasAllItems(SuperAlloyRecipes.eterniumRecipe))
-            return true;
-        else if(hasAllItems(SuperAlloyRecipes.momentiumRecipe))
-            return true;
-        else
-            return hasAllItems(SuperAlloyRecipes.capriciumRecipe);*/
+        if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.eterniumRecipe, inventory) == 6)
+            return canExportAll(dummyEtIngot);
+        else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.momentiumRecipe, inventory) == 6)
+            return canExportAll(dummyMoIngot);
+        else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.paradoxiumRecipe, inventory) == 6)
+            return canExportAll(dummyPaIngot);
+        return canExportAll(dummyExIngot);
     }
 
     @Override
@@ -34,14 +40,10 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
     {
         if(this.canWork())
         {
-            if(hasAllItems(SuperAlloyRecipes.eterniumRecipe))
+            if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.eterniumRecipe, inventory) == 6)
             {
                 ItemStack itemstack = new ItemStack(ModItems.ingotEternium.getItem());
-
-                if(this.inventory[6] == null)
-                    this.inventory[6] = itemstack;
-                else if(this.inventory[6].getItem() == itemstack.getItem())
-                    this.inventory[6].stackSize += itemstack.stackSize;
+                exportAll(new ItemStack[] {itemstack});
 
                 for(int n = 0; n < 6; n++)
                 {
@@ -50,14 +52,10 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
                         this.inventory[n] = null;
                 }
             }
-            else if(hasAllItems(SuperAlloyRecipes.momentiumRecipe))
+            else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.momentiumRecipe, inventory) == 6)
             {
                 ItemStack itemstack = new ItemStack(ModItems.ingotMomentium.getItem());
-
-                if(this.inventory[6] == null)
-                    this.inventory[6] = itemstack;
-                else if(this.inventory[6].getItem() == itemstack.getItem())
-                    this.inventory[6].stackSize += itemstack.stackSize;
+                exportAll(new ItemStack[] {itemstack});
 
                 for(int n = 0; n < 6; n++)
                 {
@@ -66,14 +64,10 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
                         this.inventory[n] = null;
                 }
             }
-            else if(hasAllItems(SuperAlloyRecipes.capriciumRecipe))
+            else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.paradoxiumRecipe, inventory) == 6)
             {
                 ItemStack itemstack = new ItemStack(ModItems.ingotParadoxium.getItem());
-
-                if(this.inventory[6] == null)
-                    this.inventory[6] = itemstack;
-                else if(this.inventory[6].getItem() == itemstack.getItem())
-                    this.inventory[6].stackSize += itemstack.stackSize;
+                exportAll(new ItemStack[] {itemstack});
 
                 for(int n = 0; n < 6; n++)
                 {
@@ -84,6 +78,16 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
             }
             else
             {
+                ItemStack itemstack = new ItemStack(ModItems.experimentalIngot.getItem());
+
+                //Setup information display
+                for(int n = 0; n < 6; n++)
+                    NBTHelper.STRING.set(itemstack, "ingot_" + n, this.inventory[n].getDisplayName());
+                NBTHelper.INT.set(itemstack, "percent_eternium", (int) ((SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.eterniumRecipe, inventory) / 6.0F) * 100.0F));
+                NBTHelper.INT.set(itemstack, "percent_momentium", (int) ((SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.momentiumRecipe, inventory) / 6.0F) * 100.0F));
+                NBTHelper.INT.set(itemstack, "percent_paradoxium", (int) ((SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.paradoxiumRecipe, inventory) / 6.0F) * 100.0F));
+
+                exportAll(new ItemStack[] {itemstack});
                 for(int n = 0; n < 6; n++)
                 {
                     --this.inventory[n].stackSize;
@@ -112,19 +116,5 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
     @Override
     public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, EnumFacing side) {
         return false;
-    }
-
-    public boolean hasAllItems(String[] items)
-    {
-        int foundItems = 0;
-        for(String s : items)
-            for(int n = 0; n < 6; n++)
-                if(OreDictionary.itemMatches(inventory[n], OreDictionary.getOres(s).get(0), false))
-                {
-                    ++foundItems;
-                    break;
-                }
-
-        return foundItems == 6;
     }
 }

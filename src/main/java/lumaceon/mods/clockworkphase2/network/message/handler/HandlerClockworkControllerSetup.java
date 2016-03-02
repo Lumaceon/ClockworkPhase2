@@ -31,6 +31,7 @@ public class HandlerClockworkControllerSetup implements IMessageHandler<MessageC
             TileClockworkController controller = (TileClockworkController) te;
             controller.newSettings(message.settings);
             controller.markDirty();
+            world.markBlockForUpdate(controller.getPos());
         }
 
         return null;

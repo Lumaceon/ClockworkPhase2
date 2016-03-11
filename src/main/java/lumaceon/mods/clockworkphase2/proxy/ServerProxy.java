@@ -56,7 +56,7 @@ public class ServerProxy extends CommonProxy
             case 5: //Clockwork Alloy Furnace
                 return new ContainerCNAlloyFurnace(te, 100, 18);
             case 6: //Clockwork Crafting Table
-                return new ContainerCNCraftingTable(te, 100, 60);
+                return new ContainerCNCraftingTable(te, 98, 54);
         }
         return null;
     }

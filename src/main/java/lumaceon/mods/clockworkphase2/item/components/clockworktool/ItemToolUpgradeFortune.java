@@ -33,14 +33,4 @@ public class ItemToolUpgradeFortune extends ItemClockworkPhase implements IToolU
     public boolean getActive(ItemStack upgradeStack, ItemStack toolStack) {
         return NBTHelper.BOOLEAN.get(upgradeStack, NBTTags.ACTIVE);
     }
-
-    @Override
-    public float getQualityMultiplier(ItemStack item) {
-        return 1.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier(ItemStack item) {
-        return 1.0F;
-    }
 }

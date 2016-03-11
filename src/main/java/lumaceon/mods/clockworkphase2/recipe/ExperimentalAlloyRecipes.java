@@ -7,7 +7,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SuperAlloyRecipes
+public class ExperimentalAlloyRecipes
 {
     private static Random random = new Random();
     public static ArrayList<String> defaults = new ArrayList<String>(); //The potentials that may be possible.
@@ -58,14 +58,19 @@ public class SuperAlloyRecipes
 
     /**
      * Checks to see what metals are actually initialized and adds them to an ArrayList. These will be the final
-     * potential metals which can be researched and may be a part of a super alloy. This method also sets the recipes.
+     * potential metals which can be researched and may be a part of a super alloy.
      */
-    public static void postInit()
-    {
-        for(String s : defaults)
-            if(s != null && OreDictionary.doesOreNameExist(s))
+    public static void postInit() {
+        for (String s : defaults)
+            if (s != null && OreDictionary.doesOreNameExist(s))
                 superAlloyMetals.add(s);
+    }
 
+    /**
+     * Generates new and random alloy recipes for Eternium, Momentium and Paradoxium.
+     */
+    public static void generateNewRecipes()
+    {
         if(superAlloyMetals.size() <= 6)
             Logger.fatal("Number of super-alloy ready metals failed to exceed 6. If this error occurs, someone really screwed up.");
 
@@ -140,5 +145,68 @@ public class SuperAlloyRecipes
                     momentiumConflict = false;
             }
         }
+    }
+
+    /**
+     * Tries to load experimental alloy recipes from the given String arrays.
+     * @return True if these were successfully loaded, false if something went wrong; usually a missing metal.
+     */
+    public static boolean loadRecipes(String[] eterniumRecipe, String[] momentiumRecipe, String[] paradoxiumRecipe)
+    {
+        for(String s : eterniumRecipe)
+            if(s == null || !OreDictionary.doesOreNameExist(s))
+                return false;
+        for(String s : momentiumRecipe)
+            if(s == null || !OreDictionary.doesOreNameExist(s))
+                return false;
+        for(String s : paradoxiumRecipe)
+            if(s == null || !OreDictionary.doesOreNameExist(s))
+                return false;
+
+        //Is momentium recipe the same as eternium recipe?
+        boolean eterniumConflict = true;
+        for(String s : eterniumRecipe)
+        {
+            boolean found = false;
+            for(String s2 : momentiumRecipe)
+                if(s.equals(s2))
+                    found = true;
+            if(!found) //We found a metal that isn't in eternium; the recipe doesn't conflict.
+                eterniumConflict = false;
+        }
+        if(eterniumConflict)
+            return false;
+
+        //Is paradoxium recipe the same as eternium recipe?
+        boolean momentiumConflict = true;
+        eterniumConflict = true;
+        for(String s : eterniumRecipe)
+        {
+            boolean found = false;
+            for(String s2 : paradoxiumRecipe)
+                if(s.equals(s2))
+                    found = true;
+            if(!found) //We found a metal that isn't in eternium; the recipe doesn't conflict.
+                eterniumConflict = false;
+        }
+
+        //Is paradoxium recipe the same as momentium recipe
+        for(String s : momentiumRecipe)
+        {
+            boolean found = false;
+            for(String s2 : paradoxiumRecipe)
+                if(s.equals(s2))
+                    found = true;
+            if(!found) //We found a metal that isn't in momentium; the recipe doesn't conflict.
+                momentiumConflict = false;
+        }
+        if(eterniumConflict || momentiumConflict)
+            return false;
+
+        //All metals exist and there are no conflicts: load the recipes and return true.
+        ExperimentalAlloyRecipes.eterniumRecipe = eterniumRecipe;
+        ExperimentalAlloyRecipes.momentiumRecipe = momentiumRecipe;
+        ExperimentalAlloyRecipes.paradoxiumRecipe = paradoxiumRecipe;
+        return true;
     }
 }

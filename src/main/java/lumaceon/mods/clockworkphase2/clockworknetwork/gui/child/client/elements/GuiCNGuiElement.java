@@ -52,12 +52,12 @@ public class GuiCNGuiElement extends GuiButton
         }
     }
 
-    public void moveGui(int newX, int newY, int guiSizeX, int guiSizeY)
+    public void moveGui(int newX, int newY, int guiSizeX, int guiSizeY, int guiLeft, int guiTop)
     {
         if(guiData != null)
         {
-            this.xPosition = newX;
-            this.yPosition = newY;
+            this.xPosition = newX + guiLeft;
+            this.yPosition = newY + guiTop;
             guiData.setLocation(newX, newY, guiSizeX, guiSizeY);
         }
     }

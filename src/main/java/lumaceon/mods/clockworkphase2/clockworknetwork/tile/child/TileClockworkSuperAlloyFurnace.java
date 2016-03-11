@@ -5,10 +5,9 @@ import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContai
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.TileClockworkNetworkMachine;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
+import lumaceon.mods.clockworkphase2.recipe.ExperimentalAlloyRecipes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
 {
@@ -26,11 +25,11 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
         for(int n = 0; n < 6; n++)
             if(inventory[n] == null)
                 return false;
-        if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.eterniumRecipe, inventory) == 6)
+        if(ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.eterniumRecipe, inventory) == 6)
             return canExportAll(dummyEtIngot);
-        else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.momentiumRecipe, inventory) == 6)
+        else if(ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.momentiumRecipe, inventory) == 6)
             return canExportAll(dummyMoIngot);
-        else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.paradoxiumRecipe, inventory) == 6)
+        else if(ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.paradoxiumRecipe, inventory) == 6)
             return canExportAll(dummyPaIngot);
         return canExportAll(dummyExIngot);
     }
@@ -40,7 +39,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
     {
         if(this.canWork())
         {
-            if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.eterniumRecipe, inventory) == 6)
+            if(ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.eterniumRecipe, inventory) == 6)
             {
                 ItemStack itemstack = new ItemStack(ModItems.ingotEternium.getItem());
                 exportAll(new ItemStack[] {itemstack});
@@ -52,7 +51,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
                         this.inventory[n] = null;
                 }
             }
-            else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.momentiumRecipe, inventory) == 6)
+            else if(ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.momentiumRecipe, inventory) == 6)
             {
                 ItemStack itemstack = new ItemStack(ModItems.ingotMomentium.getItem());
                 exportAll(new ItemStack[] {itemstack});
@@ -64,7 +63,7 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
                         this.inventory[n] = null;
                 }
             }
-            else if(SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.paradoxiumRecipe, inventory) == 6)
+            else if(ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.paradoxiumRecipe, inventory) == 6)
             {
                 ItemStack itemstack = new ItemStack(ModItems.ingotParadoxium.getItem());
                 exportAll(new ItemStack[] {itemstack});
@@ -83,9 +82,9 @@ public class TileClockworkSuperAlloyFurnace extends TileClockworkNetworkMachine
                 //Setup information display
                 for(int n = 0; n < 6; n++)
                     NBTHelper.STRING.set(itemstack, "ingot_" + n, this.inventory[n].getDisplayName());
-                NBTHelper.INT.set(itemstack, "percent_eternium", (int) ((SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.eterniumRecipe, inventory) / 6.0F) * 100.0F));
-                NBTHelper.INT.set(itemstack, "percent_momentium", (int) ((SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.momentiumRecipe, inventory) / 6.0F) * 100.0F));
-                NBTHelper.INT.set(itemstack, "percent_paradoxium", (int) ((SuperAlloyRecipes.getNumberOfValidMetals(SuperAlloyRecipes.paradoxiumRecipe, inventory) / 6.0F) * 100.0F));
+                NBTHelper.INT.set(itemstack, "percent_eternium", (int) ((ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.eterniumRecipe, inventory) / 6.0F) * 100.0F));
+                NBTHelper.INT.set(itemstack, "percent_momentium", (int) ((ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.momentiumRecipe, inventory) / 6.0F) * 100.0F));
+                NBTHelper.INT.set(itemstack, "percent_paradoxium", (int) ((ExperimentalAlloyRecipes.getNumberOfValidMetals(ExperimentalAlloyRecipes.paradoxiumRecipe, inventory) / 6.0F) * 100.0F));
 
                 exportAll(new ItemStack[] {itemstack});
                 for(int n = 0; n < 6; n++)

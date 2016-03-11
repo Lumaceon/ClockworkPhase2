@@ -11,13 +11,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 
-public class GuiClockworkTool extends GuiScreen
+public class GuiTemporalExcavatorUpgrades extends GuiScreen
 {
     public ItemStack[] items;
     public RenderItem itemRenders;
     public int guiLeft, guiTop, xSize, ySize;
 
-    public GuiClockworkTool(ItemStack[] itemStacks) {
+    public GuiTemporalExcavatorUpgrades(ItemStack[] itemStacks) {
         super();
         itemRenders = Minecraft.getMinecraft().getRenderItem();
         if(itemStacks == null)

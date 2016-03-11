@@ -39,6 +39,7 @@ public class Textures
         public static ResourceLocation MELTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/melter.png");
         public static ResourceLocation MIXER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/mixer.png");
         public static ResourceLocation CHEST = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/chest.png");
+        public static ResourceLocation CRAFTING_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/crafting_table.png");
 
         public static ResourceLocation SLOT = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/slot.png");
         public static ResourceLocation SLOT_GREEN = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/slotgreen.png");

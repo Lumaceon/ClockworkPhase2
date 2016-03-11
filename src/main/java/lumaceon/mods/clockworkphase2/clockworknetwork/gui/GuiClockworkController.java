@@ -51,11 +51,11 @@ public class GuiClockworkController extends GuiContainer
     {
         super(null);
         this.resolution = new ScaledResolution(mc);
-        this.inventorySlots = new ContainerClockworkController(ip, te, world, resolution.getScaledWidth(), resolution.getScaledHeight());
+        this.inventorySlots = new ContainerClockworkController(ip, te, world, 0, 0);
         this.te = te;
         this.ip = ip;
         this.cn = te.getClockworkNetwork();
-        this.xSize = resolution.getScaledWidth();
+        this.xSize = (int) (resolution.getScaledWidth() * te.guiWidth);
         this.ySize = resolution.getScaledHeight();
 
         calculateActiveGUIs();
@@ -74,7 +74,7 @@ public class GuiClockworkController extends GuiContainer
     public void initGui()
     {
         resolution = new ScaledResolution(mc);
-        this.xSize = resolution.getScaledWidth();
+        this.xSize = (int) (resolution.getScaledWidth() * te.guiWidth);
         this.ySize = resolution.getScaledHeight();
         super.initGui();
 
@@ -82,21 +82,24 @@ public class GuiClockworkController extends GuiContainer
         calculateActiveGUIs();
         if(guiState.equals(State.DEFAULT))
         {
-            ((ContainerClockworkController)inventorySlots).reinitializeSlots(ip, guiDataList, guiLeft - 86 + xSize / 2, guiTop + ySize - 85, xSize, ySize, false);
-            buttonList.add(new GuiButton(0, guiLeft - 125 + xSize / 2, guiTop + 4, 250, 20, "Configure GUI"));
+            ((ContainerClockworkController)inventorySlots).reinitializeSlots(ip, guiDataList, -86 + xSize / 2, guiTop + ySize - 85, xSize, ySize, false);
+            buttonList.add(new GuiButton(0, guiLeft - 125 + xSize / 2, guiTop, 250, 20, "Configure GUI"));
         }
         else if(guiState.equals(State.CONFIG))
         {
             ((ContainerClockworkController)inventorySlots).reinitializeSlots(ip, guiDataList, 0, 0, xSize, ySize, true);
             buttonList.add(new GuiButton(0, guiLeft, guiTop, 60, 20, "Save Setup"));
             buttonList.add(new GuiButton(1, guiLeft + xSize - 20, guiTop, 20, 20, "+"));
+            buttonList.add(new GuiButton(2, guiLeft + xSize - 40, guiTop, 20, 20, "-"));
+            buttonList.add(new GuiButton(3, width / 2 - 80, guiTop, 60, 20, "Expand"));
+            buttonList.add(new GuiButton(4, width / 2 + 20, guiTop, 60, 20, "Contract"));
 
             int iterations = 0;
             if(guiDataList != null && !guiDataList.isEmpty())
                 for(ChildGuiData child : guiDataList)
                     if(child != null && child.gui != null && child.machine != null)
                     {
-                        buttonList.add(new GuiCNGuiElement(child, 2+iterations, child.getX(xSize), child.getY(ySize), child.gui.getSizeX(), child.gui.getSizeY(), buttonList));
+                        buttonList.add(new GuiCNGuiElement(child, 5+iterations, this.guiLeft + child.getX(xSize), this.guiTop + child.getY(ySize), child.gui.getSizeX(), child.gui.getSizeY(), buttonList));
                         ++iterations;
                     }
         }
@@ -255,6 +258,23 @@ public class GuiClockworkController extends GuiContainer
                         configuringOutput = false;
                         initGui();
                         return;
+                    case 2: //Remove machine
+                        pageNumber = 0;
+                        configuringOutput = false;
+                        initGui();
+                        return;
+                    case 3: //Expand
+                        pageNumber = 0;
+                        configuringOutput = false;
+                        te.guiWidth = Math.min(te.guiWidth + 0.1F, 1.0F);
+                        initGui();
+                        return;
+                    case 4: //Contract
+                        pageNumber = 0;
+                        configuringOutput = false;
+                        te.guiWidth = Math.max(te.guiWidth - 0.1F, 0.3F);
+                        initGui();
+                        return;
                 }
                 return;
             case 2: //ADD_MACHINE
@@ -343,17 +363,17 @@ public class GuiClockworkController extends GuiContainer
         if(guiState.equals(State.CONFIG))
             if(selectedConfigurationGui != null && !configuringOutput)
             {
-                int newX = selectionOriginX + (mouseX - mouseClickedAtX);
-                int newY = selectionOriginY + (mouseY - mouseClickedAtY);
-                if(newX < guiLeft)
-                    newX = guiLeft;
-                if(newX > guiLeft + xSize - selectedConfigurationGui.width)
-                    newX = guiLeft + xSize - selectedConfigurationGui.width;
-                if(newY < guiTop)
-                    newY = guiTop;
-                if(newY > guiTop + ySize - selectedConfigurationGui.height)
-                    newY = guiTop + ySize - selectedConfigurationGui.height;
-                selectedConfigurationGui.moveGui(newX, newY, xSize, ySize);
+                int newX = selectionOriginX + (mouseX - this.guiLeft - mouseClickedAtX);
+                int newY = selectionOriginY + (mouseY - this.guiTop - mouseClickedAtY);
+                if(newX < 0)
+                    newX = 0;
+                if(newX > xSize - selectedConfigurationGui.width)
+                    newX = xSize - selectedConfigurationGui.width;
+                if(newY < 0)
+                    newY = 0;
+                if(newY > ySize - selectedConfigurationGui.height)
+                    newY = ySize - selectedConfigurationGui.height;
+                selectedConfigurationGui.moveGui(newX, newY, xSize, ySize, guiLeft, guiTop);
             }
     }
 
@@ -437,7 +457,7 @@ public class GuiClockworkController extends GuiContainer
         //PLAYER INVENTORY
 
         //POWER METER TENSION
-        mc.renderEngine.bindTexture(Textures.GUI.POWER_METER);
+        /*mc.renderEngine.bindTexture(Textures.GUI.POWER_METER);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop + this.ySize - 84, 0, 0, 84, 84);
 
         if(isDefault)
@@ -455,11 +475,11 @@ public class GuiClockworkController extends GuiContainer
 
             mc.renderEngine.bindTexture(Textures.GUI.POWER_METER_CENTER);
             this.drawTexturedModalRect(this.guiLeft, this.guiTop + this.ySize - 84, 0, 0, 84, 84);
-        }
+        }*/
         //POWER METER TENSION
 
         //POWER METER TIME
-        mc.renderEngine.bindTexture(Textures.GUI.POWER_METER);
+        /*mc.renderEngine.bindTexture(Textures.GUI.POWER_METER);
         this.drawTexturedModalRect(this.guiLeft + this.xSize - 84, this.guiTop + this.ySize - 84, 0, 0, 84, 84);
 
         if(isDefault)
@@ -474,7 +494,7 @@ public class GuiClockworkController extends GuiContainer
 
             mc.renderEngine.bindTexture(Textures.GUI.POWER_METER_CENTER);
             this.drawTexturedModalRect(this.guiLeft + this.xSize - 84, this.guiTop + this.ySize - 84, 0, 0, 84, 84);
-        }
+        }*/
         //POWER METER TIME
     }
 
@@ -499,6 +519,7 @@ public class GuiClockworkController extends GuiContainer
                 list.appendTag(temp);
             }
         nbt.setTag("components", list);
+        nbt.setFloat("gui_width", te.guiWidth);
         te.newSettings(nbt);
         PacketHandler.INSTANCE.sendToServer(new MessageClockworkControllerSetup(te.getPos(), nbt));
     }

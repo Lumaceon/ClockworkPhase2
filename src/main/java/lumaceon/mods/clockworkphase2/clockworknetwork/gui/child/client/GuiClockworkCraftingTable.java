@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client;
 
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkGuiClient;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotNever;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -10,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiClockworkCraftingTable extends ClockworkNetworkGuiClient
 {
-    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation("textures/gui/container/crafting_table.png");
     private static Minecraft mc;
     protected Slot[] slots;
 
@@ -27,15 +27,15 @@ public class GuiClockworkCraftingTable extends ClockworkNetworkGuiClient
             int i1;
             for (l = 0; l < 3; ++l)
                 for (i1 = 0; i1 < 3; ++i1)
-                    slots[i1 + l * 3] = new Slot(inventory, i1 + l * 3, 0 + i1 * 18, 0 + l * 18);
+                    slots[i1 + l * 3] = new Slot(inventory, i1 + l * 3, 1 + i1 * 18, 1 + l * 18);
 
-            slots[9] = new SlotNever(inventory, 9, 80, 18);
+            slots[9] = new SlotNever(inventory, 9, 81, 19);
         }
     }
 
     @Override
     public void drawBackground(int left, int top, float zLevel) {
-        mc.getTextureManager().bindTexture(craftingTableGuiTextures);
+        mc.getTextureManager().bindTexture(Textures.GUI.CRAFTING_TABLE);
         this.drawTexturedModalRect(left, top, xSize, ySize, zLevel);
     }
 

@@ -22,6 +22,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -44,9 +45,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Credits to Tinker's Construct for a lot of the AOE code.
+ * Credits to the Tinker's Construct developers for a lot of the AOE code.
  */
-public abstract class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct, IKeybindActivation
+public abstract class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct
 {
     public ItemClockworkTool(float var1, ToolMaterial toolMaterial, Set set, String unlocalizedName) {
         super(var1, toolMaterial, set);
@@ -60,6 +61,12 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
         InformationDisplay.addClockworkConstructInformation(is, player, list, true);
+    }
+
+    @Override
+    public void onUpdate(ItemStack is, World world, Entity owner, int p_77663_4_, boolean p_77663_5_) {
+        if(is != null && NBTHelper.hasTag(is, NBTTags.IS_COMPONENT))
+            NBTHelper.removeTag(is, NBTTags.IS_COMPONENT);
     }
 
     @Override
@@ -196,12 +203,8 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         if(!correctMaterial)
             return 1.0F;
 
-        float efficiency = super.getStrVsBlock(is, block);
-        if(efficiency == 1.0F)
-            return 1.0F;
-
         int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
-        if(tension <= 0)
+        if(tension <= 0 && (!NBTHelper.hasTag(is, NBTTags.IS_COMPONENT) || !NBTHelper.BOOLEAN.get(is, NBTTags.IS_COMPONENT)))
             return 0.0F;
 
         int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
@@ -212,8 +215,22 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public float getDigSpeed(ItemStack stack, net.minecraft.block.state.IBlockState state) {
-        return getStrVsBlock(stack, state.getBlock());
+    public float getDigSpeed(ItemStack is, net.minecraft.block.state.IBlockState state)
+    {
+        for(String type : is.getItem().getToolClasses(is))
+            if(state.getBlock().isToolEffective(type, state))
+            {
+                int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
+                if(tension <= 0 && (!NBTHelper.hasTag(is, NBTTags.IS_COMPONENT) || !NBTHelper.BOOLEAN.get(is, NBTTags.IS_COMPONENT)))
+                    return 0.0F;
+
+                int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
+                if(speed <= 0)
+                    return 0.0F;
+
+                return (float) speed / 25;
+            }
+        return getStrVsBlock(is, state.getBlock());
     }
 
     public abstract String getHarvestType();
@@ -336,15 +353,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         return new Slot[]
                 {
                         new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring.getItem()),
-                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore.getItem()),
-                        new SlotToolUpgrade(inventory, 2, 20, 20),
-                        new SlotToolUpgrade(inventory, 3, 20, 40),
-                        new SlotToolUpgrade(inventory, 4, 20, 60),
-                        new SlotToolUpgrade(inventory, 5, 20, 80),
-                        new SlotToolUpgrade(inventory, 6, 20, 100),
-                        new SlotToolUpgrade(inventory, 7, 20, 120),
-                        new SlotToolUpgrade(inventory, 8, 20, 140),
-                        new SlotToolUpgrade(inventory, 9, 20, 160),
+                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore.getItem())
                 };
     }
 
@@ -356,10 +365,5 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @Override
     public void onInventoryChange(ContainerAssemblyTable container) {
         AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 1);
-    }
-
-    @Override
-    public void onKeyPressed(ItemStack item, EntityPlayer player) {
-        player.openGui(ClockworkPhase2.instance, 4, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 }

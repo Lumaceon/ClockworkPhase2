@@ -1,9 +1,17 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.time.ITimeSupplierItem;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
@@ -79,20 +87,41 @@ public class TimeHelper
     }
 
     /**
-     * Gets the time to break the block in seconds (1 = 1 first). This defaults to the speed of diamond tools if there
-     * is no override tool in the excavator.
-     * @param blockHardness The hardness of the block.
+     * Gets the time to break the block in seconds (1 = 1 first).
+     * @param blockToBreak The block to break.
      * @param player The player trying to break the block.
      * @param temporalExcavator The temporal excavator itemstack.
      * @return The time, in ticks, it takes to break the block.
      */
-    public static int timeToBreakBlock(float blockHardness, EntityPlayer player, ItemStack temporalExcavator)
+    public static int timeToBreakBlock(World world, BlockPos pos, Block blockToBreak, EntityLivingBase player, ItemStack temporalExcavator)
     {
-        float timeCostInSeconds = blockHardness * 1.5F / 8.0F;
-        if(player.isInWater())
-            timeCostInSeconds *= 5.0F;
-        if(player.isAirBorne)
-            timeCostInSeconds *= 5.0F;
-        return (int) (timeCostInSeconds * 20);
+        float strength = 1.0F;
+        if(temporalExcavator != null)
+        {
+            ItemStack[] items = NBTHelper.INVENTORY.get(temporalExcavator, NBTTags.COMPONENT_INVENTORY);
+            if(items != null)
+            {
+                for(int n = 0; n < 3 && n < items.length; n++)
+                {
+                    ItemStack item = items[n];
+                    if(item != null)
+                    {
+                        int speed = NBTHelper.INT.get(temporalExcavator, NBTTags.SPEED);
+                        if(speed > 0)
+                            strength = Math.max(item.getItem().getStrVsBlock(item, blockToBreak), strength);
+                    }
+                }
+            }
+        }
+
+        float timeCostInSeconds = blockToBreak.getBlockHardness(world, pos) * 1.5F / strength;
+        if(player != null)
+        {
+            if(player.isInWater())
+                timeCostInSeconds *= 5.0F;
+            if(player.isAirBorne)
+                timeCostInSeconds *= 5.0F;
+        }
+        return Math.max((int) (timeCostInSeconds * 20), 1);
     }
 }

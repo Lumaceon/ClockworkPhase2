@@ -6,9 +6,9 @@ import net.minecraft.item.Item;
 
 import java.util.Random;
 
-public class BlockClockworkPhaseFossil extends BlockClockworkPhase
+public class BlockClockworkPhaseRelic extends BlockClockworkPhase
 {
-    public BlockClockworkPhaseFossil(Material blockMaterial, int harvestLevel, String unlocalizedName)
+    public BlockClockworkPhaseRelic(Material blockMaterial, int harvestLevel, String unlocalizedName)
     {
         super(blockMaterial, unlocalizedName);
         this.setHarvestLevel("trowel", harvestLevel);

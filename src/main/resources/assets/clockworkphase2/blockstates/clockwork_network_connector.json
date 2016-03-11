@@ -1,0 +1,5 @@
+{
+    "variants": {
+            "normal": { "model": "clockworkphase2:clockwork_network_connector" }
+        }
+}

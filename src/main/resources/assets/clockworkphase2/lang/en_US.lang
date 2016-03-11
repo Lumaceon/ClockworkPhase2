@@ -5,7 +5,7 @@ item.clockworkphase2:clockwork_core.name=Clockwork Core
 item.clockworkphase2:clockwork_pickaxe.name=Clockwork Pickaxe
 item.clockworkphase2:clockwork_axe.name=Clockwork Axe
 item.clockworkphase2:clockwork_shovel.name=Clockwork Shovel
-item.clockworkphase2:clockwork_multitool.name=Clockwork Multi-Tool
+item.clockworkphase2:clockwork_sword.name=Clockwork Sword
 item.clockworkphase2:temporal_excavator.name=Temporal Excavator
 
 item.clockworkphase2:lightning_sword.name=Lightning Sword
@@ -21,19 +21,27 @@ item.clockworkphase2:quartz_gear.name=Quartz Gear
 item.clockworkphase2:zinc_gear.name=Zinc Gear
 item.clockworkphase2:copper_gear.name=Copper Gear
 item.clockworkphase2:brass_gear.name=Brass Gear
+item.clockworkphase2:eternium_gear.name=Eternium Gear
+item.clockworkphase2:momentium_gear.name=Momentium Gear
+item.clockworkphase2:paradoxium_gear.name=Paradoxium Gear
 item.clockworkphase2:broken_elysian_gear.name=Elysian Gear (Broken)
 
-item.clockworkphase2:temporal_core.name=Temporal Core
+item.clockworkphase2:temporal_item_storage_matrix.name=Temporal Item Matrix
 item.clockworkphase2:temporal_hourglass.name=Temporal Hourglass
 
 item.clockworkphase2:temporal_drive_simulate.name=Temporal Simulation Drive
 item.clockworkphase2:temporal_drive_modify.name=Temporal Modification Drive
 item.clockworkphase2:temporal_drive_duplicate.name=Temporal Duplication Drive
 
-item.clockworkphase2:tool_upgrade_silk.name=Tool Module: Silk Touch
-item.clockworkphase2:tool_upgrade_furnace.name=Tool Module: Internal Furnace
-item.clockworkphase2:tool_upgrade_relocate.name=Tool Module: Relocation Matrix
-item.clockworkphase2:tool_upgrade_area.name=Tool Module: Area Miner
+item.clockworkphase2:tool_upgrade_silk.name=Tool Upgrade: Silk Touch
+item.clockworkphase2:tool_upgrade_furnace.name=Tool Upgrade: Internal Furnace
+item.clockworkphase2:tool_upgrade_relocate.name=Tool Upgrade: Relocation Matrix
+item.clockworkphase2:tool_upgrade_area.name=Tool Upgrade: Area Miner
+item.clockworkphase2:tool_upgrade_fortune.name=Tool Upgrade: Fortune Mining
+item.clockworkphase2:tool_upgrade_xp.name=Tool Upgrade: Experience Enhancement
+item.clockworkphase2:tool_upgrade_mass_storage.name=Tool Upgrade: Mass Storage
+item.clockworkphase2:tool_upgrade_block_placer.name=Tool Upgrade: Block Placer
+item.clockworkphase2:tool_upgrade_temporal_infusion.name=Tool Upgrade: Temporal Infuser
 
 item.clockworkphase2:timezone_module_tank.name=Timezone Function: Fluid Tank
 
@@ -41,16 +49,25 @@ item.clockworkphase2:temporal_ingot.name=Temporal Ingot
 item.clockworkphase2:copper_ingot.name=Copper Ingot
 item.clockworkphase2:zinc_ingot.name=Zinc Ingot
 item.clockworkphase2:brass_ingot.name=Brass Ingot
+item.clockworkphase2:steel_ingot.name=Steel Ingot
+item.clockworkphase2:eternium_ingot.name=Eternium Ingot
+item.clockworkphase2:momentium_ingot.name=Momentium Ingot
+item.clockworkphase2:paradoxium_ingot.name=Paradoxium Ingot
+item.clockworkphase2:experimental_ingot.name=Experimental Alloy
 item.clockworkphase2:brass_lump.name=Brass Lump
 
 item.clockworkphase2:schematic_tool.name=Schematic Maker
 item.clockworkphase2:bug_swatter.name=Bug Swatter
 item.clockworkphase2:age_developer.name=Developer Time Turner (Developers Only)
 item.clockworkphase2:wire_duster.name=Wire Duster
-item.clockworkphase2:wooden_trowel.name=Wooden Trowel
+item.clockworkphase2:wood_trowel.name=Wooden Trowel
 item.clockworkphase2:stone_trowel.name=Stone Trowel
 item.clockworkphase2:iron_trowel.name=Iron Trowel
 item.clockworkphase2:diamond_trowel.name=Diamond Trowel
+
+item.clockworkphase2:temporal_pearl.name=Temporal Pearl
+item.clockworkphase2:moon_flower_seeds.name=Moon Flower Seeds
+item.clockworkphase2:guidebook.name=Aged Journal of the Clockmaker
 
 #Block
 
@@ -69,9 +86,9 @@ tile.clockworkphase2:clockwork_mixer.name=Clockwork Network Mixer
 //ORES
 tile.clockworkphase2:copper_ore.name=Copper Ore
 tile.clockworkphase2:zinc_ore.name=Zinc Ore
-tile.clockworkphase2:third_age_fossil.name=Third Age Relic
-tile.clockworkphase2:second_age_fossil.name=Second Age Relic
-tile.clockworkphase2:first_age_fossil.name=First Age Relic
+tile.clockworkphase2:third_age_relic.name=Third Age Relic
+tile.clockworkphase2:second_age_relic.name=Second Age Relic
+tile.clockworkphase2:first_age_relic.name=First Age Relic
 //METAL BLOCKS
 tile.clockworkphase2:copper_block.name=Copper Block
 tile.clockworkphase2:zinc_block.name=Zinc Block
@@ -90,8 +107,10 @@ tile.clockworkphase2:clockwork_controller.name=Clockwork Network Controller
 tile.clockworkphase2:clockwork_furnace.name=Clockwork Network Furnace
 tile.clockworkphase2:clockwork_brewery.name=Clockwork Network Brewery
 tile.clockworkphase2:clockwork_alloy_furnace.name=Clockwork Network Alloy Furnace
-tile.clockworkphase2:clockwork_super_alloy_furnace.name=Clockwork Network Mega-alloy Furnace
+tile.clockworkphase2:clockwork_experimental_alloy_furnace.name=Clockwork Network Experimental Alloy Furnace
 tile.clockworkphase2:clockwork_crafting_table.name=Clockwork Network Crafting Table
+tile.clockworkphase2:clockwork_item_storage.name=Clockwork Network Item Storage
+tile.clockworkphase2:clockwork_network_connector.name=Clockwork Network Connector
 
 #Entity
 entity.personal_assistant_cube.name=Personal Assistant Cube

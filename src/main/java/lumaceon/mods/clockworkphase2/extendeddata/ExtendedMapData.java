@@ -2,7 +2,9 @@ package lumaceon.mods.clockworkphase2.extendeddata;
 
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.lib.Reference;
+import lumaceon.mods.clockworkphase2.recipe.ExperimentalAlloyRecipes;
 import lumaceon.mods.clockworkphase2.structure.Structure;
+import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
@@ -14,6 +16,8 @@ public class ExtendedMapData extends WorldSavedData
 {
     private static final String ID = Reference.MOD_ID + "_savedata";
     private boolean ruinMapGenerated;
+    private boolean alloysRegistered;
+    private int experimentalAlloyGeneration = -1; //Every time new recipes generate, it becomes a new "generation."
     public List<Integer> dimensionsGenerated = new ArrayList<Integer>(5);
     public List<Structure> zerothAgeRuins = new ArrayList<Structure>();
     public List<Structure> firstAgeRuins = new ArrayList<Structure>();
@@ -31,12 +35,16 @@ public class ExtendedMapData extends WorldSavedData
 
     public static ExtendedMapData get(World world)
     {
-        ExtendedMapData dataHandler = (ExtendedMapData) world.loadItemData(ExtendedMapData.class, ID);
+        ExtendedMapData dataHandler = (ExtendedMapData) world.getMapStorage().loadData(ExtendedMapData.class, ID);
         if(dataHandler == null) {
             dataHandler = new ExtendedMapData();
-            world.setItemData(ID, dataHandler);
+            world.getMapStorage().setData(ID, dataHandler);
         }
         return dataHandler;
+    }
+
+    public boolean areExperimentalAlloysRegistered() {
+        return alloysRegistered;
     }
 
     public boolean isRuinMapGenerated() {
@@ -63,6 +71,13 @@ public class ExtendedMapData extends WorldSavedData
         //overworldRuins.add(new Ruins(ModRuins.smallerRuins, 300, 64, -20));
         //thirdAgeRuins.add(new Structure(ModRuins.testRuins, 0, 10, 0));
         this.ruinMapGenerated = true;
+        markDirty();
+    }
+
+    public void registerExperimentalAlloys() {
+        Logger.info("Registered new experimental alloy recipes.");
+        ExperimentalAlloyRecipes.generateNewRecipes();
+        alloysRegistered = true;
         markDirty();
     }
 
@@ -114,6 +129,17 @@ public class ExtendedMapData extends WorldSavedData
             for(int i = 0; i < dimensionsGenerated.size(); i++)
                 nbt.setInteger("dim" + i, dimensionsGenerated.get(i));
 
+        nbt.setBoolean("alloys_registered", alloysRegistered);
+        nbt.setInteger("alloy_generation", experimentalAlloyGeneration);
+
+        for(int n = 0; n < 6; n++)
+            nbt.setString("eternium_" + n, ExperimentalAlloyRecipes.eterniumRecipe[n]);
+        for(int n = 0; n < 6; n++)
+            nbt.setString("momentium_" + n, ExperimentalAlloyRecipes.momentiumRecipe[n]);
+        for(int n = 0; n < 6; n++)
+            nbt.setString("paradoxium_" + n, ExperimentalAlloyRecipes.paradoxiumRecipe[n]);
+
+
         /*if(!thirdAgeRuins.isEmpty())
         {
             NBTTagList tagList = new NBTTagList();
@@ -136,6 +162,38 @@ public class ExtendedMapData extends WorldSavedData
         int dimCount = nbt.getInteger("dimensions_generated");
         for(int i = 0; i < dimCount; i++)
             dimensionsGenerated.add(i, nbt.getInteger("dim" + 1));
+
+        if(nbt.hasKey("alloys_registered"))
+            this.alloysRegistered = nbt.getBoolean("alloys_registered");
+
+        if(nbt.hasKey("alloy_generation"))
+            this.experimentalAlloyGeneration = nbt.getInteger("alloy_generation");
+
+        if(alloysRegistered)
+        {
+            String[] eterniumRecipe = new String[6];
+            String[] momentiumRecipe = new String[6];
+            String[] paradoxiumRecipe = new String[6];
+
+            for(int n = 0; n < 6; n++)
+                if(nbt.hasKey("eternium_" + n))
+                    eterniumRecipe[n] = nbt.getString("eternium_" + n);
+            for(int n = 0; n < 6; n++)
+                if(nbt.hasKey("momentium_" + n))
+                    momentiumRecipe[n] = nbt.getString("momentium_" + n);
+            for(int n = 0; n < 6; n++)
+                if(nbt.hasKey("paradoxium_" + n))
+                    paradoxiumRecipe[n] = nbt.getString("paradoxium_" + n);
+
+            if(!ExperimentalAlloyRecipes.loadRecipes(eterniumRecipe, momentiumRecipe, paradoxiumRecipe)) //Failed to load?
+            {
+                //Increase generation index and generate new recipes.
+                Logger.error("Invalid experimental alloy recipes found; generating new ones...");
+                ++experimentalAlloyGeneration;
+                ExperimentalAlloyRecipes.generateNewRecipes();
+                markDirty();
+            }
+        }
 
         /*if(nbt.hasKey("third_age_ruins"))
         {

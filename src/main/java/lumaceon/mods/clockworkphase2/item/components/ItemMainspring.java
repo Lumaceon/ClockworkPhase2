@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ItemMainspring extends ItemClockworkPhase implements IAssemblableButtons, IMainspring
 {
-    public int maxTension = 1000000;
+    public int maxTension = Defaults.TENSION.maxMainspringTension;
 
     public ItemMainspring(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
@@ -102,6 +102,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
         ItemStack mainItem = container.mainInventory.getStackInSlot(0);
         if(mainItem != null && mainItem.getItem() instanceof ItemMainspring)
         {
+            IMainspring mainspring = (IMainspring) mainItem.getItem();
             int baseValues = 0;
             for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)
             {
@@ -113,14 +114,14 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
             {
                 int currentMaxTension = NBTHelper.INT.get(mainItem, NBTTags.MAX_TENSION);
                 int newMaxTension = currentMaxTension + baseValues;
-                if(currentMaxTension == Defaults.TENSION.maxMainspringTension)
+                if(currentMaxTension == mainspring.getMaxSize(mainItem))
                     return;
-                if(newMaxTension > Defaults.TENSION.maxMainspringTension)
-                    newMaxTension = Defaults.TENSION.maxMainspringTension;
-                if(mainItem.getMaxDamage() == 0 || Defaults.TENSION.maxMainspringTension / mainItem.getMaxDamage() == 0)
+                if(newMaxTension > mainspring.getMaxSize(mainItem))
+                    newMaxTension = mainspring.getMaxSize(mainItem);
+                if(mainItem.getMaxDamage() == 0 || mainspring.getMaxSize(mainItem) / mainItem.getMaxDamage() == 0)
                     mainItem.setItemDamage(0);
                 else
-                    mainItem.setItemDamage(mainItem.getMaxDamage() - newMaxTension / (Defaults.TENSION.maxMainspringTension / mainItem.getMaxDamage()));
+                    mainItem.setItemDamage(mainItem.getMaxDamage() - newMaxTension / (mainspring.getMaxSize(mainItem) / mainItem.getMaxDamage()));
 
                 NBTHelper.INT.set(mainItem, NBTTags.MAX_TENSION,  newMaxTension);
                 for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)

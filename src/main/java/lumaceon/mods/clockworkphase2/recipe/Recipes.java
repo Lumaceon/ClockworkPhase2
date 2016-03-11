@@ -17,7 +17,6 @@ public class Recipes
         initClockworkComponentRecipes();
         initClockworkConstructs();
         initTemporalClockworkModules();
-        //initTimezoneModules();
         initMisc();
         initFurnaceRecipes();
     }
@@ -32,6 +31,10 @@ public class Recipes
         addGearRecipe(new ItemStack(ModItems.gearQuartz.getItem()), "gemQuartz");
         addGearRecipe(new ItemStack(ModItems.gearEmerald.getItem()), "gemEmerald");
         addGearRecipe(new ItemStack(ModItems.gearDiamond.getItem()), "gemDiamond");
+
+        addGearRecipe(new ItemStack(ModItems.gearEternium.getItem()), "ingotEternium");
+        addGearRecipe(new ItemStack(ModItems.gearMomentium.getItem()), "ingotMomentium");
+        addGearRecipe(new ItemStack(ModItems.gearParadoxium.getItem()), "ingotParadoxium");
     }
 
     public static void initClockworkConstructs()

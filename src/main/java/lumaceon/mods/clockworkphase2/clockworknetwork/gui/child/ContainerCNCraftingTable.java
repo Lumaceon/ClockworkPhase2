@@ -25,9 +25,9 @@ public class ContainerCNCraftingTable extends ClockworkNetworkContainer
             int i1;
             for (l = 0; l < 3; ++l)
                 for (i1 = 0; i1 < 3; ++i1)
-                    slots[i1 + l * 3] = new Slot(craftingTable, i1 + l * 3, 0 + i1 * 18, 0 + l * 18);
+                    slots[i1 + l * 3] = new Slot(craftingTable, i1 + l * 3, 1 + i1 * 18, 1 + l * 18);
 
-            slots[9] = new SlotNever(craftingTable, 9, 80, 18);
+            slots[9] = new SlotNever(craftingTable, 9, 81, 19);
         }
     }
 

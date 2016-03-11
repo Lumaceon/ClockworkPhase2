@@ -264,7 +264,7 @@ public class TileClockworkCraftingTable extends TileClockworkNetworkMachine
          * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
          */
         public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-            return true;
+            return false;
         }
     }
 }

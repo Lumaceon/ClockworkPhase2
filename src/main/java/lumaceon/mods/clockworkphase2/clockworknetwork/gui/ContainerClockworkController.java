@@ -4,6 +4,7 @@ import lumaceon.mods.clockworkphase2.api.clockworknetwork.tiles.IClockworkNetwor
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
 import lumaceon.mods.clockworkphase2.clockworknetwork.tile.TileClockworkController;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetwork;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockworkControllerGhost;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -141,7 +142,7 @@ public class ContainerClockworkController extends Container
         {
             //Player Inventory
             for(int n = 0; n < 36; n++)
-                this.addSlotToContainer(new Slot(ip, n, -100, 100));
+                this.addSlotToContainer(new Slot(ip, n, -10000, -10000));
 
             if(clockworkNetwork != null)
             {
@@ -159,7 +160,7 @@ public class ContainerClockworkController extends Container
                                 for(Slot slot : slots)
                                     if(slot != null)
                                     {
-                                        Slot newSlot = new Slot(slot.inventory, slot.getSlotIndex(), -100, -100);
+                                        Slot newSlot = new SlotClockworkControllerGhost(slot.inventory, slot.getSlotIndex(), -10000, -10000, slot);
                                         this.addSlotToContainer(newSlot);
                                     }
                         }
@@ -198,9 +199,9 @@ public class ContainerClockworkController extends Container
                                     {
                                         Slot newSlot;
                                         if(child == null)
-                                            newSlot = new Slot(slot.inventory, slot.getSlotIndex(), -100, -100);
+                                            newSlot = new SlotClockworkControllerGhost(slot.inventory, slot.getSlotIndex(), -10000, -10000, slot);
                                         else
-                                            newSlot = new Slot(slot.inventory, slot.getSlotIndex(), child.getX(guiSizeX) + slot.xDisplayPosition, child.getY(guiSizeY) + slot.yDisplayPosition);
+                                            newSlot = new SlotClockworkControllerGhost(slot.inventory, slot.getSlotIndex(), child.getX(guiSizeX) + slot.xDisplayPosition, child.getY(guiSizeY) + slot.yDisplayPosition, slot);
                                         this.addSlotToContainer(newSlot);
                                     }
                         }

@@ -38,9 +38,9 @@ public class ModBlocks
     //ORES
     public static BlockReference oreCopper = new BlockReference("copper_ore");
     public static BlockReference oreZinc = new BlockReference("zinc_ore");
-    public static BlockReference fossilThirdAge = new BlockReference("third_age_fossil");
-    public static BlockReference fossilSecondAge = new BlockReference("second_age_fossil");
-    public static BlockReference fossilFirstAge = new BlockReference("first_age_fossil");
+    public static BlockReference relicThirdAge = new BlockReference("third_age_relic");
+    public static BlockReference relicSecondAge = new BlockReference("second_age_relic");
+    public static BlockReference relicFirstAge = new BlockReference("first_age_relic");
     //METAL BLOCKS
     public static BlockReference blockCopper = new BlockReference("copper_block");
     public static BlockReference blockZinc = new BlockReference("zinc_block");
@@ -51,7 +51,6 @@ public class ModBlocks
     //MISC
     public static BlockReference basicWindingBox = new BlockReference("basic_winding_box");
     public static BlockReference assemblyTable = new BlockReference("assembly_table");
-    public static BlockReference assemblyTableSB = new BlockReference("assembly_table_sb");
     //CLOCKWORK NETWORK
     public static BlockReference crank = new BlockReference("crank");
     public static BlockReference clockworkNetworkConnector = new BlockReference("clockwork_network_connector");
@@ -62,9 +61,10 @@ public class ModBlocks
     public static BlockReference clockworkBrewery = new BlockReference("clockwork_brewery");
     public static BlockReference clockworkMixer = new BlockReference("clockwork_mixer");
     public static BlockReference clockworkAlloyFurnace = new BlockReference("clockwork_alloy_furnace");
-    public static BlockReference clockworkSuperAlloyFurnace = new BlockReference("clockwork_super_alloy_furnace");
+    public static BlockReference clockworkExperimentalAlloyFurnace = new BlockReference("clockwork_experimental_alloy_furnace");
     public static BlockReference clockworkCraftingTable = new BlockReference("clockwork_crafting_table");
     public static BlockReference clockworkItemStorage = new BlockReference("clockwork_item_storage");
+    public static BlockReference clockworkScreen = new BlockReference("clockwork_screen");
     //THIRD AGE
     public static BlockReference ghostlyLantern = new BlockReference("ghostly_lanturn");
     public static void init()
@@ -75,9 +75,9 @@ public class ModBlocks
         //ORES
         registerBlock(oreCopper, BlockClockworkPhaseOre.class, matLevelName, new Object[] {Material.rock, 1, oreCopper.getUnlocalizedName()}, "oreCopper");
         registerBlock(oreZinc, BlockClockworkPhaseOre.class, matLevelName, new Object[] {Material.rock, 1, oreZinc.getUnlocalizedName()}, "oreZinc");
-        registerBlock(fossilThirdAge, BlockClockworkPhaseFossil.class, matLevelName, new Object[] {Material.rock, 1, fossilThirdAge.getUnlocalizedName()});
-        registerBlock(fossilSecondAge, BlockClockworkPhaseFossil.class, matLevelName, new Object[] {Material.rock, 2, fossilSecondAge.getUnlocalizedName()});
-        registerBlock(fossilFirstAge, BlockClockworkPhaseFossil.class, matLevelName, new Object[] {Material.rock, 3, fossilFirstAge.getUnlocalizedName()});
+        registerBlock(relicThirdAge, BlockClockworkPhaseRelic.class, matLevelName, new Object[] {Material.rock, 1, relicThirdAge.getUnlocalizedName()});
+        registerBlock(relicSecondAge, BlockClockworkPhaseRelic.class, matLevelName, new Object[] {Material.rock, 2, relicSecondAge.getUnlocalizedName()});
+        registerBlock(relicFirstAge, BlockClockworkPhaseRelic.class, matLevelName, new Object[] {Material.rock, 3, relicFirstAge.getUnlocalizedName()});
         //METAL BLOCKS
         registerBlock(blockCopper, BlockClockworkPhase.class, matName, new Object[] {Material.iron, blockCopper.getUnlocalizedName()}, "blockCopper");
         registerBlock(blockZinc, BlockClockworkPhase.class, matName, new Object[] {Material.iron, blockZinc.getUnlocalizedName()}, "blockZinc");
@@ -88,7 +88,6 @@ public class ModBlocks
         //MISC
         registerBlock(basicWindingBox, BlockBasicWindingBox.class, matName, new Object[] {Material.iron, basicWindingBox.getUnlocalizedName()});
         registerBlock(assemblyTable, BlockAssemblyTable.class, matName, new Object[] {Material.wood, assemblyTable.getUnlocalizedName()});
-        registerBlock(assemblyTableSB, BlockAssemblyTableSB.class, matName, new Object[] {Material.wood, assemblyTableSB.getUnlocalizedName()});
         //CLOCKWORK NETWORK
         registerBlock(crank, BlockCrank.class, matName, new Object[] {Material.iron, crank.getUnlocalizedName()});
         registerBlock(clockworkNetworkConnector, BlockClockworkNetworkConnector.class, matName, new Object[] {Material.iron, clockworkNetworkConnector.getUnlocalizedName()});
@@ -99,9 +98,10 @@ public class ModBlocks
         registerBlock(clockworkBrewery, BlockClockworkBrewery.class, matName, new Object[] {Material.iron, clockworkBrewery.getUnlocalizedName()}, ItemBlockClockworkBrewery.class);
         registerBlock(clockworkMixer, BlockClockworkMixer.class, matName, new Object[] {Material.iron, clockworkMixer.getUnlocalizedName()}, ItemBlockClockworkMixer.class);
         registerBlock(clockworkAlloyFurnace, BlockClockworkAlloyFurnace.class, matName, new Object[] {Material.iron, clockworkAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkAlloyFurnace.class);
-        registerBlock(clockworkSuperAlloyFurnace, BlockClockworkSuperAlloyFurnace.class, matName, new Object[] {Material.iron, clockworkSuperAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkSuperAlloyFurnace.class);
+        registerBlock(clockworkExperimentalAlloyFurnace, BlockClockworkSuperAlloyFurnace.class, matName, new Object[] {Material.iron, clockworkExperimentalAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkSuperAlloyFurnace.class);
         registerBlock(clockworkCraftingTable, BlockClockworkCraftingTable.class, matName, new Object[] {Material.iron, clockworkCraftingTable.getUnlocalizedName()});
         registerBlock(clockworkItemStorage, BlockClockworkItemStorage.class, matName, new Object[] {Material.iron, clockworkItemStorage.getUnlocalizedName()});
+        registerBlock(clockworkScreen, BlockClockworkScreen.class, matName, new Object[] {Material.iron, clockworkScreen.getUnlocalizedName()});
         //THIRD AGE
         registerBlock(ghostlyLantern, BlockGhostlyLantern.class, matName, new Object[] {Material.glass, ghostlyLantern.getUnlocalizedName()});
     }
@@ -164,10 +164,11 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileClockworkBrewery.class, clockworkBrewery.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkMixer.class, clockworkMixer.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkMelter.class, clockworkMelter.getUnlocalizedName());
-        GameRegistry.registerTileEntity(TileClockworkSuperAlloyFurnace.class, clockworkSuperAlloyFurnace.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileClockworkSuperAlloyFurnace.class, clockworkExperimentalAlloyFurnace.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkAlloyFurnace.class, clockworkAlloyFurnace.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkCraftingTable.class, clockworkCraftingTable.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkItemStorage.class, clockworkItemStorage.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileClockworkScreen.class, clockworkScreen.getUnlocalizedName());
     }
 
     public static void initModels() {

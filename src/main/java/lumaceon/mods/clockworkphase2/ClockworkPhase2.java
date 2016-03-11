@@ -11,8 +11,8 @@ import lumaceon.mods.clockworkphase2.init.*;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
+import lumaceon.mods.clockworkphase2.recipe.ExperimentalAlloyRecipes;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
-import lumaceon.mods.clockworkphase2.recipe.SuperAlloyRecipes;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorRuins;
@@ -21,7 +21,6 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -29,9 +28,13 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Random;
+
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class ClockworkPhase2
 {
+    public static Random random = new Random(System.nanoTime());
+
     @Mod.Instance(Reference.MOD_ID)
     public static ClockworkPhase2 instance;
 
@@ -69,7 +72,7 @@ public class ClockworkPhase2
 
         ModEntities.init();
 
-        SuperAlloyRecipes.preInit();
+        ExperimentalAlloyRecipes.preInit();
 
         proxy.registerKeybindings();
     }
@@ -102,7 +105,7 @@ public class ClockworkPhase2
 
         ModRuins.init();
 
-        SuperAlloyRecipes.postInit();
+        ExperimentalAlloyRecipes.postInit();
     }
 
     @Mod.EventHandler

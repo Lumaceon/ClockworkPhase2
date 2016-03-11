@@ -22,16 +22,6 @@ public class ItemToolUpgradeArea extends ItemClockworkPhase implements IToolUpgr
         return NBTHelper.BOOLEAN.get(upgradeStack, NBTTags.ACTIVE);
     }
 
-    @Override
-    public float getQualityMultiplier(ItemStack item) {
-        return 1.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier(ItemStack item) {
-        return 1.0F;
-    }
-
     public int getAreaRadius(ItemStack stack) {
         return NBTHelper.hasTag(stack, "area_radius") ? NBTHelper.INT.get(stack, "area_radius") : 3;
     }

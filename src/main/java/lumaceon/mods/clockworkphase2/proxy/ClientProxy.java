@@ -16,7 +16,6 @@ import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderEle
 import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
-import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalFurnace;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.timetravel.third.world.WorldProviderThirdAge;
 import net.minecraft.block.Block;
@@ -28,7 +27,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.File;
 import java.util.List;
@@ -41,11 +39,9 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void registerTESR()
-    {
+    public void registerTESR(){
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalFurnace.class, new TESRTemporalFurnace());
     }
 
     @Override
@@ -146,7 +142,7 @@ public class ClientProxy extends CommonProxy
             case 5: //Clockwork Alloy Furnace
                 return new GuiClockworkAlloyFurnace(te, 40, 18);
             case 6: //Clockwork Crafting Table
-                return new GuiClockworkCraftingTable(te, 100, 60);
+                return new GuiClockworkCraftingTable(te, 98, 54);
         }
         return null;
     }

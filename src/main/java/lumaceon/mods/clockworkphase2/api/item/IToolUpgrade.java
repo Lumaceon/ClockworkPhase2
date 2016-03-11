@@ -2,6 +2,9 @@ package lumaceon.mods.clockworkphase2.api.item;
 
 import net.minecraft.item.ItemStack;
 
+/**
+ * Tool upgrades to be applied to a temporal excavator.
+ */
 public interface IToolUpgrade
 {
     /**
@@ -18,7 +21,4 @@ public interface IToolUpgrade
      * @return Whether or not this itemstack is active.
      */
     public boolean getActive(ItemStack upgradeStack, ItemStack toolStack);
-
-    public float getQualityMultiplier(ItemStack item);
-    public float getSpeedMultiplier(ItemStack item);
 }

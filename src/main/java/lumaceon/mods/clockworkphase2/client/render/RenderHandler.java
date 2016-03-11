@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class RenderHandler
 {
-    public static OverlayRenderElementTemporalInfluence overlayInfluence = new OverlayRenderElementTemporalInfluence();
+    //public static OverlayRenderElementTemporalInfluence overlayInfluence = new OverlayRenderElementTemporalInfluence();
     public static RenderItem renderItem;
     public static Minecraft mc;
     public static EntityItem item;
@@ -74,6 +74,8 @@ public class RenderHandler
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event)
     {
+        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean light = GL11.glIsEnabled(GL11.GL_LIGHTING);
         interpolatedPosX = mc.thePlayer.lastTickPosX + (mc.thePlayer.posX - mc.thePlayer.lastTickPosX) * (double)event.partialTicks;
         interpolatedPosY = mc.thePlayer.lastTickPosY + (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) * (double)event.partialTicks;
         interpolatedPosZ = mc.thePlayer.lastTickPosZ + (mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ) * (double)event.partialTicks;
@@ -126,8 +128,14 @@ public class RenderHandler
                     if(Math.sqrt(Math.pow(Math.abs(wre.xPos - camera.posX), 2) + Math.pow(Math.abs(wre.yPos - camera.posY), 2) + Math.pow(Math.abs(wre.zPos - camera.posZ), 2)) <= wre.maxRenderDistance())
                         wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
         }
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_LIGHTING);
+        if(blend)
+            GL11.glEnable(GL11.GL_BLEND);
+        else
+            GL11.glDisable(GL11.GL_BLEND);
+        if(light)
+            GL11.glEnable(GL11.GL_LIGHTING);
+        else
+            GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDepthMask(true);
         GL11.glPopMatrix();
     }

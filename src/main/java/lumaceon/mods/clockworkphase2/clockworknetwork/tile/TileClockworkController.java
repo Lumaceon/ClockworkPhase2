@@ -17,6 +17,7 @@ public class TileClockworkController extends TileClockworkPhase implements ICloc
 {
     protected ClockworkNetwork clockworkNetwork;
     public ArrayList<SetupComponent> config = new ArrayList<SetupComponent>();
+    public float guiWidth = 1.0F; //Only used client-side, but synced to and from server.
 
     protected long uniqueID = -1;
     private NBTTagCompound nbt;
@@ -28,6 +29,8 @@ public class TileClockworkController extends TileClockworkPhase implements ICloc
         super.writeToNBT(nbt);
         if(uniqueID != -1)
             nbt.setLong("uniqueID_CP", uniqueID);
+
+        nbt.setFloat("gui_width", guiWidth);
 
         NBTTagList list = new NBTTagList();
         NBTTagCompound temp;
@@ -52,43 +55,53 @@ public class TileClockworkController extends TileClockworkPhase implements ICloc
         if(nbt.hasKey("uniqueID_CP"))
             uniqueID = nbt.getLong("uniqueID_CP");
 
+        if(nbt.hasKey("gui_width"))
+            this.guiWidth = nbt.getFloat("gui_width");
+
         if(nbt.hasKey("components"))
             this.nbt = nbt;
     }
 
     public void newSettings(NBTTagCompound nbt)
     {
-        NBTBase maybeList = nbt.getTag("components");
-        if(maybeList != null && maybeList instanceof NBTTagList)
+        if(nbt != null)
         {
-            config.clear(); //Clear the old config, we're building the new one from scratch.
-            NBTTagList list = (NBTTagList) maybeList;
-            for(int n = 0; n < list.tagCount(); n++) //Go through the list
+            NBTBase maybeList = nbt.getTag("components");
+            if(maybeList != null && maybeList instanceof NBTTagList)
             {
-                NBTBase t = list.get(n);
-                if(t != null && t instanceof NBTTagCompound)
+                config.clear(); //Clear the old config, we're building the new one from scratch.
+                NBTTagList list = (NBTTagList) maybeList;
+                for(int n = 0; n < list.tagCount(); n++) //Go through the list
                 {
-                    NBTTagCompound temp = (NBTTagCompound) t;
-                    long uid = temp.getLong("cn_UID");
-                    IClockworkNetworkTile tempTile = clockworkNetwork.getTile(uid); //Grab the tile we're working with.
-                    if(tempTile != null)
+                    NBTBase t = list.get(n);
+                    if(t != null && t instanceof NBTTagCompound)
                     {
-                        //Set the target if one is specified and valid.
-                        if(tempTile instanceof IClockworkNetworkMachine && temp.hasKey("cn_target_UID"))
+                        NBTTagCompound temp = (NBTTagCompound) t;
+                        long uid = temp.getLong("cn_UID");
+                        IClockworkNetworkTile tempTile = clockworkNetwork.getTile(uid); //Grab the tile we're working with.
+                        if(tempTile != null)
                         {
-                            uid = temp.getLong("cn_target_UID");
-                            IClockworkNetworkTile tempTarget = clockworkNetwork.getTile(uid);
-                            if(tempTarget != null)
-                                ((IClockworkNetworkMachine) tempTile).setTargetInventory(tempTarget);
+                            //Set the target if one is specified and valid.
+                            if(tempTile instanceof IClockworkNetworkMachine && temp.hasKey("cn_target_UID"))
+                            {
+                                uid = temp.getLong("cn_target_UID");
+                                IClockworkNetworkTile tempTarget = clockworkNetwork.getTile(uid);
+                                if(tempTarget != null)
+                                    ((IClockworkNetworkMachine) tempTile).setTargetInventory(tempTarget);
+                            }
+                            int x = temp.getInteger("x");
+                            int y = temp.getInteger("y");
+                            SetupComponent comp = new SetupComponent(tempTile, x ,y); //Finish creating the component...
+                            this.config.add(comp); //...and add it to the list for the controller.
                         }
-                        int x = temp.getInteger("x");
-                        int y = temp.getInteger("y");
-                        SetupComponent comp = new SetupComponent(tempTile, x ,y); //Finish creating the component...
-                        this.config.add(comp); //...and add it to the list for the controller.
                     }
                 }
             }
+
+            if(nbt.hasKey("gui_width"))
+                this.guiWidth = nbt.getFloat("gui_width");
         }
+
     }
 
     @Override

@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.network.message.handler;
 
-import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import lumaceon.mods.clockworkphase2.network.message.MessageTemporalInfluence;
 import net.minecraft.client.Minecraft;
@@ -17,7 +16,7 @@ public class HandlerTemporalInfluence implements IMessageHandler<MessageTemporal
         properties.previousTemporalInfluence = properties.temporalInfluence;
         properties.temporalInfluence = message.newTemporalInfluence;
 
-        RenderHandler.overlayInfluence.displayInfluenceIncrease(properties.previousTemporalInfluence, properties.temporalInfluence);
+        //RenderHandler.overlayInfluence.displayInfluenceIncrease(properties.previousTemporalInfluence, properties.temporalInfluence);
         return null;
     }
 }

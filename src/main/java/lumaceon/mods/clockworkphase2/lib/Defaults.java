@@ -4,6 +4,7 @@ public class Defaults
 {
     public static class TENSION {
         public static int perBlock = 50;
+        public static int perWhack = 250;
         public static int maxMainspringTension = 1000000;
     }
 

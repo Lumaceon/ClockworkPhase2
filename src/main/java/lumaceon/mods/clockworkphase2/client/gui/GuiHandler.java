@@ -73,10 +73,10 @@ public class GuiHandler implements IGuiHandler
                 if(player == null || player.getHeldItem() == null || !NBTHelper.hasTag(player.getHeldItem(), NBTTags.COMPONENT_INVENTORY))
                     return null;
                 ItemStack[] componentInventory = NBTHelper.INVENTORY.get(player.getHeldItem(), NBTTags.COMPONENT_INVENTORY);
-                ItemStack[] items = new ItemStack[componentInventory.length - 2];
+                ItemStack[] items = new ItemStack[componentInventory.length - 3];
                 for(int i = 0; i < items.length; i++)
-                    items[i] = componentInventory[i + 2];
-                return new GuiClockworkTool(items);
+                    items[i] = componentInventory[i + 3];
+                return new GuiTemporalExcavatorUpgrades(items);
             case 5:
                 return new GuiClockworkController(player.inventory, (TileClockworkController) te, world);
             case 6:

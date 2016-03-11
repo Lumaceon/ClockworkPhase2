@@ -20,13 +20,17 @@ public class ItemExperimentalIngot extends ItemClockworkPhase
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
     {
-        list.add(Colors.WHITE + NBTHelper.INT.get(is, "percent_eternium") + "% Eternium");
-        list.add(Colors.WHITE + NBTHelper.INT.get(is, "percent_momentium") + "% Momentium");
-        list.add(Colors.WHITE + NBTHelper.INT.get(is, "percent_paradoxium") + "% Paradoxium");
+        list.add(Colors.GREEN + NBTHelper.INT.get(is, "percent_eternium") + "% Eternium");
+        list.add(Colors.YELLOW + NBTHelper.INT.get(is, "percent_momentium") + "% Momentium");
+        list.add(Colors.LIGHT_PURPLE + NBTHelper.INT.get(is, "percent_paradoxium") + "% Paradoxium");
         list.add("");
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+        {
+            list.add(Colors.BLUE + "~/Component Metals\\~");
             for(int n = 0; n < 6; n++)
-                list.add(NBTHelper.STRING.get(is, "ingot_" + n));
+                list.add(Colors.WHITE + NBTHelper.STRING.get(is, "ingot_" + n));
+            list.add(Colors.BLUE + "~/Component Metals\\~");
+        }
         else
             list.add(Colors.BLUE + "Shift - Component Metals");
     }

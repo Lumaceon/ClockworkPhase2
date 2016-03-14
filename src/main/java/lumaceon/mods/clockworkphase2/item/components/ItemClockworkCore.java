@@ -44,7 +44,7 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE;
+        return Textures.GUI.ASSEMBLY_TABLE_GEARS;
     }
 
     @Override
@@ -58,16 +58,16 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     public Slot[] getContainerSlots(IInventory inventory) {
         return new Slot[]
                 {
-                        new SlotClockworkComponent(inventory, 0, 0, 0),
-                        new SlotClockworkComponent(inventory, 1, 0, 18),
-                        new SlotClockworkComponent(inventory, 2, 0, 36),
-                        new SlotClockworkComponent(inventory, 3, 0, 54),
-                        new SlotClockworkComponent(inventory, 4, 0, 70),
-                        new SlotClockworkComponent(inventory, 5, 0, 100),
-                        new SlotClockworkComponent(inventory, 6, 18, 0),
-                        new SlotClockworkComponent(inventory, 7, 18, 18),
-                        new SlotClockworkComponent(inventory, 8, 18, 36),
-                        new SlotClockworkComponent(inventory, 9, 18, 54)
+                        new SlotClockworkComponent(inventory, 0, 61, 106),
+                        new SlotClockworkComponent(inventory, 1, 79, 106),
+                        new SlotClockworkComponent(inventory, 2, 97, 106),
+                        new SlotClockworkComponent(inventory, 3, 115, 106),
+                        new SlotClockworkComponent(inventory, 4, 133, 106),
+                        new SlotClockworkComponent(inventory, 5, 151, 106),
+                        new SlotClockworkComponent(inventory, 6, 169, 106),
+                        new SlotClockworkComponent(inventory, 7, 187, 106),
+                        new SlotClockworkComponent(inventory, 8, 205, 106),
+                        new SlotClockworkComponent(inventory, 9, 223, 106)
                 };
     }
 

@@ -20,7 +20,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "DEV1"
+version = "1.8.9-DEV2"
 group= "lumaceon.mods.clockworkphase2" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "clockworkphase2"
 

@@ -327,7 +327,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE;
+        return Textures.GUI.ASSEMBLY_TABLE_TEMPORAL_EXCAVATOR;
     }
 
     @Override
@@ -341,19 +341,19 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     public Slot[] getContainerSlots(IInventory inventory) {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.clockworkPickaxe.getItem()),
-                        new SlotItemSpecific(inventory, 1, 140, 30, ModItems.clockworkAxe.getItem()),
-                        new SlotItemSpecific(inventory, 2, 160, 30, ModItems.clockworkShovel.getItem()),
-                        new SlotToolUpgrade(inventory, 3, 20, 0),
-                        new SlotToolUpgrade(inventory, 4, 20, 20),
-                        new SlotToolUpgrade(inventory, 5, 20, 40),
-                        new SlotToolUpgrade(inventory, 6, 20, 60),
-                        new SlotToolUpgrade(inventory, 7, 20, 80),
-                        new SlotToolUpgrade(inventory, 8, 20, 100),
-                        new SlotToolUpgrade(inventory, 9, 20, 120),
-                        new SlotToolUpgrade(inventory, 10, 20, 140),
-                        new SlotToolUpgrade(inventory, 11, 20, 160),
-                        new SlotToolUpgrade(inventory, 12, 20, 180),
+                        new SlotItemSpecific(inventory, 0, 106, 59, ModItems.clockworkPickaxe.getItem()),
+                        new SlotItemSpecific(inventory, 1, 142, 41, ModItems.clockworkAxe.getItem()),
+                        new SlotItemSpecific(inventory, 2, 178, 59, ModItems.clockworkShovel.getItem()),
+                        new SlotToolUpgrade(inventory, 3, 61, 106),
+                        new SlotToolUpgrade(inventory, 4, 79, 106),
+                        new SlotToolUpgrade(inventory, 5, 97, 106),
+                        new SlotToolUpgrade(inventory, 6, 115, 106),
+                        new SlotToolUpgrade(inventory, 7, 133, 106),
+                        new SlotToolUpgrade(inventory, 8, 151, 106),
+                        new SlotToolUpgrade(inventory, 9, 169, 106),
+                        new SlotToolUpgrade(inventory, 10, 187, 106),
+                        new SlotToolUpgrade(inventory, 11, 205, 106),
+                        new SlotToolUpgrade(inventory, 12, 223, 106),
                 };
     }
 

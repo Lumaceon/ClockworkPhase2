@@ -23,6 +23,6 @@ public class ItemToolUpgradeArea extends ItemClockworkPhase implements IToolUpgr
     }
 
     public int getAreaRadius(ItemStack stack) {
-        return NBTHelper.hasTag(stack, "area_radius") ? NBTHelper.INT.get(stack, "area_radius") : 3;
+        return NBTHelper.hasTag(stack, "area_radius") ? NBTHelper.INT.get(stack, "area_radius") : 2;
     }
 }

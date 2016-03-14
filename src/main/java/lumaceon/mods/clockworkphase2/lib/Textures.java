@@ -24,7 +24,12 @@ public class Textures
         public static ResourceLocation TIME_WELL = new ResourceLocation(Reference.MOD_ID, "textures/gui/time_well.png");
 
         public static ResourceLocation ASSEMBLY_TABLE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table.png");
+        public static ResourceLocation ASSEMBLY_TABLE_MAINSPRING_ADD = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_mainspring_add.png");
         public static ResourceLocation ASSEMBLY_TABLE_MAINSPRING = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_mainspring.png");
+        public static ResourceLocation ASSEMBLY_TABLE_CLOCKWORK = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_clockwork_core.png");
+        public static ResourceLocation ASSEMBLY_TABLE_GEARS = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_gears.png");
+        public static ResourceLocation ASSEMBLY_TABLE_CONSTRUCT = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_construct.png");
+        public static ResourceLocation ASSEMBLY_TABLE_TEMPORAL_EXCAVATOR = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_temporal_excavator.png");
 
         public static ResourceLocation PLAYER_INVENTORY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/player_inventory.png");
         public static ResourceLocation POWER_METER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power.png");

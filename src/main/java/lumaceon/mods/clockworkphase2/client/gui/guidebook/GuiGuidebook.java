@@ -30,7 +30,7 @@ import java.util.List;
 
 public class GuiGuidebook extends GuiScreen
 {
-    private static final boolean DEVELOPING = true;
+    private static final boolean DEVELOPING = false;
 
     protected State guiState = State.DEFAULT;
     protected Category selectedCategory;

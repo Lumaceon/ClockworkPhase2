@@ -10,7 +10,6 @@ import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotWeaponUpgrade;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Defaults;
 import lumaceon.mods.clockworkphase2.lib.Textures;
@@ -38,7 +37,7 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        list.add(Colors.BLUE + "+" + (int) (getSpeed(is) / 25.0F) + " Attack Damage");
+        InformationDisplay.addClockworkConstructInformation(is, player, list, true);
     }
 
     @Override
@@ -69,7 +68,7 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE;
+        return Textures.GUI.ASSEMBLY_TABLE_CONSTRUCT;
     }
 
     @Override
@@ -84,8 +83,8 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
     {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring.getItem()),
-                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore.getItem())
+                        new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring.getItem()),
+                        new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore.getItem())
                 };
     }
 
@@ -135,7 +134,13 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
     }
 
     @Override
-    public void addConstructInformation(ItemStack item, EntityPlayer player, List list) {}
+    public void addConstructInformation(ItemStack item, EntityPlayer player, List list) {
+        int quality = getQuality(item);
+        int speed = getSpeed(item);
+
+        list.add(Colors.WHITE + "Attack Damage: " + Colors.GOLD + (int) (speed / 25.0F));
+        list.add(Colors.WHITE + "Tension Per Attack: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perWhack, quality, speed));
+    }
 
     @Override
     public int getQuality(ItemStack item) {

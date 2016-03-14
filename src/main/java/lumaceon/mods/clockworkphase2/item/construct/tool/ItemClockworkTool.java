@@ -337,7 +337,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE;
+        return Textures.GUI.ASSEMBLY_TABLE_CONSTRUCT;
     }
 
     @Override
@@ -352,8 +352,8 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 120, 30, ModItems.mainspring.getItem()),
-                        new SlotItemSpecific(inventory, 1, 120, 54, ModItems.clockworkCore.getItem())
+                        new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring.getItem()),
+                        new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore.getItem())
                 };
     }
 

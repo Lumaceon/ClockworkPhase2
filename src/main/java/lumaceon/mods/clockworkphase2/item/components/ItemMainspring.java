@@ -53,7 +53,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE_MAINSPRING;
+        return Textures.GUI.ASSEMBLY_TABLE_MAINSPRING_ADD;
     }
 
     @Override

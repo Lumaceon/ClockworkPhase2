@@ -14,6 +14,11 @@ public class BlockTemporalDisplacementAltarSB extends BlockClockworkPhase
     }
 
     @Override
+    public int getRenderType() {
+        return -1;
+    }
+
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
@@ -43,7 +48,7 @@ public class BlockTemporalDisplacementAltarSB extends BlockClockworkPhase
         {
             if(blockAccess.getBlock(x, y, z) == null)
                 return getIcon(0, 0);
-            else if(blockAccess.getBlock(x, y, z).equals(ModBlocks.celestialCompass))
+            else if(blockAccess.getBlock(x, y, z).equals(ModBlocks.timezoneController))
                 flag = false;
             else
             {

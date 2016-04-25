@@ -74,6 +74,7 @@ public class ClockworkPhase2
 
         ExperimentalAlloyRecipes.preInit();
 
+        proxy.registerFluidModels();
         proxy.registerKeybindings();
     }
 
@@ -86,8 +87,6 @@ public class ClockworkPhase2
         proxy.registerTESR();
 
         Recipes.init();
-
-        //BucketHandler.INSTANCE.buckets.put(ModBlocks.timeSand, ModItems.bucketTimeSand);
 
         MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new EntityHandler());

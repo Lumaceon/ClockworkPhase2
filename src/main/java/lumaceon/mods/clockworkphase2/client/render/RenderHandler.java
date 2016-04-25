@@ -1,18 +1,20 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
-import lumaceon.mods.clockworkphase2.api.block.ITimezoneProvider;
-import lumaceon.mods.clockworkphase2.api.time.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
+import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequenceTimezone;
 import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
-import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElementTemporalInfluence;
 import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -22,6 +24,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RenderHandler
 {
@@ -40,7 +44,7 @@ public class RenderHandler
     }
 
     public static ArrayList<OverlayRenderElement> overlayRenderList = new ArrayList<OverlayRenderElement>();
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.LOW)
     public void onRenderOverlay(RenderGameOverlayEvent.Post event)
     {
         for(int n = 0; n < overlayRenderList.size(); n++)
@@ -71,7 +75,7 @@ public class RenderHandler
         return true;
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH) //TODO: fix the darn clouds. Git off my glyph...
     public void onRenderWorld(RenderWorldLastEvent event)
     {
         boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
@@ -103,24 +107,24 @@ public class RenderHandler
             return;
 
         GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         if(mc.theWorld != null)
         {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             for(int[] area : TimezoneHandler.timezones)
             {
                 ITimezoneProvider timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
-                /*if(timezone != null)
+                if(timezone != null)
                 {
-                    ItemStack coreStack = timezone.getTimezoneModule(8);
-                    //if(coreStack != null && coreStack.getItem() instanceof ITemporalCore)
-                    //    TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);
-                    TIMEZONE.renderCelestialCompassItems(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ);
+                    TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);
                     if(!TIMEZONE.timezoneSequences.containsKey(timezone) || TIMEZONE.timezoneSequences.get(timezone) == null)
                         TIMEZONE.timezoneSequences.put(timezone, ParticleSequence.spawnParticleSequence(new ParticleSequenceTimezone(timezone, area[0] + 0.5, area[1] + 0.5, area[2] + 0.5)));
-                }*/
+
+                }
             }
+            GL11.glDisable(GL11.GL_BLEND);
 
             Entity camera = mc.getRenderViewEntity();
             for(WorldRenderElement wre : worldRenderList)
@@ -142,311 +146,42 @@ public class RenderHandler
 
     public static class TIMEZONE
     {
-        /*public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
+        public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
 
         public static void renderGlyph(int[] area, double x, double y, double z, ITimezoneProvider timezone)
         {
-            if(mc.renderViewEntity != null)
+            if(mc.getRenderViewEntity() != null)
             {
-                double dist = Math.sqrt(Math.pow(mc.renderViewEntity.posX - area[0], 2) + Math.pow(mc.renderViewEntity.posZ - area[2], 2));
+                double dist = Math.sqrt(Math.pow(mc.getRenderViewEntity().posX - area[0], 2) + Math.pow(mc.getRenderViewEntity().posZ - area[2], 2));
                 if(dist > timezone.getRange() * 2)
-                {
                     return;
-                }
             }
             mc.renderEngine.bindTexture(Textures.GLYPH.BASE_GLYPH);
             double low = -1 - timezone.getRange();
             double high = timezone.getRange();
 
-            Tessellator tessy = Tessellator.instance;
             GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glTranslated(x + 1, y + 257 - area[1], z + 1);
-            //GL11.glRotatef((Minecraft.getSystemTime() % 115200.0F) / 320, 0.0F, 1.0F, 0.0F);
-            tessy.startDrawingQuads();
-            tessy.addVertexWithUV(low, 0, low, 0, 0);
-            tessy.addVertexWithUV(low, 0, high, 0, 1);
-            tessy.addVertexWithUV(high, 0, high, 1, 1);
-            tessy.addVertexWithUV(high, 0, low, 1, 0);
+            GL11.glTranslated(x + 1, y + 140 - area[1], z + 1);
+            GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
+            GL11.glRotatef((Minecraft.getSystemTime() % 115200.0F) / 320, 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(0.5F, 0.0F, 0.5F);
 
-            tessy.addVertexWithUV(high, 0, low, 0, 0);
-            tessy.addVertexWithUV(high, 0, high, 0, 1);
-            tessy.addVertexWithUV(low, 0, high, 1, 1);
-            tessy.addVertexWithUV(low, 0, low, 1, 0);
+            Tessellator tessy = Tessellator.getInstance();
+            WorldRenderer renderer = tessy.getWorldRenderer();
+            renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+            renderer.pos(low, 0, low).tex(0, 0).endVertex();
+            renderer.pos(low, 0, high).tex(0, 1).endVertex();
+            renderer.pos(high, 0, high).tex(1, 1).endVertex();
+            renderer.pos(high, 0, low).tex(1, 0).endVertex();
             tessy.draw();
 
-            ItemStack stack;
-            for(int n = 0; n < 8; n++)
-            {
-                stack = timezone.getTimezoneModule(n);
-                if(stack != null && stack.getItem() instanceof ITimezoneModule)
-                {
-                    ITimezoneModule ts = (ITimezoneModule) stack.getItem();
-                    mc.renderEngine.bindTexture(Textures.GLYPH.BASE_GLYPH_GEMS[n]);
-                    GL11.glColor3f(ts.getColorRed(stack) / 255.0F, ts.getColorGreen(stack) / 255.0F, ts.getColorBlue(stack) / 255.0F);
-                    tessy.startDrawingQuads();
-                    tessy.addVertexWithUV(low, 0, low, 0, 0);
-                    tessy.addVertexWithUV(low, 0, high, 0, 1);
-                    tessy.addVertexWithUV(high, 0, high, 1, 1);
-                    tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                    tessy.addVertexWithUV(high, 0, low, 0, 0);
-                    tessy.addVertexWithUV(high, 0, high, 0, 1);
-                    tessy.addVertexWithUV(low, 0, high, 1, 1);
-                    tessy.addVertexWithUV(low, 0, low, 1, 0);
-                    tessy.draw();
-                }
-            }
+            renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+            renderer.pos(high, 0, low).tex(0, 0).endVertex();
+            renderer.pos(high, 0, high).tex(0, 1).endVertex();
+            renderer.pos(low, 0, high).tex(1, 1).endVertex();
+            renderer.pos(low, 0, low).tex(1, 0).endVertex();
+            tessy.draw();
             GL11.glPopMatrix();
         }
-
-        public static void renderCelestialCompassItems(int[] area, double x, double y, double z)
-        {
-            TileEntity te = mc.theWorld.getTileEntity(area[0], area[1], area[2]);
-            if(te != null && te instanceof TileCelestialCompass)
-            {
-                TileCelestialCompass celestialCompass = (TileCelestialCompass) te;
-                ItemStack itemToRender;
-                //float scale;
-
-                if(item == null)
-                    item = new EntityItem(mc.theWorld);
-                /*if(itemToRender != null)
-                {
-                    GL11.glPushMatrix();
-                    if(itemToRender.getItem() instanceof ItemBlock)
-                        scale = 1.5F;
-                    else
-                        scale = 1.0F;
-                    GL11.glTranslated(x + 0.5F, y + 3, z + 0.5F);
-                    item.setEntityItemStack(itemToRender);
-                    GL11.glScalef(scale, scale, scale);
-                    GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                    renderItem.doRender(item, 0, 0, 0, 0, 0);
-                    GL11.glPopMatrix();
-                }
-
-                for(int n = 0; n < 8; n++)
-                {
-                    itemToRender = celestialCompass.getCraftingItem(n);
-                    if(itemToRender == null)
-                        continue;
-                    GL11.glPushMatrix();
-                    if(itemToRender.getItem() instanceof ItemBlock)
-                        scale = 1.5F;
-                    else
-                        scale = 1.0F;
-                    switch(n)
-                    {
-                        case 0:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.TOP_X, y + 2, z + BlockCelestialCompassSB.Ranges.TOP_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 1:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.TOP_RIGHT_X, y + 2, z + BlockCelestialCompassSB.Ranges.TOP_RIGHT_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 2:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.RIGHT_X, y + 2, z + BlockCelestialCompassSB.Ranges.RIGHT_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 3:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.BOTTOM_RIGHT_X, y + 2, z + BlockCelestialCompassSB.Ranges.BOTTOM_RIGHT_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 4:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.BOTTOM_X, y + 2, z + BlockCelestialCompassSB.Ranges.BOTTOM_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 5:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.BOTTOM_LEFT_X, y + 2, z + BlockCelestialCompassSB.Ranges.BOTTOM_LEFT_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 6:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.LEFT_X, y + 2, z + BlockCelestialCompassSB.Ranges.LEFT_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                        case 7:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.TOP_LEFT_X, y + 2, z + BlockCelestialCompassSB.Ranges.TOP_LEFT_Z);
-                            GL11.glScalef(scale, scale, scale);
-                            GL11.glRotatef((Minecraft.getSystemTime() % 5760.0F) / 16, 0, 1, 0);
-                            item.setEntityItemStack(itemToRender);
-                            renderItem.doRender(item, 0, 0, 0, 0, 0);
-                            break;
-                    }
-                    GL11.glPopMatrix();
-                }*/
-
-                /*ResourceLocation loc = null;
-                for(int n = 0; n < 9; n++)
-                {
-                    itemToRender = celestialCompass.getTimezoneModule(n);
-                    if(itemToRender == null)
-                        continue;
-                    if(itemToRender.getItem() instanceof ITimezoneModule)
-                        loc = ((ITimezoneModule) itemToRender.getItem()).getGlyphTexture(itemToRender);
-                    //else if(itemToRender.getItem() instanceof ITemporalCore)
-                    //    loc = ((ITemporalCore) itemToRender.getItem()).getGlyphTexture(itemToRender);
-                    GL11.glPushMatrix();
-                    GL11.glColor3f(1, 1, 1);
-                    mc.renderEngine.bindTexture(loc);
-                    Tessellator tessy = Tessellator.instance;
-                    float high = 0.5F;
-                    float low = -high;
-
-                    switch(n)
-                    {
-                        case 0:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.TOP_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.TOP_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 1:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.TOP_RIGHT_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.TOP_RIGHT_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 2:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.RIGHT_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.RIGHT_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 3:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.BOTTOM_RIGHT_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.BOTTOM_RIGHT_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 4:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.BOTTOM_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.BOTTOM_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 5:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.BOTTOM_LEFT_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.BOTTOM_LEFT_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 6:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.LEFT_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.LEFT_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 7:
-                            GL11.glTranslated(x + BlockCelestialCompassSB.Ranges.TOP_LEFT_X, y + 1.1, z + BlockCelestialCompassSB.Ranges.TOP_LEFT_Z);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                        case 8:
-                            GL11.glTranslated(x + 0.5, y + 1.1, z + 0.5);
-                            tessy.startDrawingQuads();
-                            tessy.addVertexWithUV(low, 0, low, 0, 0);
-                            tessy.addVertexWithUV(low, 0, high, 0, 1);
-                            tessy.addVertexWithUV(high, 0, high, 1, 1);
-                            tessy.addVertexWithUV(high, 0, low, 1, 0);
-
-                            tessy.addVertexWithUV(high, 0, low, 0, 0);
-                            tessy.addVertexWithUV(high, 0, high, 0, 1);
-                            tessy.addVertexWithUV(low, 0, high, 1, 1);
-                            tessy.addVertexWithUV(low, 0, low, 1, 0);
-                            tessy.draw();
-                            break;
-                    }
-                    GL11.glPopMatrix();
-                }
-            }
-        }*/
     }
 }

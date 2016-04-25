@@ -16,6 +16,7 @@ public class Textures
 
     public static class GUI
     {
+        public static ResourceLocation WHITE = new ResourceLocation(Reference.MOD_ID, "textures/gui/white.png");
         public static ResourceLocation CLOCK = new ResourceLocation(Reference.MOD_ID, "textures/gui/clock.png");
         public static ResourceLocation BASE = new ResourceLocation(Reference.MOD_ID, "textures/gui/base_gui.png");
         public static ResourceLocation BOOK_COVER = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook.png");
@@ -31,13 +32,14 @@ public class Textures
         public static ResourceLocation ASSEMBLY_TABLE_CONSTRUCT = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_construct.png");
         public static ResourceLocation ASSEMBLY_TABLE_TEMPORAL_EXCAVATOR = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_temporal_excavator.png");
 
+        public static ResourceLocation CLOCKWORK_NETWORK_BORDER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/border.png");
+        public static ResourceLocation CLOCKWORK_NETWORK_CORNER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/corner.png");
         public static ResourceLocation PLAYER_INVENTORY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/player_inventory.png");
         public static ResourceLocation POWER_METER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power.png");
         public static ResourceLocation POWER_METER_HAND = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power_hand.png");
         public static ResourceLocation POWER_METER_CENTER = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/power_center.png");
 
         public static ResourceLocation FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/furnace.png");
-        public static ResourceLocation FURNACE_FORE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/furnace_fore.png");
         public static ResourceLocation BREWERY = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/brewery.png");
         public static ResourceLocation ALLOY_FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/alloy_furnace.png");
         public static ResourceLocation SUPER_ALLOY_FURNACE = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockworkmachine/super_alloy_furnace.png");
@@ -80,6 +82,12 @@ public class Textures
         public static ResourceLocation WOOD_GEAR = new ResourceLocation(Reference.MOD_ID, "textures/item/wood_gear.png");
     }
 
+    public static class FLUID
+    {
+        public static ResourceLocation TEMPORIUM_STILL = new ResourceLocation(Reference.MOD_ID, "blocks/temporium_still");
+        public static ResourceLocation TEMPORIUM_FLOW = new ResourceLocation(Reference.MOD_ID, "blocks/temporium_flow");
+    }
+
     public static class MISC
     {
         public static final ResourceLocation TEMPORAL_MODULE = new ResourceLocation("textures/temporal_module.png");
@@ -98,5 +106,11 @@ public class Textures
 
         public static final ResourceLocation TDA = new ResourceLocation(Reference.MOD_ID, "textures/blocks/special_renders/TDA.png");
         public static final ResourceLocation TDA_SIDES = new ResourceLocation(Reference.MOD_ID, "textures/blocks/special_renders/TDA_sides.png");
+
+        public static final ResourceLocation TIMEZONE_CONTROLLER_TOP = new ResourceLocation(Reference.MOD_ID, "textures/blocks/timezone_controller/top.png");
+        public static final ResourceLocation TIMEZONE_CONTROLLER_BOTTOM = new ResourceLocation(Reference.MOD_ID, "textures/blocks/timezone_controller/bottom.png");
+        public static final ResourceLocation TIMEZONE_CONTROLLER_METAL = new ResourceLocation(Reference.MOD_ID, "textures/blocks/timezone_controller/metal.png");
+        public static final ResourceLocation TIMEZONE_CONTROLLER_LHAND = new ResourceLocation(Reference.MOD_ID, "textures/blocks/timezone_controller/long_hand.png");
+        public static final ResourceLocation TIMEZONE_CONTROLLER_SHAND = new ResourceLocation(Reference.MOD_ID, "textures/blocks/timezone_controller/short_hand.png");
     }
 }

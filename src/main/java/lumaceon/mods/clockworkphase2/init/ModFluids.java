@@ -1,27 +1,24 @@
 package lumaceon.mods.clockworkphase2.init;
 
-import lumaceon.mods.clockworkphase2.fluid.FluidSteam;
-import lumaceon.mods.clockworkphase2.fluid.FluidTimeSand;
+import lumaceon.mods.clockworkphase2.fluid.FluidTemporium;
 import lumaceon.mods.clockworkphase2.lib.Names;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModFluids
 {
-    public static Fluid timeSand;
-    public static Fluid steam;
+    public static Fluid liquidTemporium;
 
     public static void init()
     {
-        timeSand = new FluidTimeSand(Names.FLUID.TIME_SAND);
-        steam = new FluidSteam(Names.FLUID.STEAM);
+        liquidTemporium = new FluidTemporium(Names.FLUID.LIQUID_TEMPORIUM, Textures.FLUID.TEMPORIUM_STILL, Textures.FLUID.TEMPORIUM_FLOW);
 
-        FluidRegistry.registerFluid(timeSand);
-        FluidRegistry.registerFluid(steam);
+        FluidRegistry.registerFluid(liquidTemporium);
     }
 
     public static void bindBlocks()
     {
-        //timeSand.setBlock(ModBlocks.timeSand);
+        liquidTemporium.setBlock(ModBlocks.liquidTemporium.getBlock());
     }
 }

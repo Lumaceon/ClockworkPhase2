@@ -24,6 +24,8 @@ public class ServerProxy extends CommonProxy
     @Override
     public void registerItemModel(Item item, String unlocalizedName) {}
     @Override
+    public void registerFluidModels() {}
+    @Override
     public void registerKeybindings() {}
     @Override
     public void initSideHandlers() {}

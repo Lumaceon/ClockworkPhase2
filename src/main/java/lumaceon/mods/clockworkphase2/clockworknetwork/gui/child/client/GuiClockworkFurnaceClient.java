@@ -24,7 +24,7 @@ public class GuiClockworkFurnaceClient extends GuiCN
     @Override
     public void drawBackground(int left, int top, float zLevel)
     {
-        mc.renderEngine.bindTexture(Textures.GUI.SLOT_RED);
+        mc.renderEngine.bindTexture(Textures.GUI.FURNACE);
         this.drawTexturedModalRect(left, top, xSize, ySize, zLevel);
         /*ItemStack input = machine.getStackInSlot(0);
         if(input != null)

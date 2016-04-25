@@ -107,7 +107,7 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
     private void smeltAsMuchAsPossible()
     {
         boolean smelted = false;
-        while(canSmelt() && (timeStorage.getTimeStored() >= ticksPerAction || (getTimezone() != null && getTimezone().getTimeSand() >= ticksPerAction - timeStorage.getTimeStored())))
+        while(canSmelt() && (timeStorage.getTimeStored() >= ticksPerAction || (getTimezoneProvider() != null && getTimezoneProvider().getTime() >= ticksPerAction - timeStorage.getTimeStored())))
         {
             if(!consumeTime())
                 return;
@@ -158,7 +158,7 @@ public class TileTemporalFurnace extends TileTemporalInventory implements ITimeR
         if(timeConsumed < ticksPerAction) //Could not consume all time required, take additional time from timezone.
         {
             timeStorage.extractTime(timeStorage.getTimeStored(), false);
-            return getTimezone().consumeTimeSand(ticksPerAction - timeConsumed) == ticksPerAction - timeConsumed;
+            return getTimezoneProvider().consumeTime(ticksPerAction - timeConsumed) == ticksPerAction - timeConsumed;
         }
         else //All time was consumed from this tile entity.
             timeStorage.extractTime(ticksPerAction, false);

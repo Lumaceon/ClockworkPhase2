@@ -74,6 +74,15 @@ public class TimeHelper
         return timeConsumed;
     }
 
+    /**
+     * Provides a multiplier for the xp -> time conversion of the temporal hourglass. This is purely beneficial and
+     * never falls below x1. This increases with the player's xp level to give them incentive to walk around risking
+     * high levels.
+     */
+    public static float getXPToTimeMultiplier(EntityPlayer player) {
+        return (float) Math.max(Math.pow(player.experienceLevel, 1.5) / 100.0F, 1.0F);
+    }
+
     public static int getTimeInInventory(IInventory inventory)
     {
         int timeFound = 0;
@@ -93,7 +102,7 @@ public class TimeHelper
      * @param temporalExcavator The temporal excavator itemstack.
      * @return The time, in ticks, it takes to break the block.
      */
-    public static int timeToBreakBlock(World world, BlockPos pos, Block blockToBreak, EntityLivingBase player, ItemStack temporalExcavator)
+    public static int getTimeToBreakBlock(World world, BlockPos pos, Block blockToBreak, EntityLivingBase player, ItemStack temporalExcavator)
     {
         float strength = 1.0F;
         if(temporalExcavator != null)

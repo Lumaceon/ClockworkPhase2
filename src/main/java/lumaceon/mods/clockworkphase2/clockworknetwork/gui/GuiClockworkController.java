@@ -163,8 +163,8 @@ public class GuiClockworkController extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GL11.glEnable(GL11.GL_BLEND);
         drawStaticBackgrounds();
+        GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor4f(1F, 1F, 1F, 1F);
         for(ChildGuiData child : guiDataList)
         {
@@ -401,6 +401,41 @@ public class GuiClockworkController extends GuiContainer
         tessellator.draw();
     }
 
+    public void drawTexturedModalRectRotated(int x, int y, int textureX, int textureY, int width, int height, int timesRotated)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        switch(timesRotated)
+        {
+            case 1: //90 Degrees.
+                renderer.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex(0, 0).endVertex();
+                renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
+                renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(1, 1).endVertex();
+                renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(1, 0).endVertex();
+                break;
+            case 2: //180 Degrees.
+                renderer.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex(1, 0).endVertex();
+                renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(0, 0).endVertex();
+                renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(0, 1).endVertex();
+                renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(1, 1).endVertex();
+                break;
+            case 3: //270 Degrees.
+                renderer.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex(1, 1).endVertex();
+                renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1, 0).endVertex();
+                renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(0, 0).endVertex();
+                renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(0, 1).endVertex();
+                break;
+            default:
+                renderer.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
+                renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1, 1).endVertex();
+                renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(1, 0).endVertex();
+                renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(0, 0).endVertex();
+                break;
+        }
+        tessellator.draw();
+    }
+
     public void drawLine(int startX, int startY, int endX, int endY, float red, float green, float blue, float alpha)
     {
         Tessellator tessellator = Tessellator.getInstance();
@@ -445,11 +480,33 @@ public class GuiClockworkController extends GuiContainer
 
     private void drawStaticBackgrounds()
     {
+        GL11.glColor4f(0.2F, 0.2F, 0.0F, 1.0F);
+        GL11.glDisable(GL11.GL_BLEND);
+        mc.renderEngine.bindTexture(Textures.GUI.WHITE);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+
         boolean isDefault = guiState.equals(State.DEFAULT);
         if(!isDefault)
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.3F);
         else
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+
+        //BORDERS
+        mc.renderEngine.bindTexture(Textures.GUI.CLOCKWORK_NETWORK_BORDER);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, 3);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop + this.ySize - 3, 0, 0, this.xSize, 3);
+        this.drawTexturedModalRectRotated(this.guiLeft, this.guiTop, 0, 0, 3, this.ySize, 1);
+        this.drawTexturedModalRectRotated(this.guiLeft + this.xSize - 3, this.guiTop, 0, 0, 3, this.ySize, 3);
+        //BORDERS
+
+        //CORNERS
+        mc.renderEngine.bindTexture(Textures.GUI.CLOCKWORK_NETWORK_CORNER);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop + this.ySize - 3, 0, 0, 3, 3);
+        this.drawTexturedModalRectRotated(this.guiLeft, this.guiTop, 0, 0, 3, 3, 3);
+        this.drawTexturedModalRectRotated(this.guiLeft + this.xSize - 3, this.guiTop, 0, 0, 3, 3, 2);
+        this.drawTexturedModalRectRotated(this.guiLeft + this.xSize - 3, this.guiTop + this.ySize - 3, 0, 0, 3, 3, 1);
+        //CORNERS
+
 
         //PLAYER INVENTORY
         mc.renderEngine.bindTexture(Textures.GUI.PLAYER_INVENTORY);

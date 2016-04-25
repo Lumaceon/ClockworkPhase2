@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.api.guidebook;
 
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompressedStreamTools;
@@ -12,18 +13,23 @@ public class GuidebookFileHelper
 {
     public static Article getArticleFromFile(File modDirectory, String modID, String fileName, ResourceLocation texture, Item textureItem, String displayName)
     {
-        File file;
-        file = new File(modDirectory, "assets\\" + modID + "\\articles\\" + fileName + ".cp2article");
-        InputStream is;
+        //File file;
+        //file = new File(modDirectory, "assets/" + modID + "/articles/" + fileName + ".cparticle");
+        InputStream is = null;
         NBTTagCompound nbt = null;
         try
         {
-            is = new FileInputStream(file);
+            is = ClockworkPhase2.instance.getClass().getClassLoader().getResourceAsStream("assets/" + modID + "/articles/" + fileName + ".cparticle");
             nbt = CompressedStreamTools.readCompressed(is);
-            is.close();
         }
         catch(FileNotFoundException e) { e.printStackTrace(); }
         catch(IOException e) { e.printStackTrace(); }
+
+        try {
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if(nbt == null)
         {
@@ -46,12 +52,12 @@ public class GuidebookFileHelper
 
             File file = null;
             if(Minecraft.getMinecraft().mcDataDir != null)
-                file = new File(Minecraft.getMinecraft().mcDataDir.getName(), "\\articles");
+                file = new File(Minecraft.getMinecraft().mcDataDir.getName(), "/articles");
 
             if(file != null)
             {
                 file.mkdir();
-                file = new File(file, article.fileName + ".cp2article");
+                file = new File(file, article.fileName + ".cparticle");
                 FileOutputStream output = new FileOutputStream(file);
                 CompressedStreamTools.writeCompressed(article.compilePagesIntoTag(), output);
                 output.close();

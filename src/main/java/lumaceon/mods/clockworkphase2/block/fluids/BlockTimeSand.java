@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.block;
+package lumaceon.mods.clockworkphase2.block.fluids;
 
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.block.material.Material;
@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public class BlockTimeSand extends BlockFluidClassic
 {
-    public BlockTimeSand(Fluid fluid, Material material, String unlocalizedName)
+    public BlockTimeSand(Material material, String unlocalizedName, Fluid fluid)
     {
         super(fluid, material);
         this.setLightLevel(15);

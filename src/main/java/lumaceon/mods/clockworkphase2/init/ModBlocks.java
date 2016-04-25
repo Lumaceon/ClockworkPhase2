@@ -1,7 +1,9 @@
 package lumaceon.mods.clockworkphase2.init;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TileTimezoneModulator;
 import lumaceon.mods.clockworkphase2.block.*;
+import lumaceon.mods.clockworkphase2.block.fluids.BlockLiquidTemporium;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.BlockClockworkController;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.BlockClockworkNetworkConnector;
 import lumaceon.mods.clockworkphase2.clockworknetwork.block.BlockCrank;
@@ -19,11 +21,11 @@ import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidImporter;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimeCollector;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimeWell;
-import lumaceon.mods.clockworkphase2.timetravel.third.block.BlockGhostlyLantern;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -48,9 +50,8 @@ public class ModBlocks
     public static BlockReference blockTemporal = new BlockReference("temporal_block");
     //PLANTS
     public static BlockReference moonFlower = new BlockReference("moon_flower");
-    //MISC
-    public static BlockReference basicWindingBox = new BlockReference("basic_winding_box");
-    public static BlockReference assemblyTable = new BlockReference("assembly_table");
+    //FLUIDS
+    public static BlockReference liquidTemporium = new BlockReference("liquid_temporium");
     //CLOCKWORK NETWORK
     public static BlockReference crank = new BlockReference("crank");
     public static BlockReference clockworkNetworkConnector = new BlockReference("clockwork_network_connector");
@@ -65,19 +66,37 @@ public class ModBlocks
     public static BlockReference clockworkCraftingTable = new BlockReference("clockwork_crafting_table");
     public static BlockReference clockworkItemStorage = new BlockReference("clockwork_item_storage");
     public static BlockReference clockworkScreen = new BlockReference("clockwork_screen");
-    //THIRD AGE
-    public static BlockReference ghostlyLantern = new BlockReference("ghostly_lanturn");
+    //TEMPORAL BLOCKS
+    public static BlockReference timezoneController = new BlockReference("timezone_controller");
+    public static BlockReference timezoneControllerSB = new BlockReference("timezone_controller_sb");
+    public static BlockReference timezoneModulator = new BlockReference("timezone_modulator");
+    public static BlockReference timezoneFluidExporter = new BlockReference("timezone_fluid_exporter");
+    public static BlockReference timezoneFluidImporter = new BlockReference("timezone_fluid_importer");
+    //MISC
+    public static BlockReference basicWindingBox = new BlockReference("basic_winding_box");
+    public static BlockReference assemblyTable = new BlockReference("assembly_table");
+    public static BlockReference temporalDistortionAltar = new BlockReference(Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
+    public static BlockReference temporalDistortionAltarSB = new BlockReference(Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR_SB);
     public static void init()
     {
         Class[] matName = new Class[] {Material.class, String.class};
         Class[] matLevelName = new Class[] {Material.class, int.class, String.class};
+        Class[] matLevelNameItemRefs = new Class[] {Material.class, int.class, String.class, ArrayList.class};
+        Class[] matNameFluid = new Class[] {Material.class, String.class, Fluid.class};
+
+        ArrayList<ModItems.ItemReference> thirdAgeRelics = new ArrayList<ModItems.ItemReference>();
+        thirdAgeRelics.add(ModItems.moonFlowerSeeds);
+        ArrayList<ModItems.ItemReference> secondAgeRelics = new ArrayList<ModItems.ItemReference>();
+        secondAgeRelics.add(ModItems.mainspring);
+        ArrayList<ModItems.ItemReference> firstAgeRelics = new ArrayList<ModItems.ItemReference>();
+        firstAgeRelics.add(ModItems.clockworkPickaxe);
 
         //ORES
         registerBlock(oreCopper, BlockClockworkPhaseOre.class, matLevelName, new Object[] {Material.rock, 1, oreCopper.getUnlocalizedName()}, "oreCopper");
         registerBlock(oreZinc, BlockClockworkPhaseOre.class, matLevelName, new Object[] {Material.rock, 1, oreZinc.getUnlocalizedName()}, "oreZinc");
-        registerBlock(relicThirdAge, BlockClockworkPhaseRelic.class, matLevelName, new Object[] {Material.rock, 1, relicThirdAge.getUnlocalizedName()});
-        registerBlock(relicSecondAge, BlockClockworkPhaseRelic.class, matLevelName, new Object[] {Material.rock, 2, relicSecondAge.getUnlocalizedName()});
-        registerBlock(relicFirstAge, BlockClockworkPhaseRelic.class, matLevelName, new Object[] {Material.rock, 3, relicFirstAge.getUnlocalizedName()});
+        registerBlock(relicThirdAge, BlockClockworkPhaseRelic.class, matLevelNameItemRefs, new Object[] {Material.ground, 1, relicThirdAge.getUnlocalizedName(), thirdAgeRelics});
+        registerBlock(relicSecondAge, BlockClockworkPhaseRelic.class, matLevelNameItemRefs, new Object[] {Material.ground, 2, relicSecondAge.getUnlocalizedName(), secondAgeRelics});
+        registerBlock(relicFirstAge, BlockClockworkPhaseRelic.class, matLevelNameItemRefs, new Object[] {Material.ground, 3, relicFirstAge.getUnlocalizedName(), firstAgeRelics});
         //METAL BLOCKS
         registerBlock(blockCopper, BlockClockworkPhase.class, matName, new Object[] {Material.iron, blockCopper.getUnlocalizedName()}, "blockCopper");
         registerBlock(blockZinc, BlockClockworkPhase.class, matName, new Object[] {Material.iron, blockZinc.getUnlocalizedName()}, "blockZinc");
@@ -85,9 +104,8 @@ public class ModBlocks
         registerBlock(blockTemporal, BlockClockworkPhase.class, matName, new Object[] {Material.iron, blockTemporal.getUnlocalizedName()}, "blockTemporal");
         //PLANTS
         registerBlock(moonFlower, BlockMoonFlower.class, matName, new Object[] {Material.plants, moonFlower.getUnlocalizedName()});
-        //MISC
-        registerBlock(basicWindingBox, BlockBasicWindingBox.class, matName, new Object[] {Material.iron, basicWindingBox.getUnlocalizedName()});
-        registerBlock(assemblyTable, BlockAssemblyTable.class, matName, new Object[] {Material.wood, assemblyTable.getUnlocalizedName()});
+        //FLUIDS
+        registerBlock(liquidTemporium, BlockLiquidTemporium.class, matNameFluid, new Object[] {Material.water, liquidTemporium.getUnlocalizedName(), ModFluids.liquidTemporium});
         //CLOCKWORK NETWORK
         registerBlock(crank, BlockCrank.class, matName, new Object[] {Material.iron, crank.getUnlocalizedName()});
         registerBlock(clockworkNetworkConnector, BlockClockworkNetworkConnector.class, matName, new Object[] {Material.iron, clockworkNetworkConnector.getUnlocalizedName()});
@@ -102,12 +120,21 @@ public class ModBlocks
         registerBlock(clockworkCraftingTable, BlockClockworkCraftingTable.class, matName, new Object[] {Material.iron, clockworkCraftingTable.getUnlocalizedName()});
         registerBlock(clockworkItemStorage, BlockClockworkItemStorage.class, matName, new Object[] {Material.iron, clockworkItemStorage.getUnlocalizedName()});
         registerBlock(clockworkScreen, BlockClockworkScreen.class, matName, new Object[] {Material.iron, clockworkScreen.getUnlocalizedName()});
-        //THIRD AGE
-        registerBlock(ghostlyLantern, BlockGhostlyLantern.class, matName, new Object[] {Material.glass, ghostlyLantern.getUnlocalizedName()});
+        //TEMPORAL BLOCKS
+        registerBlock(timezoneController, BlockTimezoneController.class, matName, new Object[] {Material.iron, timezoneController.getUnlocalizedName()});
+        registerBlock(timezoneControllerSB, BlockTimezoneControllerSB.class, matName, new Object[] {Material.iron, timezoneControllerSB.getUnlocalizedName()});
+        registerBlock(timezoneModulator, BlockTimezoneModulator.class, matName, new Object[] {Material.iron, timezoneModulator.getUnlocalizedName()});
+        registerBlock(timezoneFluidExporter, BlockTimezoneFluidExporter.class, matName, new Object[] {Material.iron, timezoneFluidExporter.getUnlocalizedName()});
+        registerBlock(timezoneFluidImporter, BlockTimezoneFluidImporter.class, matName, new Object[] {Material.iron, timezoneFluidImporter.getUnlocalizedName()});
+        //MISC
+        registerBlock(basicWindingBox, BlockBasicWindingBox.class, matName, new Object[] {Material.iron, basicWindingBox.getUnlocalizedName()});
+        registerBlock(assemblyTable, BlockAssemblyTable.class, matName, new Object[] {Material.wood, assemblyTable.getUnlocalizedName()});
+        registerBlock(temporalDistortionAltar, BlockTemporalDisplacementAltar.class, matName, new Object[] {Material.iron, temporalDistortionAltar.getUnlocalizedName()});
+        registerBlock(temporalDistortionAltarSB, BlockTemporalDisplacementAltarSB.class, matName, new Object[] {Material.iron, temporalDistortionAltarSB.getUnlocalizedName()});
     }
 
-    /*public static Block celestialCompass;
-    public static Block celestialCompassSB;
+    /*public static Block timezoneController;
+    public static Block timezoneControllerSB;
     public static Block temporalDisplacementAltar;
     public static Block temporalDisplacementAltarSB;
     public static Block tda;
@@ -119,8 +146,8 @@ public class ModBlocks
     public static Block timeWell;
     public static void initTimeMachines()
     {
-        celestialCompass = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
-        celestialCompassSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        timezoneController = new BlockCelestialCompass(Material.iron, Names.BLOCK.CELESTIAL_COMPASS);
+        timezoneControllerSB = new BlockCelestialCompassSB(Material.iron, Names.BLOCK.CELESTIAL_COMPASS_SB);
         temporalDisplacementAltar = new BlockTemporalDisplacementAltar(Material.iron, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
         temporalDisplacementAltarSB = new BlockTemporalDisplacementAltarSB(Material.iron, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR_SB);
         tda = new BlockTDA(Material.iron, Names.BLOCK.TDA);
@@ -131,8 +158,8 @@ public class ModBlocks
         temporalFurnace = new BlockTemporalFurnace(Material.iron, Names.BLOCK.TEMPORAL_FURNACE);
         timeWell = new BlockTimeWell(Material.iron, Names.BLOCK.TIME_WELL);
 
-        GameRegistry.registerBlock(celestialCompass, Names.BLOCK.CELESTIAL_COMPASS);
-        GameRegistry.registerBlock(celestialCompassSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
+        GameRegistry.registerBlock(timezoneController, Names.BLOCK.CELESTIAL_COMPASS);
+        GameRegistry.registerBlock(timezoneControllerSB, Names.BLOCK.CELESTIAL_COMPASS_SB);
         GameRegistry.registerBlock(temporalDisplacementAltar, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
         GameRegistry.registerBlock(temporalDisplacementAltarSB, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR_SB);
         GameRegistry.registerBlock(tda, Names.BLOCK.TDA);
@@ -146,11 +173,12 @@ public class ModBlocks
 
     public static void initTE()
     {
-        GameRegistry.registerTileEntity(TileCelestialCompass.class, Names.BLOCK.CELESTIAL_COMPASS);
+        GameRegistry.registerTileEntity(TileTimezoneController.class, timezoneController.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileTimezoneModulator.class, timezoneModulator.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalDisplacementAltar.class, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
         GameRegistry.registerTileEntity(TileTDA.class, Names.BLOCK.TDA);
-        GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, Names.BLOCK.TIMEZONE_FLUID_EXPORTER);
-        GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, Names.BLOCK.TIMEZONE_FLUID_IMPORTER);
+        GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, timezoneFluidExporter.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, timezoneFluidImporter.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTimeCollector.class, Names.BLOCK.TIME_COLLECTOR);
         GameRegistry.registerTileEntity(TileAssemblyTable.class, assemblyTable.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalFurnace.class, Names.BLOCK.TEMPORAL_FURNACE);

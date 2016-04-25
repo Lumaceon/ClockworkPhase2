@@ -2,24 +2,28 @@ package lumaceon.mods.clockworkphase2.proxy;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.clockworknetwork.ClockworkNetworkContainer;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TileTimezoneModulator;
+import lumaceon.mods.clockworkphase2.block.fluids.BlockLiquidTemporium;
 import lumaceon.mods.clockworkphase2.client.ClientTickHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
 import lumaceon.mods.clockworkphase2.client.render.ModelRegistry;
+import lumaceon.mods.clockworkphase2.client.render.elements.world.*;
 import lumaceon.mods.clockworkphase2.clockworknetwork.gui.child.client.*;
 import lumaceon.mods.clockworkphase2.client.keybind.KeyHandler;
 import lumaceon.mods.clockworkphase2.client.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
-import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
-import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTDA;
-import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalClock;
-import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElementTemporalDisplacementAltar;
 import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
+import lumaceon.mods.clockworkphase2.init.ModBlocks;
+import lumaceon.mods.clockworkphase2.lib.Names;
+import lumaceon.mods.clockworkphase2.lib.Reference;
+import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.timetravel.third.world.WorldProviderThirdAge;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -42,6 +46,7 @@ public class ClientProxy extends CommonProxy
     public void registerTESR(){
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneModulator.class, new TESRTimezoneModulator());
     }
 
     @Override
@@ -52,6 +57,11 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerItemModel(Item item, String unlocalizedName) {
         ModelRegistry.registerItemModel(item, unlocalizedName);
+    }
+
+    @Override
+    public void registerFluidModels() {
+        ModelRegistry.registerFluidModel(ModBlocks.liquidTemporium.getBlock(), "temporium");
     }
 
     @Override
@@ -81,8 +91,11 @@ public class ClientProxy extends CommonProxy
             case 1: //Temporal displacement altar renderer.
                 RenderHandler.registerWorldRenderElement(new WorldRenderElementTemporalDisplacementAltar(world, x, y, z));
                 break;
-            case 2://TDA Stargate style
+            case 2: //TDA Stargate style
                 RenderHandler.registerWorldRenderElement(new WorldRenderElementTDA(world, x, y, z));
+                break;
+            case 3: //Timezone Controller
+                RenderHandler.registerWorldRenderElement(new WorldRenderElementTimezoneController(world, x, y, z));
                 break;
         }
     }

@@ -25,8 +25,7 @@ public class Names
 
     public class FLUID
     {
-        public static final String TIME_SAND = BLOCK.TIME_SAND;
-        public static final String STEAM = "steam";
+        public static final String LIQUID_TEMPORIUM = "liquid_temporium";
     }
 
     public class ENTITY

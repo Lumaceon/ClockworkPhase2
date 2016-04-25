@@ -146,7 +146,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
                     if(component.getItem() instanceof ItemToolUpgradeTemporalInfuser)
                         if(((ItemToolUpgradeTemporalInfuser) component.getItem()).getActive(component, is))
                         {
-                            TimeHelper.consumeTimeMostPossible(((EntityPlayer) playerIn).inventory, TimeHelper.timeToBreakBlock(world, pos, block, playerIn, is));
+                            TimeHelper.consumeTimeMostPossible(((EntityPlayer) playerIn).inventory, TimeHelper.getTimeToBreakBlock(world, pos, block, playerIn, is));
                             break;
                         }
                     if(component.getItem() instanceof ItemClockworkTool)

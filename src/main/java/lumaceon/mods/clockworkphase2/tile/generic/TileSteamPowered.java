@@ -34,7 +34,7 @@ public class TileSteamPowered extends TileClockworkPhase implements IFluidHandle
 
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid) {
-        return fluid.equals(ModFluids.steam); //TODO - OreDictionary support
+        return false;//fluid.equals(ModFluids.steam); //TODO - OreDictionary support
     }
 
     @Override
@@ -42,6 +42,6 @@ public class TileSteamPowered extends TileClockworkPhase implements IFluidHandle
 
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing from) {
-        return new FluidTankInfo[] {new FluidTankInfo(new FluidStack(ModFluids.steam, 0), steamUsePerTick)};
+        return new FluidTankInfo[] {new FluidTankInfo(new FluidStack(ModFluids.liquidTemporium, 0), steamUsePerTick)};
     }
 }

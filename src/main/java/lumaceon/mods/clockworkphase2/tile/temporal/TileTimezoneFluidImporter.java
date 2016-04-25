@@ -13,7 +13,7 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
 {
     public ItemStack getTimezoneModule()
     {
-        /*ITimezoneProvider timezone = getTimezone();
+        /*ITimezoneProvider timezone = getTimezoneProvider();
         ItemStack timezoneModule;
         if(timezone != null)
         {

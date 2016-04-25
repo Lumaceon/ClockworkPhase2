@@ -43,7 +43,6 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase implements
         if(!isAvailable())
         {
             handleMultiblockPlacement();
-            return;
         }
 
         if(worldObj.isRemote && !rendererSetup)
@@ -68,7 +67,7 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase implements
                     this.worldObj.markBlockForUpdate(new BlockPos(x, y, z));
                     blocksToPlace--;
                 }
-                //setStateAndUpdate(1);
+                machineState = 1;
             }
             else if(blocksToPlace > 0)
             {
@@ -78,10 +77,10 @@ public class TileTemporalDisplacementAltar extends TileClockworkPhase implements
                 z = pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
                 meta = BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].meta;
 
-                /*if(worldObj.isAirBlock(new BlockPos(x, y, z)) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().equals(ModBlocks.temporalDisplacementAltarSB) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().isReplaceable(worldObj, new BlockPos(x, y, z)))
+                if(worldObj.isAirBlock(new BlockPos(x, y, z)) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().equals(ModBlocks.temporalDistortionAltarSB.getBlock()) || worldObj.getBlockState(new BlockPos(x, y, z)).getBlock().isReplaceable(worldObj, new BlockPos(x, y, z)))
                 {
-                    worldObj.setBlockState(new BlockPos(x, y, z), ModBlocks.temporalDisplacementAltarSB.getDefaultState());
-                }*/
+                    worldObj.setBlockState(new BlockPos(x, y, z), ModBlocks.temporalDistortionAltarSB.getBlock().getDefaultState());
+                }
                 blocksToPlace--;
                 //else
                 //{

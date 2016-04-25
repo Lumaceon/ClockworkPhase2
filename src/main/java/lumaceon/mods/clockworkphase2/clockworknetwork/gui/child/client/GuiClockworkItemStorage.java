@@ -38,7 +38,7 @@ public class GuiClockworkItemStorage extends GuiCN
 
     @Override
     public void drawBackground(int left, int top, float zLevel) {
-        mc.renderEngine.bindTexture(Textures.GUI.SLOT_BLUE);
+        mc.renderEngine.bindTexture(Textures.GUI.CHEST);
         this.drawTiledTexturedModalRect(left, top, xSize, ySize, itemStorage.xSlots, itemStorage.ySlots, zLevel);
     }
 

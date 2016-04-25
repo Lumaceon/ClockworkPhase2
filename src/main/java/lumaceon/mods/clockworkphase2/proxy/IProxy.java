@@ -18,6 +18,7 @@ public interface IProxy
     public void registerTESR();
     public void registerBlockModel(Block block, String unlocalizedName);
     public void registerItemModel(Item item, String unlocalizedName);
+    public void registerFluidModels();
     public void registerKeybindings();
     public void initSideHandlers();
     public void addWorldRenderer(World world, int x, int y, int z, int ID);

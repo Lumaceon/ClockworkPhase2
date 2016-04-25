@@ -97,18 +97,18 @@ public class Recipes
      */
     public static void initAlloyRecipes()
     {
-        boolean copper = OreDictionary.doesOreNameExist("ingotCopper");
-        boolean zinc = OreDictionary.doesOreNameExist("ingotZinc");
-        boolean tin = OreDictionary.doesOreNameExist("ingotTin");
-        boolean brass = OreDictionary.doesOreNameExist("ingotBrass");
-        boolean bronze = OreDictionary.doesOreNameExist("ingotBronze");
-        boolean nickel = OreDictionary.doesOreNameExist("ingotNickel");
-        boolean invar = OreDictionary.doesOreNameExist("ingotInvar");
-        boolean aluminum = OreDictionary.doesOreNameExist("ingotAluminum");
-        boolean aluminumBrass = OreDictionary.doesOreNameExist("ingotAluminumBrass");
-        boolean cobalt = OreDictionary.doesOreNameExist("ingotCobalt");
-        boolean ardite = OreDictionary.doesOreNameExist("ingotArdite");
-        boolean manyullyn = OreDictionary.doesOreNameExist("ingotManyullyn");
+        boolean copper = OreDictionary.getOres("ingotCopper").size() > 0;
+        boolean zinc = OreDictionary.getOres("ingotZinc").size() > 0;
+        boolean tin = OreDictionary.getOres("ingotTin").size() > 0;
+        boolean brass = OreDictionary.getOres("ingotBrass").size() > 0;
+        boolean bronze = OreDictionary.getOres("ingotBronze").size() > 0;
+        boolean nickel = OreDictionary.getOres("ingotNickel").size() > 0;
+        boolean invar = OreDictionary.getOres("ingotInvar").size() > 0;
+        boolean aluminum = OreDictionary.getOres("ingotAluminum").size() > 0;
+        boolean aluminumBrass = OreDictionary.getOres("ingotAluminumBrass").size() > 0;
+        boolean cobalt = OreDictionary.getOres("ingotCobalt").size() > 0;
+        boolean ardite = OreDictionary.getOres("ingotArdite").size() > 0;
+        boolean manyullyn = OreDictionary.getOres("ingotManyullyn").size() > 0;
 
         AlloyRecipes.RecipeComponent first;
         AlloyRecipes.RecipeComponent second;

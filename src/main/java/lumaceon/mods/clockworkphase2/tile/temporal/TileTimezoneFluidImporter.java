@@ -1,6 +1,10 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
+import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
+import lumaceon.mods.clockworkphase2.api.time.timezone.Timezone;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneModulation;
+import lumaceon.mods.clockworkphase2.item.timezonemodulation.ItemTimezoneModulationTank;
+import lumaceon.mods.clockworkphase2.modulations.TimezoneModulationTank;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -9,30 +13,35 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import java.util.List;
+
 public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHandler
 {
-    public ItemStack getTimezoneModule()
+    public List<TimezoneModulation> getTanks()
     {
-        /*ITimezoneProvider timezone = getTimezoneProvider();
-        ItemStack timezoneModule;
+        ITimezoneProvider timezoneProvider = getTimezoneProvider();
+        if(timezoneProvider == null)
+            return null;
+
+        Timezone timezone = timezoneProvider.getTimezone();
         if(timezone != null)
-        {
-            for(int n = 0; n < 8; n++)
-            {
-                timezoneModule = timezone.getTimezoneModule(n);
-                if(timezoneModule != null && timezoneModule.getItem() instanceof ItemTimezoneModuleTank)
-                    return timezoneModule;
-            }
-        }*/
+            return timezone.getTimezoneModulations(TimezoneModulationTank.class);
+
         return null;
     }
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
-        ItemStack timestream = getTimezoneModule();
-        if(timestream != null)
-            return ((ItemTimezoneModuleTank) timestream.getItem()).fill(timestream, resource, doFill);
+        List<TimezoneModulation> tanks = getTanks();
+        for(TimezoneModulation tank : tanks)
+            if(tank != null && tank instanceof TimezoneModulationTank)
+                if(((TimezoneModulationTank) tank).getFluid().getName().equals(resource.getFluid().getName()))
+                    return ((TimezoneModulationTank) tank).fill(resource, doFill);
+        for(TimezoneModulation tank : tanks)
+            if(tank != null && tank instanceof TimezoneModulationTank)
+                if(((TimezoneModulationTank) tank).getFluidStack().amount <= 0)
+                    return ((TimezoneModulationTank) tank).fill(resource, doFill);
         return 0;
     }
 

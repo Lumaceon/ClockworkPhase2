@@ -11,7 +11,7 @@ import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,7 +54,7 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
             int quality = getQuality(stack);
             int speed = getSpeed(stack);
             target.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), speed / 25.0F);
-            int tensionCost = ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perWhack, quality, speed);
+            int tensionCost = ClockworkHelper.getTensionCostFromStats(Configs.TENSION.perWhack, quality, speed);
 
             consumeTension(stack, tensionCost);
         }
@@ -139,7 +139,7 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
         int speed = getSpeed(item);
 
         list.add(Colors.WHITE + "Attack Damage: " + Colors.GOLD + (int) (speed / 25.0F));
-        list.add(Colors.WHITE + "Tension Per Attack: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perWhack, quality, speed));
+        list.add(Colors.WHITE + "Tension Per Attack: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(Configs.TENSION.perWhack, quality, speed));
     }
 
     @Override

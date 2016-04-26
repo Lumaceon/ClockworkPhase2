@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.timetravel.second.world;
 
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.WorldChunkManager;
@@ -10,7 +10,7 @@ public class WorldProviderSecondAge extends WorldProviderSurface
 {
     @Override
     public void registerWorldChunkManager() {
-        this.dimensionId = Defaults.DIM_ID.SECOND_AGE;
+        this.dimensionId = Configs.DIM_ID.SECOND_AGE;
         this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT, "SecondAge");
     }
 

@@ -2,13 +2,16 @@ package lumaceon.mods.clockworkphase2.tile.generic;
 
 import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
 import lumaceon.mods.clockworkphase2.api.time.TimeStorage;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneHandler;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 
 public abstract class TileTemporal extends TileClockworkPhase
 {
     private ITimezoneProvider timezone;
     public TimeStorage timeStorage;
-    protected int tz_x, tz_y, tz_z;
+    protected BlockPos timezonePosition;
 
     @Override
     public void writeToNBT(NBTTagCompound nbt)
@@ -26,26 +29,37 @@ public abstract class TileTemporal extends TileClockworkPhase
             timeStorage.readFromNBT(nbt);
     }
 
-    /*public ITimezoneProvider getTimezoneProvider()
+    public ITimezoneProvider getTimezoneProvider()
     {
-        if(timezone != null && Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) <= timezone.getRange())
+        BlockPos tilePosition = this.getPos();
+        int xCoordinate = tilePosition.getX();
+        int yCoordinate = tilePosition.getY();
+        int zCoordinate = tilePosition.getZ();
+        int tz_x = timezonePosition.getX();
+        int tz_z = timezonePosition.getZ();
+
+        //Check to see if the timezone is stored in the parameter and is in range. If so, we can stop here.
+        if(timezone != null && Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) <= timezone.getRange())
             return timezone;
-        TileEntity te = worldObj.getTileEntity(tz_x, tz_y, tz_z);
+
+        //Timezone parameter was either null or out of range, try and find it via stored coordinates.
+        TileEntity te = worldObj.getTileEntity(timezonePosition);
         if(te != null && te instanceof ITimezoneProvider)
         {
-            if(Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) > timezone.getRange())
+            if(Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) > timezone.getRange())
                 return null;
             timezone = (ITimezoneProvider) te;
             return timezone;
         }
 
-        ITimezoneProvider timezone = TimezoneHandler.getTimeZone(xCoord, yCoord, zCoord, worldObj);
+        //None of the parameters were helpful; try to find one in the area.
+        ITimezoneProvider timezone = TimezoneHandler.getTimeZone(xCoordinate, yCoordinate, zCoordinate, worldObj);
         if(timezone != null)
             this.timezone = timezone;
-        if(timezone == null || Math.sqrt(Math.pow(tz_x - xCoord, 2) + Math.pow(tz_z - zCoord, 2)) <= timezone.getRange())
+        if(timezone == null || Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) <= timezone.getRange())
             return null;
         return timezone;
-    }*/
+    }
 
     public void updateClientTime(NBTTagCompound nbt) {
         if(timeStorage != null)

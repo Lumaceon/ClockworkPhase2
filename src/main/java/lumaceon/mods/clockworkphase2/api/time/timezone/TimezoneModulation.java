@@ -30,11 +30,13 @@ public abstract class TimezoneModulation
 
     /**
      * Called during the appropriate tile's writeToNBT method.
+     * @param nbt An NBTTagCompound that will be saved to the timezone provider.
      */
     public void writeToNBT(NBTTagCompound nbt) {}
 
     /**
      * Called during the appropriate tile's readFromNBT method.
+     * @param nbt An NBTTagCompound representing this modulation's saved data; from the timezone provider.
      */
     public void readFromNBT(NBTTagCompound nbt) {}
 

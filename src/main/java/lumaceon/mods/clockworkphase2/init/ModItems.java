@@ -8,6 +8,8 @@ import lumaceon.mods.clockworkphase2.item.components.clockworktool.*;
 import lumaceon.mods.clockworkphase2.item.construct.tool.*;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemClockworkSword;
 import lumaceon.mods.clockworkphase2.item.construct.weapon.ItemLightningSword;
+import lumaceon.mods.clockworkphase2.item.timezonemodulation.ItemTimezoneModulationSactification;
+import lumaceon.mods.clockworkphase2.item.timezonemodulation.ItemTimezoneModulationTank;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.util.EnumHelper;
@@ -71,8 +73,11 @@ public class ModItems
     public static ItemReference toolUpgradeArea = new ItemReference("tool_upgrade_area");
     public static ItemReference toolUpgradeFortune = new ItemReference("tool_upgrade_fortune");
     public static ItemReference toolUpgradeXp = new ItemReference("tool_upgrade_xp");
-    public static ItemReference toolUpgradeBlockPlacer = new ItemReference("tool_upgrade_block_placer");
+    public static ItemReference toolUpgradeRightClicker = new ItemReference("tool_upgrade_right_clicker");
     public static ItemReference toolUpgradeMassStorage = new ItemReference("tool_upgrade_mass_storage");
+    //TIMEZONE MODULATIONS
+    public static ItemReference timezoneModulationSanctification = new ItemReference("timezone_modulation_sanctification");
+    public static ItemReference timezoneModulationTank = new ItemReference("timezone_modulation_tank");
     //WEAPONS
     public static ItemReference clockworkSword = new ItemReference("clockwork_sword");
     public static ItemReference lightningSword = new ItemReference("lightning_sword");
@@ -129,7 +134,7 @@ public class ModItems
         registerItem(trowelWood, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.WOOD, trowelWood.getUnlocalizedName()});
         registerItem(trowelStone, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.STONE, trowelStone.getUnlocalizedName()});
         registerItem(trowelIron, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.IRON, trowelIron.getUnlocalizedName()});
-        registerItem(trowelDiamond, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.EMERALD, trowelDiamond.getUnlocalizedName()}); //Says emerald; is actually diamond.
+        registerItem(trowelDiamond, ItemTrowel.class, matName, new Object[] {Item.ToolMaterial.EMERALD, trowelDiamond.getUnlocalizedName()}); //Says emerald; is actually diamond. Such identity crisis.
         registerItem(wireDuster, ItemWireDuster.class, stackDamageName, new Object[] {1, 100, wireDuster.getUnlocalizedName()});
         //TOOL UPGRADES
         registerItem(toolUpgradeTemporalInfuser, ItemToolUpgradeTemporalInfuser.class, stackDamageName, new Object[] {1, 100, toolUpgradeTemporalInfuser.getUnlocalizedName()});
@@ -139,11 +144,14 @@ public class ModItems
         registerItem(toolUpgradeArea, ItemToolUpgradeArea.class, stackDamageName, new Object[] {1, 100, toolUpgradeArea.getUnlocalizedName()});
         registerItem(toolUpgradeFortune, ItemToolUpgradeFortune.class, stackDamageName, new Object[] {1, 100, toolUpgradeFortune.getUnlocalizedName()});
         registerItem(toolUpgradeXp, ItemToolUpgradeXP.class, stackDamageName, new Object[] {1, 100, toolUpgradeXp.getUnlocalizedName()});
-        registerItem(toolUpgradeBlockPlacer, ItemToolUpgradeBlockPlacer.class, stackDamageName, new Object[] {1, 100, toolUpgradeBlockPlacer.getUnlocalizedName()});
+        registerItem(toolUpgradeRightClicker, ItemToolUpgradeRightClicker.class, stackDamageName, new Object[] {1, 100, toolUpgradeRightClicker.getUnlocalizedName()});
         registerItem(toolUpgradeMassStorage, ItemToolUpgradeStorage.class, stackDamageName, new Object[] {1, 100, toolUpgradeMassStorage.getUnlocalizedName()});
+        //TIMEZONE MODULATIONS
+        registerItem(timezoneModulationSanctification, ItemTimezoneModulationSactification.class, stackDamageName, new Object[] {1, 100, timezoneModulationSanctification.getUnlocalizedName()});
+        registerItem(timezoneModulationTank, ItemTimezoneModulationTank.class, stackDamageName, new Object[] {1, 100, timezoneModulationTank.getUnlocalizedName()});
         //WEAPONS
         registerItem(clockworkSword, ItemClockworkSword.class, stackDamageName, new Object[] {1, 100, clockworkSword.getUnlocalizedName()});
-        registerItem(lightningSword, ItemLightningSword.class, matName, new Object[] {clockworkMaterial, lightningSword.getUnlocalizedName()});
+        registerItem(lightningSword, ItemLightningSword.class, matName, new Object[] {clockworkMaterial, lightningSword.getUnlocalizedName()}); //TODO get rid of this?
         //MISC
         registerItem(temporalItemStorageMatrix, ItemTemporalItemStorageMatrix.class, stackDamageName, new Object[] {1, 100, temporalItemStorageMatrix.getUnlocalizedName()});
         registerItem(bugSwatter, ItemBugSwatter.class, stackDamageName, new Object[] {1, 100, bugSwatter.getUnlocalizedName()});
@@ -153,7 +161,7 @@ public class ModItems
         registerItem(moonFlowerSeeds, ItemMoonFlowerSeeds.class, stackDamageName, new Object[] {64, 100, moonFlowerSeeds.getUnlocalizedName()});
         registerItem(temporalPearl, ItemClockworkPhase.class, stackDamageName, new Object[] {64, 100, temporalPearl.getUnlocalizedName()});
         registerItem(experimentalIngot, ItemExperimentalIngot.class, stackDamageName, new Object[] {1, 100, experimentalIngot.getUnlocalizedName()});
-        registerItem(guidebook, ItemGuidebook.class, stackDamageName, new Object[] {1, 100, guidebook.getUnlocalizedName()}); //Most OP item in the game.
+        registerItem(guidebook, ItemGuidebook.class, stackDamageName, new Object[] {1, 100, guidebook.getUnlocalizedName()}); //Most OP item in the game. Like an auto-crafter, but with knowledge.
         registerItem(assemblyTable, ItemAssemblyTable.class, stackDamageName, new Object[] {64, 100, assemblyTable.getUnlocalizedName()});
     }
 

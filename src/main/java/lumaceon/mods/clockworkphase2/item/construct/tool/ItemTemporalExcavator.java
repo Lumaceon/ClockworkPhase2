@@ -19,7 +19,7 @@ import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotToolUpgrade;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeArea;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeTemporalInfuser;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
 import net.minecraft.block.Block;
@@ -170,7 +170,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
 
             int quality = clockworkConstruct.getQuality(mostSpeedyTool);
             int speed = clockworkConstruct.getSpeed(mostSpeedyTool);
-            int tensionCost = ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perBlock, quality, speed);
+            int tensionCost = ClockworkHelper.getTensionCostFromStats(Configs.TENSION.perBlock, quality, speed);
 
             consumeTension(is, tensionCost);
         }

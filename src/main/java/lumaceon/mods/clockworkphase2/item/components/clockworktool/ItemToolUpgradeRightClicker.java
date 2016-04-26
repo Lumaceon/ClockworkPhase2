@@ -6,9 +6,9 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.item.ItemStack;
 
-public class ItemToolUpgradeBlockPlacer extends ItemClockworkPhase implements IToolUpgrade
+public class ItemToolUpgradeRightClicker extends ItemClockworkPhase implements IToolUpgrade
 {
-    public ItemToolUpgradeBlockPlacer(int maxStack, int maxDamage, String unlocalizedName) {
+    public ItemToolUpgradeRightClicker(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
 

@@ -39,8 +39,8 @@ item.clockworkphase2:tool_upgrade_relocate.name=Tool Upgrade: Relocation Matrix
 item.clockworkphase2:tool_upgrade_area.name=Tool Upgrade: Area Miner
 item.clockworkphase2:tool_upgrade_fortune.name=Tool Upgrade: Fortune Mining
 item.clockworkphase2:tool_upgrade_xp.name=Tool Upgrade: Experience Enhancement
-item.clockworkphase2:tool_upgrade_mass_storage.name=Tool Upgrade: Mass Storage
-item.clockworkphase2:tool_upgrade_block_placer.name=Tool Upgrade: Block Placer
+item.clockworkphase2:tool_upgrade_mass_storage.name=Tool Upgrade: Displacement Storage
+item.clockworkphase2:tool_upgrade_right_clicker.name=Tool Upgrade: Dual Function
 item.clockworkphase2:tool_upgrade_temporal_infusion.name=Tool Upgrade: Temporal Infuser
 
 item.clockworkphase2:timezone_module_tank.name=Timezone Function: Fluid Tank
@@ -67,7 +67,7 @@ item.clockworkphase2:diamond_trowel.name=Diamond Trowel
 
 item.clockworkphase2:temporal_pearl.name=Temporal Pearl
 item.clockworkphase2:moon_flower_seeds.name=Moon Flower Seeds
-item.clockworkphase2:guidebook.name=Aged Journal of the Clockmaker
+item.clockworkphase2:guidebook.name=Clockwork Phase Guidebook
 
 #Block
 

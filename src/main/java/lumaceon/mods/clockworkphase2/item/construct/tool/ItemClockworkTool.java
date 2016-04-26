@@ -4,14 +4,12 @@ import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
-import lumaceon.mods.clockworkphase2.api.item.IKeybindActivation;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.util.*;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
-import lumaceon.mods.clockworkphase2.inventory.slot.SlotToolUpgrade;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeArea;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
@@ -21,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +34,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -268,7 +264,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
 
         int quality = clockworkConstruct.getQuality(is);
         int speed = clockworkConstruct.getSpeed(is);
-        int tensionCost = ClockworkHelper.getTensionCostFromStats(Defaults.TENSION.perBlock, quality, speed);
+        int tensionCost = ClockworkHelper.getTensionCostFromStats(Configs.TENSION.perBlock, quality, speed);
 
         consumeTension(is, tensionCost);
 

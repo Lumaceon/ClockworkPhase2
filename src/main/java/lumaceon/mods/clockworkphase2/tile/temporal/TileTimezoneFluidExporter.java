@@ -1,16 +1,18 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import lumaceon.mods.clockworkphase2.item.timezonemodule.ItemTimezoneModuleTank;
-import lumaceon.mods.clockworkphase2.network.PacketHandler;
-import lumaceon.mods.clockworkphase2.network.message.MessageTileStateChange;
+import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
+import lumaceon.mods.clockworkphase2.api.time.timezone.Timezone;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneModulation;
+import lumaceon.mods.clockworkphase2.modulations.TimezoneModulationTank;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHandler
+import java.util.List;
+
+public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHandler, ITickable
 {
     public String targetFluid = "";
     public FluidStack renderStack;
@@ -19,20 +21,20 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setString("cp_state", targetFluid);
+        nbt.setString("target_fluid", targetFluid);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        if(nbt.hasKey("cp_state"))
+        if(nbt.hasKey("target_fluid"))
         {
-            String state = nbt.getString("cp_state");
-            //if(!state.equals("") && FluidRegistry.isFluidRegistered(state))
-            //    setState(FluidRegistry.getFluidID(nbt.getString("cp_state")));
-            //else
-            //    setState(-1);
+            String fluid = nbt.getString("target_fluid");
+            if(!fluid.equals("") && FluidRegistry.isFluidRegistered(fluid))
+                targetFluid = nbt.getString("target_fluid");
+            else
+                targetFluid = "";
         }
     }
 
@@ -42,7 +44,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
      */
     public String setNextTargetFluid()
     {
-        /*if(!worldObj.isRemote)
+        if(!worldObj.isRemote)
         {
             FluidTankInfo[] tanks = getTankInfo(EnumFacing.DOWN);
             boolean found = false;
@@ -57,15 +59,15 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                     if(!anyFound && tank != null && tank.fluid != null)
                         anyFound = true;
 
-                    if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) == tank.fluid.getFluidID())
+                    if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && targetFluid.equals(tank.fluid.getFluid().getName()))
                     {
                         found = true;
                         indexFound = n;
                     }
-                    else if(found && tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) != tank.fluid.getFluidID())
+                    else if(found && tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && !targetFluid.equals(tank.fluid.getFluid().getName()))
                     {
                         targetFluid = tank.fluid.getFluid().getName();
-                        setStateAndUpdate(FluidRegistry.getFluidID(targetFluid));
+                        worldObj.markBlockForUpdate(this.getPos()); //TODO: Check that this actually does update properly.
                         return targetFluid;
                     }
                 }
@@ -75,10 +77,10 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                     for(int n = 0; n < Math.min(tanks.length, indexFound); n++)
                     {
                         tank = tanks[n];
-                        if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && FluidRegistry.getFluidID(targetFluid) != tank.fluid.getFluidID())
+                        if(tank != null && tank.fluid != null && FluidRegistry.isFluidRegistered(targetFluid) && !targetFluid.equals(tank.fluid.getFluid().getName()))
                         {
                             targetFluid = tank.fluid.getFluid().getName();
-                            setStateAndUpdate(FluidRegistry.getFluidID(targetFluid));
+                            worldObj.markBlockForUpdate(this.getPos()); //TODO: Check that this actually does update properly.
                             return targetFluid;
                         }
                     }
@@ -90,7 +92,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
                         if(t != null && t.fluid != null)
                         {
                             targetFluid = t.fluid.getFluid().getName();
-                            setStateAndUpdate(FluidRegistry.getFluidID(targetFluid));
+                            worldObj.markBlockForUpdate(this.getPos()); //TODO: Check that this actually does update properly.
                             return targetFluid;
                         }
                     }
@@ -99,53 +101,24 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
             if(!anyFound)
             {
                 targetFluid = "";
-                setStateAndUpdate(-1);
+                worldObj.markBlockForUpdate(this.getPos()); //TODO: Check that this actually does update properly.
             }
         }
-        return targetFluid;*/ return null;
+        return targetFluid;
     }
 
-    public ItemStack getTimezoneModule()
+    public List<TimezoneModulation> getTanks()
     {
-        /*ITimezoneProvider timezone = getTimezoneProvider();
-        ItemStack timezoneModule;
+        ITimezoneProvider timezoneProvider = getTimezoneProvider();
+        if(timezoneProvider == null)
+            return null;
+
+        Timezone timezone = timezoneProvider.getTimezone();
         if(timezone != null)
-        {
-            for(int n = 0; n < 8; n++)
-            {
-                timezoneModule = timezone.getTimezoneModule(n);
-                if(timezoneModule != null && timezoneModule.getItem() instanceof ItemTimezoneModuleTank)
-                    return timezoneModule;
-            }
-        }*/
+            return timezone.getTimezoneModulations(TimezoneModulationTank.class);
+
         return null;
     }
-
-    //@Override
-    //public void setState(int state)
-    //{
-        /*Fluid fluid = FluidRegistry.getFluid(state);
-        if(fluid != null)
-        {
-            targetFluid = FluidRegistry.getFluidName(state);
-            renderStack = new FluidStack(fluid, 1000);
-        }
-        else
-        {
-            targetFluid = "";
-            renderStack = null;
-        }*/
-    //}
-
-    /*@Override
-    public void setStateAndUpdate(int state)
-    {
-        if(!worldObj.isRemote)
-        {
-            setState(state);
-            PacketHandler.INSTANCE.sendToAllAround(new MessageTileStateChange(pos.getX(), pos.getY(), pos.getZ(), state), new NetworkRegistry.TargetPoint(worldObj.provider.getDimensionId(), pos.getX(), pos.getY(), pos.getZ(), 200));
-        }
-    }*/
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
@@ -155,20 +128,24 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
     {
-        if(resource == null)
+        if(resource == null || resource.getFluid() == null || !resource.getFluid().getName().equals(targetFluid))
             return null;
-        ItemStack timestream = getTimezoneModule();
-        if(timestream != null)
-            return ((ItemTimezoneModuleTank) timestream.getItem()).drain(timestream, resource.amount, doDrain, targetFluid);
+        List<TimezoneModulation> tanks = getTanks();
+        for(TimezoneModulation tank : tanks)
+            if(tank != null && tank instanceof TimezoneModulationTank)
+                if(((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
+                    return ((TimezoneModulationTank) tank).drain(((TimezoneModulationTank) tank).getMaxCapacity(), doDrain);
         return null;
     }
 
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
-        ItemStack timestream = getTimezoneModule();
-        if(timestream != null)
-            return ((ItemTimezoneModuleTank) timestream.getItem()).drain(timestream, maxDrain, doDrain, targetFluid);
+        List<TimezoneModulation> tanks = getTanks();
+        for(TimezoneModulation tank : tanks)
+            if(tank != null && tank instanceof TimezoneModulationTank)
+                if(((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
+                    return ((TimezoneModulationTank) tank).drain(maxDrain, doDrain);
         return null;
     }
 
@@ -185,12 +162,16 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     @Override
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
-        ItemStack timestream = getTimezoneModule();
-        if(timestream != null)
-        {
-            ItemTimezoneModuleTank tank = ((ItemTimezoneModuleTank) timestream.getItem());
-            return tank.getTankInfo(timestream);
-        }
+        List<TimezoneModulation> tanks = getTanks();
+        for(TimezoneModulation tank : tanks)
+            if(tank != null && tank instanceof TimezoneModulationTank)
+                if(((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
+                    return ((TimezoneModulationTank) tank).getTankInfo();
         return new FluidTankInfo[] { new FluidTankInfo(null, 0) };
+    }
+
+    @Override
+    public void update() {
+
     }
 }

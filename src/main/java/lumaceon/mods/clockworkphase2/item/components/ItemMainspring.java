@@ -13,7 +13,7 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
@@ -29,7 +29,7 @@ import java.util.List;
 
 public class ItemMainspring extends ItemClockworkPhase implements IAssemblableButtons, IMainspring
 {
-    public int maxTension = Defaults.TENSION.maxMainspringTension;
+    public int maxTension = Configs.TENSION.maxMainspringTension;
 
     public ItemMainspring(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);

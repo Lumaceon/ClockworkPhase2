@@ -7,7 +7,7 @@ import lumaceon.mods.clockworkphase2.api.time.timezone.Timezone;
 import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.lib.BlockPatterns;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +23,7 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
     private boolean timezoneSetup = false;
     private boolean rendererSetup = false;
 
-    protected TimeStorage timeStorage = new TimeStorage(Defaults.TIME.maxTimezoneTime);
+    protected TimeStorage timeStorage = new TimeStorage(Configs.TIME.maxTimezoneTime);
 
     public boolean isAvailable() {
         return blocksToPlace < 0;

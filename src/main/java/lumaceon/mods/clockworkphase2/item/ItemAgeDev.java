@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.item;
 
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -19,9 +19,9 @@ public class ItemAgeDev extends ItemClockworkPhase
         if(worldIn.provider.getDimensionId() == 0)
         {
             if(playerIn.isSneaking())
-                playerIn.travelToDimension(Defaults.DIM_ID.ZEROTH_AGE);
+                playerIn.travelToDimension(Configs.DIM_ID.ZEROTH_AGE);
             else
-                playerIn.travelToDimension(Defaults.DIM_ID.FIRST_AGE);
+                playerIn.travelToDimension(Configs.DIM_ID.FIRST_AGE);
         }
         else
             playerIn.travelToDimension(0);
@@ -35,9 +35,9 @@ public class ItemAgeDev extends ItemClockworkPhase
         if(world.provider.getDimensionId() == 0)
         {
             if(player.isSneaking())
-                player.travelToDimension(Defaults.DIM_ID.SECOND_AGE);
+                player.travelToDimension(Configs.DIM_ID.SECOND_AGE);
             else
-                player.travelToDimension(Defaults.DIM_ID.THIRD_AGE);
+                player.travelToDimension(Configs.DIM_ID.THIRD_AGE);
         }
         else
             player.travelToDimension(0);

@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.timetravel.third.world;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldType;
@@ -17,7 +17,7 @@ public class WorldProviderThirdAge extends WorldProviderSurface
 
     @Override
     public void registerWorldChunkManager() {
-        this.dimensionId = Defaults.DIM_ID.THIRD_AGE;
+        this.dimensionId = Configs.DIM_ID.THIRD_AGE;
         this.worldChunkMgr = new WorldChunkManager(getSeed(), WorldType.DEFAULT, "ThirdAge");
     }
 

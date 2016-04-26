@@ -6,7 +6,7 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.item.ItemTemporalHourglass;
 import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeTemporalInfuser;
 import lumaceon.mods.clockworkphase2.item.construct.tool.ItemTemporalExcavator;
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
@@ -48,7 +48,7 @@ public class PlayerHandler
                 ItemStack item = event.entityPlayer.inventory.getStackInSlot(n);
                 if(item != null && item.getItem() instanceof ItemTemporalHourglass && NBTHelper.BOOLEAN.get(item, NBTTags.ACTIVE))
                 {
-                    ((ItemTemporalHourglass) item.getItem()).receiveTime(item, (int) (event.orb.getXpValue() * Defaults.TIME.perXP * TimeHelper.getXPToTimeMultiplier(event.entityPlayer)), false);
+                    ((ItemTemporalHourglass) item.getItem()).receiveTime(item, (int) (event.orb.getXpValue() * Configs.TIME.perXP * TimeHelper.getXPToTimeMultiplier(event.entityPlayer)), false);
                     event.orb.setDead();
                     event.setCanceled(true);
                 }

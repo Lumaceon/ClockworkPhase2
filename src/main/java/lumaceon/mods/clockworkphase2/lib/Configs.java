@@ -2,7 +2,7 @@ package lumaceon.mods.clockworkphase2.lib;
 
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 
-public class Defaults
+public class Configs
 {
     public static class TENSION {
         public static int perBlock = 50;
@@ -13,6 +13,10 @@ public class Defaults
     public static class TIME {
         public static int perXP = TimeConverter.SECOND;
         public static int maxTimezoneTime = TimeConverter.YEAR;
+    }
+
+    public static class MISC_VALUES {
+        public static int timezoneFluidModulationCap = 1000000000; //1 billion
     }
 
     public static class DIM_ID {

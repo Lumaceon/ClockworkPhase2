@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.extendeddata;
 
-import lumaceon.mods.clockworkphase2.lib.Defaults;
+import lumaceon.mods.clockworkphase2.lib.Configs;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.recipe.ExperimentalAlloyRecipes;
 import lumaceon.mods.clockworkphase2.structure.Structure;
@@ -96,22 +96,22 @@ public class ExtendedMapData extends WorldSavedData
             for(Structure structure : overworldRuins)
                 structure.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
-        else if(dimID == Defaults.DIM_ID.THIRD_AGE)
+        else if(dimID == Configs.DIM_ID.THIRD_AGE)
         {
             for(Structure structure : thirdAgeRuins)
                 structure.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
-        else if(dimID == Defaults.DIM_ID.SECOND_AGE)
+        else if(dimID == Configs.DIM_ID.SECOND_AGE)
         {
             for(Structure structure : secondAgeRuins)
                 structure.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
-        else if(dimID == Defaults.DIM_ID.FIRST_AGE)
+        else if(dimID == Configs.DIM_ID.FIRST_AGE)
         {
             for(Structure structure : firstAgeRuins)
                 structure.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
         }
-        else if(dimID == Defaults.DIM_ID.ZEROTH_AGE)
+        else if(dimID == Configs.DIM_ID.ZEROTH_AGE)
         {
             for(Structure structure : zerothAgeRuins)
                 structure.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);

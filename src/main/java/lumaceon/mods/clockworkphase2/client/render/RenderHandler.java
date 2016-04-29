@@ -161,7 +161,7 @@ public class RenderHandler
             double high = timezone.getRange();
 
             GL11.glPushMatrix();
-            GL11.glTranslated(x + 1, y + 140 - area[1], z + 1);
+            GL11.glTranslated(x + 1, y + 139.99 - area[1], z + 1);
             GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
             GL11.glRotatef((Minecraft.getSystemTime() % 115200.0F) / 320, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(0.5F, 0.0F, 0.5F);

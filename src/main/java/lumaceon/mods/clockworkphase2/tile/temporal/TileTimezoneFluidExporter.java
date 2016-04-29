@@ -6,6 +6,7 @@ import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneModulation;
 import lumaceon.mods.clockworkphase2.modulations.TimezoneModulationTank;
 import lumaceon.mods.clockworkphase2.tile.generic.TileTemporal;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.*;
@@ -32,9 +33,15 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
         {
             String fluid = nbt.getString("target_fluid");
             if(!fluid.equals("") && FluidRegistry.isFluidRegistered(fluid))
+            {
                 targetFluid = nbt.getString("target_fluid");
+                renderStack = FluidRegistry.getFluidStack(targetFluid, 1000);
+            }
             else
+            {
                 targetFluid = "";
+                renderStack = null;
+            }
         }
     }
 
@@ -142,6 +149,8 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
     {
         List<TimezoneModulation> tanks = getTanks();
+        if(tanks == null || tanks.isEmpty())
+            return null;
         for(TimezoneModulation tank : tanks)
             if(tank != null && tank instanceof TimezoneModulationTank)
                 if(((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
@@ -163,15 +172,44 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         List<TimezoneModulation> tanks = getTanks();
-        for(TimezoneModulation tank : tanks)
-            if(tank != null && tank instanceof TimezoneModulationTank)
-                if(((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
-                    return ((TimezoneModulationTank) tank).getTankInfo();
-        return new FluidTankInfo[] { new FluidTankInfo(null, 0) };
+
+        if(tanks == null || tanks.isEmpty())
+            return new FluidTankInfo[] { new FluidTankInfo(null, 0) };
+
+        FluidTankInfo[] returnValue = new FluidTankInfo[tanks.size()];
+        for(int n = 0; n < returnValue.length; n++)
+        {
+            TimezoneModulation modulation = tanks.get(n);
+            if(modulation != null && modulation instanceof TimezoneModulationTank)
+            {
+                TimezoneModulationTank tank = (TimezoneModulationTank) modulation;
+                if(tank.getFluid() != null)
+                    returnValue[n] = tank.getTankInfo();
+            }
+        }
+        return returnValue;
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
+        Fluid fluid = FluidRegistry.getFluid(targetFluid);
+        if(fluid == null)
+            return;
 
+        for(EnumFacing face : EnumFacing.VALUES)
+        {
+            TileEntity te = worldObj.getTileEntity(pos.add(face.getFrontOffsetX(), face.getFrontOffsetY(), face.getFrontOffsetZ()));
+            if(te != null && te instanceof IFluidHandler)
+            {
+                IFluidHandler tank = (IFluidHandler) te;
+                if(tank.canFill(face, fluid))
+                {
+                    int simulant = tank.fill(face, new FluidStack(fluid, 1000000000), false);
+                    if(simulant > 0)
+                        tank.fill(face, drain(face, simulant, true), true);
+                }
+            }
+        }
     }
 }

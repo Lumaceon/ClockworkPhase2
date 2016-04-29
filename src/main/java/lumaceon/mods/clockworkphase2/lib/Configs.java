@@ -13,6 +13,7 @@ public class Configs
     public static class TIME {
         public static int perXP = TimeConverter.SECOND;
         public static int maxTimezoneTime = TimeConverter.YEAR;
+        public static int modulationSanctificationPerTick = 1;
     }
 
     public static class MISC_VALUES {

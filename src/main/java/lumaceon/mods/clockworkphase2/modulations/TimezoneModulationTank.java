@@ -39,10 +39,12 @@ public class TimezoneModulationTank extends TimezoneModulation
     }
 
     public Fluid getFluid() {
+        if(tank.getFluid() == null)
+            return null;
         return tank.getFluid().getFluid();
     }
 
-    public FluidTankInfo[] getTankInfo() {
-        return new FluidTankInfo[] {tank.getInfo()};
+    public FluidTankInfo getTankInfo() {
+        return tank.getInfo();
     }
 }

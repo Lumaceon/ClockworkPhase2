@@ -77,7 +77,7 @@ public class TemporalAchievementList
 
         public static void setupSpecialMultiplier() {
             int maxValueWithoutSpecialMultipliers = totalWeight * maxPageMultiplier;
-            specialAchievementMultiplierExponent = Math.log(TimeConverter.INFINITE / maxValueWithoutSpecialMultipliers) / Math.log(specialAchievementCount + 1);
+            specialAchievementMultiplierExponent = Math.log(TimeConverter.ETERNITY / maxValueWithoutSpecialMultipliers) / Math.log(specialAchievementCount + 1);
         }
     }
 }

@@ -63,4 +63,38 @@ public class Timezone
     public List<TimezoneModulation> getTimezoneModulations() {
         return timezoneModulations;
     }
+
+    public int getMaxTime() {
+        if(this.timezoneProvider == null)
+            return 0;
+        return this.timezoneProvider.getMaxTime();
+    }
+
+    public int getTime() {
+        if(this.timezoneProvider == null)
+            return 0;
+        return this.timezoneProvider.getTime();
+    }
+
+    /**
+     * Adds time to this timezone.
+     * @param time Amount of time to add to this timezone.
+     * @return The amount of time successfully added.
+     */
+    public int addTime(int time) {
+        if(this.timezoneProvider == null)
+            return 0;
+        return this.timezoneProvider.addTime(time);
+    }
+
+    /**
+     * Consumes time from this timezone.
+     * @param time Amount of time to remove from this timezone.
+     * @return The amount of time successfully consumed.
+     */
+    public int consumeTime(int time) {
+        if(this.timezoneProvider == null)
+            return 0;
+        return this.timezoneProvider.consumeTime(time);
+    }
 }

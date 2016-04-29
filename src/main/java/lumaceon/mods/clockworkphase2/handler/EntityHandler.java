@@ -1,8 +1,13 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
+import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
+import lumaceon.mods.clockworkphase2.api.time.timezone.Timezone;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneModulation;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
 import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.modulations.TimezoneModulationSanctification;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,12 +38,9 @@ public class EntityHandler
     }
 
     @SubscribeEvent
-    public void onEntityConstruction(EntityEvent.EntityConstructing event) //Register ExtendedPlayerProperties on join.
-    {
+    public void onEntityConstruction(EntityEvent.EntityConstructing event) { //Register ExtendedPlayerProperties on join.
         if(event.entity instanceof EntityPlayer && ExtendedPlayerProperties.get((EntityPlayer) event.entity) == null)
-        {
             ExtendedPlayerProperties.register((EntityPlayer) event.entity);
-        }
     }
 
     /*@SubscribeEvent
@@ -51,22 +53,19 @@ public class EntityHandler
     @SubscribeEvent
     public void onEntitySpawn(LivingSpawnEvent.CheckSpawn event)
     {
-        /*if(!event.isCanceled())
+        if(!event.isCanceled())
         {
-            ITimezoneProvider timezone = TimezoneHandler.getTimeZone(event.x, event.y, event.z, event.world);
-            if(timezone != null)
+            ITimezoneProvider provider = TimezoneHandler.getTimeZone(event.x, event.y, event.z, event.world);
+            if(provider != null)
             {
-                ItemStack timestream;
-                for(int n = 0; n < 8; n++)
+                Timezone timezone = provider.getTimezone();
+                if(timezone != null && timezone.getTime() > 0) //There is a timezone with time in it.
                 {
-                    timestream = timezone.getTimezoneModule(n);
-                    if(timestream != null && timestream.getItem() instanceof ItemTimezoneModuleMobRepellent)
-                    {
-                        event.setResult(Event.Result.DENY);
-                        return;
-                    }
+                    TimezoneModulation tzm = timezone.getTimezoneModulation(TimezoneModulationSanctification.class);
+                    if(tzm != null)
+                        event.setCanceled(true); //There's also the appropriate module, so cancel the event.
                 }
             }
-        }*/
+        }
     }
 }

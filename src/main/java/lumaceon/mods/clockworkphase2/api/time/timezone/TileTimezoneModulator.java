@@ -54,35 +54,44 @@ public class TileTimezoneModulator extends TileClockworkPhase implements ITickab
         return true;
     }
 
-    public ITimezoneProvider getTimezoneProvider()
+    public ITimezoneProvider getTimezoneProvider() //Copied from TileTemporal.
     {
         BlockPos tilePosition = this.getPos();
         int xCoordinate = tilePosition.getX();
         int yCoordinate = tilePosition.getY();
         int zCoordinate = tilePosition.getZ();
-        int tz_x = timezonePosition.getX();
-        int tz_z = timezonePosition.getZ();
-
-        //Check to see if the timezone is stored in the parameter and is in range. If so, we can stop here.
-        if(timezone != null && Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) <= timezone.getRange())
-            return timezone;
-
-        //Timezone parameter was either null or out of range, try and find it via stored coordinates.
-        TileEntity te = worldObj.getTileEntity(timezonePosition);
-        if(te != null && te instanceof ITimezoneProvider)
+        if(timezonePosition != null)
         {
-            if(Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) > timezone.getRange())
-                return null;
-            timezone = (ITimezoneProvider) te;
-            return timezone;
+            int tz_x = timezonePosition.getX();
+            int tz_z = timezonePosition.getZ();
+
+            //Check to see if the timezone is stored in the parameter and is in range. If so, we can stop here.
+            if(timezone != null && Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) <= timezone.getRange())
+                return timezone;
+
+            //Timezone parameter was either null or out of range, try and find it via stored coordinates.
+            if(timezonePosition != null)
+            {
+                TileEntity te = worldObj.getTileEntity(timezonePosition);
+                if(te != null && te instanceof ITimezoneProvider)
+                {
+                    if(Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) > timezone.getRange())
+                        return null;
+                    timezone = (ITimezoneProvider) te;
+                    return timezone;
+                }
+            }
         }
 
-        //None of the parameters were helpful; try to find one in the area.
-        ITimezoneProvider timezone = TimezoneHandler.getTimeZone(xCoordinate, yCoordinate, zCoordinate, worldObj);
-        if(timezone != null)
-            this.timezone = timezone;
-        if(timezone == null || Math.sqrt(Math.pow(tz_x - xCoordinate, 2) + Math.pow(tz_z - zCoordinate, 2)) <= timezone.getRange())
+        //None of the above parameters were helpful; try to find one in the area.
+        ITimezoneProvider timezoneProvider = TimezoneHandler.getTimeZone(xCoordinate, yCoordinate, zCoordinate, worldObj);
+        if(timezoneProvider != null)
+        {
+            this.timezone = timezoneProvider;
+            this.timezonePosition = new BlockPos(timezoneProvider.getX(), timezoneProvider.getY(), timezoneProvider.getZ());
+        }
+        if(timezoneProvider == null)
             return null;
-        return timezone;
+        return timezoneProvider;
     }
 }

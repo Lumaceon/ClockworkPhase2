@@ -44,7 +44,7 @@ public class BlockTimezoneFluidExporter extends BlockClockworkPhase implements I
 
     @Override
     public int getRenderType() {
-        return -1;
+        return 2;
     }
 
     @Override

@@ -50,6 +50,10 @@ public class TimezoneHandler
             boolean sameWorld = dimensionId == timezone[3];
             if(sameWorld)
             {
+                World world = DimensionManager.getWorld(dimensionId);
+                if(world == null)
+                    return null;
+
                 TileEntity te = DimensionManager.getWorld(dimensionId).getTileEntity(new BlockPos(timezone[0], timezone[1], timezone[2]));
                 if(te != null && te instanceof ITimezoneProvider)
                 {

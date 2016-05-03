@@ -32,6 +32,9 @@ public class TileTimezoneFluidImporter extends TileTemporal implements IFluidHan
     public int fill(EnumFacing from, FluidStack resource, boolean doFill)
     {
         List<TimezoneModulation> tanks = getTanks();
+        if(tanks == null || tanks.isEmpty())
+            return 0;
+
         for(TimezoneModulation tank : tanks)
             if(tank != null && tank instanceof TimezoneModulationTank)
                 if(((TimezoneModulationTank) tank).getFluid().getName().equals(resource.getFluid().getName()))

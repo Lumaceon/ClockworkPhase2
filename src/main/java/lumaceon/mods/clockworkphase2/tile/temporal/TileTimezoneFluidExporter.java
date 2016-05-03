@@ -153,7 +153,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
             return null;
         for(TimezoneModulation tank : tanks)
             if(tank != null && tank instanceof TimezoneModulationTank)
-                if(((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
+                if(((TimezoneModulationTank) tank).getFluid() != null && ((TimezoneModulationTank) tank).getFluid().getName().equals(targetFluid))
                     return ((TimezoneModulationTank) tank).drain(maxDrain, doDrain);
         return null;
     }
@@ -200,7 +200,7 @@ public class TileTimezoneFluidExporter extends TileTemporal implements IFluidHan
         for(EnumFacing face : EnumFacing.VALUES)
         {
             TileEntity te = worldObj.getTileEntity(pos.add(face.getFrontOffsetX(), face.getFrontOffsetY(), face.getFrontOffsetZ()));
-            if(te != null && te instanceof IFluidHandler)
+            if(te != null && te instanceof IFluidHandler && !(te instanceof TileTimezoneFluidImporter))
             {
                 IFluidHandler tank = (IFluidHandler) te;
                 if(tank.canFill(face, fluid))

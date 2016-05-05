@@ -21,7 +21,6 @@ public interface IProxy
     public void registerFluidModels();
     public void registerKeybindings();
     public void initSideHandlers();
-    public void addWorldRenderer(World world, int x, int y, int z, int ID);
     public void clearWorldRenderers(World world, int x, int y, int z);
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider);
     public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop);

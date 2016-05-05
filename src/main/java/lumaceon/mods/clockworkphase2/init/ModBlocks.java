@@ -75,8 +75,6 @@ public class ModBlocks
     //MISC
     public static BlockReference basicWindingBox = new BlockReference("basic_winding_box");
     public static BlockReference assemblyTable = new BlockReference("assembly_table");
-    public static BlockReference temporalDistortionAltar = new BlockReference(Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
-    public static BlockReference temporalDistortionAltarSB = new BlockReference(Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR_SB);
     public static void init()
     {
         Class[] matName = new Class[] {Material.class, String.class};
@@ -129,8 +127,6 @@ public class ModBlocks
         //MISC
         registerBlock(basicWindingBox, BlockBasicWindingBox.class, matName, new Object[] {Material.iron, basicWindingBox.getUnlocalizedName()});
         registerBlock(assemblyTable, BlockAssemblyTable.class, matName, new Object[] {Material.wood, assemblyTable.getUnlocalizedName()});
-        registerBlock(temporalDistortionAltar, BlockTemporalDisplacementAltar.class, matName, new Object[] {Material.iron, temporalDistortionAltar.getUnlocalizedName()});
-        registerBlock(temporalDistortionAltarSB, BlockTemporalDisplacementAltarSB.class, matName, new Object[] {Material.iron, temporalDistortionAltarSB.getUnlocalizedName()});
     }
 
     /*public static Block timezoneController;
@@ -175,8 +171,6 @@ public class ModBlocks
     {
         GameRegistry.registerTileEntity(TileTimezoneController.class, timezoneController.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTimezoneModulator.class, timezoneModulator.getUnlocalizedName());
-        GameRegistry.registerTileEntity(TileTemporalDisplacementAltar.class, Names.BLOCK.TEMPORAL_DISPLACEMENT_ALTAR);
-        GameRegistry.registerTileEntity(TileTDA.class, Names.BLOCK.TDA);
         GameRegistry.registerTileEntity(TileTimezoneFluidExporter.class, timezoneFluidExporter.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTimezoneFluidImporter.class, timezoneFluidImporter.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTimeCollector.class, Names.BLOCK.TIME_COLLECTOR);

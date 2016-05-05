@@ -15,6 +15,7 @@ import lumaceon.mods.clockworkphase2.client.render.sky.SkyRendererForthAge;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
+import lumaceon.mods.clockworkphase2.tile.TileTimezoneController;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneFluidExporter;
 import lumaceon.mods.clockworkphase2.timetravel.third.world.WorldProviderThirdAge;
 import net.minecraft.block.Block;
@@ -38,10 +39,11 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void registerTESR(){
+    public void registerTESR() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAssemblyTable.class, new TESRAssemblyTable());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneFluidExporter.class, new TESRTimezoneFluidExporter());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneModulator.class, new TESRTimezoneModulator());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneController.class, new TESRTimezoneController());
     }
 
     @Override
@@ -73,26 +75,6 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(renderer);
         MinecraftForge.EVENT_BUS.register(new ClientTickHandler());
         MinecraftForge.EVENT_BUS.register(new KeyHandler());
-    }
-
-    @Override
-    public void addWorldRenderer(World world, int x, int y, int z, int ID)
-    {
-        switch(ID)
-        {
-            case 0: //Temporal machine clock renderer.
-                RenderHandler.registerWorldRenderElement(new WorldRenderElementTemporalClock(world, x, y, z));
-                break;
-            case 1: //Temporal displacement altar renderer.
-                RenderHandler.registerWorldRenderElement(new WorldRenderElementTemporalDisplacementAltar(world, x, y, z));
-                break;
-            case 2: //TDA Stargate style
-                RenderHandler.registerWorldRenderElement(new WorldRenderElementTDA(world, x, y, z));
-                break;
-            case 3: //Timezone Controller
-                RenderHandler.registerWorldRenderElement(new WorldRenderElementTimezoneController(world, x, y, z));
-                break;
-        }
     }
 
     @Override

@@ -39,8 +39,6 @@ public class RenderHandler
     {
         mc = Minecraft.getMinecraft();
         renderItem = mc.getRenderItem();
-
-        //registerWorldRenderElement(schematicRenderer);
     }
 
     public static ArrayList<OverlayRenderElement> overlayRenderList = new ArrayList<OverlayRenderElement>();
@@ -60,12 +58,7 @@ public class RenderHandler
 
     public static ArrayList<WorldRenderElement> worldRenderList = new ArrayList<WorldRenderElement>();
 
-    /**
-     * Registers a worldRenderElement to be rendered each RenderWorldLastEvent tick.
-     * @param worldRenderElement The element to add.
-     * @return False if this position is already registered (and wasn't registered).
-     */
-    public static boolean registerWorldRenderElement(WorldRenderElement worldRenderElement)
+    /*public static boolean registerWorldRenderElement(WorldRenderElement worldRenderElement)
     {
         for(WorldRenderElement WRE : worldRenderList)
             if(WRE.alreadyExists(worldRenderElement))
@@ -73,7 +66,7 @@ public class RenderHandler
 
         worldRenderList.add(worldRenderElement);
         return true;
-    }
+    }*/
 
     @SubscribeEvent(priority = EventPriority.HIGH) //TODO: fix the darn clouds. Git off my glyph...
     public void onRenderWorld(RenderWorldLastEvent event)
@@ -124,13 +117,13 @@ public class RenderHandler
 
                 }
             }
-            GL11.glDisable(GL11.GL_BLEND);
+            /*GL11.glDisable(GL11.GL_BLEND);
 
             Entity camera = mc.getRenderViewEntity();
             for(WorldRenderElement wre : worldRenderList)
                 if(wre != null && wre.isSameWorld(mc.theWorld))
                     if(Math.sqrt(Math.pow(Math.abs(wre.xPos - camera.posX), 2) + Math.pow(Math.abs(wre.yPos - camera.posY), 2) + Math.pow(Math.abs(wre.zPos - camera.posZ), 2)) <= wre.maxRenderDistance())
-                        wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);
+                        wre.render(wre.xPos - TileEntityRendererDispatcher.staticPlayerX, wre.yPos - TileEntityRendererDispatcher.staticPlayerY, wre.zPos - TileEntityRendererDispatcher.staticPlayerZ);*/
         }
         if(blend)
             GL11.glEnable(GL11.GL_BLEND);

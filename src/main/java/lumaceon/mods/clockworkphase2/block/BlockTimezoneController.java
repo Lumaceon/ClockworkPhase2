@@ -25,4 +25,19 @@ public class BlockTimezoneController extends BlockClockworkPhase implements ITil
     public TileEntity createNewTileEntity(World world, int p_149915_2_) {
         return new TileTimezoneController();
     }
+
+    @Override
+    public int getRenderType() {
+        return 3;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube() {
+        return false;
+    }
 }

@@ -3,15 +3,38 @@ package lumaceon.mods.clockworkphase2.api.time.timezone;
 import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+
+import java.util.List;
 
 public class TileTimezoneModulator extends TileClockworkPhase implements ITickable
 {
     public ItemStack timezoneModulatorStack = null;
     protected ITimezoneProvider timezone;
     protected BlockPos timezonePosition;
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        if(timezoneModulatorStack != null)
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            timezoneModulatorStack.writeToNBT(tag);
+            nbt.setTag("modulation_stack", tag);
+        }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        if(nbt.hasKey("modulation_stack"))
+            timezoneModulatorStack = ItemStack.loadItemStackFromNBT((NBTTagCompound) nbt.getTag("modulation_stack"));
+    }
 
     @Override
     public void update()
@@ -49,6 +72,30 @@ public class TileTimezoneModulator extends TileClockworkPhase implements ITickab
     {
         if(timezoneModulatorStack == null || player == null)
             return false;
+
+        //Clean modulation from the timezone (if applicable).
+        ITimezoneProvider provider = getTimezoneProvider();
+        if(provider != null)
+        {
+            Timezone timezone = provider.getTimezone();
+            if(timezone != null)
+            {
+                List<TimezoneModulation> mods = timezone.getTimezoneModulations();
+                if(mods != null && !mods.isEmpty())
+                    for(int n = 0; n < mods.size(); n++)
+                    {
+                        TimezoneModulation mod = mods.get(n);
+                        if(mod.getTile() != null && mod.getTile().equals(this))
+                        {
+                            timezone.removeTimezoneModulation(mod);
+                            --n; //We removed one, so shift the list index accordingly.
+                        }
+                    }
+
+            }
+        }
+
+        //Add the modulation stack to player inventory and remove the stack from this tile.
         player.inventory.setInventorySlotContents(player.inventory.currentItem, timezoneModulatorStack);
         timezoneModulatorStack = null;
         return true;

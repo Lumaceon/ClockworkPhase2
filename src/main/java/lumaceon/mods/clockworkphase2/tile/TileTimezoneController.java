@@ -14,14 +14,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileTimezoneController extends TileClockworkPhase implements ITimezoneProvider, ITickable
 {
-    protected Timezone timezone = new Timezone();
+    protected Timezone timezone;
 
+    private NBTTagCompound nbtReference;
     private int blocksToPlace = 96;
     private boolean timezoneSetup = false;
-    private boolean rendererSetup = false;
 
     protected TimeStorage timeStorage = new TimeStorage(Configs.TIME.maxTimezoneTime);
 
@@ -34,6 +36,12 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
     {
         super.writeToNBT(nbt);
         nbt.setInteger("internal_block_count", this.blocksToPlace);
+        if(timezone != null)
+        {
+            NBTTagCompound timezoneTag = new NBTTagCompound();
+            timezone.writeToNBT(timezoneTag);
+            nbt.setTag("timezone", timezoneTag);
+        }
     }
 
     @Override
@@ -41,6 +49,12 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
     {
         super.readFromNBT(nbt);
         this.blocksToPlace = nbt.getInteger("internal_block_count");
+        this.nbtReference = nbt;
+    }
+
+    protected void readTimezoneFromNBT(NBTTagCompound nbt) {
+        if(nbt != null && nbt.hasKey("timezone"))
+            timezone.readFromNBT((NBTTagCompound) nbt.getTag("timezone"));
     }
 
     @Override
@@ -58,13 +72,9 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
         if(!timezoneSetup)
         {
             timezoneSetup = true;
+            timezone = new Timezone(worldObj, this);
+            readTimezoneFromNBT(nbtReference);
             TimezoneHandler.INTERNAL.registerTimezone(pos.getX(), pos.getY(), pos.getZ(), worldObj);
-        }
-
-        if(worldObj.isRemote && !rendererSetup)
-        {
-            ClockworkPhase2.proxy.addWorldRenderer(worldObj, pos.getX(), pos.getY(), pos.getZ(), 3);
-            rendererSetup = true;
         }
     }
 
@@ -163,5 +173,18 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
     @Override
     public int consumeTime(int time) {
         return timeStorage.extractTime(time, false);
+    }
+
+    //TODO: for some reason, this has several "grey zones" where the TESR is culled when looking towards negative X and only when the player is negative X relative to the tile entity position.
+    @Override
+    @SideOnly(Side.CLIENT)
+    public net.minecraft.util.AxisAlignedBB getRenderBoundingBox() {
+        return INFINITE_EXTENT_AABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 256D * 256D;
     }
 }

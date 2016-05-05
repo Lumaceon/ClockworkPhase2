@@ -30,8 +30,6 @@ public class ServerProxy extends CommonProxy
     @Override
     public void initSideHandlers() {}
     @Override
-    public void addWorldRenderer(World world, int x, int y, int z, int ID) {}
-    @Override
     public void clearWorldRenderers(World world, int x, int y, int z) {}
     @Override
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) { return null; }

@@ -1,8 +1,15 @@
 package lumaceon.mods.clockworkphase2.item;
 
+import lumaceon.mods.clockworkphase2.api.time.timezone.TileTimezoneModulator;
+import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneModulation;
+import lumaceon.mods.clockworkphase2.init.ModBlocks;
+import lumaceon.mods.clockworkphase2.tile.TileTimezoneController;
+import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -69,25 +76,34 @@ public class ItemBugSwatter extends ItemClockworkPhase
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if(playerIn.isSneaking() && !worldIn.isRemote)
+        if(playerIn.isSneaking() == worldIn.isRemote)
         {
-            //if(schematic != null)
-            //    schematic = null;
-            //else
-            //    schematic = SchematicUtility.INSTANCE.loadModSchematic("NewModSchematic", true);
+            if(worldIn.getBlockState(pos).getBlock().equals(ModBlocks.timezoneModulator.getBlock()))
+            {
+                TileEntity te = worldIn.getTileEntity(pos);
+                if(te != null && te instanceof TileTimezoneModulator && ((TileTimezoneModulator) te).timezoneModulatorStack != null)
+                {
+                    playerIn.addChatComponentMessage(new ChatComponentText("CURRENT MODULATION ITEM: " + ((TileTimezoneModulator) te).timezoneModulatorStack.getDisplayName()));
+                }
+            }
+            if(worldIn.getBlockState(pos).getBlock().equals(ModBlocks.timezoneController.getBlock()))
+            {
+                TileEntity te = worldIn.getTileEntity(pos);
+                if(te != null && te instanceof TileTimezoneController)
+                {
+                    TileTimezoneController tzc = (TileTimezoneController) te;
+                    playerIn.addChatComponentMessage(new ChatComponentText("TIMEZONE ACTIVE: " + Boolean.toString(tzc.getTimezone() != null)));
+                    playerIn.addChatComponentMessage(new ChatComponentText("MODULATION LIST"));
+                    playerIn.addChatComponentMessage(new ChatComponentText("---------------"));
+                    if(tzc.getTimezone() != null)
+                    {
+                        for(TimezoneModulation mod : tzc.getTimezone().getTimezoneModulations())
+                            if(mod != null)
+                                playerIn.addChatComponentMessage(new ChatComponentText(mod.toString()));
+                    }
+                }
+            }
         }
-        else
-        {
-            ItemBugSwatter.x = x;
-            ItemBugSwatter.y = y;
-            ItemBugSwatter.z = z;
-            go = true;
-        }
-
-        //if(world.provider.dimensionId == Defaults.DIM_ID.FIRST_AGE)
-        //    player.travelToDimension(0);
-        //else
-        //    player.travelToDimension(Defaults.DIM_ID.FIRST_AGE);
         return true;
     }
 

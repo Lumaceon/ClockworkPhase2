@@ -11,6 +11,11 @@ import org.lwjgl.opengl.GL11;
 public class TESRTimezoneController extends TileEntitySpecialRenderer
 {
     @Override
+    public boolean func_181055_a() {
+        return true;
+    }
+
+    @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage)
     {
         GL11.glPushMatrix();

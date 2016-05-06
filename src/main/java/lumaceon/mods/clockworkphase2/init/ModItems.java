@@ -24,7 +24,7 @@ public class ModItems
 {
     public static ArrayList<ItemReference> itemsForModel = new ArrayList<ItemReference>(200);
 
-    public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, 0, 0);
+    public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 0, -4, 0);
     public static Item.ToolMaterial temporalMaterial = EnumHelper.addToolMaterial("TEMPORAL", 3, 100, 8.0F, 0, 0);
 
     //METALS
@@ -165,6 +165,8 @@ public class ModItems
         registerItem(assemblyTable, ItemAssemblyTable.class, stackDamageName, new Object[] {64, 100, assemblyTable.getUnlocalizedName()});
     }
 
+    //************ START HELPER METHODS ************\\
+
     public static void initModels() {
         if(itemsForModel != null)
         {
@@ -175,8 +177,6 @@ public class ModItems
         }
         itemsForModel = null;
     }
-
-    //************ START HELPER METHODS ************\\
 
     public static void registerItem(ItemReference itemReference, Class<? extends Item> itemClass, Class[] targetConstructor, Object[] parameters)
     {

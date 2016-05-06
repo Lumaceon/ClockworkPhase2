@@ -1,6 +1,8 @@
 package lumaceon.mods.clockworkphase2.lib;
 
 
+import lumaceon.mods.clockworkphase2.init.ModBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.util.EnumFacing;
 
 public class BlockPatterns
@@ -170,6 +172,7 @@ public class BlockPatterns
     {
         public byte x, y, z;
         public byte meta;
+        public ModBlocks.BlockReference block = null;
 
         public BlockData(int x, int y, int z, int direction)
         {
@@ -177,6 +180,19 @@ public class BlockPatterns
             this.y = (byte)y;
             this.z = (byte)z;
             this.meta = (byte)direction;
+        }
+
+        public BlockData(int x, int y, int z, int direction, ModBlocks.BlockReference block)
+        {
+            this.x = (byte)x;
+            this.y = (byte)y;
+            this.z = (byte)z;
+            this.meta = (byte)direction;
+            this.block = block;
+        }
+
+        public ModBlocks.BlockReference getBlock() {
+            return block;
         }
     }
 }

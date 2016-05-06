@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.item.construct.weapon;
 
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -28,10 +30,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblable, IClockworkConstruct
+public class ItemClockworkSword extends ItemSword implements IAssemblable, IClockworkConstruct
 {
     public ItemClockworkSword(int maxStack, int maxDamage, String unlocalizedName) {
-        super(maxStack, maxDamage, unlocalizedName);
+        super(ModItems.clockworkMaterial);
+        this.setMaxStackSize(maxStack);
+        this.setMaxDamage(maxDamage);
+        this.setNoRepair();
+        this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
+        this.setUnlocalizedName(unlocalizedName);
     }
 
     @Override
@@ -150,5 +157,15 @@ public class ItemClockworkSword extends ItemClockworkPhase implements IAssemblab
     @Override
     public int getSpeed(ItemStack item) {
         return ClockworkHelper.getSpeed(item);
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack is) {
+        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
     }
 }

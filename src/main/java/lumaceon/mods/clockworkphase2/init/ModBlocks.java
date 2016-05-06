@@ -75,6 +75,7 @@ public class ModBlocks
     //MISC
     public static BlockReference basicWindingBox = new BlockReference("basic_winding_box");
     public static BlockReference assemblyTable = new BlockReference("assembly_table");
+    public static BlockReference constructionBlock = new BlockReference("construction_block");
     public static void init()
     {
         Class[] matName = new Class[] {Material.class, String.class};
@@ -127,6 +128,7 @@ public class ModBlocks
         //MISC
         registerBlock(basicWindingBox, BlockBasicWindingBox.class, matName, new Object[] {Material.iron, basicWindingBox.getUnlocalizedName()});
         registerBlock(assemblyTable, BlockAssemblyTable.class, matName, new Object[] {Material.wood, assemblyTable.getUnlocalizedName()});
+        registerBlock(constructionBlock, BlockConstruction.class, matName, new Object[] {Material.iron, constructionBlock.getUnlocalizedName()});
     }
 
     /*public static Block timezoneController;
@@ -193,6 +195,8 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileClockworkScreen.class, clockworkScreen.getUnlocalizedName());
     }
 
+    //************ START HELPER METHODS ************\\
+
     public static void initModels() {
         if(blocksForModel != null)
         {
@@ -203,8 +207,6 @@ public class ModBlocks
         }
         blocksForModel = null;
     }
-
-    //************ START HELPER METHODS ************\\
 
     /**
      * Used to construct a new class of the specified type, set the block in the BlockReference, register the block with

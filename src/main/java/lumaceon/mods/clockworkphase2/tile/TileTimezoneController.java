@@ -45,8 +45,7 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.blocksToPlace = nbt.getInteger("internal_block_count");
         this.nbtReference = nbt;
@@ -60,13 +59,7 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
     @Override
     public void update()
     {
-        if(!isAvailable())
-        {
-            handleMultiblockPlacement();
-            return;
-        }
-
-        if(worldObj == null)
+        if(!isAvailable() || worldObj == null)
             return;
 
         if(!timezoneSetup)
@@ -78,7 +71,11 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
         }
     }
 
-    private void handleMultiblockPlacement()
+    /**
+     * Called when right clicked with a construction block.
+     * @return True if the block was placed, or false if not.
+     */
+    public boolean onRightClickWithConstructionBlock()
     {
         if(!this.worldObj.isRemote)
         {
@@ -91,28 +88,40 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
                     y = pos.getY() + BlockPatterns.CELESTIAL_COMPASS[n].y;
                     z = pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[n].z;
                     BlockPos newPos = new BlockPos(x, y, z);
+                    if(worldObj.getBlockState(newPos).getBlock().equals(ModBlocks.constructionBlock.getBlock()))
+                    {
+                        ModBlocks.BlockReference block = BlockPatterns.CELESTIAL_COMPASS[n].getBlock();
+                        if(block != null && block.getBlock() != null)
+                            worldObj.setBlockState(newPos, block.getBlock().getDefaultState());
+                        else
+                            worldObj.setBlockState(newPos, ModBlocks.timezoneControllerSB.getBlock().getDefaultState());
+                    }
                     this.worldObj.markBlockForUpdate(newPos);
-                    blocksToPlace--;
                 }
+                --blocksToPlace; //TODO special case for incomplete structure.
+                return false;
             }
             else if(blocksToPlace > 0)
             {
-                int x, y, z, meta;
+                int x, y, z;
                 x = this.pos.getX() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].x;
                 y = this.pos.getY() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].y;
                 z = this.pos.getZ() + BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].z;
                 BlockPos newPos = new BlockPos(x, y, z);
-                //meta = BlockPatterns.CELESTIAL_COMPASS[blocksToPlace - 1].meta;
 
-                blocksToPlace--;
                 if(worldObj.isAirBlock(newPos) || worldObj.getBlockState(newPos).getBlock().equals(ModBlocks.timezoneControllerSB.getBlock()) || worldObj.getBlockState(newPos).getBlock().isReplaceable(worldObj, newPos))
-                    worldObj.setBlockState(newPos, ModBlocks.timezoneControllerSB.getBlock().getDefaultState());
-                else
                 {
-                    //PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(x + 0.5, y + 0.5, z + 0.5, 0), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 48));
+                    --blocksToPlace;
+                    worldObj.setBlockState(newPos, ModBlocks.constructionBlock.getBlock().getDefaultState());
+                    return true;
                 }
+                //else
+                //{
+                    //PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(x + 0.5, y + 0.5, z + 0.5, 0), new NetworkRegistry.TargetPoint(worldObj.provider.dimensionId, x + 0.5, y + 0.5, z + 0.5, 48));
+                //}
             }
         }
+        return false;
     }
 
     public static void destroyMultiblock(World world, BlockPos pos)
@@ -134,6 +143,7 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
 
     @Override
     public Timezone getTimezone() {
+        markDirty();
         return timezone;
     }
 
@@ -167,15 +177,16 @@ public class TileTimezoneController extends TileClockworkPhase implements ITimez
 
     @Override
     public int addTime(int time) {
+        markDirty();
         return timeStorage.receiveTime(time, false);
     }
 
     @Override
     public int consumeTime(int time) {
+        markDirty();
         return timeStorage.extractTime(time, false);
     }
 
-    //TODO: for some reason, this has several "grey zones" where the TESR is culled when looking towards negative X and only when the player is negative X relative to the tile entity position.
     @Override
     @SideOnly(Side.CLIENT)
     public net.minecraft.util.AxisAlignedBB getRenderBoundingBox() {

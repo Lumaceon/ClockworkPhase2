@@ -20,14 +20,12 @@ public class ItemClockworkPhase extends Item
     }
 
     @Override
-    public String getUnlocalizedName()
-    {
+    public String getUnlocalizedName() {
         return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack is)
-    {
+    public String getUnlocalizedName(ItemStack is) {
         return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
     }
 }

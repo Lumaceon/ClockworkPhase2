@@ -17,6 +17,7 @@ import lumaceon.mods.clockworkphase2.handler.InputHandler;
 import lumaceon.mods.clockworkphase2.handler.ModelBakeHandler;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.lib.Reference;
+import lumaceon.mods.clockworkphase2.network.PacketHandlerClient;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,9 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void init() {
+    public void init()
+    {
+        PacketHandlerClient.init();
     }
 
     @Override

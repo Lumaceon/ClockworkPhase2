@@ -1,0 +1,11 @@
+Release Candidate 2
+-Added degradation recipe to the Recipe Sorter.
+-Fixed server-sided imports of client classes in packet handling. Should no longer crash dedicated servers.
+-Changed guidebook textures to display more appropriate images for the getting started entries.
+-Alloy hammer recipe now requires an additional stick.
+-Basic winding box is now much cheaper.
+-Fixed recipes yielding incorrect gears (stupid mistake on my part).
+-Fixed alloy hammer recipes to no longer screw up the stack size to 0.
+-Reworked hourglasses to generate their time internally (should be a bit more efficient).
+-Renamed time generators to time drives, and finally to time compressors (third time's the charm hopefully).
+-Fixed timeframe key localizations (more idiotic mistakes on my part).

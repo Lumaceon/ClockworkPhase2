@@ -36,20 +36,6 @@ public class ModBlocks
     public static BlockReference moonFlower = new BlockReference("moon_flower");
     //FLUIDS
     //public static BlockReference liquidTemporium = new BlockReference("liquid_temporium");
-    /*//CLOCKWORK NETWORK
-    public static BlockReference crank = new BlockReference("crank");
-    public static BlockReference clockworkNetworkConnector = new BlockReference("clockwork_network_connector");
-    public static BlockReference creative_mainspring = new BlockReference("mainspring_creative");
-    public static BlockReference clockworkController = new BlockReference("clockwork_controller");
-    public static BlockReference clockworkFurnace = new BlockReference("clockwork_furnace");
-    public static BlockReference clockworkMelter = new BlockReference("clockwork_melter");
-    public static BlockReference clockworkBrewery = new BlockReference("clockwork_brewery");
-    public static BlockReference clockworkMixer = new BlockReference("clockwork_mixer");
-    public static BlockReference clockworkAlloyFurnace = new BlockReference("clockwork_alloy_furnace");
-    public static BlockReference clockworkExperimentalAlloyFurnace = new BlockReference("clockwork_experimental_alloy_furnace");
-    public static BlockReference clockworkCraftingTable = new BlockReference("clockwork_crafting_table");
-    public static BlockReference clockworkItemStorage = new BlockReference("clockwork_item_storage");
-    public static BlockReference clockworkScreen = new BlockReference("clockwork_screen");*/
     //TEMPORAL BLOCKS
     public static BlockReference celestialCompass = new BlockReference("celestial_compass");
     public static BlockReference celestialCompassSB = new BlockReference("celestial_compass_sb");
@@ -77,20 +63,6 @@ public class ModBlocks
         //PLANTS
         registerBlock(moonFlower, BlockMoonFlower.class, matName, new Object[] {Material.PLANTS, moonFlower.getUnlocalizedName()});
         //FLUIDS
-        /*//CLOCKWORK NETWORK
-        registerBlock(crank, BlockCrank.class, matName, new Object[] {Material.IRON, crank.getUnlocalizedName()});
-        registerBlock(clockworkNetworkConnector, BlockClockworkNetworkConnector.class, matName, new Object[] {Material.IRON, clockworkNetworkConnector.getUnlocalizedName()});
-        registerBlock(creative_mainspring, BlockCreativeMainspring.class, matName, new Object[] {Material.IRON, creative_mainspring.getUnlocalizedName()});
-        registerBlock(clockworkController, BlockClockworkController.class, matName, new Object[] {Material.IRON, clockworkController.getUnlocalizedName()});
-        registerBlock(clockworkFurnace, BlockClockworkFurnace.class, matName, new Object[] {Material.IRON, clockworkFurnace.getUnlocalizedName()}, ItemBlockClockworkFurnace.class);
-        registerBlock(clockworkMelter, BlockClockworkMelter.class, matName, new Object[] {Material.IRON, clockworkMelter.getUnlocalizedName()}, ItemBlockClockworkMelter.class);
-        registerBlock(clockworkBrewery, BlockClockworkBrewery.class, matName, new Object[] {Material.IRON, clockworkBrewery.getUnlocalizedName()}, ItemBlockClockworkBrewery.class);
-        registerBlock(clockworkMixer, BlockClockworkMixer.class, matName, new Object[] {Material.IRON, clockworkMixer.getUnlocalizedName()}, ItemBlockClockworkMixer.class);
-        registerBlock(clockworkAlloyFurnace, BlockClockworkAlloyFurnace.class, matName, new Object[] {Material.IRON, clockworkAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkAlloyFurnace.class);
-        registerBlock(clockworkExperimentalAlloyFurnace, BlockClockworkSuperAlloyFurnace.class, matName, new Object[] {Material.IRON, clockworkExperimentalAlloyFurnace.getUnlocalizedName()}, ItemBlockClockworkSuperAlloyFurnace.class);
-        registerBlock(clockworkCraftingTable, BlockClockworkCraftingTable.class, matName, new Object[] {Material.IRON, clockworkCraftingTable.getUnlocalizedName()});
-        registerBlock(clockworkItemStorage, BlockClockworkItemStorage.class, matName, new Object[] {Material.IRON, clockworkItemStorage.getUnlocalizedName()});
-        registerBlock(clockworkScreen, BlockClockworkScreen.class, matName, new Object[] {Material.IRON, clockworkScreen.getUnlocalizedName()});*/
         //TEMPORAL BLOCKS
         registerBlock(celestialCompass, BlockCelestialCompass.class, matName, new Object[] {Material.IRON, celestialCompass.getUnlocalizedName()});
         registerBlock(celestialCompassSB, BlockCelestialCompassSB.class, matName, new Object[] {Material.IRON, celestialCompassSB.getUnlocalizedName()});

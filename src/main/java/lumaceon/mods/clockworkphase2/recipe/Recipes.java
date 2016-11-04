@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.recipe;
 
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.recipe.customrecipe.ShapelessOreRecipeDegradeItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -16,6 +18,7 @@ public class Recipes
 {
     public static void init()
     {
+        RecipeSorter.register(Reference.MOD_ID + ":degradeitem", ShapelessOreRecipeDegradeItem.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
         initClockworkComponentRecipes();
         initClockworkConstructs();
         initTemporalClockworkModules();
@@ -47,9 +50,9 @@ public class Recipes
         gearQuartz = addGearRecipe(new ItemStack(ModItems.gearQuartz.getItem()), "gemQuartz");
         gearEmerald = addGearRecipe(new ItemStack(ModItems.gearEmerald.getItem()), "gemEmerald");
         gearDiamond = addGearRecipe(new ItemStack(ModItems.gearDiamond.getItem()), "gemDiamond");
-        gearCopper = addGearRecipe(new ItemStack(ModItems.gearDiamond.getItem()), "ingotCopper");
-        gearZinc = addGearRecipe(new ItemStack(ModItems.gearDiamond.getItem()), "ingotZinc");
-        gearBrass = addGearRecipe(new ItemStack(ModItems.gearDiamond.getItem()), "ingotBrass");
+        gearCopper = addGearRecipe(new ItemStack(ModItems.gearCopper.getItem()), "ingotCopper");
+        gearZinc = addGearRecipe(new ItemStack(ModItems.gearZinc.getItem()), "ingotZinc");
+        gearBrass = addGearRecipe(new ItemStack(ModItems.gearBrass.getItem()), "ingotBrass");
     }
 
     public static IRecipe mainspring;
@@ -188,7 +191,7 @@ public class Recipes
         ItemStack result;
 
         result = new ItemStack(ModBlocks.basicWindingBox.getBlock());
-        basicWindingBox = new ShapedOreRecipe(result, "ibi", "bBb", "ibi", 'i', "ingotIron", 'b', "ingotBrass", 'B', "blockBrass");
+        basicWindingBox = new ShapedOreRecipe(result, "ibi", "bBb", "ibi", 'i', "ingotIron", 'b', "ingotBrass", 'B', "gearIron");
         GameRegistry.addRecipe(basicWindingBox);
 
         result = new ItemStack(ModBlocks.multiblockAssembler.getBlock());
@@ -229,7 +232,7 @@ public class Recipes
         GameRegistry.addRecipe(trowelDiamond);
 
         result = new ItemStack(ModItems.alloyHammer.getItem());
-        alloyHammer = new ShapedOreRecipe(result, "ccc", "z z", " s ", 'c', "ingotCopper", 'z', "ingotZinc", 's', "stickWood");
+        alloyHammer = new ShapedOreRecipe(result, "ccc", "zsz", " s ", 'c', "ingotCopper", 'z', "ingotZinc", 's', "stickWood");
         GameRegistry.addRecipe(alloyHammer);
 
         result = new ItemStack(ModItems.multiblockCelestialCompass.getItem());

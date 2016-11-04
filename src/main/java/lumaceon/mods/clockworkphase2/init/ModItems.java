@@ -193,8 +193,8 @@ public class ModItems
         //registerItem(toolUpgradeRightClicker, ItemToolUpgradeRightClicker.class, stackDamageName, new Object[] {1, 100, toolUpgradeRightClicker.getUnlocalizedName()});
         //registerItem(toolUpgradeMassStorage, ItemToolUpgradeStorage.class, stackDamageName, new Object[] {1, 100, toolUpgradeMassStorage.getUnlocalizedName()});
         //TEMPORAL DRIVES
-        registerItem(temporalDrive, ItemTimeGenerator.class, stackDamageNameTimeTickMinXP, new Object[] {1, 100, temporalDrive.getUnlocalizedName(), ConfigValues.TEMPORAL_DRIVE_TIME_PER_TICK, ConfigValues.TEMPORAL_DRIVE_TICKS, EnumExpTier.TEMPORAL}); //1 minute over 1 minute
-        registerItem(etherealDrive, ItemTimeGenerator.class, stackDamageNameTimeTickMinXP, new Object[] {1, 100, etherealDrive.getUnlocalizedName(), ConfigValues.ETHEREAL_DRIVE_TIME_PER_TICK, ConfigValues.ETHEREAL_DRIVE_TICKS, EnumExpTier.ETHEREAL}); //30 minutes over 7.5 minutes.
+        registerItem(temporalDrive, ItemTimeCompressor.class, stackDamageNameTimeTickMinXP, new Object[] {1, 100, temporalDrive.getUnlocalizedName(), ConfigValues.TEMPORAL_DRIVE_TIME_PER_TICK, ConfigValues.TEMPORAL_DRIVE_TICKS, EnumExpTier.TEMPORAL}); //1 minute over 1 minute
+        registerItem(etherealDrive, ItemTimeCompressor.class, stackDamageNameTimeTickMinXP, new Object[] {1, 100, etherealDrive.getUnlocalizedName(), ConfigValues.ETHEREAL_DRIVE_TIME_PER_TICK, ConfigValues.ETHEREAL_DRIVE_TICKS, EnumExpTier.ETHEREAL}); //30 minutes over 7.5 minutes.
         //registerItem(phasicDrive, ItemTimeGenerator.class, stackDamageNameTimeTickMinXP, new Object[] {1, 100, phasicDrive.getUnlocalizedName(), 64, 13500, EnumExpTier.PHASIC}); //12 hours over 11.25 minutes.
         //registerItem(eternalDrive, ItemTimeGenerator.class, stackDamageNameTimeTickMinXP, new Object[] {1, 100, eternalDrive.getUnlocalizedName(), 128, 54000, EnumExpTier.ETERNAL}); //4 days over 45 minutes.
         //TIMEFRAME KEYS

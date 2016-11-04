@@ -3,11 +3,13 @@ package lumaceon.mods.clockworkphase2.item.temporal;
 import lumaceon.mods.clockworkphase2.api.EnumExpTier;
 import lumaceon.mods.clockworkphase2.api.IPhaseEntity;
 import lumaceon.mods.clockworkphase2.api.item.IHourglass;
+import lumaceon.mods.clockworkphase2.api.item.ITimeCompressor;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -35,8 +37,42 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        list.add("Time Energy: " + Colors.AQUA + TimeConverter.parseNumber(getTimeStored(is), 3));
-        list.add("Max Capacity: " + Colors.AQUA + TimeConverter.parseNumber(getMaxCapacity(is), 3));
+        list.add("Compressed Time Energy: " + Colors.AQUA + TimeConverter.parseNumber(getTimeStored(is), 3));
+        list.add("Max Compression: " + Colors.AQUA + TimeConverter.parseNumber(getMaxCapacity(is), 3));
+        list.add("");
+        list.add((int) (NBTHelper.INT.get(is, NBTTags.TOTAL_TIME_GENERATION) * 0.05) + " seconds of compression");
+        list.add(TimeConverter.parseNumber(NBTHelper.INT.get(is, NBTTags.TIME_GENERATION_PER_TICK) * 20, 2).toLowerCase() + " per second of compression");
+
+        int minXP = NBTHelper.INT.get(is, NBTTags.MIN_XP);
+        String color = player.experienceLevel < minXP ? Colors.RED : Colors.GREEN;
+        list.add(color + "Required experience level: " + minXP);
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+        if(stack == null || !isActive(stack) || entityIn == null || !(entityIn instanceof EntityPlayer))
+            return;
+
+        int generationPerTick = NBTHelper.INT.get(stack, NBTTags.TIME_GENERATION_PER_TICK);
+        int remainingTicks = NBTHelper.INT.get(stack, NBTTags.TOTAL_TIME_GENERATION);
+        int minimumXP = NBTHelper.INT.get(stack, NBTTags.MIN_XP);
+
+        if(generationPerTick <= 0 || remainingTicks <= 0 || ((EntityPlayer) entityIn).experienceLevel < minimumXP)
+            return;
+
+        if(receiveTime(stack, generationPerTick, true) == generationPerTick)
+        {
+            receiveTime(stack, generationPerTick, false);
+            if(remainingTicks <= 1)
+            {
+                NBTHelper.INT.set(stack, NBTTags.TIME_GENERATION_PER_TICK, 0);
+                NBTHelper.INT.set(stack, NBTTags.TOTAL_TIME_GENERATION, 0);
+                NBTHelper.INT.set(stack, NBTTags.MIN_XP, 0);
+            }
+            else
+                NBTHelper.INT.set(stack, NBTTags.TOTAL_TIME_GENERATION, remainingTicks - 1);
+        }
     }
 
     @Override
@@ -89,6 +125,24 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
     @Override
     public long getTimeStored(ItemStack timeItem) {
         return NBTHelper.LONG.get(timeItem, NBTTags.TIME);
+    }
+
+    @Override
+    public boolean addTimeCompressor(ItemStack hourglassStack, ItemStack compressorStack)
+    {
+        if(hourglassStack == null || compressorStack == null || !(compressorStack.getItem() instanceof ITimeCompressor))
+            return false;
+        int generationPerTick = NBTHelper.INT.get(hourglassStack, NBTTags.TIME_GENERATION_PER_TICK);
+        int generationRemaining = NBTHelper.INT.get(hourglassStack, NBTTags.TOTAL_TIME_GENERATION);
+        if(generationPerTick == ((ITimeCompressor) compressorStack.getItem()).getCompressionRate() || generationPerTick <= 0 || generationRemaining <= 0)
+        {
+            generationRemaining += ((ITimeCompressor) compressorStack.getItem()).getTotalTicks();
+            NBTHelper.INT.set(hourglassStack, NBTTags.TOTAL_TIME_GENERATION, generationRemaining);
+            NBTHelper.INT.set(hourglassStack, NBTTags.TIME_GENERATION_PER_TICK, ((ITimeCompressor) compressorStack.getItem()).getCompressionRate());
+            NBTHelper.INT.set(hourglassStack, NBTTags.MIN_XP, ((ITimeCompressor) compressorStack.getItem()).getTier().minimumXP);
+            return true;
+        }
+        return false;
     }
 
     public long getEmptySpace(ItemStack timeItem) {

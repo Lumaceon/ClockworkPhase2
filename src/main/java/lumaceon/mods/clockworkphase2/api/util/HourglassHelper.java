@@ -65,6 +65,19 @@ public class HourglassHelper
     }
 
     /**
+     * Used to get an array of all the hourglasses in the given player's inventory,
+     * @return A newly constructed array of all the hourglasses found in the player's inventory.
+     */
+    public static ItemStack[] getHourglasses(EntityPlayer player)
+    {
+        ItemStack[] ret = new ItemStack[0];
+        for(ItemStack stack : player.inventory.mainInventory)
+            if(stack != null && stack.getItem() instanceof IHourglass)
+                ret = ArrayUtils.add(ret, stack);
+        return ret;
+    }
+
+    /**
      * Helper method to simplify getting the total time from several hourglasses.
      * @param hourglasses An array of hourglasses to query for their time contents.
      * @return The total sum, in ticks, of all these time in hourglasses.

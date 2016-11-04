@@ -50,12 +50,12 @@ item.clockworkphase2:tool_upgrade_area.name=Excavator Upgrade: Hammer
 item.clockworkphase2:tool_upgrade_fortune.name=Excavator Upgrade: Luck
 //item.clockworkphase2:tool_upgrade_xp.name=Excavator Upgrade: Experience
 
-item.clockworkphase2:temporal_drive.name=Temporal Drive
-item.clockworkphase2:ethereal_drive.name=Ethereal Drive
+item.clockworkphase2:temporal_drive.name=Temporal Time Compressor
+item.clockworkphase2:ethereal_drive.name=Ethereal Time Compressor
 
-item.clockworkphase2:timeframe_key_solar.name=Ethereal Drive
-item.clockworkphase2:timeframe_key_anima.name=Ethereal Drive
-item.clockworkphase2:timeframe_key_tivadari.name=Ethereal Drive
+item.clockworkphase2:timeframe_key_solar.name=Solar Timeframe Key
+item.clockworkphase2:timeframe_key_anima.name=Anima Timeframe Key
+item.clockworkphase2:timeframe_key_tivadari.name=Tivadari Timeframe Key
 item.clockworkphase2:timeframe_key_paradox.name=Timeframe Key
 
 item.clockworkphase2:artifact_solar.name=Solar Artifact
@@ -88,6 +88,7 @@ tile.clockworkphase2:brass_block.name=Brass Block
 tile.clockworkphase2:temporal_block.name=Temporal Block
 
 tile.clockworkphase2:basic_winding_box.name=Basic Winding Box
+tile.clockworkphase2:assembly_table.name=Assembly Table
 tile.clockworkphase2:multiblock_assembler.name=Multiblock Assembler
 tile.clockworkphase2:construction_block.name=Multiblock Construction Frame
 

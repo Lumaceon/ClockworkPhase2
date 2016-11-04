@@ -16,9 +16,9 @@ public class ModArticles
         initImages();
 
         Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "worldgen", null, Item.getItemFromBlock(ModBlocks.oreCopper.getBlock()), "What lies below..."));
-        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "clockwork_assembly", null, ModItems.alloyHammer.getItem(), "Clockwork assembly"));
-        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "moonflowers", null, ModItems.alloyHammer.getItem(), "Lunar garden"));
-        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "phase", null, ModItems.alloyHammer.getItem(), "The phase"));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "clockwork_assembly", null, ModItems.gearWood.getItem(), "Clockwork assembly"));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "moonflowers", null, ModItems.moonFlowerSeeds.getItem(), "Lunar garden"));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "phase", null, ModItems.temporalHourglass.getItem(), "The phase"));
         //Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "time_thief", null, ModItems.alloyHammer.getItem(), "Time thievery"));
     }
 

@@ -95,8 +95,9 @@ public class ShapelessOreRecipeDegradeItem extends ShapelessOreRecipe
             {
                 if(i.getItemDamage() == i.getMaxDamage() - 1)
                     continue;
-                i.setItemDamage(i.getItemDamage() + 1);
-                ret[n] = i;
+                ItemStack stack = new ItemStack(i.getItem());
+                stack.setItemDamage(i.getItemDamage() + 1);
+                ret[n] = stack;
             }
         }
         return ret;

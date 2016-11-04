@@ -63,4 +63,11 @@ public interface IHourglass
      * Returns the amount of time that's stored in this ItemStack.
      */
     public long getTimeStored(ItemStack timeItem);
+
+    /**
+     * Called to add a time compressor (sometimes known as time generators) to this hourglass. Item should implement
+     * ITimeCompressor.
+     * @return True if the compressor was added, false otherwise.
+     */
+    public boolean addTimeCompressor(ItemStack hourglassStack, ItemStack compressorStack);
 }

@@ -1,0 +1,30 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"all": "clockworkphase2:blocks/construction_block"
+	    },
+		"model": "cube_all",
+		"transform": "forge:default-block"
+    },
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"meta=0": [{}],
+		"meta=1": [{}],
+		"meta=2": [{}],
+		"meta=3": [{}],
+		"meta=4": [{}],
+		"meta=5": [{}],
+		"meta=6": [{}],
+		"meta=7": [{}],
+		"meta=8": [{}],
+		"meta=9": [{}],
+		"meta=10": [{}],
+		"meta=11": [{}],
+		"meta=12": [{}],
+		"meta=13": [{}],
+		"meta=14": [{}],
+		"meta=15": [{}]
+    }
+}

@@ -5,39 +5,38 @@ import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.extendeddata.ExtendedMapData;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
-import lumaceon.mods.clockworkphase2.item.components.ItemTemporalItemStorageMatrix;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeFurnace;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeRelocate;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeSilk;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeStorage;
-import lumaceon.mods.clockworkphase2.util.Logger;
+import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeRelocate;
+import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeSilk;
+import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageParticleSpawn;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+
+import java.util.List;
 
 public class WorldHandler
 {
     @SubscribeEvent
     public void onWorldLoaded(WorldEvent.Load event)
     {
-        if(event.world != null)
+        if(event.getWorld() != null)
         {
-            ExtendedMapData worldData = ExtendedMapData.get(event.world);
-            if(!worldData.isRuinMapGenerated() && !event.world.isRemote)
-                worldData.generateRuinMap();
-            if(!worldData.areExperimentalAlloysRegistered() && !event.world.isRemote)
+            ExtendedMapData worldData = ExtendedMapData.get(event.getWorld());
+            if(!worldData.areExperimentalAlloysRegistered() && !event.getWorld().isRemote)
                 worldData.registerExperimentalAlloys();
         }
     }
@@ -45,105 +44,73 @@ public class WorldHandler
     @SubscribeEvent
     public void onBlockHarvested(BlockEvent.HarvestDropsEvent event)
     {
-        if(event.world.isRemote || event.harvester == null)
+        World world = event.getWorld();
+        List<ItemStack> drops = event.getDrops();
+        IBlockState state = event.getState();
+        EntityPlayer player = event.getHarvester();
+        BlockPos pos = event.getPos();
+        if(event.getWorld().isRemote || player == null)
             return;
-        if(event.harvester.inventory == null || event.drops == null || event.drops.isEmpty())
+        if(player.inventory == null || drops == null || drops.isEmpty())
             return;
 
-        ItemStack heldItem = event.harvester.inventory.getStackInSlot(event.harvester.inventory.currentItem);
-            IToolUpgrade silk = null;
-            ItemStack silkStack = null; //TODO - looking back at this code: is this ItemStack even necessary?
-            IToolUpgrade smelt = null;
-            ItemToolUpgradeStorage massStorage = null;
-            ItemStack massStorageStack = null;
-            int massStorageIndex = 0;
+        ItemStack heldItem = player.inventory.getStackInSlot(player.inventory.currentItem);
+        IToolUpgrade silk = null;
+        ItemStack silkStack = null;
+        IToolUpgrade smelt = null;
 
-            if(heldItem != null)
+        if(heldItem != null)
+        {
+            if(NBTHelper.hasTag(heldItem, NBTTags.COMPONENT_INVENTORY))
             {
-                if(NBTHelper.hasTag(heldItem, NBTTags.COMPONENT_INVENTORY))
+                ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
+                for(ItemStack item : inventory)
                 {
-                    ItemStack[] inventory = NBTHelper.INVENTORY.get(heldItem, NBTTags.COMPONENT_INVENTORY);
-                    for(ItemStack item : inventory)
+                    if(item != null && item.getItem().equals(ModItems.toolUpgradeSilk.getItem()) && ((ItemToolUpgradeSilk) item.getItem()).getActive(item, heldItem))
                     {
-                        if(item != null && item.getItem().equals(ModItems.toolUpgradeSilk.getItem()) && ((ItemToolUpgradeSilk) item.getItem()).getActive(item, heldItem))
-                        {
-                            silk = (IToolUpgrade) item.getItem();
-                            silkStack = item;
-                        }
-
-                        if(item != null && item.getItem().equals(ModItems.toolUpgradeFurnace.getItem()) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item, heldItem))
-                            smelt = (IToolUpgrade) item.getItem();
-
-                        if(item != null && item.getItem().equals(ModItems.toolUpgradeMassStorage.getItem()) && ((ItemToolUpgradeStorage) item.getItem()).getActive(item, heldItem))
-                        {
-                            massStorage = (ItemToolUpgradeStorage) item.getItem();
-                            massStorageStack = item;
-                        }
-                        else if(massStorageStack == null)
-                            ++massStorageIndex;
+                        silk = (IToolUpgrade) item.getItem();
+                        silkStack = item;
                     }
-                }
 
-                if(!event.isSilkTouching)
-                {
-                    if(smelt != null && !event.drops.isEmpty())
-                        for(int n = 0; n < event.drops.size(); n++)
-                        {
-                            ItemStack smeltedOutput = FurnaceRecipes.instance().getSmeltingResult(event.drops.get(n));
-
-                            //Fortune code from BlockOre\\
-                            int j = event.world.rand.nextInt(event.fortuneLevel + 2) - 1;
-                            if (j < 0) { j = 0; }
-                            int size = j + 1; //Modified to ignore quantity dropped, already handled by iterating through drops.
-                            //Fortune code from BlockOre\\
-
-                            if(smeltedOutput != null)
-                            {
-                                smeltedOutput = smeltedOutput.copy();
-                                //Only drop 1 if the smelted item is a block or the same as the block broken
-                                if(Block.getBlockFromItem(smeltedOutput.getItem()) != null || Item.getItemFromBlock(event.state.getBlock()).equals(smeltedOutput.getItem()))
-                                {
-                                    size = 1;
-                                }
-                                smeltedOutput.stackSize = size;
-                                event.drops.remove(n);
-                                event.drops.add(n, smeltedOutput);
-                            }
-                        }
+                    //if(item != null && item.getItem().equals(ModItems.toolUpgradeFurnace.getItem()) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item, heldItem))
+                    //    smelt = (IToolUpgrade) item.getItem();
                 }
             }
 
-        //"STORE THE USELESS CRAP" UPGRADE
-        if(massStorage != null && !event.drops.isEmpty())
-        {
-            if(massStorageStack != null && NBTHelper.hasTag(massStorageStack, NBTTags.COMPONENT_INVENTORY))
+            if(!event.isSilkTouching())
             {
-                ItemStack[] items = NBTHelper.INVENTORY.get(massStorageStack, NBTTags.COMPONENT_INVENTORY);
-                for(int n = 0; n < event.drops.size(); n++)
+                if(silk != null && silkStack != null && !drops.isEmpty())
                 {
-                    ItemStack drop = event.drops.get(n);
-                    if(drop != null && drop.isStackable())
+                    if(state.getBlock().canSilkHarvest(world, pos, state, player))
                     {
-                        for(int i = 0; i < items.length; i++)
-                        {
-                            ItemStack item = items[i];
-                            if(item != null && item.getItem() instanceof ItemTemporalItemStorageMatrix)
-                            {
-                                if(NBTHelper.hasTag(item, "ul_name") && NBTHelper.STRING.get(item, "ul_name").equals(drop.getUnlocalizedName()))
-                                {
-                                    if(NBTHelper.hasTag(item, "item_count"))
-                                        NBTHelper.INT.set(item, "item_count", NBTHelper.INT.get(item, "item_count") + drop.stackSize);
-                                    else
-                                        NBTHelper.INT.set(item, "item_count", drop.stackSize);
-                                    event.drops.remove(n);
-                                    --n;
-                                    break;
-                                }
-                            }
-                        }
+                        ItemStack result = new ItemStack(state.getBlock(), 1, state.getBlock().damageDropped(state));
+                        drops.set(0, result);
                     }
                 }
-                NBTHelper.INVENTORY.set(massStorageStack, NBTTags.COMPONENT_INVENTORY, items);
+                else if(smelt != null && !drops.isEmpty())
+                    for(int n = 0; n < drops.size(); n++)
+                    {
+                        ItemStack smeltedOutput = FurnaceRecipes.instance().getSmeltingResult(drops.get(n));
+
+                        //Fortune code from BlockOre\\
+                        int j = world.rand.nextInt(event.getFortuneLevel() + 2) - 1;
+                        if (j < 0) { j = 0; }
+                        int size = j + 1; //Modified to ignore quantity dropped, already handled by iterating through drops.
+                        //Fortune code from BlockOre\\
+
+                        if(smeltedOutput != null)
+                        {
+                            smeltedOutput = smeltedOutput.copy();
+                            //Only drop 1 if the smelted item is a block or the same as the block broken
+                            if(Block.getBlockFromItem(smeltedOutput.getItem()) != null || Item.getItemFromBlock(state.getBlock()).equals(smeltedOutput.getItem()))
+                            {
+                                size = 1;
+                            }
+                            smeltedOutput.stackSize = size;
+                            drops.remove(n);
+                            drops.add(n, smeltedOutput);
+                        }
+                    }
             }
         }
 
@@ -163,15 +130,15 @@ public class WorldHandler
                     int z = NBTHelper.INT.get(item, "cp_z");
                     EnumFacing side = EnumFacing.VALUES[NBTHelper.INT.get(item, "cp_side")];
 
-                    TileEntity te = event.world.getTileEntity(new BlockPos(x, y, z));
+                    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
                     if(te != null && te instanceof IInventory)
                     {
                         if(te instanceof ISidedInventory) //Inventory is side-specific.
                         {
                             ISidedInventory inventory = (ISidedInventory) te;
-                            for(int n = 0; n < event.drops.size(); n++) //Each drop.
+                            for(int n = 0; n < drops.size(); n++) //Each drop.
                             {
-                                ItemStack drop = event.drops.get(n);
+                                ItemStack drop = drops.get(n);
                                 int[] validSlots = inventory.getSlotsForFace(side);
                                 for(int currentSlot : validSlots)
                                 {
@@ -184,16 +151,18 @@ public class WorldHandler
                                             {
                                                 inventorySlotItem.stackSize += drop.stackSize;
                                                 inventory.setInventorySlotContents(currentSlot, inventorySlotItem);
-                                                event.drops.remove(n);
+                                                drops.remove(n);
                                                 --n;
+                                                PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(0, pos.getX(), pos.getY(), pos.getZ()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
                                                 break;
                                             }
                                         }
                                         else
                                         {
                                             inventory.setInventorySlotContents(currentSlot, drop.copy());
-                                            event.drops.remove(n);
+                                            drops.remove(n);
                                             --n;
+                                            PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(0, pos.getX(), pos.getY(), pos.getZ()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
                                             break;
                                         }
                                     }
@@ -203,9 +172,9 @@ public class WorldHandler
                         else //Inventory is not side specific, loop through all slots instead.
                         {
                             IInventory inventory = (IInventory) te;
-                            for(int n = 0; n < event.drops.size(); n++) //Each drop.
+                            for(int n = 0; n < drops.size(); n++) //Each drop.
                             {
-                                ItemStack drop = event.drops.get(n);
+                                ItemStack drop = drops.get(n);
                                 boolean escapeFlag = false;
                                 for(int i = 0; i < inventory.getSizeInventory() && !escapeFlag; i++)
                                 {
@@ -218,17 +187,19 @@ public class WorldHandler
                                             {
                                                 inventorySlotItem.stackSize += drop.stackSize;
                                                 inventory.setInventorySlotContents(i, inventorySlotItem);
-                                                event.drops.remove(n);
+                                                drops.remove(n);
                                                 --n;
                                                 escapeFlag = true;
+                                                PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(0, pos.getX(), pos.getY(), pos.getZ()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
                                             }
                                         }
                                         else
                                         {
                                             inventory.setInventorySlotContents(i, drop.copy());
-                                            event.drops.remove(n);
+                                            drops.remove(n);
                                             --n;
                                             escapeFlag = true;
+                                            PacketHandler.INSTANCE.sendToAllAround(new MessageParticleSpawn(0, pos.getX(), pos.getY(), pos.getZ()), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
                                         }
                                     }
                                 }

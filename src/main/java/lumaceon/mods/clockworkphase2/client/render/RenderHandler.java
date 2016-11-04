@@ -1,71 +1,217 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
-import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
-import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneHandler;
-import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequence;
-import lumaceon.mods.clockworkphase2.client.particle.sequence.ParticleSequenceTimezone;
-import lumaceon.mods.clockworkphase2.client.render.elements.overlay.OverlayRenderElement;
-import lumaceon.mods.clockworkphase2.client.render.elements.world.WorldRenderElement;
-import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class RenderHandler
 {
-    //public static OverlayRenderElementTemporalInfluence overlayInfluence = new OverlayRenderElementTemporalInfluence();
-    public static RenderItem renderItem;
+    protected static final ResourceLocation WIDGETS_TEX_PATH = new ResourceLocation("textures/gui/widgets.png");
+
+    private static RenderItem itemRenderer;
     public static Minecraft mc;
     public static EntityItem item;
     public static double interpolatedPosX, interpolatedPosY, interpolatedPosZ;
+    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
     public RenderHandler()
     {
         mc = Minecraft.getMinecraft();
-        renderItem = mc.getRenderItem();
+        itemRenderer = mc.getRenderItem();
     }
 
-    public static ArrayList<OverlayRenderElement> overlayRenderList = new ArrayList<OverlayRenderElement>();
-    @SubscribeEvent(priority = EventPriority.LOW)
-    public void onRenderOverlay(RenderGameOverlayEvent.Post event)
+    /*@SubscribeEvent
+    public void onPreRenderOverlay(RenderGameOverlayEvent.Pre event)
     {
-        for(int n = 0; n < overlayRenderList.size(); n++)
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if(player == null)
+            return;
+        if(event.getType().equals(RenderGameOverlayEvent.ElementType.EXPERIENCE) && !player.isCreative())
         {
-            OverlayRenderElement element = overlayRenderList.get(n);
-            if(!element.render(event))
+            event.setCanceled(true);
+            EnumAchievementTier tier = EnumAchievementTier.START;
+            if(player.hasCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN))
             {
-                overlayRenderList.remove(n);
-                n--;
+                IAchievementScoreHandler achievementScoreHandler = player.getCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                tier = achievementScoreHandler.getAchievementTier();
+            }
+            int xLoc = event.getResolution().getScaledWidth() / 2 - 91;
+            renderExpBar(event.getResolution(), xLoc, tier);
+        }
+    }
+
+    int tweentimer = 0;
+    @SubscribeEvent
+    public void onPostRenderOverlay(RenderGameOverlayEvent.Post event)
+    {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if(player == null)
+            return;
+        if(event.getType().equals(RenderGameOverlayEvent.ElementType.HOTBAR))
+        {
+            ItemStack item = player.inventory.getCurrentItem();
+            if(item != null && item.getItem() instanceof ItemTemporalMultitool && NBTHelper.hasTag(item, NBTTags.COMPONENT_INVENTORY))
+            {
+                if(tweentimer > 0 || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
+                {
+                    boolean tweenIncrease = false;
+                    if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
+                        tweenIncrease = true;
+
+                    ItemStack[] items = NBTHelper.INVENTORY.get(item, NBTTags.COMPONENT_INVENTORY);
+                    if(items != null)
+                    {
+                        if(tweenIncrease)
+                            tweentimer++;
+                        else
+                            tweentimer--;
+                        if(tweentimer > 10)
+                            tweentimer = 10;
+                        GlStateManager.enableBlend();
+                        GlStateManager.enableRescaleNormal();
+                        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                        RenderHelper.enableGUIStandardItemLighting();
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, (float) tweentimer * 0.1F);
+                        renderHotbar(event.getResolution(), event.getPartialTicks(), items, NBTHelper.BYTE.get(item, "MT_index"));
+                    }
+                }
             }
         }
     }
 
-    public static ArrayList<WorldRenderElement> worldRenderList = new ArrayList<WorldRenderElement>();
-
-    /*public static boolean registerWorldRenderElement(WorldRenderElement worldRenderElement)
+    protected void renderHotbar(ScaledResolution sr, float partialTicks, ItemStack[] multitoolItems, byte index)
     {
-        for(WorldRenderElement WRE : worldRenderList)
-            if(WRE.alreadyExists(worldRenderElement))
-                return false;
+        int pixelsUp = 24;
+        if(mc.getRenderViewEntity() instanceof EntityPlayer)
+        {
+            mc.getTextureManager().bindTexture(WIDGETS_TEX_PATH);
+            EntityPlayer entityplayer = (EntityPlayer) mc.getRenderViewEntity();
+            EnumHandSide enumhandside = entityplayer.getPrimaryHand().opposite();
+            int i = sr.getScaledWidth() / 2;
+            this.drawTexturedModalRectVanilla(i - 91, sr.getScaledHeight() - 22 - pixelsUp, 0, 0, 182, 22, 0.0F);
+            this.drawTexturedModalRectVanilla(i - 91 - 1 + index * 20, sr.getScaledHeight() - 22 - 1 - pixelsUp, 0, 22, 24, 22, 0.0F);
 
-        worldRenderList.add(worldRenderElement);
-        return true;
+            for(int l = 0; l < 9; ++l)
+            {
+                int i1 = i - 90 + l * 20 + 2;
+                int j1 = sr.getScaledHeight() - 16 - 3;
+                this.renderHotbarItem(i1, j1 - pixelsUp, partialTicks, entityplayer, multitoolItems[l]);
+            }
+
+            if(mc.gameSettings.attackIndicator == 2)
+            {
+                float f1 = mc.thePlayer.getCooledAttackStrength(0.0F);
+
+                if(f1 < 1.0F)
+                {
+                    int i2 = sr.getScaledHeight() - 20;
+                    int j2 = i + 91 + 6;
+
+                    if(enumhandside == EnumHandSide.RIGHT)
+                    {
+                        j2 = i - 91 - 22;
+                    }
+
+                    mc.getTextureManager().bindTexture(Gui.ICONS);
+                    int k1 = (int)(f1 * 19.0F);
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    this.drawTexturedModalRectVanilla(j2, i2 - pixelsUp, 0, 94, 18, 18, 0.0F);
+                    this.drawTexturedModalRectVanilla(j2, i2 + 18 - k1 - pixelsUp, 18, 112 - k1, 18, k1, 0.0F);
+                }
+            }
+
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.disableBlend();
+        }
+    }
+
+    protected void renderHotbarItem(int p_184044_1_, int p_184044_2_, float p_184044_3_, EntityPlayer player, @Nullable ItemStack stack)
+    {
+        if(stack != null)
+        {
+            float f = (float)stack.animationsToGo - p_184044_3_;
+
+            if(f > 0.0F)
+            {
+                GlStateManager.pushMatrix();
+                float f1 = 1.0F + f / 5.0F;
+                GlStateManager.translate((float)(p_184044_1_ + 8), (float)(p_184044_2_ + 12), 0.0F);
+                GlStateManager.scale(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
+                GlStateManager.translate((float)(-(p_184044_1_ + 8)), (float)(-(p_184044_2_ + 12)), 0.0F);
+            }
+
+            itemRenderer.renderItemAndEffectIntoGUI(player, stack, p_184044_1_, p_184044_2_);
+
+            if(f > 0.0F)
+                GlStateManager.popMatrix();
+
+            itemRenderer.renderItemOverlays(mc.fontRendererObj, stack, p_184044_1_, p_184044_2_);
+        }
+    }
+
+    private void renderExpBar(ScaledResolution scaledRes, int x, EnumAchievementTier tier)
+    {
+        mc.getTextureManager().bindTexture(Gui.ICONS);
+        int i = mc.thePlayer.xpBarCap();
+
+        if(i > 0)
+        {
+            int k = (int)(mc.thePlayer.experience * 183.0F);
+            int l = scaledRes.getScaledHeight() - 32 + 3;
+            this.drawTexturedModalRectVanilla(x, l, 0, 64, 182, 5, 0.0F);
+
+            if(k > 0)
+                this.drawTexturedModalRectVanilla(x, l, 0, 69, k, 5, 0.0F);
+        }
+
+        if(mc.thePlayer.experienceLevel > 0)
+        {
+            if(fontRenderer == null)
+                fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+
+            String s = "" + mc.thePlayer.experienceLevel;
+            if(tier != EnumAchievementTier.START) //Don't display 'start', only the letter tiers.
+                s = "" + mc.thePlayer.experienceLevel + tier.displayName;
+            int i1 = (scaledRes.getScaledWidth() - fontRenderer.getStringWidth(s)) / 2;
+            int j1 = scaledRes.getScaledHeight() - 31 - 4;
+            fontRenderer.drawString(s, i1 + 1, j1, 0);
+            fontRenderer.drawString(s, i1 - 1, j1, 0);
+            fontRenderer.drawString(s, i1, j1 + 1, 0);
+            fontRenderer.drawString(s, i1, j1 - 1, 0);
+            fontRenderer.drawString(s, i1, j1, 8453920);
+        }
+    }
+
+    private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
+    {
+        float zLevel = 0;
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((double)(x + 0), (double)(y + height), zLevel).tex((double)((float)(textureX + 0) * (1F/182F)), (double)((float)(textureY + height)*0.2)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + height), zLevel).tex((double)((float)(textureX + width) * (1F/182F)), (double)((float)(textureY + height)*0.2)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + 0), zLevel).tex((double)((float)(textureX + width) * (1F/182F)), (double)((float)(textureY + 0)*0.2)).endVertex();
+        vertexbuffer.pos((double)(x + 0), (double)(y + 0), zLevel).tex((double)((float)(textureX + 0) * (1F/182F)), (double)((float)(textureY + 0)*0.2)).endVertex();
+        tessellator.draw();
+    }
+
+    private void drawTexturedModalRectVanilla(int x, int y, int textureX, int textureY, int width, int height, float zLevel)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((double)(x + 0), (double)(y + height), zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + height), zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + 0), zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
+        vertexbuffer.pos((double)(x + 0), (double)(y + 0), zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
+        tessellator.draw();
     }*/
 
     @SubscribeEvent(priority = EventPriority.HIGH) //TODO: fix the darn clouds. Git off my glyph...
@@ -73,28 +219,9 @@ public class RenderHandler
     {
         boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
         boolean light = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        interpolatedPosX = mc.thePlayer.lastTickPosX + (mc.thePlayer.posX - mc.thePlayer.lastTickPosX) * (double)event.partialTicks;
-        interpolatedPosY = mc.thePlayer.lastTickPosY + (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) * (double)event.partialTicks;
-        interpolatedPosZ = mc.thePlayer.lastTickPosZ + (mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ) * (double)event.partialTicks;
-        if(!ParticleSequence.particles.isEmpty())
-        {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            Minecraft.getMinecraft().renderEngine.bindTexture(Textures.PARTICLE.TEST);
-            for(int n = 0; n < ParticleSequence.particles.size(); n++)
-            {
-                EntityFX fx = ParticleSequence.particles.get(n);
-                if(fx == null || fx.isDead)
-                {
-                    ParticleSequence.particles.remove(n);
-                    --n;
-                }
-                else
-                    fx.renderParticle(Tessellator.getInstance().getWorldRenderer(), mc.getRenderViewEntity(), event.partialTicks, ActiveRenderInfo.getRotationX(), ActiveRenderInfo.getRotationXZ(), ActiveRenderInfo.getRotationZ(), ActiveRenderInfo.getRotationYZ(), ActiveRenderInfo.getRotationXY());
-            }
-            GL11.glPopMatrix();
-        }
+        interpolatedPosX = mc.thePlayer.lastTickPosX + (mc.thePlayer.posX - mc.thePlayer.lastTickPosX) * (double)event.getPartialTicks();
+        interpolatedPosY = mc.thePlayer.lastTickPosY + (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) * (double)event.getPartialTicks();
+        interpolatedPosZ = mc.thePlayer.lastTickPosZ + (mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ) * (double)event.getPartialTicks();
 
         if(mc.getRenderManager().renderEngine == null)
             return;
@@ -106,7 +233,7 @@ public class RenderHandler
         {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            for(int[] area : TimezoneHandler.timezones)
+            /*for(int[] area : TimezoneHandler.timezones)
             {
                 ITimezoneProvider timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
                 if(timezone != null)
@@ -116,7 +243,7 @@ public class RenderHandler
                         TIMEZONE.timezoneSequences.put(timezone, ParticleSequence.spawnParticleSequence(new ParticleSequenceTimezone(timezone, area[0] + 0.5, area[1] + 0.5, area[2] + 0.5)));
 
                 }
-            }
+            }*/
             /*GL11.glDisable(GL11.GL_BLEND);
 
             Entity camera = mc.getRenderViewEntity();
@@ -139,7 +266,7 @@ public class RenderHandler
 
     public static class TIMEZONE
     {
-        public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
+        /*public static Map<ITimezoneProvider, ParticleSequence> timezoneSequences = new HashMap<ITimezoneProvider, ParticleSequence>();
 
         public static void renderGlyph(int[] area, double x, double y, double z, ITimezoneProvider timezone)
         {
@@ -154,13 +281,13 @@ public class RenderHandler
             double high = timezone.getRange();
 
             GL11.glPushMatrix();
-            GL11.glTranslated(x + 1, y + 139.99 - area[1], z + 1);
+            GL11.glTranslated(x + 1, y + 254.99 - area[1], z + 1);
             GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
             GL11.glRotatef((Minecraft.getSystemTime() % 115200.0F) / 320, 0.0F, 1.0F, 0.0F);
             GL11.glTranslatef(0.5F, 0.0F, 0.5F);
 
             Tessellator tessy = Tessellator.getInstance();
-            WorldRenderer renderer = tessy.getWorldRenderer();
+            VertexBuffer renderer = tessy.getBuffer();
             renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
             renderer.pos(low, 0, low).tex(0, 0).endVertex();
             renderer.pos(low, 0, high).tex(0, 1).endVertex();
@@ -175,6 +302,6 @@ public class RenderHandler
             renderer.pos(low, 0, low).tex(1, 0).endVertex();
             tessy.draw();
             GL11.glPopMatrix();
-        }
+        }*/
     }
 }

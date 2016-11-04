@@ -1,9 +1,8 @@
 package lumaceon.mods.clockworkphase2;
 
+import lumaceon.mods.clockworkphase2.api.AchievementTiering;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
-import lumaceon.mods.clockworkphase2.api.TemporalAchievementList;
-import lumaceon.mods.clockworkphase2.api.TemporalHarvestRegistry;
-import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
+import lumaceon.mods.clockworkphase2.api.block.CustomProperties;
 import lumaceon.mods.clockworkphase2.config.ConfigurationHandler;
 import lumaceon.mods.clockworkphase2.creativetab.CreativeTabClockworkPhase2;
 import lumaceon.mods.clockworkphase2.handler.*;
@@ -15,11 +14,9 @@ import lumaceon.mods.clockworkphase2.recipe.ExperimentalAlloyRecipes;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
 import lumaceon.mods.clockworkphase2.util.Logger;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
-import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorRuins;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
-import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -28,12 +25,14 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.io.File;
 import java.util.Random;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class ClockworkPhase2
 {
     public static Random random = new Random(System.nanoTime());
+    public static File sourceFile;
 
     @Mod.Instance(Reference.MOD_ID)
     public static ClockworkPhase2 instance;
@@ -44,31 +43,27 @@ public class ClockworkPhase2
     public final CreativeTabs CREATIVE_TAB = new CreativeTabClockworkPhase2("ClockworkPhase2");
 
     public WorldGeneratorOres oreGenerator = new WorldGeneratorOres();
-    public WorldGeneratorRuins ruinGenerator = new WorldGeneratorRuins();
 
     @Mod.EventHandler
     public void preInitialize(FMLPreInitializationEvent event)
     {
         Reference.MOD_DIRECTORY = event.getSourceFile();
-        ConfigurationHandler.init(event.getSuggestedConfigurationFile());
-        //SchematicUtility.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
-        //SchematicUtility.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
+        ConfigurationHandler.init(event.getModConfigurationDirectory());
+        ConfigurationHandler.initBlacklist(event.getModConfigurationDirectory());
+
+        ModCapabilities.init();
+        CustomProperties.init();
 
         ModFluids.init();
 
         ModItems.init();
         ModBlocks.init();
         ModBlocks.initTE();
-
-        if(event.getSide().isClient()) //The guidebook is client only.
-            ModArticles.init(event.getSourceFile());
+        proxy.registerCustomModels();
 
         GameRegistry.registerWorldGenerator(oreGenerator, 0);
-        GameRegistry.registerWorldGenerator(ruinGenerator, 0);
 
         ModFluids.bindBlocks();
-
-        ModPhases.init();
 
         ModEntities.init();
 
@@ -76,6 +71,9 @@ public class ClockworkPhase2
 
         proxy.registerFluidModels();
         proxy.registerKeybindings();
+        sourceFile = event.getSourceFile();
+        proxy.preInit();
+
     }
 
     @Mod.EventHandler
@@ -93,16 +91,10 @@ public class ClockworkPhase2
         MinecraftForge.EVENT_BUS.register(new PlayerHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());
         MinecraftForge.EVENT_BUS.register(new AchievementHandler());
-        MinecraftForge.EVENT_BUS.register(new TickHandler());
+        MinecraftForge.EVENT_BUS.register(new CapabilityAttachmentHandler());
         proxy.initSideHandlers();
 
-        new GuiHandler();
-
         PacketHandler.init();
-
-        ModWorlds.init();
-
-        ModRuins.init();
 
         ExperimentalAlloyRecipes.postInit();
     }
@@ -111,42 +103,27 @@ public class ClockworkPhase2
     public void postInitialize(FMLPostInitializationEvent event)
     {
         MainspringMetalRegistry.INTERNAL.initDefaults();
-        TemporalHarvestRegistry.init();
         Recipes.initAlloyRecipes();
 
         long value;
-        Logger.info("||Detecting Individual Achievements||");
-        for(Object achievement : AchievementList.achievementList)
+        Logger.info("||Detecting Achievements||");
+        for(Object achievement : AchievementList.ACHIEVEMENTS)
         {
             if(achievement != null && achievement instanceof Achievement)
             {
-                value = TemporalAchievementList.INTERNAL.registerAchievement((Achievement) achievement);
+                value = AchievementTiering.INTERNAL.registerAchievement((Achievement) achievement);
                 if(value <= 0)
                     Logger.info("{SKIPPED achievement '" + ((Achievement) achievement).statId + "'}");
                 else if(((Achievement) achievement).getSpecial())
-                    Logger.info("{Registered achievement \'" + ((Achievement) achievement).statId + "\' with a value of " + value + "} [Adds to special multiplier]");
+                    Logger.info("{Registered achievement \'" + ((Achievement) achievement).statId + "\' with a value of " + value + "} [Special]");
                 else
                     Logger.info("{Registered achievement \'" + ((Achievement) achievement).statId + "\' with a value of " + value + "}");
             }
         }
-        Logger.info("Total Temporal Influence From Achievements: " + TemporalAchievementList.INTERNAL.totalWeight);
-        Logger.info("");
-        Logger.info("||Detecting Pages||");
-        for(AchievementPage page : AchievementPage.getAchievementPages())
-        {
-            int pageValue = TemporalAchievementList.INTERNAL.registerPage(page);
-            if(pageValue > 0)
-                Logger.info("Page Found - " + page.getName() + " [Completionist Multiplier Bonus: x" + pageValue + "]");
-        }
-        Logger.info("Maximum Multiplier From Completionist Bonuses: " + TemporalAchievementList.INTERNAL.maxPageMultiplier);
-        Logger.info("");
-        Logger.info("||Calculating Special Achievement Exponential Increment Rate||");
-        TemporalAchievementList.INTERNAL.setupSpecialMultiplier();
-        Logger.info("Found " + TemporalAchievementList.INTERNAL.specialAchievementCount + " special achievements, exponential increment set to " + TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent);
-        Logger.info("Maximum Special Achievement Multiplier: " + (long) Math.pow(TemporalAchievementList.INTERNAL.specialAchievementCount + 1, TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent));
-        for(int n = 1; n <= TemporalAchievementList.INTERNAL.specialAchievementCount + 1; n++)
-        {
-            Logger.info((n - 1) + " Special Achievement(s): x" + (long) Math.pow(n, TemporalAchievementList.INTERNAL.specialAchievementMultiplierExponent));
-        }
+        Logger.info("Max Achievement Points: " + AchievementTiering.INTERNAL.maxPoints);
+
+        ModArticles.initRecipes();
+        if(event.getSide().isClient()) //The guidebook is client only.
+            ModArticles.init(sourceFile);
     }
 }

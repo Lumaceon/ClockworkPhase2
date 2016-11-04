@@ -2,10 +2,10 @@ package lumaceon.mods.clockworkphase2.init;
 
 import lumaceon.mods.clockworkphase2.api.guidebook.Categories;
 import lumaceon.mods.clockworkphase2.api.guidebook.GuidebookFileHelper;
-import lumaceon.mods.clockworkphase2.api.guidebook.GuidebookImageRegistry;
+import lumaceon.mods.clockworkphase2.api.guidebook.GuidebookRegistry;
 import lumaceon.mods.clockworkphase2.lib.Reference;
-import lumaceon.mods.clockworkphase2.lib.Textures;
-import net.minecraft.util.ResourceLocation;
+import lumaceon.mods.clockworkphase2.recipe.Recipes;
+import net.minecraft.item.Item;
 
 import java.io.File;
 
@@ -15,14 +15,28 @@ public class ModArticles
     {
         initImages();
 
-        Categories.JOURNAL_ENTRIES.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "jintro", Textures.GUI.CLOCK, null, "Entry #1: introduction."));
-        Categories.JOURNAL_ENTRIES.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "jcwtools", null, ModItems.clockworkPickaxe.getItem(), "Entry #2: clockwork mining?"));
-        Categories.JOURNAL_ENTRIES.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "jcwmachines", null, ModItems.clockworkCore.getItem(), "Entry #3: machinery."));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "worldgen", null, Item.getItemFromBlock(ModBlocks.oreCopper.getBlock()), "What lies below..."));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "clockwork_assembly", null, ModItems.alloyHammer.getItem(), "Clockwork assembly"));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "moonflowers", null, ModItems.alloyHammer.getItem(), "Lunar garden"));
+        Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "phase", null, ModItems.alloyHammer.getItem(), "The phase"));
+        //Categories.GETTING_STARTED.addArticle(GuidebookFileHelper.getArticleFromFile(modDirectory, Reference.MOD_ID, "time_thief", null, ModItems.alloyHammer.getItem(), "Time thievery"));
     }
 
-    //private static final ResourceLocation EX = new ResourceLocation(Reference.MOD_ID, "textures/misc/example.png");
     private static void initImages()
     {
-        //GuidebookImageRegistry.registerImage("example", EX, 125, 84);
+        //GuidebookRegistry.registerImage("imgAssemblyTable", Textures.GUI.ASSEMBLY_TABLE_GEARS, 125, 95);
+    }
+
+    public static GuidebookRegistry.GuidebookRecipe RECIPE_BRASSLUMP;
+    public static GuidebookRegistry.GuidebookRecipe RECIPE_CLOCKWORKPICK;
+    //public static GuidebookRegistry.GuidebookRecipe RECIPE_ASSEMBLYTABLE;
+    public static void initRecipes()
+    {
+        RECIPE_BRASSLUMP = new GuidebookRegistry.GuidebookRecipe("rpebl", Recipes.brassLump);
+        RECIPE_CLOCKWORKPICK = new GuidebookRegistry.GuidebookRecipe("cp", Recipes.clockworkPickaxe);
+        //RECIPE_ASSEMBLYTABLE = new GuidebookRegistry.GuidebookRecipe("at", Recipes.assemblyTable); Broken textures for some reason, fix later.
+        GuidebookRegistry.registerNewRecipeMapping("rpebl", RECIPE_BRASSLUMP);
+        GuidebookRegistry.registerNewRecipeMapping("cp", RECIPE_CLOCKWORKPICK);
+        //GuidebookRegistry.registerNewRecipeMapping("at", RECIPE_ASSEMBLYTABLE);
     }
 }

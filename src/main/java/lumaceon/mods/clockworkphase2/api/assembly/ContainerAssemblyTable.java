@@ -26,12 +26,12 @@ public class ContainerAssemblyTable extends Container
         this.world = world;
         this.player = ip.player;
 
-        for(int x = 0; x < 9; x++)
-            this.addSlotToContainer(new Slot(ip, x, 70 + x * 18 , 205));
+        for(int y = 0; y < 3; y++)
+            for(int x = 0; x < 9; x++)
+                this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, 70 + x * 18, 147 + y * 18));
 
         for(int x = 0; x < 9; x++)
-            for(int y = 0; y < 3; y++)
-                this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, 70 + x * 18, 147 + y * 18));
+            this.addSlotToContainer(new Slot(ip, x, 70 + x * 18 , 205));
 
         this.addSlotToContainer(new SlotAssemblable(mainInventory, 0, 142, 68));
     }
@@ -78,9 +78,7 @@ public class ContainerAssemblyTable extends Container
         {
             ItemStack itemstack = this.mainInventory.getStackInSlot(0);
             if(itemstack != null)
-            {
-                p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
-            }
+                p_75134_1_.dropItem(itemstack, false);
         }
     }
 
@@ -90,10 +88,124 @@ public class ContainerAssemblyTable extends Container
         return mainInventory.isUseableByPlayer(p_75145_1_);
     }
 
+    //TODO Ignores max stack size of slots.
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int p_82846_2_)
+    public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
-        return null;
+        Slot slot = this.inventorySlots.get(index);
+        if(slot == null || !slot.getHasStack())
+            return null;
+
+        ItemStack originalItem = slot.getStack();
+        ItemStack copyItem = originalItem.copy();
+
+        if(index >= 36) //Item is in our container, try placing in player's inventory.
+        {
+            if(!this.mergeItemStack(originalItem, 0, 36, true))
+                return null;
+        }
+        else
+        {
+            if(originalItem.getItem() instanceof IAssemblable)
+            {
+                if(!this.mergeItemStack(originalItem, 36, 37, false))
+                    if(!this.mergeItemStack(originalItem, 37, this.inventorySlots.size(), false))
+                        return null;
+            }
+            else if(!this.mergeItemStack(originalItem, 37, this.inventorySlots.size(), false))
+                return null;
+        }
+
+        if(copyItem.stackSize == 0)
+            slot.putStack(null);
+        else
+            slot.onSlotChanged();
+
+        if(originalItem.stackSize == 0)
+            slot.putStack(null);
+        else
+            slot.onSlotChanged();
+
+        if(copyItem.stackSize == originalItem.stackSize)
+            return null;
+        slot.onPickupFromSlot(player, copyItem);
+        return originalItem;
+    }
+
+    @Override
+    protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection)
+    {
+        boolean flag = false;
+        int i = startIndex;
+
+        if(reverseDirection)
+            i = endIndex - 1;
+
+        if(stack.isStackable())
+        {
+            while(stack.stackSize > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex))
+            {
+                Slot slot = this.inventorySlots.get(i);
+                ItemStack itemstack = slot.getStack();
+
+                if(itemstack != null && itemstack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack))
+                {
+                    int j = itemstack.stackSize + stack.stackSize;
+                    if(j <= stack.getMaxStackSize() && j <= slot.getSlotStackLimit())
+                    {
+                        stack.stackSize = 0;
+                        itemstack.stackSize = j;
+                        slot.onSlotChanged();
+                        flag = true;
+                    }
+                    else if(itemstack.stackSize < stack.getMaxStackSize() && itemstack.stackSize < slot.getSlotStackLimit())
+                    {
+                        stack.stackSize -= stack.getMaxStackSize() - itemstack.stackSize;
+                        itemstack.stackSize = stack.getMaxStackSize();
+                        slot.onSlotChanged();
+                        flag = true;
+                    }
+                }
+
+                if(reverseDirection)
+                    --i;
+                else
+                    ++i;
+            }
+        }
+
+        if(stack.stackSize > 0)
+        {
+            if(reverseDirection)
+                i = endIndex - 1;
+            else
+                i = startIndex;
+
+            while(!reverseDirection && i < endIndex || reverseDirection && i >= startIndex)
+            {
+                Slot slot1 = this.inventorySlots.get(i);
+                ItemStack itemstack1 = slot1.getStack();
+
+                if(itemstack1 == null && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
+                {
+                    ItemStack newStack = stack.copy();
+                    newStack.stackSize = Math.min(stack.stackSize, slot1.getSlotStackLimit());
+                    stack.stackSize -= newStack.stackSize;
+                    slot1.putStack(newStack);
+                    slot1.onSlotChanged();
+                    flag = true;
+                    if(stack.stackSize <= 0)
+                        break;
+                }
+
+                if(reverseDirection)
+                    --i;
+                else
+                    ++i;
+            }
+        }
+
+        return flag;
     }
 
     public void onCraftMatrixComponentChanged()

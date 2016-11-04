@@ -1,46 +1,86 @@
 package lumaceon.mods.clockworkphase2.handler;
 
-import lumaceon.mods.clockworkphase2.api.MemoryItemRegistry;
-import lumaceon.mods.clockworkphase2.api.time.timezone.ITimezoneProvider;
-import lumaceon.mods.clockworkphase2.api.time.timezone.Timezone;
-import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneHandler;
-import lumaceon.mods.clockworkphase2.api.time.timezone.TimezoneModulation;
-import lumaceon.mods.clockworkphase2.extendeddata.ExtendedPlayerProperties;
-import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.modulations.TimezoneModulationSanctification;
+import lumaceon.mods.clockworkphase2.ClockworkPhase2;
+import lumaceon.mods.clockworkphase2.api.HourglassDropRegistry;
+import lumaceon.mods.clockworkphase2.api.IPhaseEntity;
+import lumaceon.mods.clockworkphase2.api.capabilities.achievementscore.CapabilityAchievementScore;
+import lumaceon.mods.clockworkphase2.api.capabilities.achievementscore.IAchievementScoreHandler;
+import lumaceon.mods.clockworkphase2.api.item.IHourglass;
+import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
+import lumaceon.mods.clockworkphase2.config.ConfigValues;
+import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageAchievementScore;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.Random;
 
 public class EntityHandler
 {
+    public static Random random = ClockworkPhase2.random;
     @SubscribeEvent
-    public void onEntityItemDrop(LivingDropsEvent event) //Drop Memory Items.
+    public void onEntityItemDrop(LivingDropsEvent event) //Drop special items.
     {
-        if(event.entityLiving.worldObj != null)
+        if(event.getSource() != null)
         {
-            if(event.entityLiving.worldObj.rand.nextInt(99) == 0)
+            Entity entitySource = event.getSource().getSourceOfDamage();
+            Entity entity = event.getEntity();
+            if(entity != null && entitySource != null && entitySource instanceof EntityPlayer && entity instanceof IPhaseEntity)
             {
-                if(MemoryItemRegistry.MEMORY_ITEMS.size() == 1)
-                    event.drops.add(new EntityItem(event.entityLiving.worldObj, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, new ItemStack(MemoryItemRegistry.MEMORY_ITEMS.get(0))));
-                else if(MemoryItemRegistry.MEMORY_ITEMS.size() <= 0)
-                    return;
-                else
-                    event.drops.add(new EntityItem(event.entityLiving.worldObj, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, new ItemStack(MemoryItemRegistry.MEMORY_ITEMS.get(event.entity.worldObj.rand.nextInt(MemoryItemRegistry.MEMORY_ITEMS.size())))));
+                EntityPlayer player = (EntityPlayer) entitySource;
+                IPhaseEntity phaseEntity = (IPhaseEntity) entity;
+                if(random == null)
+                    random = new Random();
+                int chance;
+                switch(phaseEntity.getTier())
+                {
+                    case TEMPORAL: //Doesn't drop at temporal tier.
+                        break;
+                    case ETHEREAL: //1 in 1000
+                        chance = ConfigValues.BASE_ETHEREAL_TIMEFRAME_KEY_DROP_RATE;
+                        if(chance <= 1 || chance <= event.getLootingLevel() + 1 || random.nextInt(chance / (event.getLootingLevel() + 1)) == 0)
+                            event.getDrops().add(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, HourglassDropRegistry.getRandomTimeframeKeyDrop()));
+                        break;
+                    case PHASIC: //1 in 50
+                        chance = ConfigValues.BASE_PHASIC_TIMEFRAME_KEY_DROP_RATE;
+                        if(chance <= 1 || chance <= event.getLootingLevel() + 1 || random.nextInt(chance / (event.getLootingLevel() + 1)) == 0)
+                            event.getDrops().add(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, HourglassDropRegistry.getRandomTimeframeKeyDrop()));
+                        break;
+                    case ETERNAL: //1 in 10
+                        chance = ConfigValues.BASE_ETERNAL_TIMEFRAME_KEY_DROP_RATE;
+                        if(chance <= 1 || chance <= event.getLootingLevel() + 1 || random.nextInt(chance / (event.getLootingLevel() + 1)) == 0)
+                            event.getDrops().add(new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, HourglassDropRegistry.getRandomTimeframeKeyDrop()));
+                        break;
+                    case ASCENDANT: //Doesn't drop at ascendant tier either.
+                        break;
+                }
             }
-            if(event.entityLiving.worldObj.rand.nextInt(100000) == 0)
-                event.drops.add(new EntityItem(event.entityLiving.worldObj, event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, new ItemStack(ModItems.gearSecondAge.getItem())));
         }
     }
 
     @SubscribeEvent
-    public void onEntityConstruction(EntityEvent.EntityConstructing event) { //Register ExtendedPlayerProperties on join.
-        if(event.entity instanceof EntityPlayer && ExtendedPlayerProperties.get((EntityPlayer) event.entity) == null)
-            ExtendedPlayerProperties.register((EntityPlayer) event.entity);
+    public void onEntityJoinWorld(EntityJoinWorldEvent event)
+    {
+        if(event.getEntity() instanceof EntityPlayer)
+        {
+            EntityPlayer player = (EntityPlayer) event.getEntity();
+            if(player.hasCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN) && !player.worldObj.isRemote)
+            {
+                IAchievementScoreHandler achievementScoreHandler = player.getCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                achievementScoreHandler.calculateTier(player);
+                PacketHandler.INSTANCE.sendTo(new MessageAchievementScore(achievementScoreHandler.getAchievementPoints()), (EntityPlayerMP) player);
+            }
+        }
     }
 
     /*@SubscribeEvent
@@ -53,18 +93,24 @@ public class EntityHandler
     @SubscribeEvent
     public void onEntitySpawn(LivingSpawnEvent.CheckSpawn event)
     {
-        if(!event.isCanceled())
+        if(!event.getResult().equals(Event.Result.DENY))
         {
-            ITimezoneProvider provider = TimezoneHandler.getTimeZone(event.x, event.y, event.z, event.world);
-            if(provider != null)
+            World world = event.getWorld();
+            if(world != null && event.getEntityLiving() instanceof IPhaseEntity)
             {
-                Timezone timezone = provider.getTimezone();
-                if(timezone != null && timezone.getTime() > 0) //There is a timezone with time in it.
+                IPhaseEntity phaseEntity = (IPhaseEntity) event.getEntityLiving();
+                EntityPlayer player = world.getClosestPlayer(event.getX(), event.getY(), event.getZ(), 64, true);
+                if(player == null)
                 {
-                    TimezoneModulation tzm = timezone.getTimezoneModulation(TimezoneModulationSanctification.class);
-                    if(tzm != null)
-                        event.setCanceled(true); //There's also the appropriate module, so cancel the event.
+                    event.setResult(Event.Result.DENY);
+                    return;
                 }
+                ItemStack[] hourglasses = HourglassHelper.getActiveHourglasses(player);
+                for(ItemStack stack : hourglasses)
+                    if(stack != null && stack.getItem() instanceof IHourglass && ((IHourglass) stack.getItem()).isSpawningPhaseEntities(stack, player.experienceLevel, phaseEntity.getTier()))
+                        return; //The entity can spawn, so return and keep default values.
+                event.setResult(Event.Result.DENY);
+                return; //The entity cannot spawn; the requirements for the IPhaseEntity aren't met, so cancel.
             }
         }
     }

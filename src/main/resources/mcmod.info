@@ -3,14 +3,14 @@
   "modid": "clockworkphase2",
   "name": "Clockwork Phase 2",
   "description": "Adding time magic to Minecraft since tomorrow.",
-  "version": "1.8.9-DEV3",
-  "mcversion": "1.8.9",
+  "version": "1.10.2-0.1",
+  "mcversion": "1.10.2",
   "url": "",
   "updateUrl": "",
   "authorList": [
     "Lumaceon"
   ],
-  "logoFile": "",
+  "logoFile": "assets/clockworkphase2/textures/logo.png",
   "screenshots": [
   ],
   "parent":"",

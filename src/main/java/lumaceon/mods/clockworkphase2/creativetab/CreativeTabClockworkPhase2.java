@@ -14,6 +14,6 @@ public class CreativeTabClockworkPhase2 extends CreativeTabs
     @Override
     public Item getTabIconItem()
     {
-        return Items.clock;
+        return Items.CLOCK;
     }
 }

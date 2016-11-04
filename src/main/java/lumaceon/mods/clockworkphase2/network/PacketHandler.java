@@ -15,22 +15,14 @@ public class PacketHandler
     {
         //Note: the side passed in is the RECEIVING side.
         int nextID = 0;
-        INSTANCE.registerMessage(HandlerStandardParticleSpawn.class, MessageStandardParticleSpawn.class, nextID, Side.CLIENT);
+        INSTANCE.registerMessage(HandlerAchivementScore.class, MessageAchievementScore.class, nextID, Side.CLIENT);
         nextID++;
-        INSTANCE.registerMessage(HandlerTileStateChange.class, MessageTileStateChange.class, nextID, Side.CLIENT);
+        INSTANCE.registerMessage(HandlerCelestialCompassItemGet.class, MessageCelestialCompassItemGet.class, nextID, Side.CLIENT);
         nextID++;
-        INSTANCE.registerMessage(HandlerTemporalInfluence.class, MessageTemporalInfluence.class, nextID, Side.CLIENT);
-        nextID++;
-        INSTANCE.registerMessage(HandlerTemporalMachineSync.class, MessageTemporalMachineSync.class, nextID, Side.CLIENT);
-        nextID++;
-        INSTANCE.registerMessage(HandlerLightningSwordActivate.class, MessageLightningSwordActivate.class, nextID, Side.SERVER);
+        INSTANCE.registerMessage(HandlerParticleSpawn.class, MessageParticleSpawn.class, nextID, Side.CLIENT);
         nextID++;
         INSTANCE.registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, nextID, Side.SERVER);
         nextID++;
         INSTANCE.registerMessage(HandlerToolUpgradeActivate.class, MessageToolUpgradeActivate.class, nextID, Side.SERVER);
-        nextID++;
-        INSTANCE.registerMessage(HandlerClockworkControllerSetup.class, MessageClockworkControllerSetup.class, nextID, Side.SERVER);
-        nextID++;
-        INSTANCE.registerMessage(HandlerItemStorageResize.class, MessageItemStorageResize.class, nextID, Side.SERVER);
     }
 }

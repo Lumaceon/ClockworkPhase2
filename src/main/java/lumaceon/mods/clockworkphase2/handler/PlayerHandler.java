@@ -1,25 +1,46 @@
 package lumaceon.mods.clockworkphase2.handler;
 
-import lumaceon.mods.clockworkphase2.api.util.TimeHelper;
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.capabilities.achievementscore.CapabilityAchievementScore;
+import lumaceon.mods.clockworkphase2.api.capabilities.achievementscore.IAchievementScoreHandler;
+import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
+import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
 import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
-import lumaceon.mods.clockworkphase2.item.ItemTemporalHourglass;
-import lumaceon.mods.clockworkphase2.item.components.clockworktool.ItemToolUpgradeTemporalInfuser;
-import lumaceon.mods.clockworkphase2.item.construct.tool.ItemTemporalExcavator;
-import lumaceon.mods.clockworkphase2.lib.Configs;
+import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeTemporalInfuser;
+import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemTemporalExcavator;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerHandler
 {
     @SubscribeEvent
+    public void onPlayerRespawn(PlayerEvent.Clone event)
+    {
+        if(event.isWasDeath())
+        {
+            EntityPlayer oldPlayer = event.getOriginal();
+            EntityPlayer player = event.getEntityPlayer();
+            if(oldPlayer.hasCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN) && player.hasCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN))
+            {
+                IAchievementScoreHandler oldAchievementScoreHandler = oldPlayer.getCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                IAchievementScoreHandler newAchievementScoreHandler = player.getCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                newAchievementScoreHandler.calculateTier(oldAchievementScoreHandler.getAchievementPoints());
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void breakSpeedModification(PlayerEvent.BreakSpeed event)
     {
-        if(event.entityPlayer != null)
+        EntityPlayer player = event.getEntityPlayer();
+        if(player != null)
         {
-            ItemStack currentItem = event.entityPlayer.inventory.getCurrentItem();
+            ItemStack currentItem = player.inventory.getCurrentItem();
             if(currentItem != null && currentItem.getItem() instanceof ItemTemporalExcavator)
             {
                 ItemStack[] componentInventory = NBTHelper.INVENTORY.get(currentItem, NBTTags.COMPONENT_INVENTORY);
@@ -30,8 +51,12 @@ public class PlayerHandler
                         ItemStack component = componentInventory[n];
                         if(component != null && component.getItem() instanceof ItemToolUpgradeTemporalInfuser)
                             if(((ItemToolUpgradeTemporalInfuser) component.getItem()).getActive(component, currentItem))
-                                if(TimeHelper.getTimeInInventory(event.entityPlayer.inventory) < TimeHelper.getTimeToBreakBlock(event.entity.worldObj, event.pos, event.state.getBlock(), event.entityPlayer, currentItem))
+                            {
+                                ItemStack[] hourglasses = HourglassHelper.getActiveHourglasses(player);
+                                if(HourglassHelper.getTimeFromHourglasses(hourglasses) < HourglassHelper.getTimeToBreakBlock(event.getEntity().worldObj, event.getPos(), event.getState(), event.getEntityPlayer(), currentItem))
                                     event.setCanceled(true);
+                            }
+
                     }
                 }
             }
@@ -39,20 +64,8 @@ public class PlayerHandler
     }
 
     @SubscribeEvent
-    public void onPlayerPickupXP(PlayerPickupXpEvent event)
-    {
-        if(!event.isCanceled() && event.entityPlayer != null && event.entityPlayer.inventory != null)
-        {
-            for(int n = 0; n < event.entityPlayer.inventory.getSizeInventory(); n++)
-            {
-                ItemStack item = event.entityPlayer.inventory.getStackInSlot(n);
-                if(item != null && item.getItem() instanceof ItemTemporalHourglass && NBTHelper.BOOLEAN.get(item, NBTTags.ACTIVE))
-                {
-                    ((ItemTemporalHourglass) item.getItem()).receiveTime(item, (int) (event.orb.getXpValue() * Configs.TIME.perXP * TimeHelper.getXPToTimeMultiplier(event.entityPlayer)), false);
-                    event.orb.setDead();
-                    event.setCanceled(true);
-                }
-            }
-        }
+    public void onTooltipGet(ItemTooltipEvent event) {
+        if(!event.isCanceled() && event.getItemStack() != null && event.getItemStack().getItem() instanceof IAssemblable)
+            event.getToolTip().add(Colors.AQUA + "~Assembly Item~");
     }
 }

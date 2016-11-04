@@ -7,11 +7,12 @@ import net.minecraft.block.material.Material;
 
 public class BlockClockworkPhase extends Block
 {
-    public BlockClockworkPhase(Material blockMaterial, String unlocalizedName) {
+    public BlockClockworkPhase(Material blockMaterial, String registryName) {
         super(blockMaterial);
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
         this.setHardness(3.0F);
-        this.setUnlocalizedName(unlocalizedName);
+        this.setRegistryName(registryName);
+        this.setUnlocalizedName(registryName);
     }
 
     @Override

@@ -13,7 +13,7 @@ public abstract class TileClockworkPhaseInventory extends TileClockworkPhase imp
     protected ItemStack[] inventory;
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -29,6 +29,7 @@ public abstract class TileClockworkPhaseInventory extends TileClockworkPhase imp
             }
         }
         nbt.setTag(INVENTORY_TAG, nbtList);
+        return nbt;
     }
 
     @Override

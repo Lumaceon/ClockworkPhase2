@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 public class GuiButtonMainspring extends GuiButton
@@ -23,7 +22,7 @@ public class GuiButtonMainspring extends GuiButton
         if (this.visible)
         {
             FontRenderer fontrenderer = p_146112_1_.fontRendererObj;
-            p_146112_1_.getTextureManager().bindTexture(buttonTextures);
+            //p_146112_1_.getTextureManager().bindTexture(buttonTextures);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
             int k = this.getHoverState(this.hovered);

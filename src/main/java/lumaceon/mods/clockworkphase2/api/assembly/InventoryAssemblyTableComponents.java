@@ -3,7 +3,7 @@ package lumaceon.mods.clockworkphase2.api.assembly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.TextComponentBase;
 
 public class InventoryAssemblyTableComponents implements IInventory
 {
@@ -143,7 +143,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public TextComponentBase getDisplayName() {
         return null;
     }
 }

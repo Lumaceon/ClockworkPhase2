@@ -13,8 +13,6 @@ public class GuidebookFileHelper
 {
     public static Article getArticleFromFile(File modDirectory, String modID, String fileName, ResourceLocation texture, Item textureItem, String displayName)
     {
-        //File file;
-        //file = new File(modDirectory, "assets/" + modID + "/articles/" + fileName + ".cparticle");
         InputStream is = null;
         NBTTagCompound nbt = null;
         try
@@ -22,11 +20,13 @@ public class GuidebookFileHelper
             is = ClockworkPhase2.instance.getClass().getClassLoader().getResourceAsStream("assets/" + modID + "/articles/" + fileName + ".cparticle");
             nbt = CompressedStreamTools.readCompressed(is);
         }
-        catch(FileNotFoundException e) { e.printStackTrace(); }
+        catch(FileNotFoundException e) { System.out.println("[Clockwork Phase 2] Article file not found: " + fileName); }
         catch(IOException e) { e.printStackTrace(); }
+        catch(NullPointerException e) { System.out.println("[Clockwork Phase 2] Null pointer while loading article: " + fileName); }
 
         try {
-            is.close();
+            if(is != null)
+                is.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

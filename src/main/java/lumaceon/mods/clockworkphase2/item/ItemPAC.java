@@ -4,6 +4,9 @@ import lumaceon.mods.clockworkphase2.entity.EntityPAC;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class ItemPAC extends ItemClockworkPhase
@@ -13,11 +16,11 @@ public class ItemPAC extends ItemClockworkPhase
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack is, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack is, World world, EntityPlayer player, EnumHand hand)
     {
         if(!world.isRemote)
             world.spawnEntityInWorld(new EntityPAC(world, player));
-        return is;
+        return ActionResult.newResult(EnumActionResult.SUCCESS, is);
     }
 
     /*@Override

@@ -149,10 +149,12 @@ public class InformationDisplay
     {
         if(maxTension <= 0 || tension <= 0)
             return Colors.RED;
-        if(maxTension / tension <= 2)
+        else if(tension >= (double) maxTension * 0.75)
             return Colors.GREEN;
-        else if(maxTension / tension <= 4)
+        else if(tension >= (double) maxTension * 0.5)
             return Colors.YELLOW;
+        else if(tension >= (double) maxTension * 0.25)
+            return Colors.GOLD;
         else
             return Colors.RED;
     }
@@ -172,10 +174,10 @@ public class InformationDisplay
             case 3:
                 return Colors.AQUA + "(Diamond Tool)";
             case 4:
-                return Colors.BLUE + "(Cobalt Tool)";
-            case 5:
-                return Colors.LIGHT_PURPLE + "(Manyullyn Tool)";
+                return Colors.BLUE + "(Diamond+ Tool)";
             default:
+                if(harvestLevel > 4)
+                    return Colors.LIGHT_PURPLE + "(Diamond++ Tool)";
                 return "";
         }
     }

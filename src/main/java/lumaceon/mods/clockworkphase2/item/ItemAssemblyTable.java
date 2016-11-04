@@ -1,14 +1,17 @@
 package lumaceon.mods.clockworkphase2.item;
 
+import lumaceon.mods.clockworkphase2.api.block.CustomProperties;
 import lumaceon.mods.clockworkphase2.block.BlockAssemblyTable;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemAssemblyTable extends ItemClockworkPhase
@@ -18,10 +21,10 @@ public class ItemAssemblyTable extends ItemClockworkPhase
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if(worldIn.isRemote)
-            return true;
+            return EnumActionResult.SUCCESS;
 
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
@@ -35,16 +38,16 @@ public class ItemAssemblyTable extends ItemClockworkPhase
         switch(i)
         {
             case 0:
-                enumfacing = EnumFacing.EAST;
-                break;
-            case 1:
-                enumfacing = EnumFacing.SOUTH;
-                break;
-            case 2:
                 enumfacing = EnumFacing.WEST;
                 break;
-            case 3:
+            case 1:
                 enumfacing = EnumFacing.NORTH;
+                break;
+            case 2:
+                enumfacing = EnumFacing.EAST;
+                break;
+            case 3:
+                enumfacing = EnumFacing.SOUTH;
                 break;
         }
         BlockPos blockpos = pos.offset(enumfacing);
@@ -57,7 +60,7 @@ public class ItemAssemblyTable extends ItemClockworkPhase
 
             if(flag2 && flag3)
             {
-                IBlockState iblockstate1 = ModBlocks.assemblyTable.getBlock().getDefaultState().withProperty(BlockAssemblyTable.FACING, enumfacing).withProperty(BlockAssemblyTable.PART, BlockAssemblyTable.EnumPartType.LEFT);
+                IBlockState iblockstate1 = ModBlocks.assemblyTable.getBlock().getDefaultState().withProperty(CustomProperties.FACING_HORIZONTAL, enumfacing.getOpposite()).withProperty(BlockAssemblyTable.PART, BlockAssemblyTable.EnumPartType.LEFT);
 
                 if(worldIn.setBlockState(pos, iblockstate1, 3))
                 {
@@ -66,12 +69,12 @@ public class ItemAssemblyTable extends ItemClockworkPhase
                 }
 
                 --stack.stackSize;
-                return true;
+                return EnumActionResult.SUCCESS;
             }
             else
-                return false;
+                return EnumActionResult.FAIL;
         }
         else
-            return false;
+            return EnumActionResult.FAIL;
     }
 }

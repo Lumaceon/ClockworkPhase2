@@ -1,15 +1,22 @@
 #Item
+
+item.clockworkphase2:copper_ingot.name=Copper Ingot
+item.clockworkphase2:zinc_ingot.name=Zinc Ingot
+item.clockworkphase2:brass_ingot.name=Brass Ingot
+item.clockworkphase2:steel_ingot.name=Steel Ingot
+item.clockworkphase2:temporal_ingot.name=Temporal Ingot
+item.clockworkphase2:ethereal_ingot.name=Ethereal Ingot
+item.clockworkphase2:phasic_ingot.name=Phasic Ingot
+item.clockworkphase2:eternal_ingot.name=Eternal Ingot
+
+item.clockworkphase2:brass_lump.name=Brass Lump
+item.clockworkphase2:matter_temporal.name=Temporal Matter
+item.clockworkphase2:matter_ethereal.name=Ethereal Matter
+item.clockworkphase2:matter_phasic.name=Phasic Matter
+item.clockworkphase2:matter_eternal.name=Eternal Matter
+
 item.clockworkphase2:mainspring.name=Mainspring
 item.clockworkphase2:clockwork_core.name=Clockwork Core
-
-item.clockworkphase2:clockwork_pickaxe.name=Clockwork Pickaxe
-item.clockworkphase2:clockwork_axe.name=Clockwork Axe
-item.clockworkphase2:clockwork_shovel.name=Clockwork Shovel
-item.clockworkphase2:clockwork_sword.name=Clockwork Sword
-item.clockworkphase2:temporal_excavator.name=Temporal Excavator
-
-item.clockworkphase2:lightning_sword.name=Lightning Sword
-item.clockworkphase2:personal_assistant_cube.name=Personal Assistant Cube Call
 
 item.clockworkphase2:wood_gear.name=Wooden Gear
 item.clockworkphase2:stone_gear.name=Stone Gear
@@ -18,102 +25,77 @@ item.clockworkphase2:gold_gear.name=Golden Gear
 item.clockworkphase2:diamond_gear.name=Diamond Gear
 item.clockworkphase2:emerald_gear.name=Emerald Gear
 item.clockworkphase2:quartz_gear.name=Quartz Gear
-item.clockworkphase2:zinc_gear.name=Zinc Gear
 item.clockworkphase2:copper_gear.name=Copper Gear
+item.clockworkphase2:zinc_gear.name=Zinc Gear
 item.clockworkphase2:brass_gear.name=Brass Gear
-item.clockworkphase2:eternium_gear.name=Eternium Gear
-item.clockworkphase2:momentium_gear.name=Momentium Gear
-item.clockworkphase2:paradoxium_gear.name=Paradoxium Gear
-item.clockworkphase2:broken_elysian_gear.name=Elysian Gear (Broken)
+item.clockworkphase2:creative_gear.name=Creative Gear
 
-item.clockworkphase2:temporal_item_storage_matrix.name=Temporal Item Matrix
+item.clockworkphase2:clockwork_pickaxe.name=Clockwork Pickaxe
+item.clockworkphase2:clockwork_axe.name=Clockwork Axe
+item.clockworkphase2:clockwork_shovel.name=Clockwork Shovel
+item.clockworkphase2:clockwork_sword.name=Clockwork Sword
+item.clockworkphase2:temporal_excavator.name=Temporal Excavator
+item.clockworkphase2:temporal_lexicon.name=Temporal Lexicon
 item.clockworkphase2:temporal_hourglass.name=Temporal Hourglass
-
-item.clockworkphase2:temporal_drive_simulate.name=Temporal Simulation Drive
-item.clockworkphase2:temporal_drive_modify.name=Temporal Modification Drive
-item.clockworkphase2:temporal_drive_duplicate.name=Temporal Duplication Drive
-
-item.clockworkphase2:tool_upgrade_silk.name=Tool Upgrade: Silk Touch
-item.clockworkphase2:tool_upgrade_furnace.name=Tool Upgrade: Internal Furnace
-item.clockworkphase2:tool_upgrade_relocate.name=Tool Upgrade: Relocation Matrix
-item.clockworkphase2:tool_upgrade_area.name=Tool Upgrade: Area Miner
-item.clockworkphase2:tool_upgrade_fortune.name=Tool Upgrade: Fortune Mining
-item.clockworkphase2:tool_upgrade_xp.name=Tool Upgrade: Experience Enhancement
-item.clockworkphase2:tool_upgrade_mass_storage.name=Tool Upgrade: Displacement Storage
-item.clockworkphase2:tool_upgrade_right_clicker.name=Tool Upgrade: Dual Function
-item.clockworkphase2:tool_upgrade_temporal_infusion.name=Tool Upgrade: Temporal Infuser
-
-item.clockworkphase2:timezone_module_tank.name=Timezone Function: Fluid Tank
-
-item.clockworkphase2:temporal_ingot.name=Temporal Ingot
-item.clockworkphase2:copper_ingot.name=Copper Ingot
-item.clockworkphase2:zinc_ingot.name=Zinc Ingot
-item.clockworkphase2:brass_ingot.name=Brass Ingot
-item.clockworkphase2:steel_ingot.name=Steel Ingot
-item.clockworkphase2:eternium_ingot.name=Eternium Ingot
-item.clockworkphase2:momentium_ingot.name=Momentium Ingot
-item.clockworkphase2:paradoxium_ingot.name=Paradoxium Ingot
-item.clockworkphase2:experimental_ingot.name=Experimental Alloy
-item.clockworkphase2:brass_lump.name=Brass Lump
-
-item.clockworkphase2:schematic_tool.name=Schematic Maker
-item.clockworkphase2:bug_swatter.name=Bug Swatter
-item.clockworkphase2:age_developer.name=Developer Time Turner (Developers Only)
-item.clockworkphase2:wire_duster.name=Wire Duster
-item.clockworkphase2:wood_trowel.name=Wooden Trowel
-item.clockworkphase2:stone_trowel.name=Stone Trowel
+item.clockworkphase2:ethereal_hourglass.name=Ethereal Hourglass
 item.clockworkphase2:iron_trowel.name=Iron Trowel
 item.clockworkphase2:diamond_trowel.name=Diamond Trowel
+item.clockworkphase2:alloy_hammer.name=Alloy Hammer
 
-item.clockworkphase2:temporal_pearl.name=Temporal Pearl
+item.clockworkphase2:tool_upgrade_temporal_infusion.name=Excavator Upgrade: Overclock
+item.clockworkphase2:tool_upgrade_silk.name=Excavator Upgrade: Silk
+//item.clockworkphase2:tool_upgrade_furnace.name=Excavator Upgrade: Smelt
+item.clockworkphase2:tool_upgrade_relocate.name=Excavator Upgrade: Relocate
+item.clockworkphase2:tool_upgrade_area.name=Excavator Upgrade: Hammer
+item.clockworkphase2:tool_upgrade_fortune.name=Excavator Upgrade: Luck
+//item.clockworkphase2:tool_upgrade_xp.name=Excavator Upgrade: Experience
+
+item.clockworkphase2:temporal_drive.name=Temporal Drive
+item.clockworkphase2:ethereal_drive.name=Ethereal Drive
+
+item.clockworkphase2:timeframe_key_solar.name=Ethereal Drive
+item.clockworkphase2:timeframe_key_anima.name=Ethereal Drive
+item.clockworkphase2:timeframe_key_tivadari.name=Ethereal Drive
+item.clockworkphase2:timeframe_key_paradox.name=Timeframe Key
+
+item.clockworkphase2:artifact_solar.name=Solar Artifact
+item.clockworkphase2:artifact_anima.name=Anima Artifact
+item.clockworkphase2:artifact_tivadari.name=Tivadari Artifact
+item.clockworkphase2:artifact_paradox.name=Artifact
+
+item.clockworkphase2:multiblock_tempolate_celestial_compass.name=Multblock Template: Celestial Compass
 item.clockworkphase2:moon_flower_seeds.name=Moon Flower Seeds
 item.clockworkphase2:guidebook.name=Clockwork Phase Guidebook
+item.clockworkphase2:assembly_table_item.name=Assembly Table
+item.clockworkphase2:bug_swatter.name=Bug Swatter
 
 #Block
 
-tile.clockworkphase2:time_sand.name=Time Sand
-tile.clockworkphase2:clockwork_furnace.name=Clockwork Furnace
 tile.clockworkphase2:celestial_compass.name=Celestial Compass
 tile.clockworkphase2:celestial_compass_sb.name=Celestial Compass
-tile.clockworkphase2:temporal_displacement_altar.name=Temporal Displacement Altar
-tile.clockworkphase2:temporal_displacement_altar_sb.name=Temporal Displacement Altar
-tile.clockworkphase2:timezone_fluid_importer.name=Timezone Fluid Importer
-tile.clockworkphase2:timezone_fluid_exporter.name=Timezone Fluid Exporter
-tile.clockworkphase2:time_well.name=Time Well
-tile.clockworkphase2:clockwork_melter.name=Clockwork Network Melter
-tile.clockworkphase2:clockwork_mixer.name=Clockwork Network Mixer
+tile.clockworkphase2:moon_flower.name=Moon Flower
+tile.clockworkphase2:assembly_table.name=Assembly Table
+tile.clockworkphase2:assembly_table_sb.name=Assembly Table
 
-//ORES
 tile.clockworkphase2:copper_ore.name=Copper Ore
 tile.clockworkphase2:zinc_ore.name=Zinc Ore
-tile.clockworkphase2:third_age_relic.name=Third Age Relic
-tile.clockworkphase2:second_age_relic.name=Second Age Relic
-tile.clockworkphase2:first_age_relic.name=First Age Relic
-//METAL BLOCKS
+tile.clockworkphase2:moon_flower_relic.name=Moon Flower Relic
+tile.clockworkphase2:unknown_relic.name=Unknown Relic
+
 tile.clockworkphase2:copper_block.name=Copper Block
 tile.clockworkphase2:zinc_block.name=Zinc Block
 tile.clockworkphase2:brass_block.name=Brass Block
 tile.clockworkphase2:temporal_block.name=Temporal Block
-//PLANTS
-tile.clockworkphase2:moon_flower.name=Moon Flower
-//MISC
-tile.clockworkphase2:basic_winding_box.name=Winding Box
-tile.clockworkphase2:assembly_table.name=Worktable
-tile.clockworkphase2:assembly_table_sb.name=Worktable
-//CLOCKWORK NETWORK
-tile.clockworkphase2:crank.name=Crank
-tile.clockworkphase2:mainspring_creative.name=Mainspring Block (Creative)
-tile.clockworkphase2:clockwork_controller.name=Clockwork Network Controller
-tile.clockworkphase2:clockwork_furnace.name=Clockwork Network Furnace
-tile.clockworkphase2:clockwork_brewery.name=Clockwork Network Brewery
-tile.clockworkphase2:clockwork_alloy_furnace.name=Clockwork Network Alloy Furnace
-tile.clockworkphase2:clockwork_experimental_alloy_furnace.name=Clockwork Network Experimental Alloy Furnace
-tile.clockworkphase2:clockwork_crafting_table.name=Clockwork Network Crafting Table
-tile.clockworkphase2:clockwork_item_storage.name=Clockwork Network Item Storage
-tile.clockworkphase2:clockwork_network_connector.name=Clockwork Network Connector
+
+tile.clockworkphase2:basic_winding_box.name=Basic Winding Box
+tile.clockworkphase2:multiblock_assembler.name=Multiblock Assembler
+tile.clockworkphase2:construction_block.name=Multiblock Construction Frame
 
 #Entity
-entity.personal_assistant_cube.name=Personal Assistant Cube
+entity.clockworkphase2.dissonant_specter.name=Ethereal Specter
 
-#General Localizations
+#Misc Localizations
 itemGroup.ClockworkPhase2=Clockwork Phase 2
+key.clockworkphase2.category=Clockwork Phase 2
+key.clockworkphase2.activate=General Activation Key
+misc.clockworkphase2:paradox_civ.name=Paradox

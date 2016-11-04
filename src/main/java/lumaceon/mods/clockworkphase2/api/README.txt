@@ -1,0 +1,1 @@
+WARNING: This API is somewhat unstable. Using this isn't recommended until a beta release, as I may apply semi-frequent changes.

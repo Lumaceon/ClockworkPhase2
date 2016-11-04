@@ -1,0 +1,36 @@
+package lumaceon.mods.clockworkphase2.item.clockwork.tool;
+
+import com.google.common.collect.Sets;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import java.util.Set;
+
+public class ItemClockworkAxe extends ItemClockworkTool
+{
+    private static final Set field_150917_c = Sets.newHashSet(new Block[]{Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN});
+
+    public ItemClockworkAxe(ToolMaterial material, String unlocalizedName) {
+        super(3.0F, material, field_150917_c, unlocalizedName);
+        this.setUnlocalizedName(unlocalizedName);
+    }
+
+    @Override
+    public String getHarvestType() {
+        return "axe";
+    }
+
+    @Override
+    public Material[] getEffectiveMaterials() {
+        return new Material[] { Material.WOOD, Material.PLANTS, Material.VINE, Material.GOURD };
+    }
+
+    @Override
+    public void setTier(ItemStack item, int tier) {
+        super.setTier(item, tier);
+        NBTHelper.INT.set(item, NBTTags.HARVEST_LEVEL_AXE, tier);
+    }
+}

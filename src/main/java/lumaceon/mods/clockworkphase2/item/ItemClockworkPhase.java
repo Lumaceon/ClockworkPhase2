@@ -4,19 +4,18 @@ import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemClockworkPhase extends Item
 {
-    public ItemClockworkPhase(int maxStack, int maxDamage, String unlocalizedName)
+    public ItemClockworkPhase(int maxStack, int maxDamage, String registryName)
     {
         super();
         this.setMaxStackSize(maxStack);
         this.setMaxDamage(maxDamage);
         this.setNoRepair();
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
-        this.setUnlocalizedName(unlocalizedName);
+        this.setRegistryName(registryName);
+        this.setUnlocalizedName(registryName);
     }
 
     @Override

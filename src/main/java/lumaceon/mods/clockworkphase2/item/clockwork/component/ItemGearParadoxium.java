@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.item.clockwork.component;
 
-import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.Colors;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;

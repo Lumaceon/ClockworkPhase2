@@ -4,16 +4,16 @@ import com.google.common.collect.Multimap;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
-import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
+import lumaceon.mods.clockworkphase2.api.capabilities.EnergyStorageModular;
+import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkConstruct;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.lib.Textures;
+import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,29 +24,43 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
-public class ItemClockworkSword extends ItemSword implements IAssemblable, IClockworkConstruct
+public class ItemClockworkSword extends ItemSword implements IAssemblable, IClockwork, ISimpleNamed
 {
-    private static UUID attributeModID = UUID.fromString("0ef1758c-bc12-4c99-afca-5a43a9adf2c6");
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+    @CapabilityInject(IEnergyStorage.class)
+    static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
 
-    public ItemClockworkSword(int maxStack, int maxDamage, String registryName)
+    String simpleName;
+
+    public ItemClockworkSword(int maxStack, int maxDamage, String name)
     {
         super(ModItems.clockworkMaterial);
         this.setMaxStackSize(maxStack);
         this.setMaxDamage(maxDamage);
         this.setNoRepair();
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
-        this.setRegistryName(registryName);
-        this.setUnlocalizedName(registryName);
+        this.simpleName = name;
+        this.setRegistryName(name);
+        this.setUnlocalizedName(name);
     }
 
     @Override
@@ -60,18 +74,21 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     {
         if(attacker instanceof EntityPlayer)
         {
-            int currentTension = getTension(stack);
-            if(currentTension <= 0)
+            IEnergyStorage energyStorage = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(energyStorage != null)
             {
-                target.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), 0.0F);
-                return true;
-            }
-            int quality = getQuality(stack);
-            int speed = getSpeed(stack);
-            //target.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), speed / 25.0F);
-            int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed);
+                int energy = energyStorage.getEnergyStored();
+                if(energy <= 0)
+                {
+                    target.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), 0.0F);
+                    return true;
+                }
+                int quality = getQuality(stack);
+                int speed = getSpeed(stack);
+                int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed);
 
-            consumeTension(stack, tensionCost);
+                energyStorage.extractEnergy(energyCost, false);
+            }
         }
         return true;
     }
@@ -92,75 +109,18 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     }
 
     @Override
-    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 10, 1);
-        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
-    }
-
-    @Override
     public Slot[] getContainerSlots(IInventory inventory)
     {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring.getItem()),
-                        new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore.getItem())
+                        new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring),
+                        new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore)
                 };
-    }
-
-    @Override
-    public void saveComponentInventory(ContainerAssemblyTable container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
-    }
-
-    @Override
-    public void onInventoryChange(ContainerAssemblyTable container) {
-        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 1);
     }
 
     @Override
     public int getTier(ItemStack item) {
         return ClockworkHelper.getTier(item);
-    }
-
-    @Override
-    public int getTension(ItemStack item) {
-        return ClockworkHelper.getTension(item);
-    }
-
-    @Override
-    public int getMaxTension(ItemStack item) {
-        return ClockworkHelper.getMaxTension(item);
-    }
-
-    @Override
-    public void setTension(ItemStack item, int tension) {
-        ClockworkHelper.setTension(item, tension);
-    }
-
-    @Override
-    public void setTier(ItemStack item, int tier) {
-        ClockworkHelper.setTier(item, tier);
-    }
-
-    @Override
-    public int addTension(ItemStack item, int tension) {
-        return ClockworkHelper.addTension(item, tension);
-    }
-
-    @Override
-    public int consumeTension(ItemStack item, int tension) {
-        return ClockworkHelper.consumeTension(item, tension);
-    }
-
-    @Override
-    public void addConstructInformation(ItemStack item, EntityPlayer player, List list)
-    {
-        int quality = getQuality(item);
-        int speed = getSpeed(item);
-
-        list.add(Colors.WHITE + "Attack Damage: " + Colors.GOLD + (int) (speed / 25.0F));
-        list.add(Colors.WHITE + "Tension Per Attack: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed));
     }
 
     @Override
@@ -174,13 +134,23 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+    public String getItemStackDisplayName(ItemStack stack) {
+        return I18n.translateToLocal(this.getUnlocalizedName(stack));
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack is) {
-        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+    public String getUnlocalizedName() {
+        return this.getRegistryName().toString();
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return this.getUnlocalizedName();
+    }
+
+    @Override
+    public String getSimpleName() {
+        return simpleName;
     }
 
     @Override
@@ -198,11 +168,17 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
             return multimap;
         }
 
+        int energy;
+        IEnergyStorage energyStorage = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyStorage == null)
+            energy = 0;
+        else
+            energy = energyStorage.getEnergyStored();
+
         int quality = getQuality(stack);
         int speed = getSpeed(stack);
-        int tension = getTension(stack);
-        int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed);
-        if(tensionCost > tension)
+        int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed);
+        if(energyCost > energy)
         {
             if(equipmentSlot == EntityEquipmentSlot.MAINHAND)
             {
@@ -221,5 +197,63 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
         }
 
         return multimap;
+    }
+
+    @Override
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new ClockworkSwordCapabilityProvider(stack);
+    }
+
+    private static class ClockworkSwordCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
+    {
+        @CapabilityInject(IEnergyStorage.class)
+        static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
+        @CapabilityInject(IItemHandler.class)
+        static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+        EnergyStorageModular energyStorage;
+        ItemStackHandlerClockworkConstruct inventory;
+
+        public ClockworkSwordCapabilityProvider(ItemStack stack) {
+            inventory = new ItemStackHandlerClockworkConstruct(2, stack);
+            energyStorage = new EnergyStorageModular(1);
+        }
+
+        @Override
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability != null && capability == ENERGY_STORAGE_CAPABILITY || capability == ITEM_HANDLER_CAPABILITY;
+        }
+
+        @Override
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            if(capability == null)
+                return null;
+
+            if(capability == ENERGY_STORAGE_CAPABILITY)
+                return ENERGY_STORAGE_CAPABILITY.cast(energyStorage);
+            else if(capability == ITEM_HANDLER_CAPABILITY)
+                return ITEM_HANDLER_CAPABILITY.cast(inventory);
+
+            return null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag("inventory", inventory.serializeNBT());
+            tag.setInteger("energy", energyStorage.getEnergyStored());
+            tag.setInteger("max_capacity", energyStorage.getMaxEnergyStored());
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            inventory.deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
+            energyStorage.setMaxCapacity(nbt.getInteger("max_capacity"));
+            energyStorage.receiveEnergy(nbt.getInteger("energy"), false);
+        }
     }
 }

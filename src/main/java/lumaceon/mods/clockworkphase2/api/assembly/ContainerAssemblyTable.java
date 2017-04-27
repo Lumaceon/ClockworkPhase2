@@ -208,17 +208,6 @@ public class ContainerAssemblyTable extends Container
         return flag;
     }
 
-    public void onCraftMatrixComponentChanged()
-    {
-        ItemStack item = mainInventory.getStackInSlot(0);
-        if(item != null && item.getItem() instanceof IAssemblable)
-        {
-            ((IAssemblable) item.getItem()).onInventoryChange(this);
-            if(!world.isRemote)
-                ((IAssemblable) item.getItem()).saveComponentInventory(this);
-        }
-    }
-
     public void onGUIResize()
     {
         ItemStack item = mainInventory.getStackInSlot(0);
@@ -231,8 +220,7 @@ public class ContainerAssemblyTable extends Container
     private void setupNewContainerAndGUI(ItemStack item)
     {
         IAssemblable constructGUI = (IAssemblable) item.getItem();
-        componentInventory = constructGUI.getGUIInventory(this);
-        constructGUI.saveComponentInventory(this);
+        componentInventory = new InventoryAssemblyTableComponents(this, 1, item);
         Slot[] slots = constructGUI.getContainerSlots(componentInventory);
         for(Slot slot : slots)
         {

@@ -60,7 +60,7 @@ public class ItemAssemblyTable extends ItemClockworkPhase
 
             if(flag2 && flag3)
             {
-                IBlockState iblockstate1 = ModBlocks.assemblyTable.getBlock().getDefaultState().withProperty(CustomProperties.FACING_HORIZONTAL, enumfacing.getOpposite()).withProperty(BlockAssemblyTable.PART, BlockAssemblyTable.EnumPartType.LEFT);
+                IBlockState iblockstate1 = ModBlocks.assemblyTable.getDefaultState().withProperty(CustomProperties.FACING_HORIZONTAL, enumfacing.getOpposite()).withProperty(BlockAssemblyTable.PART, BlockAssemblyTable.EnumPartType.LEFT);
 
                 if(worldIn.setBlockState(pos, iblockstate1, 3))
                 {

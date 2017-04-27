@@ -235,7 +235,7 @@ public class RenderHandler
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             /*for(int[] area : TimezoneHandler.timezones)
             {
-                ITimezoneProvider timezone = TimezoneHandler.getTimeZone(area[0], area[1], area[2], area[3]);
+                ITimezoneProvider timezone = TimezoneHandler.getTimeZoneFromWorldPosition(area[0], area[1], area[2], area[3]);
                 if(timezone != null)
                 {
                     TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);

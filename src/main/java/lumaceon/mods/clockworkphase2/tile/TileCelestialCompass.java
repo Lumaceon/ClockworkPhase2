@@ -1,14 +1,12 @@
 package lumaceon.mods.clockworkphase2.tile;
 
 import lumaceon.mods.clockworkphase2.api.block.IMultiblockTemplate;
-import lumaceon.mods.clockworkphase2.api.item.IArtifactItem;
-import lumaceon.mods.clockworkphase2.api.item.ITimeframeKeyItem;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageCelestialCompassItemGet;
-import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
+import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +19,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileCelestialCompass extends TileClockworkPhase implements ITickable
+public class TileCelestialCompass extends TileMod implements ITickable
 {
     private ItemStack[] craftingItems = new ItemStack[9]; //Index 8 for center.
 
@@ -88,13 +86,6 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITickabl
         {
             if(item != null && craftingItems[circleClicked] == null)
             {
-                if(circleClicked == 8) //Center circle.
-                {
-                    if(!(item.getItem() instanceof ITimeframeKeyItem))
-                        return false;
-                }
-                else if(!(item.getItem() instanceof IArtifactItem) || craftingItems[8] == null || !craftingItems[8].getItem().equals(( (IArtifactItem) item.getItem()).getTimeframeKeyItem() ))
-                    return false;
                 ItemStack newItem = item.copy();
                 newItem.stackSize = 1;
                 setCraftingItem(newItem, circleClicked);
@@ -118,11 +109,11 @@ public class TileCelestialCompass extends TileClockworkPhase implements ITickabl
     public static void destroyMultiblock(TileCelestialCompass te, World world, BlockPos pos)
     {
         te.isBeingDestroyed = true;
-        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModBlocks.multiblockAssembler.getBlock())));
-        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.multiblockCelestialCompass.getItem())));
-        ItemStack consBlocks1 = new ItemStack(ModBlocks.constructionBlock.getBlock());
+        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModBlocks.multiblockAssembler)));
+        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.multiblockCelestialCompass)));
+        ItemStack consBlocks1 = new ItemStack(ModBlocks.constructionBlock);
         consBlocks1.stackSize = 64;
-        ItemStack consBlocks2 = new ItemStack(ModBlocks.constructionBlock.getBlock());
+        ItemStack consBlocks2 = new ItemStack(ModBlocks.constructionBlock);
         consBlocks2.stackSize = 32;
         world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), consBlocks1));
         world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), consBlocks2));

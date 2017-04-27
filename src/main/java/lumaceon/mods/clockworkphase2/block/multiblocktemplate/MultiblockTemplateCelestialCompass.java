@@ -13,7 +13,7 @@ public class MultiblockTemplateCelestialCompass implements IMultiblockTemplate
 
     public void init()
     {
-        subBlock = ModBlocks.celestialCompassSB.getBlock();
+        subBlock = ModBlocks.celestialCompassSB;
 
         CELESTIAL_COMPASS = new BlockData[]{
                 new BlockData(5, 0, 2, EnumFacing.WEST.ordinal(), subBlock),
@@ -64,7 +64,7 @@ public class MultiblockTemplateCelestialCompass implements IMultiblockTemplate
                 new BlockData(0, 0, 3, EnumFacing.NORTH.ordinal(), subBlock),
                 new BlockData(0, 0, 2, EnumFacing.NORTH.ordinal(), subBlock),
                 new BlockData(0, 0, 1, EnumFacing.NORTH.ordinal(), subBlock),
-                new BlockData(0, 0, 0, EnumFacing.EAST.ordinal(), ModBlocks.celestialCompass.getBlock()),
+                new BlockData(0, 0, 0, EnumFacing.EAST.ordinal(), ModBlocks.celestialCompass),
                 new BlockData(0, 0, -1, EnumFacing.SOUTH.ordinal(), subBlock),
                 new BlockData(0, 0, -2, EnumFacing.SOUTH.ordinal(), subBlock),
                 new BlockData(0, 0, -3, EnumFacing.SOUTH.ordinal(), subBlock),

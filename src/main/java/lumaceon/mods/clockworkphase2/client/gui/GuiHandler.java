@@ -2,16 +2,19 @@ package lumaceon.mods.clockworkphase2.client.gui;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import lumaceon.mods.clockworkphase2.client.gui.guidebook.GuiGuidebook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class GuiHandler implements IGuiHandler
 {
@@ -44,12 +47,17 @@ public class GuiHandler implements IGuiHandler
                 if(player == null)
                     return false;
                 ItemStack stack = player.inventory.getCurrentItem();
-                if(stack == null || !NBTHelper.hasTag(stack, NBTTags.COMPONENT_INVENTORY))
+                if(stack == null)
                     return null;
-                ItemStack[] componentInventory = NBTHelper.INVENTORY.get(stack, NBTTags.COMPONENT_INVENTORY);
-                ItemStack[] items = new ItemStack[componentInventory.length - 3];
-                for(int i = 0; i < items.length; i++)
-                    items[i] = componentInventory[i + 3];
+
+                IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                if(inventory == null)
+                    return null;
+
+                ItemStack[] items = new ItemStack[inventory.getSlots() - 3];
+                for(int i = 3; i < inventory.getSlots(); i++)
+                    items[i-3] = inventory.getStackInSlot(i);
+
                 return new GuiTemporalExcavatorUpgrades(items);
             case 7:
                 return new GuiGuidebook(player);

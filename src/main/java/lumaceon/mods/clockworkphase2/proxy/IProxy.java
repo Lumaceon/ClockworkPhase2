@@ -16,7 +16,7 @@ public interface IProxy
     public void init();
     public World getClientWorld();
     public void registerTESR();
-    public void registerBlockModel(Block block, String unlocalizedName, boolean isCustomModel);
+    public void registerBlockModel(Block block, String unlocalizedName);
     public void registerItemModel(Item item, String unlocalizedName);
     public void registerCustomModels();
     public void registerFluidModels();

@@ -3,21 +3,21 @@ package lumaceon.mods.clockworkphase2.item.clockwork.tool;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
+import lumaceon.mods.clockworkphase2.api.capabilities.EnergyStorageModular;
+import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkConstruct;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.*;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeArea;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,41 +25,89 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Credits to the Tinker's Construct developers for a lot of the AOE code.
  */
-public abstract class ItemClockworkTool extends ItemTool implements IAssemblable, IClockworkConstruct
+public abstract class ItemClockworkTool extends ItemTool implements IAssemblable, ISimpleNamed, IClockwork
 {
-    public ItemClockworkTool(float var1, ToolMaterial toolMaterial, Set set, String registryName) {
+    @CapabilityInject(IEnergyStorage.class)
+    static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+    String simpleName;
+
+    public ItemClockworkTool(float var1, ToolMaterial toolMaterial, Set set, String name) {
         super(var1, 1, toolMaterial, set);
         this.setMaxStackSize(1);
         this.setMaxDamage(100);
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
-        this.setRegistryName(registryName);
-        this.setUnlocalizedName(registryName);
+        this.simpleName = name;
+        this.setRegistryName(name);
+        this.setUnlocalizedName(name);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addClockworkConstructInformation(is, player, list, true);
+    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
+    {
+        IEnergyStorage energyCap = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyCap != null)
+        {
+            list.add("Energy: " + energyCap.getEnergyStored() + " fe");
+            list.add("");
+        }
+
+        ItemStackHandlerClockworkConstruct cap = getClockworkItemHandler(is);
+        if(cap != null)
+        {
+            list.add("Quality: " + cap.getQuality());
+            list.add("Speed: " + cap.getSpeed());
+            list.add("Tier: " + cap.getTier());
+        }
+        //InformationDisplay.addClockworkConstructInformation(is, player, list, true);
+    }
+
+    public int getQuality(ItemStack item) {
+        return ClockworkHelper.getQuality(item);
+    }
+
+    public int getSpeed(ItemStack item) {
+        return ClockworkHelper.getSpeed(item);
+    }
+    public int getTier(ItemStack item) {
+        return ClockworkHelper.getTier(item);
     }
 
     @Override
-    public void onUpdate(ItemStack is, World world, Entity owner, int p_77663_4_, boolean p_77663_5_) {
-        if(is != null && NBTHelper.hasTag(is, NBTTags.IS_COMPONENT))
-            NBTHelper.removeTag(is, NBTTags.IS_COMPONENT);
+    public int getHarvestLevel(ItemStack stack, String toolClass)
+    {
+        int harvestLevel = -1;
+
+        if(toolClass.equals(this.getHarvestType()))
+            return this.getTier(stack);
+
+        return harvestLevel;
     }
 
     @Override
@@ -172,20 +220,6 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass)
-    {
-        int harvestLevel = -1;
-        if(toolClass.equals("pickaxe") && NBTHelper.hasTag(stack, NBTTags.HARVEST_LEVEL_PICKAXE))
-             harvestLevel = Math.max(harvestLevel, NBTHelper.INT.get(stack, NBTTags.HARVEST_LEVEL_PICKAXE));
-        if(toolClass.equals("axe") && NBTHelper.hasTag(stack, NBTTags.HARVEST_LEVEL_AXE))
-            harvestLevel = Math.max(harvestLevel, NBTHelper.INT.get(stack, NBTTags.HARVEST_LEVEL_AXE));
-        if(toolClass.equals("shovel") && NBTHelper.hasTag(stack, NBTTags.HARVEST_LEVEL_SHOVEL))
-            harvestLevel = Math.max(harvestLevel, NBTHelper.INT.get(stack, NBTTags.HARVEST_LEVEL_SHOVEL));
-
-        return harvestLevel;
-    }
-
-    @Override
     public float getStrVsBlock(ItemStack is, IBlockState state)
     {
         boolean correctMaterial = false;
@@ -196,35 +230,20 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         if(!correctMaterial)
             return 1.0F;
 
-        int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
-        if(tension <= 0 && (!NBTHelper.hasTag(is, NBTTags.IS_COMPONENT) || !NBTHelper.BOOLEAN.get(is, NBTTags.IS_COMPONENT)))
+        IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyStorage == null)
+            return 1.0F;
+
+        int energy = energyStorage.getEnergyStored();
+        if(energy <= 0)
             return 0.0F;
 
-        int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
+        int speed = getSpeed(is);
         if(speed <= 0)
             return 0.0F;
 
         return (float) speed / 25;
     }
-
-    /*@Override
-    public float getDigSpeed(ItemStack is, net.minecraft.block.state.IBlockState state)
-    {
-        for(String type : is.getItem().getToolClasses(is))
-            if(state.getBlock().isToolEffective(type, state))
-            {
-                int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
-                if(tension <= 0 && (!NBTHelper.hasTag(is, NBTTags.IS_COMPONENT) || !NBTHelper.BOOLEAN.get(is, NBTTags.IS_COMPONENT)))
-                    return 0.0F;
-
-                int speed = NBTHelper.INT.get(is, NBTTags.SPEED);
-                if(speed <= 0)
-                    return 0.0F;
-
-                return (float) speed / 25;
-            }
-        return getStrVsBlock(is, state.getBlock());
-    }*/
 
     public abstract String getHarvestType();
     public abstract Material[] getEffectiveMaterials();
@@ -248,84 +267,47 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @Override
     public boolean onBlockDestroyed(ItemStack is, World world, IBlockState state, BlockPos pos, EntityLivingBase playerIn)
     {
-        if(state.getBlockHardness(world, pos) <= 0 || !(is.getItem() instanceof IClockworkConstruct))
+        if(state.getBlockHardness(world, pos) <= 0)
             return true;
 
         if(!isEffective(state))
             return true;
 
-        IClockworkConstruct clockworkConstruct = (IClockworkConstruct) is.getItem();
-        int currentTension = clockworkConstruct.getTension(is);
-        if(currentTension <= 0)
+        IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyStorage == null)
             return true;
 
-        int quality = clockworkConstruct.getQuality(is);
-        int speed = clockworkConstruct.getSpeed(is);
+        int currentEnergy = energyStorage.getEnergyStored();
+        if(currentEnergy <= 0)
+            return true;
+
+        int quality = getQuality(is);
+        int speed = getSpeed(is);
         int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
 
-        consumeTension(is, tensionCost);
+        energyStorage.extractEnergy(tensionCost, false);
 
         return true;
     }
 
     @Override
-    public int getTier(ItemStack item) {
-        return ClockworkHelper.getTier(item);
-    }
-
-    @Override
-    public int getTension(ItemStack item) {
-        return ClockworkHelper.getTension(item);
-    }
-
-    @Override
-    public int getMaxTension(ItemStack item) {
-        return ClockworkHelper.getMaxTension(item);
-    }
-
-    @Override
-    public int getQuality(ItemStack item) {
-        return ClockworkHelper.getQuality(item);
-    }
-
-    @Override
-    public int getSpeed(ItemStack item) {
-        return ClockworkHelper.getSpeed(item);
-    }
-
-    @Override
-    public void setTension(ItemStack item, int tension) {
-        ClockworkHelper.setTension(item, tension);
-    }
-
-    @Override
-    public void setTier(ItemStack item, int tier) {
-        ClockworkHelper.setTier(item, tier);
-    }
-
-    @Override
-    public int addTension(ItemStack item, int tension) {
-        return ClockworkHelper.addTension(item, tension);
-    }
-
-    @Override
-    public int consumeTension(ItemStack item, int tension) {
-        return ClockworkHelper.consumeTension(item, tension);
-    }
-
-    @Override
-    public void addConstructInformation(ItemStack item, EntityPlayer player, List list) {
-        InformationDisplay.addClockworkToolInformation(item, player, list);
+    public String getItemStackDisplayName(ItemStack stack) {
+        return I18n.translateToLocal(this.getUnlocalizedName(stack));
     }
 
     @Override
     public String getUnlocalizedName() {
-        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+        return this.getRegistryName().toString();
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack is) {
-        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+    public String getUnlocalizedName(ItemStack stack) {
+        return this.getUnlocalizedName();
+    }
+
+    @Override
+    public String getSimpleName() {
+        return simpleName;
     }
 
     @Override
@@ -334,29 +316,78 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 10, 1);
-        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
-    }
-
-    @Override
     public Slot[] getContainerSlots(IInventory inventory)
     {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring.getItem()),
-                        new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore.getItem())
+                        new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring),
+                        new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore)
                 };
     }
 
     @Override
-    public void saveComponentInventory(ContainerAssemblyTable container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new ClockworkToolCapabilityProvider(stack);
     }
 
-    @Override
-    public void onInventoryChange(ContainerAssemblyTable container) {
-        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkConstruct(container, 0, 1);
+    private ItemStackHandlerClockworkConstruct getClockworkItemHandler(ItemStack is)
+    {
+        IItemHandler itemHandler = is.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if(itemHandler != null && itemHandler instanceof ItemStackHandlerClockworkConstruct)
+            return (ItemStackHandlerClockworkConstruct) itemHandler;
+        return null;
+    }
+
+    private static class ClockworkToolCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
+    {
+        @CapabilityInject(IEnergyStorage.class)
+        static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
+        @CapabilityInject(IItemHandler.class)
+        static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+        EnergyStorageModular energyStorage;
+        ItemStackHandlerClockworkConstruct inventory;
+
+        public ClockworkToolCapabilityProvider(ItemStack stack) {
+            inventory = new ItemStackHandlerClockworkConstruct(2, stack);
+            energyStorage = new EnergyStorageModular(1);
+        }
+
+        @Override
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability != null && capability == ENERGY_STORAGE_CAPABILITY || capability == ITEM_HANDLER_CAPABILITY;
+        }
+
+        @Override
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            if(capability == null)
+                return null;
+
+            if(capability == ENERGY_STORAGE_CAPABILITY)
+                return ENERGY_STORAGE_CAPABILITY.cast(energyStorage);
+            else if(capability == ITEM_HANDLER_CAPABILITY)
+                return ITEM_HANDLER_CAPABILITY.cast(inventory);
+
+            return null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag("inventory", inventory.serializeNBT());
+            tag.setInteger("energy", energyStorage.getEnergyStored());
+            tag.setInteger("max_capacity", energyStorage.getMaxEnergyStored());
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            inventory.deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
+            energyStorage.setMaxCapacity(nbt.getInteger("max_capacity"));
+            energyStorage.receiveEnergy(nbt.getInteger("energy"), false);
+        }
     }
 }

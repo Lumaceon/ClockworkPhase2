@@ -1,8 +1,7 @@
 package lumaceon.mods.clockworkphase2.handler;
 
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
-import lumaceon.mods.clockworkphase2.item.temporal.ItemTemporalMultitool;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -39,7 +38,7 @@ public class InputHandler
         if(player != null)
         {
             ItemStack is = player.inventory.getCurrentItem();
-            if(is != null && is.getItem() instanceof ItemTemporalMultitool && NBTHelper.hasTag(is, NBTTags.COMPONENT_INVENTORY))
+            if(is != null && NBTHelper.hasTag(is, NBTTags.COMPONENT_INVENTORY))
             {
                 byte index = left ? (byte) (NBTHelper.BYTE.get(is, "MT_index") - 1) : (byte) (NBTHelper.BYTE.get(is, "MT_index") + 1);
                 ItemStack[] items = NBTHelper.INVENTORY.get(is, NBTTags.COMPONENT_INVENTORY);

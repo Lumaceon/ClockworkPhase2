@@ -20,13 +20,13 @@ public class WorldGeneratorOres implements IWorldGenerator
         if(world.provider.isSurfaceWorld())
         {
             if(ConfigValues.SPAWN_COPPER)
-                spawnOres(ModBlocks.oreCopper.getBlock(), world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 35, 128);
+                spawnOres(ModBlocks.oreCopper, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 35, 128);
             if(ConfigValues.SPAWN_ZINC)
-                spawnOres(ModBlocks.oreZinc.getBlock(), world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 20, 128);
+                spawnOres(ModBlocks.oreZinc, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 20, 128);
             if(ConfigValues.SPAWN_MOON_FLOWER_RELIC)
-                spawnOres(ModBlocks.relicMoonFlower.getBlock(), world, random, chunkX, chunkZ, 16, 16, 1 + random.nextInt(20), 1, 1, 20);
+                spawnOres(ModBlocks.relicMoonFlower, world, random, chunkX, chunkZ, 16, 16, 1 + random.nextInt(20), 1, 1, 20);
             if(ConfigValues.SPAWN_UNKNOWN_RELIC)
-                spawnOres(ModBlocks.relicUnknown.getBlock(), world, random, chunkX, chunkZ, 16, 16, 1 + random.nextInt(4), 4, 1, 20);
+                spawnOres(ModBlocks.relicUnknown, world, random, chunkX, chunkZ, 16, 16, 1 + random.nextInt(4), 4, 1, 20);
         }
     }
 

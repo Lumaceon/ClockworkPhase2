@@ -82,7 +82,7 @@ public class BlockAssemblyTable extends BlockClockworkPhase implements ITileEnti
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return state.getValue(PART) == EnumPartType.LEFT ? null : ModItems.assemblyTable.getItem();
+        return state.getValue(PART) == EnumPartType.LEFT ? null : ModItems.assemblyTable;
     }
 
     @Override

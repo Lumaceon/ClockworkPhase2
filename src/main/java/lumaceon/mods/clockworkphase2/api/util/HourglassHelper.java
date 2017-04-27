@@ -1,41 +1,30 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
-import lumaceon.mods.clockworkphase2.api.EnumExpTier;
+import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.item.IHourglass;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class HourglassHelper
 {
+    @CapabilityInject(ITimeStorage.class)
+    public static final Capability<ITimeStorage> TIME = null;
+
     public static boolean doesPlayerHaveAnActiveHourglass(EntityPlayer player)
     {
         for(ItemStack stack : player.inventory.mainInventory)
             if(stack != null && stack.getItem() instanceof IHourglass && ((IHourglass) stack.getItem()).isActive(stack))
                 return true;
-        return false;
-    }
-
-    /**
-     * Used to check if the hourglass is spawning entities of a certain tier. Note, hourglasses conventionally spawn
-     * entities 1 level above their own tier for the sake of progression. So temporal spawns ethereal, ethereal spawns
-     * phasic, and so on.
-     */
-    public static boolean isAnHourglassSpawningForTier(EntityPlayer player, EnumExpTier tier)
-    {
-        for(ItemStack stack : player.inventory.mainInventory)
-            if(stack != null && stack.getItem() instanceof IHourglass)
-            {
-                IHourglass hourglass = (IHourglass) stack.getItem();
-                if(hourglass.isActive(stack) && hourglass.isSpawningPhaseEntities(stack, player.experienceLevel, tier))
-                    return true;
-            }
         return false;
     }
 
@@ -88,7 +77,13 @@ public class HourglassHelper
         for(ItemStack is : hourglasses)
         {
             if(is != null && is.getItem() instanceof IHourglass)
-                timeFound += ((IHourglass) is.getItem()).getTimeStored(is);
+            {
+                ITimeStorage timeStorage = is.getCapability(TIME, EnumFacing.DOWN);
+                if(timeStorage != null)
+                {
+                    timeFound += timeStorage.getTimeInTicks();
+                }
+            }
         }
         return timeFound;
     }
@@ -105,7 +100,13 @@ public class HourglassHelper
         for(ItemStack is : hourglasses)
         {
             if(is != null && is.getItem() instanceof IHourglass)
-                timeAvailable += ((IHourglass) is.getItem()).getTimeStored(is);
+            {
+                ITimeStorage timeStorage = is.getCapability(TIME, EnumFacing.DOWN);
+                if(timeStorage != null)
+                {
+                    timeAvailable += timeStorage.getTimeInTicks();
+                }
+            }
         }
 
         if(timeAvailable < timeToConsume)
@@ -115,7 +116,15 @@ public class HourglassHelper
             int timeConsumed = 0;
             for(ItemStack is : hourglasses)
             {
-                timeConsumed += ((IHourglass) is.getItem()).extractTime(is, timeToConsume - timeConsumed, false);
+                if(is != null && is.getItem() instanceof IHourglass)
+                {
+                    ITimeStorage timeStorage = is.getCapability(TIME, EnumFacing.DOWN);
+                    if(timeStorage != null)
+                    {
+                        timeConsumed += timeStorage.extractTime(timeToConsume - timeConsumed);
+                    }
+                }
+
                 if(timeConsumed >= timeToConsume)
                     return true;
             }
@@ -138,7 +147,12 @@ public class HourglassHelper
         {
             if(is != null && is.getItem() instanceof IHourglass)
             {
-                timeConsumed += ((IHourglass) is.getItem()).extractTime(is, timeToConsume - timeConsumed, false);
+                ITimeStorage timeStorage = is.getCapability(TIME, EnumFacing.DOWN);
+                if(timeStorage != null)
+                {
+                    timeConsumed += timeStorage.extractTime(timeToConsume - timeConsumed);
+                }
+
                 if(timeConsumed >= timeToConsume)
                     return timeConsumed;
             }

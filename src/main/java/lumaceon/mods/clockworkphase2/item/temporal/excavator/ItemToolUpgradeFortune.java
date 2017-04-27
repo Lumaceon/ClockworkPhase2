@@ -1,16 +1,13 @@
 package lumaceon.mods.clockworkphase2.item.temporal.excavator;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
-import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
 import java.util.Map;
 
-public class ItemToolUpgradeFortune extends ItemClockworkPhase implements IToolUpgrade
+public class ItemToolUpgradeFortune extends ItemToolUpgrade implements IToolUpgrade
 {
     public ItemToolUpgradeFortune(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
@@ -19,7 +16,7 @@ public class ItemToolUpgradeFortune extends ItemClockworkPhase implements IToolU
     @Override
     public void setActive(ItemStack upgradeStack, ItemStack toolStack, boolean active)
     {
-        NBTHelper.BOOLEAN.set(upgradeStack, NBTTags.ACTIVE, active);
+        super.setActive(upgradeStack, toolStack, active);
         if(active)
         {
             Enchantment enchantment = Enchantment.getEnchantmentByLocation("fortune");
@@ -36,10 +33,5 @@ public class ItemToolUpgradeFortune extends ItemClockworkPhase implements IToolU
                 EnchantmentHelper.setEnchantments(enchantmentMap, toolStack);
             }
         }
-    }
-
-    @Override
-    public boolean getActive(ItemStack upgradeStack, ItemStack toolStack) {
-        return NBTHelper.BOOLEAN.get(upgradeStack, NBTTags.ACTIVE);
     }
 }

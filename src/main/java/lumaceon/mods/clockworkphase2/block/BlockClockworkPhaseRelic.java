@@ -20,7 +20,7 @@ public class BlockClockworkPhaseRelic extends BlockClockworkPhase implements ITr
     WeightedChance<ItemStack>[] possibleDrops;
     int harvestLevel;
 
-    public BlockClockworkPhaseRelic(Material blockMaterial, int harvestLevel, String unlocalizedName, ArrayList<ModItems.ItemReference> possibleDrops)
+    public BlockClockworkPhaseRelic(Material blockMaterial, int harvestLevel, String unlocalizedName, ArrayList<WeightedChance<ItemStack>> possibleDrops)
     {
         super(blockMaterial, unlocalizedName);
         this.setHardness(3F);

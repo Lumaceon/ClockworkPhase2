@@ -1,90 +1,78 @@
 package lumaceon.mods.clockworkphase2.api.assembly;
 
+import lumaceon.mods.clockworkphase2.lib.Reference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentBase;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nullable;
 
 public class InventoryAssemblyTableComponents implements IInventory
 {
-    private ItemStack[] inventory;
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+    private IItemHandler itemHandler;
     private ContainerAssemblyTable eventHandler;
     private int stackLimit;
 
-    public InventoryAssemblyTableComponents(ContainerAssemblyTable eventHandler, int size, int stackLimit)
+    public InventoryAssemblyTableComponents(ContainerAssemblyTable eventHandler, int stackLimit, ItemStack construct)
     {
-        this.inventory = new ItemStack[size];
+        if(construct == null)
+        {
+            itemHandler = new ItemStackHandler(0);
+        }
+        else
+        {
+            this.itemHandler = construct.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+            if(itemHandler == null)
+            {
+                itemHandler = new ItemStackHandler(0);
+                System.err.println("[" + Reference.MOD_NAME + "] Attach an IItemHandler capability to your item, baka!");
+            }
+        }
+
         this.eventHandler = eventHandler;
         this.stackLimit = stackLimit;
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return this.inventory.length;
+    public int getSizeInventory() {
+        return itemHandler == null ? 0 : itemHandler.getSlots();
     }
 
+    @Nullable
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_)
-    {
-        return p_70301_1_ >= this.getSizeInventory() ? null : this.inventory[p_70301_1_];
+    public ItemStack getStackInSlot(int index) {
+        return itemHandler == null ? null : itemHandler.getStackInSlot(index);
     }
 
+    @Nullable
     @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_)
-    {
-        if (this.inventory[p_70298_1_] != null)
-        {
-            ItemStack itemstack;
-
-            if (this.inventory[p_70298_1_].stackSize <= p_70298_2_)
-            {
-                itemstack = this.inventory[p_70298_1_];
-                this.inventory[p_70298_1_] = null;
-                this.eventHandler.onCraftMatrixComponentChanged();
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.inventory[p_70298_1_].splitStack(p_70298_2_);
-
-                if (this.inventory[p_70298_1_].stackSize == 0)
-                {
-                    this.inventory[p_70298_1_] = null;
-                }
-
-                this.eventHandler.onCraftMatrixComponentChanged();
-                return itemstack;
-            }
-        }
-        else
-        {
-            return null;
-        }
+    public ItemStack decrStackSize(int index, int count) {
+        return itemHandler == null ? null : itemHandler.extractItem(index, count, false);
     }
 
+    @Nullable
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        ItemStack item = inventory[index];
-        inventory[index] = null;
-        this.eventHandler.onCraftMatrixComponentChanged();
-        return item;
+        return itemHandler == null ? null : itemHandler.extractItem(index, 64, false);
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        this.inventory[p_70299_1_] = p_70299_2_;
-        this.eventHandler.onCraftMatrixComponentChanged();
-    }
-
-    /**
-     * Used to set item before inventory initialization.
-     * @param slot Target slot.
-     * @param item New item to set.
-     */
-    public void setInventorySlotContentsRemotely(int slot, ItemStack item)
+    public void setInventorySlotContents(int index, @Nullable ItemStack stack)
     {
-        this.inventory[slot] = item;
+        if(itemHandler != null)
+        {
+            itemHandler.extractItem(index, 64, false);
+            itemHandler.insertItem(index, stack, false);
+        }
     }
 
     @Override
@@ -93,10 +81,12 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public void markDirty() {}
+    public void markDirty() {
+
+    }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -107,8 +97,8 @@ public class InventoryAssemblyTableComponents implements IInventory
     public void closeInventory(EntityPlayer player) {}
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack is) {
-        return false;
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return true;
     }
 
     @Override
@@ -117,9 +107,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public void setField(int id, int value) {
-
-    }
+    public void setField(int id, int value) {}
 
     @Override
     public int getFieldCount() {
@@ -127,9 +115,11 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public void clear() {
-        for(int n = 0; n < inventory.length; n++)
-            inventory[n] = null;
+    public void clear()
+    {
+        if(itemHandler != null)
+            for (int i = 0; i < itemHandler.getSlots(); i++)
+                itemHandler.extractItem(i, 64, false);
     }
 
     @Override
@@ -143,7 +133,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public TextComponentBase getDisplayName() {
+    public ITextComponent getDisplayName() {
         return null;
     }
 }

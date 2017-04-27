@@ -4,16 +4,15 @@ import com.google.common.collect.Sets;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
+import lumaceon.mods.clockworkphase2.api.capabilities.EnergyStorageModular;
 import lumaceon.mods.clockworkphase2.api.item.IKeybindActivation;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
-import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
@@ -31,36 +30,61 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IClockworkConstruct, IKeybindActivation
+public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKeybindActivation, ISimpleNamed
 {
-    private static final Set field_150915_c = Sets.newHashSet(new Block[]{Blocks.COBBLESTONE, Blocks.DOUBLE_STONE_SLAB, Blocks.STONE_SLAB, Blocks.STONE, Blocks.SANDSTONE, Blocks.MOSSY_COBBLESTONE, Blocks.IRON_ORE, Blocks.IRON_BLOCK, Blocks.COAL_ORE, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.DIAMOND_ORE, Blocks.DIAMOND_BLOCK, Blocks.ICE, Blocks.NETHERRACK, Blocks.LAPIS_ORE, Blocks.LAPIS_BLOCK, Blocks.REDSTONE_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.RAIL, Blocks.DETECTOR_RAIL, Blocks.GOLDEN_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.GRASS, Blocks.DIRT, Blocks.SAND, Blocks.GRAVEL, Blocks.SNOW_LAYER, Blocks.SNOW, Blocks.CLAY, Blocks.FARMLAND, Blocks.SOUL_SAND, Blocks.MYCELIUM, Blocks.CHORUS_PLANT, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN});
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+    @CapabilityInject(IEnergyStorage.class)
+    static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
 
-    public ItemTemporalExcavator(ToolMaterial p_i45333_2_, String registryName)
+    private static final Set field_150915_c = Sets.newHashSet(new Block[]{Blocks.COBBLESTONE, Blocks.DOUBLE_STONE_SLAB, Blocks.STONE_SLAB, Blocks.STONE, Blocks.SANDSTONE, Blocks.MOSSY_COBBLESTONE, Blocks.IRON_ORE, Blocks.IRON_BLOCK, Blocks.COAL_ORE, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.DIAMOND_ORE, Blocks.DIAMOND_BLOCK, Blocks.ICE, Blocks.NETHERRACK, Blocks.LAPIS_ORE, Blocks.LAPIS_BLOCK, Blocks.REDSTONE_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.RAIL, Blocks.DETECTOR_RAIL, Blocks.GOLDEN_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.GRASS, Blocks.DIRT, Blocks.SAND, Blocks.GRAVEL, Blocks.SNOW_LAYER, Blocks.SNOW, Blocks.CLAY, Blocks.FARMLAND, Blocks.SOUL_SAND, Blocks.MYCELIUM, Blocks.CHORUS_PLANT, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN});
+    String simpleName;
+
+    public ItemTemporalExcavator(ToolMaterial p_i45333_2_, String name)
     {
         super(0, 1, p_i45333_2_, field_150915_c);
         this.setMaxStackSize(1);
         this.setMaxDamage(100);
         this.setCreativeTab(ClockworkPhase2.instance.CREATIVE_TAB);
-        this.setRegistryName(registryName);
-        this.setUnlocalizedName(registryName);
+        this.simpleName = name;
+        this.setRegistryName(name);
+        this.setUnlocalizedName(name);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        String color = InformationDisplay.getColorFromTension(getTension(is), getMaxTension(is));
-        list.add("Tension: " + color + getTension(is) + "/" + getMaxTension(is));
+    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
+    {
+        if(is != null)
+        {
+            IEnergyStorage cap = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(cap != null)
+            {
+                String color = InformationDisplay.getColorFromTension(cap.getEnergyStored(), cap.getMaxEnergyStored());
+                list.add("Energy: " + color + cap.getEnergyStored() + "/" + cap.getMaxEnergyStored() + " fe");
+            }
+        }
     }
 
     @Override
@@ -68,30 +92,36 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     {
         float strengthVsBlock = 0.0F;
 
-        int tension = NBTHelper.INT.get(is, NBTTags.CURRENT_TENSION);
-        if(tension <= 0)
+        IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyStorage == null || energyStorage.getEnergyStored() <= 0)
             return 0.0F;
 
-        if(is != null)
+        ItemStack item;
+        ItemStackHandlerTemporalExcavator inventory = getInventoryHandler(is);
+        if(inventory != null)
         {
-            ItemStack[] items = NBTHelper.INVENTORY.get(is, NBTTags.COMPONENT_INVENTORY);
-            if(items != null)
+            item = inventory.getPickaxe();
+            if(item != null && item.getItem() instanceof ItemClockworkTool)
+                strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
+
+            item = inventory.getAxe();
+            if(item != null && item.getItem() instanceof ItemClockworkTool)
+                strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
+
+            item = inventory.getShovel();
+            if(item != null && item.getItem() instanceof ItemClockworkTool)
+                strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
+
+
+            for(int n = 3; n < inventory.getSlots(); n++)
             {
-                for(int n = 0; n < 3 && n < items.length; n++)
-                {
-                    ItemStack item = items[n];
-                    if(item != null && item.getItem() instanceof ItemClockworkTool)
-                        strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
-                }
-                for(int n = 3; n < items.length; n++)
-                {
-                    ItemStack item = items[n];
-                    if(item != null && item.getItem() instanceof ItemToolUpgradeTemporalInfuser)
-                        if(((ItemToolUpgradeTemporalInfuser) item.getItem()).getActive(item, is))
-                            return 10000000F;
-                }
+                item = inventory.getStackInSlot(n);
+                if(item != null && item.getItem() instanceof ItemToolUpgradeTemporalInfuser)
+                    if(((ItemToolUpgradeTemporalInfuser) item.getItem()).getActive(item, is))
+                        return 1000000000F;
             }
         }
+
         return strengthVsBlock;
     }
 
@@ -104,17 +134,24 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
 
         ItemStack mostSpeedyTool = null;
         float greatestStrength = 0.0F;
-        ItemStack[] componentInventory = NBTHelper.INVENTORY.get(is, NBTTags.COMPONENT_INVENTORY);
-        if(componentInventory != null)
-            for(ItemStack component : componentInventory)
+        ItemStack component;
+
+        ItemStackHandlerTemporalExcavator inventory = getInventoryHandler(is);
+        if(inventory != null)
+        {
+            for(int i = 0; i < inventory.getSlots(); i++)
+            {
+                component = inventory.getStackInSlot(i);
                 if(component != null)
                 {
                     if(component.getItem() instanceof ItemToolUpgradeTemporalInfuser)
+                    {
                         if(((ItemToolUpgradeTemporalInfuser) component.getItem()).getActive(component, is))
                         {
                             HourglassHelper.consumeTimeMostPossible(HourglassHelper.getActiveHourglasses((EntityPlayer) playerIn), HourglassHelper.getTimeToBreakBlock(world, pos, state, playerIn, is));
                             break;
                         }
+                    }
                     if(component.getItem() instanceof ItemClockworkTool)
                     {
                         float strength = component.getItem().getStrVsBlock(component, state);
@@ -125,20 +162,25 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
                         }
                     }
                 }
+            }
+        }
 
-        if(greatestStrength > 1.0F && mostSpeedyTool != null && mostSpeedyTool.getItem() instanceof IClockworkConstruct)
+        if(greatestStrength > 1.0F && mostSpeedyTool != null && mostSpeedyTool.getItem() instanceof IClockwork)
         {
-            IClockworkConstruct clockworkConstruct = (IClockworkConstruct) mostSpeedyTool.getItem();
+            IClockwork clockworkConstruct = (IClockwork) mostSpeedyTool.getItem();
+            IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(energyStorage == null)
+                return true;
 
-            int currentTension = getTension(is);
-            if(currentTension <= 0)
+            int currentEnergy = energyStorage.getEnergyStored();
+            if(currentEnergy <= 0)
                 return true;
 
             int quality = clockworkConstruct.getQuality(mostSpeedyTool);
             int speed = clockworkConstruct.getSpeed(mostSpeedyTool);
-            int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
+            int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
 
-            consumeTension(is, tensionCost);
+            energyStorage.extractEnergy(energyCost, false);
         }
         return true;
     }
@@ -152,15 +194,22 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
 
         boolean found = false;
         int areaRadius = 1;
-        ItemStack[] components = NBTHelper.INVENTORY.get(stack, NBTTags.COMPONENT_INVENTORY);
-        if(components != null)
-            for(ItemStack item : components) //Loop through the tool's component inventory.
+        ItemStack item;
+
+        ItemStackHandlerTemporalExcavator inventory = getInventoryHandler(stack);
+        if(inventory != null)
+        {
+            for(int i = 0; i < inventory.getSlots(); i++) //Loop through the tool's component inventory.
+            {
+                item = inventory.getStackInSlot(i);
                 if(item != null && item.getItem() instanceof ItemToolUpgradeArea && ((ItemToolUpgradeArea) item.getItem()).getActive(item, stack))
                 {
                     areaRadius = ((ItemToolUpgradeArea) item.getItem()).getAreaRadius(item);
                     found = true;
                     break;
                 }
+            }
+        }
         if(!found) //No area upgrade found.
             return super.onBlockStartBreak(stack, pos, player);
 
@@ -256,16 +305,25 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     {
         if(is != null)
         {
-            ItemStack[] componentInventory = NBTHelper.INVENTORY.get(is, NBTTags.COMPONENT_INVENTORY);
-            if(componentInventory != null)
+            ItemStackHandlerTemporalExcavator inventory = getInventoryHandler(is);
+            if(inventory != null)
             {
-                for(int n = 0; n < 3 && n < componentInventory.length; n++)
-                {
-                    ItemStack component = componentInventory[n];
-                    if(component != null && component.getItem() instanceof ItemClockworkTool)
-                        if(((ItemClockworkTool) component.getItem()).isEffective(state))
-                            return true;
-                }
+                ItemStack temp;
+
+                temp = inventory.getPickaxe();
+                if(temp != null && temp.getItem() instanceof ItemClockworkTool)
+                    if(((ItemClockworkTool) temp.getItem()).isEffective(state))
+                        return true;
+
+                temp = inventory.getAxe();
+                if(temp != null && temp.getItem() instanceof ItemClockworkTool)
+                    if(((ItemClockworkTool) temp.getItem()).isEffective(state))
+                        return true;
+
+                temp = inventory.getShovel();
+                if(temp != null && temp.getItem() instanceof ItemClockworkTool)
+                    if(((ItemClockworkTool) temp.getItem()).isEffective(state))
+                        return true;
             }
         }
         return false;
@@ -282,13 +340,18 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     }
 
     @Override
-    public String getUnlocalizedName() {
-        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+    public String getItemStackDisplayName(ItemStack stack) {
+        return I18n.translateToLocal(this.getUnlocalizedName(stack));
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack is) {
-        return String.format("item.%s%s", Textures.RESOURCE_PREFIX, super.getUnlocalizedName().substring(super.getUnlocalizedName().indexOf('.') + 1));
+    public String getUnlocalizedName() {
+        return this.getRegistryName().toString();
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        return this.getUnlocalizedName();
     }
 
     @Override
@@ -297,19 +360,12 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     }
 
     @Override
-    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 13, 1);
-        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
-    }
-
-    @Override
     public Slot[] getContainerSlots(IInventory inventory) {
         return new Slot[]
                 {
-                        new SlotItemSpecific(inventory, 0, 106, 59, ModItems.clockworkPickaxe.getItem()),
-                        new SlotItemSpecific(inventory, 1, 178, 59, ModItems.clockworkAxe.getItem()),
-                        new SlotItemSpecific(inventory, 2, 142, 41, ModItems.clockworkShovel.getItem()),
+                        new SlotItemSpecific(inventory, 0, 106, 59, ModItems.clockworkPickaxe),
+                        new SlotItemSpecific(inventory, 1, 178, 59, ModItems.clockworkAxe),
+                        new SlotItemSpecific(inventory, 2, 142, 41, ModItems.clockworkShovel),
                         new SlotToolUpgrade(inventory, 3, 61, 106),
                         new SlotToolUpgrade(inventory, 4, 79, 106),
                         new SlotToolUpgrade(inventory, 5, 97, 106),
@@ -324,120 +380,6 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     }
 
     @Override
-    public void saveComponentInventory(ContainerAssemblyTable container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
-    }
-
-    @Override
-    public void onInventoryChange(ContainerAssemblyTable container)
-    {
-        ItemStack mainItem = container.mainInventory.getStackInSlot(0);
-        ItemStack pickaxe = container.componentInventory.getStackInSlot(0);
-        ItemStack axe = container.componentInventory.getStackInSlot(1);
-        ItemStack shovel = container.componentInventory.getStackInSlot(2);
-        ItemStack[] items;
-        int maxTension = 0;
-
-        if(mainItem != null)
-        {
-            if(pickaxe != null)
-            {
-                items = NBTHelper.INVENTORY.get(pickaxe, NBTTags.COMPONENT_INVENTORY);
-                if(items != null && items.length > 0)
-                {
-                    ItemStack mainspring = items[0];
-                    if(mainspring != null && mainspring.getItem() instanceof IMainspring) //There is a mainspring.
-                    {
-                        maxTension += NBTHelper.INT.get(mainspring, NBTTags.MAX_TENSION);
-                        NBTHelper.INT.set(pickaxe, NBTTags.CURRENT_TENSION, 0);
-                    }
-                    NBTHelper.BOOLEAN.set(pickaxe, NBTTags.IS_COMPONENT, true);
-                }
-            }
-            if(axe != null)
-            {
-                items = NBTHelper.INVENTORY.get(axe, NBTTags.COMPONENT_INVENTORY);
-                if(items != null && items.length > 0)
-                {
-                    ItemStack mainspring = items[0];
-                    if(mainspring != null && mainspring.getItem() instanceof IMainspring) //There is a mainspring.
-                    {
-                        maxTension += NBTHelper.INT.get(mainspring, NBTTags.MAX_TENSION);
-                        NBTHelper.INT.set(axe, NBTTags.CURRENT_TENSION, 0);
-                    }
-                    NBTHelper.BOOLEAN.set(axe, NBTTags.IS_COMPONENT, true);
-                }
-            }
-            if(shovel != null)
-            {
-                items = NBTHelper.INVENTORY.get(shovel, NBTTags.COMPONENT_INVENTORY);
-                if(items != null && items.length > 0)
-                {
-                    ItemStack mainspring = items[0];
-                    if(mainspring != null && mainspring.getItem() instanceof IMainspring) //There is a mainspring.
-                    {
-                        maxTension += NBTHelper.INT.get(mainspring, NBTTags.MAX_TENSION);
-                        NBTHelper.INT.set(shovel, NBTTags.CURRENT_TENSION, 0);
-                    }
-                    NBTHelper.BOOLEAN.set(shovel, NBTTags.IS_COMPONENT, true);
-                }
-            }
-
-            NBTHelper.INT.set(mainItem, NBTTags.MAX_TENSION, maxTension);
-            NBTHelper.INT.set(mainItem, NBTTags.CURRENT_TENSION, 0);
-            mainItem.setItemDamage(mainItem.getMaxDamage());
-        }
-    }
-
-    @Override
-    public int getTier(ItemStack item) {
-        return ClockworkHelper.getTier(item);
-    }
-
-    @Override
-    public int getTension(ItemStack item) {
-        return ClockworkHelper.getTension(item);
-    }
-
-    @Override
-    public int getMaxTension(ItemStack item) {
-        return ClockworkHelper.getMaxTension(item);
-    }
-
-    @Override
-    public void setTension(ItemStack item, int tension) {
-        ClockworkHelper.setTension(item, tension);
-    }
-
-    @Override
-    public void setTier(ItemStack item, int tier) {
-        ClockworkHelper.setTier(item, tier);
-    }
-
-    @Override
-    public int addTension(ItemStack item, int tension) {
-        return ClockworkHelper.addTension(item, tension);
-    }
-
-    @Override
-    public int consumeTension(ItemStack item, int tension) {
-        return ClockworkHelper.consumeTension(item, tension);
-    }
-
-    @Override
-    public void addConstructInformation(ItemStack item, EntityPlayer player, List list) {}
-
-    @Override
-    public int getQuality(ItemStack item) {
-        return 0;
-    }
-
-    @Override
-    public int getSpeed(ItemStack item) {
-        return 0;
-    }
-
-    @Override
     public void onKeyPressed(ItemStack item, EntityPlayer player) {
         player.openGui(ClockworkPhase2.instance, 4, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
@@ -445,5 +387,129 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, ICl
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return !oldStack.getItem().equals(newStack.getItem());
+    }
+
+    @Override
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new TemporalExcavatorCapabilityProvider(stack);
+    }
+
+    @Override
+    public String getSimpleName() {
+        return simpleName;
+    }
+
+    public ItemStackHandlerTemporalExcavator getInventoryHandler(ItemStack item)
+    {
+        if(item != null)
+        {
+            IItemHandler handler = item.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+            if(handler != null && handler instanceof  ItemStackHandlerTemporalExcavator)
+                return (ItemStackHandlerTemporalExcavator) handler;
+        }
+        return null;
+    }
+
+    private static class TemporalExcavatorCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
+    {
+        @CapabilityInject(IEnergyStorage.class)
+        static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
+        @CapabilityInject(IItemHandler.class)
+        static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+        EnergyStorageModular energyStorage;
+        ItemStackHandlerTemporalExcavator inventory;
+
+        private TemporalExcavatorCapabilityProvider(ItemStack stack) {
+            inventory = new ItemStackHandlerTemporalExcavator(13, stack);
+            energyStorage = new EnergyStorageModular(1);
+        }
+
+        @Override
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability != null && capability == ITEM_HANDLER_CAPABILITY || capability == ENERGY_STORAGE_CAPABILITY;
+        }
+
+        @Override
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            if(capability == null)
+                return null;
+
+            if(capability == ENERGY_STORAGE_CAPABILITY)
+                return ENERGY_STORAGE_CAPABILITY.cast(energyStorage);
+            else if(capability == ITEM_HANDLER_CAPABILITY)
+                return ITEM_HANDLER_CAPABILITY.cast(inventory);
+
+            return null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag("inventory", inventory.serializeNBT());
+            tag.setInteger("energy", energyStorage.getEnergyStored());
+            tag.setInteger("max_capacity", energyStorage.getMaxEnergyStored());
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            inventory.deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
+            energyStorage.setMaxCapacity(nbt.getInteger("max_capacity"));
+            energyStorage.receiveEnergy(nbt.getInteger("energy"), false);
+        }
+    }
+
+    public static class ItemStackHandlerTemporalExcavator extends ItemStackHandler
+    {
+        ItemStack stack;
+
+        public ItemStackHandlerTemporalExcavator(int size, ItemStack stack) {
+            super(size);
+            this.stack = stack;
+        }
+
+        public ItemStack getPickaxe() {
+            return getStackInSlot(0);
+        }
+
+        public ItemStack getAxe() {
+            return getStackInSlot(1);
+        }
+
+        public ItemStack getShovel() {
+            return getStackInSlot(2);
+        }
+
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            int maxEnergy = 0;
+            for(ItemStack s : stacks)
+            {
+                if(s != null)
+                {
+                    IEnergyStorage cap = s.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+                    if(cap != null)
+                    {
+                        maxEnergy += cap.getMaxEnergyStored();
+                        cap.extractEnergy(cap.getMaxEnergyStored(), false);
+                        cap.receiveEnergy(1, false);
+                    }
+                }
+            }
+
+            if(stack != null)
+            {
+                IEnergyStorage cap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+                if(cap != null && cap instanceof EnergyStorageModular)
+                {
+                    ((EnergyStorageModular) cap).setMaxCapacity(maxEnergy);
+                }
+                stack.setItemDamage(stack.getMaxDamage());
+            }
+        }
     }
 }

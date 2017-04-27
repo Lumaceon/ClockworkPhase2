@@ -2,9 +2,8 @@ package lumaceon.mods.clockworkphase2.item.clockwork.component;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
+import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkCore;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
-import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockworkComponent;
@@ -14,14 +13,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblable, IClockwork
 {
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
     public ItemClockworkCore(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
@@ -43,15 +52,13 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     }
 
     @Override
-    public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE_GEARS;
+    public int getTier(ItemStack item) {
+        return ClockworkHelper.getTier(item);
     }
 
     @Override
-    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 10, 1);
-        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
+    public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
+        return Textures.GUI.ASSEMBLY_TABLE_GEARS;
     }
 
     @Override
@@ -72,12 +79,41 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     }
 
     @Override
-    public void saveComponentInventory(ContainerAssemblyTable container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new ClockworkCoreCapabilityProvider();
     }
 
-    @Override
-    public void onInventoryChange(ContainerAssemblyTable container) {
-        AssemblyHelper.ON_INVENTORY_CHANGE.assembleClockworkCore(container);
+    private static class ClockworkCoreCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
+    {
+        @CapabilityInject(IItemHandler.class)
+        static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+        ItemStackHandlerClockworkCore inventory = new ItemStackHandlerClockworkCore(10);
+
+        @Override
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability != null && capability == ITEM_HANDLER_CAPABILITY;
+        }
+
+        @Override
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            if(capability != null && capability == ITEM_HANDLER_CAPABILITY)
+                return ITEM_HANDLER_CAPABILITY.cast(inventory);
+            return null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag("inventory", inventory.serializeNBT());
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            inventory.deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
+        }
     }
 }

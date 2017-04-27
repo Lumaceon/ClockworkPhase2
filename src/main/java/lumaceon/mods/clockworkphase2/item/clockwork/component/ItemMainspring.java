@@ -4,13 +4,8 @@ import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblableButtons;
-import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
-import lumaceon.mods.clockworkphase2.api.util.AssemblyHelper;
-import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
@@ -21,14 +16,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemMainspring extends ItemClockworkPhase implements IAssemblableButtons, IMainspring
 {
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
     public int maxTension = ConfigValues.MAX_MAINSPRING_TENSION;
 
     public ItemMainspring(int maxStack, int maxDamage, String unlocalizedName) {
@@ -42,25 +48,22 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
     }
 
     @Override
-    public int getMaxSize(ItemStack item) {
+    public int getMaximumPossibleCapacity(ItemStack item) {
         return maxTension;
     }
 
     @Override
-    public int getTension(ItemStack item) {
-        return ClockworkHelper.getMaxTension(item);
+    public int getCurrentCapacity(ItemStack item)
+    {
+        IItemHandler cap = item.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if(cap != null && cap instanceof ItemStackHandlerMainspring)
+            return ((ItemStackHandlerMainspring) cap).getCapacity();
+        return 0;
     }
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
         return Textures.GUI.ASSEMBLY_TABLE_MAINSPRING_ADD;
-    }
-
-    @Override
-    public InventoryAssemblyTableComponents getGUIInventory(ContainerAssemblyTable container) {
-        InventoryAssemblyTableComponents inventory = new InventoryAssemblyTableComponents(container, 8, 1);
-        AssemblyHelper.GET_GUI_INVENTORY.loadStandardComponentInventory(container, inventory);
-        return inventory;
     }
 
     @Override
@@ -77,14 +80,6 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
                         new SlotMainspringMetal(inventory, 7, 124, 68),
                 };
     }
-
-    @Override
-    public void saveComponentInventory(ContainerAssemblyTable container) {
-        AssemblyHelper.SAVE_COMPONENT_INVENTORY.saveComponentInventory(container);
-    }
-
-    @Override
-    public void onInventoryChange(ContainerAssemblyTable container) {} //NOOP
 
     @Override
     public void initButtons(List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
@@ -112,21 +107,97 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
             }
             if(baseValues > 0)
             {
-                int currentMaxTension = NBTHelper.INT.get(mainItem, NBTTags.MAX_TENSION);
-                int newMaxTension = currentMaxTension + baseValues;
-                if(currentMaxTension == mainspring.getMaxSize(mainItem))
-                    return;
-                if(newMaxTension > mainspring.getMaxSize(mainItem))
-                    newMaxTension = mainspring.getMaxSize(mainItem);
-                if(mainItem.getMaxDamage() == 0 || mainspring.getMaxSize(mainItem) / mainItem.getMaxDamage() == 0)
-                    mainItem.setItemDamage(0);
-                else
-                    mainItem.setItemDamage(mainItem.getMaxDamage() - newMaxTension / (mainspring.getMaxSize(mainItem) / mainItem.getMaxDamage()));
+                IItemHandler handler = mainItem.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                if(handler != null && handler instanceof ItemStackHandlerMainspring)
+                {
+                    int currentMaxTension = ((ItemStackHandlerMainspring) handler).getCapacity();
+                    int newMaxTension = currentMaxTension + baseValues;
+                    if(currentMaxTension == mainspring.getMaximumPossibleCapacity(mainItem))
+                        return;
+                    if(newMaxTension > mainspring.getMaximumPossibleCapacity(mainItem))
+                        newMaxTension = mainspring.getMaximumPossibleCapacity(mainItem);
+                    if(mainItem.getMaxDamage() == 0 || mainspring.getMaximumPossibleCapacity(mainItem) / mainItem.getMaxDamage() == 0)
+                        mainItem.setItemDamage(0);
+                    else
+                        mainItem.setItemDamage(mainItem.getMaxDamage() - newMaxTension / (mainspring.getMaximumPossibleCapacity(mainItem) / mainItem.getMaxDamage()));
 
-                NBTHelper.INT.set(mainItem, NBTTags.MAX_TENSION,  newMaxTension);
-                for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)
-                    container.componentInventory.setInventorySlotContents(n, null);
+                    ((ItemStackHandlerMainspring) handler).setCapacity(newMaxTension);
+                    for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)
+                        container.componentInventory.setInventorySlotContents(n, null);
+                }
             }
+        }
+    }
+
+    @Override
+    public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+        return new MainspringCapabilityProvider();
+    }
+
+    private static class MainspringCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
+    {
+        @CapabilityInject(IItemHandler.class)
+        static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+        ItemStackHandlerMainspring inventory = new ItemStackHandlerMainspring(8);
+
+        @Override
+        public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+            return capability != null && capability == ITEM_HANDLER_CAPABILITY;
+        }
+
+        @Override
+        public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+        {
+            if(capability != null && capability == ITEM_HANDLER_CAPABILITY)
+                return ITEM_HANDLER_CAPABILITY.cast(inventory);
+            return null;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag("inventory", inventory.serializeNBT());
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt) {
+            inventory.deserializeNBT((NBTTagCompound) nbt.getTag("inventory"));
+        }
+    }
+
+    private static class ItemStackHandlerMainspring extends ItemStackHandler
+    {
+        int capacity = 1000;
+
+        private ItemStackHandlerMainspring(int size) {
+            super(size);
+        }
+
+        public int getCapacity() {
+            return capacity;
+        }
+
+        public void setCapacity(int capacity) {
+            this.capacity = capacity;
+        }
+
+        @Override
+        public NBTTagCompound serializeNBT()
+        {
+            NBTTagCompound nbt = super.serializeNBT();
+            nbt.setInteger("CP2_MS_capacity", capacity);
+            return nbt;
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
+            super.deserializeNBT(nbt);
+            if(nbt.hasKey("CP2_MS_capacity"))
+                capacity = nbt.getInteger("CP2_MS_capacity");
         }
     }
 }

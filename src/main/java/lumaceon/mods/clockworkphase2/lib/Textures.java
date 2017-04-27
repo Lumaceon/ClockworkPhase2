@@ -14,11 +14,6 @@ public class Textures
         public static ResourceLocation END_SKY = new ResourceLocation("textures/environment/end_sky.png");
     }*/
 
-    public static class ENTITY
-    {
-        public static ResourceLocation ETHEREAL_SPECTER = new ResourceLocation(Reference.MOD_ID, "textures/entity/ethereal_specter.png");
-    }
-
     public static class GUI
     {
         public static ResourceLocation BOOK_COVER = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook.png");
@@ -32,12 +27,6 @@ public class Textures
 
         public static ResourceLocation GUIDEBOOK_CRAFTING = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook/crafting_table_guide.png");
     }
-
-    /*public static class FLUID
-    {
-        public static ResourceLocation TEMPORIUM_STILL = new ResourceLocation(Reference.MOD_ID, "blocks/temporium_still");
-        public static ResourceLocation TEMPORIUM_FLOW = new ResourceLocation(Reference.MOD_ID, "blocks/temporium_flow");
-    }*/
 
     public static class MISC
     {

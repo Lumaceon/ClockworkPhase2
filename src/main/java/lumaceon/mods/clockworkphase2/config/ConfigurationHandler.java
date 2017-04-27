@@ -1,8 +1,6 @@
 package lumaceon.mods.clockworkphase2.config;
 
-import lumaceon.mods.clockworkphase2.api.AchievementTiering;
 import lumaceon.mods.clockworkphase2.lib.Reference;
-import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraftforge.common.config.Configuration;
 
 import java.io.*;
@@ -56,53 +54,12 @@ public class ConfigurationHandler
         }
         catch(Exception ex)
         {
-            Logger.error("Exception caught in ConfigurationHandler:");
+            System.err.println("[" + Reference.MOD_NAME + "] Exception caught in ConfigurationHandler:");
             ex.printStackTrace();
         }
         finally
         {
             config.save();
         }
-    }
-
-    public static void initBlacklist(File directory)
-    {
-        directory = new File(directory, Reference.MOD_ID + "/achievement_blacklist" + ".txt");
-        try {
-            if(!Files.exists(Paths.get(directory.toURI()).getParent()))
-                Files.createDirectories(Paths.get(directory.toURI()).getParent());
-            if(!Files.exists(Paths.get(directory.toURI())))
-                Files.createFile(Paths.get(directory.toURI()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedReader input = new BufferedReader(new FileReader(directory));
-            String line;
-
-            while((line = input.readLine()) != null)
-            {
-                if(line.startsWith("//"))
-                    continue;
-                while(line.startsWith(" "))
-                    line = line.substring(1);
-                while(line.endsWith(" "))
-                    line = line.substring(0, line.length() - 1);
-                if(line.length() <= 0)
-                    continue;
-                AchievementTiering.blacklistedAchievements.add(line);
-                Logger.info("Blacklisted achievement: " + line);
-            }
-
-            input.close();
-        } catch (FileNotFoundException e) {
-            Logger.error("Failed to find achievement_blacklist.txt file.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            Logger.error("IOException while reading the achievement blacklist.");
-            e.printStackTrace();
-        }
-
     }
 }

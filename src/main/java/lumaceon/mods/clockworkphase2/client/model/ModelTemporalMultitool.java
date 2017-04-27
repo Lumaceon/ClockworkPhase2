@@ -2,8 +2,8 @@ package lumaceon.mods.clockworkphase2.client.model;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import lumaceon.mods.clockworkphase2.proxy.ClientProxy;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

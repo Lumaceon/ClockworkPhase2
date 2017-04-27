@@ -237,7 +237,7 @@ public class GuiGuidebook extends GuiScreen
                             this.currentArticle = this.selectedCategory.articles.get(button.id - 3 + (7*currPage));
                         else if(DEVELOPING)
                         {
-                            this.currentArticle = new Article(new NBTTagCompound(), "NEWARTICLE", "NEWARTICLE", ModItems.bugSwatter.getItem());
+                            this.currentArticle = new Article(new NBTTagCompound(), "NEWARTICLE", "NEWARTICLE", ModItems.bugSwatter);
                             this.currentArticle.pages.add(new ArticlePage("", inventorySlots));
                             this.currentArticle.pages.add(new ArticlePage("", inventorySlots));
                             this.bookTotalPages = 2;

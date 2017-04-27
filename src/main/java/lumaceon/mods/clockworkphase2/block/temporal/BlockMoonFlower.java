@@ -65,8 +65,8 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
         return worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(state, worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
     }
 
-    protected Item getSeed() { return ModItems.moonFlowerSeeds.getItem(); }
-    protected Item getCrop() { return ModItems.matterTemporal.getItem(); }
+    protected Item getSeed() { return ModItems.moonFlowerSeeds; }
+    protected Item getCrop() { return ModItems.matterTemporal; }
 
     @Override
     public void dropBlockAsItemWithChance(World worldIn, BlockPos pos, IBlockState state, float chance, int fortune) {

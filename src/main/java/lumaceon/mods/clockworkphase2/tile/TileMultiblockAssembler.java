@@ -4,7 +4,7 @@ import lumaceon.mods.clockworkphase2.api.block.IMultiblockTemplate;
 import lumaceon.mods.clockworkphase2.api.item.IMultiblockTemplateItem;
 import lumaceon.mods.clockworkphase2.block.BlockMultiblockAssembler;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
-import lumaceon.mods.clockworkphase2.tile.generic.TileClockworkPhase;
+import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileMultiblockAssembler extends TileClockworkPhase
+public class TileMultiblockAssembler extends TileMod
 {
     public ItemStack templateStack;
     public IMultiblockTemplate template;
@@ -74,7 +74,7 @@ public class TileMultiblockAssembler extends TileClockworkPhase
                     Block block = state.getBlock();
                     if(block != null)
                     {
-                        if((block.equals(ModBlocks.constructionBlock.getBlock()) || block.equals(ModBlocks.multiblockAssembler.getBlock())))
+                        if((block.equals(ModBlocks.constructionBlock) || block.equals(ModBlocks.multiblockAssembler)))
                             continue; //The block is either a construction block, or the assembler itself, so we keep going.
                         if(block.isReplaceable(worldObj, pos.add(data.getPosition())))
                         {
@@ -96,7 +96,7 @@ public class TileMultiblockAssembler extends TileClockworkPhase
     private void setNewBlock(IMultiblockTemplate.BlockData data)
     {
         worldObj.setBlockToAir(pos.add(data.getPosition()));
-        worldObj.setBlockState(pos.add(data.getPosition()), ModBlocks.constructionBlock.getBlock().getDefaultState().withProperty(BlockMultiblockAssembler.METADATA, data.meta));
+        worldObj.setBlockState(pos.add(data.getPosition()), ModBlocks.constructionBlock.getDefaultState().withProperty(BlockMultiblockAssembler.METADATA, data.meta));
 
         //Check to see if all of the blocks are ready for the full multiblock to form.
         for(int i = 0; i <= template.getMaxIndex(); i++)
@@ -108,8 +108,8 @@ public class TileMultiblockAssembler extends TileClockworkPhase
                 Block block = state.getBlock();
                 if(block != null)
                 {
-                    if( (block.equals(ModBlocks.constructionBlock.getBlock()) && state.getValue(BlockMultiblockAssembler.METADATA) == data.meta)
-                            || (block.equals(ModBlocks.multiblockAssembler.getBlock())) )
+                    if( (block.equals(ModBlocks.constructionBlock) && state.getValue(BlockMultiblockAssembler.METADATA) == data.meta)
+                            || (block.equals(ModBlocks.multiblockAssembler)) )
                         continue;
                 }
             }

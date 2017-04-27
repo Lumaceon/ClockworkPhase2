@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
-import lumaceon.mods.clockworkphase2.util.Logger;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -33,23 +32,14 @@ public class AlloyRecipes
     public static void addAlloyRecipe(RecipeComponent firstComponent, RecipeComponent secondComponent, ItemStack output)
     {
         if(output == null)
-        {
-            Logger.info("Tried to add an alloy recipe with null output. This is usually NOT an error.");
             return;
-        }
         else if(!firstComponent.metalExists() || !secondComponent.metalExists())
-        {
-            Logger.info("Tried to add an alloy recipe for \"" + output.getDisplayName() + "\" with an invalid material. This is usually NOT an error.");
             return;
-        }
 
         AlloyRecipe recipe = new AlloyRecipe(firstComponent, secondComponent, output);
         for(AlloyRecipe r : RECIPES)
             if(r.sameRecipe(recipe))
-            {
-                Logger.info("Tried to add a duplicate \"" + output.getDisplayName() + "\" recipe. This is usually NOT an error.");
                 return;
-            }
 
         RECIPES.add(recipe);
     }
@@ -79,10 +69,7 @@ public class AlloyRecipes
         public boolean sameRecipe(AlloyRecipe anotherRecipe)
         {
             if(anotherRecipe.output == null)
-            {
-                Logger.error("WARNING: alloy recipe found with a null output. Someone probably didn't use ItemStack.copy().");
                 return false;
-            }
 
             if((this.first.itemMatches(anotherRecipe.first.item) || this.first.itemMatches(anotherRecipe.second.item))
             && (this.second.itemMatches(anotherRecipe.first.item) || this.second.itemMatches(anotherRecipe.second.item)))

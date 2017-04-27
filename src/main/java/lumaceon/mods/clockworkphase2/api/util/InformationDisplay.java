@@ -1,13 +1,10 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
-import lumaceon.mods.clockworkphase2.api.util.internal.Colors;
+import lumaceon.mods.clockworkphase2.util.Colors;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -30,9 +27,9 @@ public class InformationDisplay
      */
     public static void addClockworkComponentInformation(ItemStack component, List list)
     {
-        if(component.getItem() instanceof IClockworkComponent)
+        if(component.getItem() instanceof IClockwork)
         {
-            IClockworkComponent clockworkComponent = (IClockworkComponent) component.getItem();
+            IClockwork clockworkComponent = (IClockwork) component.getItem();
             int quality = clockworkComponent.getQuality(component);
             int speed = clockworkComponent.getSpeed(component);
             int harvestLevel = clockworkComponent.getTier(component);
@@ -55,7 +52,7 @@ public class InformationDisplay
      */
     public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean displayTension)
     {
-        if(construct.getItem() instanceof IClockworkConstruct)
+        /*if(construct.getItem() instanceof IClockworkConstruct)
         {
             IClockworkConstruct clockworkConstruct = (IClockworkConstruct) construct.getItem();
             if(displayTension)
@@ -92,12 +89,12 @@ public class InformationDisplay
             }
             else
                 list.add(Colors.BLUE + "Ctrl - Clockwork Stats");
-        }
+        }*/
     }
 
     public static void addClockworkToolInformation(ItemStack tool, EntityPlayer player, List list)
     {
-        IClockworkConstruct clockworkComponent = (IClockworkConstruct) tool.getItem();
+        IClockwork clockworkComponent = (IClockwork) tool.getItem();
         int quality = clockworkComponent.getQuality(tool);
         int speed = clockworkComponent.getSpeed(tool);
         int harvestLevel = Math.max(Math.max(tool.getItem().getHarvestLevel(tool, "pickaxe"), tool.getItem().getHarvestLevel(tool, "axe")), tool.getItem().getHarvestLevel(tool, "shovel"));
@@ -112,7 +109,7 @@ public class InformationDisplay
         if(is.getItem() instanceof IMainspring)
         {
             IMainspring mainspring = (IMainspring) is.getItem();
-            list.add("Tension: " + mainspring.getTension(is));
+            list.add("Tension: " + mainspring.getCurrentCapacity(is));
         }
     }
 

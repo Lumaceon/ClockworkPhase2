@@ -46,6 +46,6 @@ public class ItemMoonFlowerSeeds extends ItemClockworkPhase implements IPlantabl
 
     @Override
     public IBlockState getPlant(IBlockAccess world, BlockPos pos) {
-        return ModBlocks.moonFlower.getBlock().getDefaultState();
+        return ModBlocks.moonFlower.getDefaultState();
     }
 }

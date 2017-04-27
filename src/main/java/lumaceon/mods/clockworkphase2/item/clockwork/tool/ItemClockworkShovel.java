@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.item.clockwork.tool;
 
 import com.google.common.collect.Sets;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import lumaceon.mods.clockworkphase2.util.NBTTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -32,11 +32,5 @@ public class ItemClockworkShovel extends ItemClockworkTool
     @Override
     public Material[] getEffectiveMaterials() {
         return new Material[] { Material.GROUND, Material.GRASS, Material.SAND, Material.SNOW };
-    }
-
-    @Override
-    public void setTier(ItemStack item, int tier) {
-        super.setTier(item, tier);
-        NBTHelper.INT.set(item, NBTTags.HARVEST_LEVEL_SHOVEL, tier);
     }
 }

@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.item.clockwork.component;
 
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockworkComponent;
+import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemGear extends ItemClockworkPhase implements IClockworkComponent
+public class ItemGear extends ItemClockworkPhase implements IClockwork
 {
     public int quality, speed, harvestLevel;
 

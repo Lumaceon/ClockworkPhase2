@@ -1,7 +1,6 @@
 package lumaceon.mods.clockworkphase2.client.gui;
 
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTHelper;
-import lumaceon.mods.clockworkphase2.api.util.internal.NBTTags;
+import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.client.gui.components.GuiButtonItem;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageToolUpgradeActivate;
@@ -37,21 +36,31 @@ public class GuiTemporalExcavatorUpgrades extends GuiScreen
         int index = 0;
         for(int x = 0; x < 10; x++)
         {
-            for(int y = 0; y < 2; y++)
+            if(items.length > index && items[index] != null)
             {
-                if(items.length > index && items[index] != null)
-                    buttonList.add(new GuiButtonItem(items[index], index, guiLeft + (x % 10) * 30, guiTop + y * 30, "", itemRenders, fontRendererObj, NBTHelper.BOOLEAN.get(items[index], NBTTags.ACTIVE)));
-                else
-                    buttonList.add(new GuiButtonItem(null, index, guiLeft + (x % 10) * 30, guiTop + y * 30, "", itemRenders, fontRendererObj, false));
-                index++;
+                if(items[index].getItem() instanceof IToolUpgrade)
+                {
+                    buttonList.add(new GuiButtonItem(items[index], index, guiLeft + (x % 10) * 30, guiTop + 15, "", itemRenders, fontRendererObj, ((IToolUpgrade) items[index].getItem()).getActive(items[index], this.mc.thePlayer.inventory.getCurrentItem())));
+                }
             }
+            else
+            {
+                buttonList.add(new GuiButtonItem(null, index, guiLeft + (x % 10) * 30, guiTop + 15, "", itemRenders, fontRendererObj, false));
+            }
+            index++;
         }
     }
 
     @Override
-    public void actionPerformed(GuiButton button) {
+    public void actionPerformed(GuiButton button)
+    {
         PacketHandler.INSTANCE.sendToServer(new MessageToolUpgradeActivate(button.id));
         ((GuiButtonItem) buttonList.get(button.id)).active = !((GuiButtonItem) buttonList.get(button.id)).active;
+        /*ItemStack itemClicked = items[button.id];
+        if(itemClicked != null && itemClicked.getItem() instanceof IToolUpgrade)
+        {
+            ((IToolUpgrade) itemClicked.getItem()).setActive(itemClicked, mc.thePlayer.inventory.getCurrentItem(), ((GuiButtonItem) buttonList.get(button.id)).active);
+        }*/
     }
 
     @Override

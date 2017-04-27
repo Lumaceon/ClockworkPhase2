@@ -4,7 +4,6 @@ import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.message.*;
 import lumaceon.mods.clockworkphase2.network.message.handler.HandlerMainspringButton;
 import lumaceon.mods.clockworkphase2.network.message.handler.HandlerToolUpgradeActivate;
-import lumaceon.mods.clockworkphase2.network.message.handler.dummy.DummyHandlerAchievementScore;
 import lumaceon.mods.clockworkphase2.network.message.handler.dummy.DummyHandlerCelestialCompassItemGet;
 import lumaceon.mods.clockworkphase2.network.message.handler.dummy.DummyHandlerParticleSpawn;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -23,7 +22,6 @@ public class PacketHandler
     public static void init()
     {
         //Note: the side passed in is the RECEIVING side.
-        INSTANCE.registerMessage(DummyHandlerAchievementScore.class, MessageAchievementScore.class, ACHIEVEMENT_SCORE_ID, Side.SERVER);
         INSTANCE.registerMessage(DummyHandlerCelestialCompassItemGet.class, MessageCelestialCompassItemGet.class, CELESTIAL_COMPASS_ID, Side.SERVER);
         INSTANCE.registerMessage(DummyHandlerParticleSpawn.class, MessageParticleSpawn.class, PARTICLE_SPAWN_ID, Side.SERVER);
         INSTANCE.registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, MAINSPRING_BUTTON_ID, Side.SERVER);

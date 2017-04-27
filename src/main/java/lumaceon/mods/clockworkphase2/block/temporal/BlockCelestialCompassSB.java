@@ -82,7 +82,7 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
             ++iterations;
         }
         TileEntity te = worldIn.getTileEntity(pos);
-        if(block != null && block.equals(ModBlocks.celestialCompass.getBlock()) && te != null && te instanceof TileCelestialCompass && !((TileCelestialCompass) te).isBeingDestroyed)
+        if(block != null && block.equals(ModBlocks.celestialCompass) && te != null && te instanceof TileCelestialCompass && !((TileCelestialCompass) te).isBeingDestroyed)
             TileCelestialCompass.destroyMultiblock((TileCelestialCompass) te, worldIn, pos);
     }
 
@@ -108,7 +108,7 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
         {
             if(world.getBlockState(new BlockPos(x, pos.getY(), z)) == null)
                 return false;
-            else if(world.getBlockState(new BlockPos(x, pos.getY(), z)).getBlock().equals(ModBlocks.celestialCompass.getBlock()))
+            else if(world.getBlockState(new BlockPos(x, pos.getY(), z)).getBlock().equals(ModBlocks.celestialCompass))
             {
                 TileEntity te = world.getTileEntity(new BlockPos(x, pos.getY(), z));
                 if(te != null && te instanceof TileCelestialCompass)

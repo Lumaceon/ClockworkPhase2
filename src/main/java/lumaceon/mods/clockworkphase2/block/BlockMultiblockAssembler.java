@@ -50,7 +50,7 @@ public class BlockMultiblockAssembler extends BlockClockworkPhase implements ITi
                 return multiblockAssembler.onRightClickWithEmptyHand(player);
 
             boolean consumeItem = false;
-            if(itemInHand.getItem().equals(Item.getItemFromBlock(ModBlocks.constructionBlock.getBlock())))
+            if(itemInHand.getItem().equals(Item.getItemFromBlock(ModBlocks.constructionBlock)))
                 consumeItem = multiblockAssembler.onRightClickWithConstructionBlock();
 
             if(itemInHand.getItem() instanceof IMultiblockTemplateItem)

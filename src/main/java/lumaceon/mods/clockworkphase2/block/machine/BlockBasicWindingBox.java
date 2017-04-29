@@ -14,21 +14,26 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import javax.annotation.Nullable;
+
 public class BlockBasicWindingBox extends BlockClockworkPhase
 {
+    @CapabilityInject(IEnergyStorage.class)
+    static Capability<IEnergyStorage> ENERGY = null;
+
     public BlockBasicWindingBox(Material blockMaterial, String unlocalizedName) {
         super(blockMaterial, unlocalizedName);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if(!player.isSneaking())
         {
             ItemStack currentItem = player.inventory.getCurrentItem();
             if(currentItem != null)
             {
-                IEnergyStorage energyStorage = currentItem.getCapability(CapabilityEnergy.ENERGY, side);
+                IEnergyStorage energyStorage = currentItem.getCapability(ENERGY, side);
                 if(energyStorage != null)
                 {
                     energyStorage.receiveEnergy(101 + world.rand.nextInt(100), false);

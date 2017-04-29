@@ -213,6 +213,7 @@ public class ModItems
         register(assemblyTable);
 
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
+        register(bugSwatter);
 
         RelicExcavationRegistry.registerMoonFlowerRelicDrop(new WeightedChance<ItemStack>(new ItemStack(moonFlowerSeeds), 100));
     }

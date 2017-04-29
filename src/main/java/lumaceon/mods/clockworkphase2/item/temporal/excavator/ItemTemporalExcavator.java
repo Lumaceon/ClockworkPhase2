@@ -10,6 +10,7 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
+import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.util.NBTTags;
@@ -381,7 +382,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
     @Override
     public void onKeyPressed(ItemStack item, EntityPlayer player) {
-        player.openGui(ClockworkPhase2.instance, 4, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+        player.openGui(ClockworkPhase2.instance, GUIs.TEMPORAL_EXCAVATOR.ordinal(), player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 
     @Override

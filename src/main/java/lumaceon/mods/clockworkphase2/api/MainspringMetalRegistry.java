@@ -78,17 +78,14 @@ public class MainspringMetalRegistry
         public static int thaumium = 200;
         public static int bronze = 250;
         public static int brass = 260;
-        public static int cobalt = 280;
-        public static int ardite = 300;
+        public static int cobalt = 250;
+        public static int ardite = 250;
         public static int alumite = 310;
         public static int invar = 320;
         public static int electrum = 340;
         public static int steel = 400;
-        public static int temporal = 600;
-        public static int manyullyn = 900;
-        public static int eternium = 1500;
-        public static int momentium = 1200;
-        public static int paradoxium = 1000;
+        public static int temporal = 500;
+        public static int manyullyn = 650;
         public static void initDefaults()
         {
             MainspringMetalRegistry.registerMetal("ingotTin", tin);
@@ -130,9 +127,6 @@ public class MainspringMetalRegistry
             MainspringMetalRegistry.registerMetal("blockTemporal", temporal * 9);
             MainspringMetalRegistry.registerMetal("ingotManyullyn", manyullyn);
             MainspringMetalRegistry.registerMetal("blockManyullyn", manyullyn * 9);
-            MainspringMetalRegistry.registerMetal("ingotEternium", eternium);
-            MainspringMetalRegistry.registerMetal("ingotMomentium", momentium);
-            MainspringMetalRegistry.registerMetal("ingotParadoxium", paradoxium);
         }
     }
 

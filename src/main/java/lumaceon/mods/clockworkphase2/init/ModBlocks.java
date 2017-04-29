@@ -4,9 +4,11 @@ import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.RelicExcavationRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
 import lumaceon.mods.clockworkphase2.block.machine.BlockBasicWindingBox;
+import lumaceon.mods.clockworkphase2.block.machine.BlockClockworkFurnace;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
 import lumaceon.mods.clockworkphase2.block.temporal.*;
 import lumaceon.mods.clockworkphase2.tile.*;
+import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkFurnace;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -34,6 +36,8 @@ public class ModBlocks
     public static Block moonFlower;
     //FLUIDS
         //public static BlockReference liquidTemporium = new BlockReference("liquid_temporium");
+    //MACHINES
+    public static Block clockworkFurnace;
     //TEMPORAL BLOCKS
     public static Block celestialCompass;
     public static Block celestialCompassSB;
@@ -81,6 +85,10 @@ public class ModBlocks
         moonFlower = new BlockMoonFlower(Material.IRON, "moon_flower");
         register(moonFlower);
 
+        //MACHINES
+        clockworkFurnace = new BlockClockworkFurnace(Material.IRON, "clockwork_furnace");
+        register(clockworkFurnace); //TODO custom itemblock
+
         //TEMPORAL BLOCKS
             //registerBlock(celestialCompass, BlockCelestialCompass.class, matName, new Object[] {Material.IRON, celestialCompass.getUnlocalizedName()});
             //registerBlock(celestialCompassSB, BlockCelestialCompassSB.class, matName, new Object[] {Material.IRON, celestialCompassSB.getUnlocalizedName()});
@@ -118,6 +126,7 @@ public class ModBlocks
     {
         GameRegistry.registerTileEntity(TileMultiblockAssembler.class, multiblockAssembler.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileAssemblyTable.class, assemblyTable.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileClockworkFurnace.class, clockworkFurnace.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
         //GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
 

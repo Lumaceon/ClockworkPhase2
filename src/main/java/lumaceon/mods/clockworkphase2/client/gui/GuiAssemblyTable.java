@@ -66,31 +66,15 @@ public class GuiAssemblyTable extends GuiContainer
             ItemStack item = container.mainInventory.getStackInSlot(0);
             if(item != null && item.getItem() instanceof IAssemblable)
             {
-                IAssemblable assemblyGUI = (IAssemblable)container.mainInventory.getStackInSlot(0).getItem();
+                IAssemblable assemblyGUI = (IAssemblable) item.getItem();
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 Minecraft.getMinecraft().renderEngine.bindTexture(assemblyGUI.getGUIBackground(container));
-                this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+                GuiHelper.drawTexturedModalRectStretched(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize);
                 return;
             }
         }
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(Textures.GUI.ASSEMBLY_TABLE);
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-    }
-
-    /**
-     * Overridden to fix UV errors.
-     */
-    @Override
-    public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
-        renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        renderer.pos((double)(x + 0), (double)(y + height), (double)this.zLevel).tex(0, 1).endVertex();
-        renderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).tex(1, 1).endVertex();
-        renderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).tex(1, 0).endVertex();
-        renderer.pos((double)(x + 0), (double)(y + 0), (double)this.zLevel).tex(0, 0).endVertex();
-        tessellator.draw();
+        GuiHelper.drawTexturedModalRectStretched(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize);
     }
 }

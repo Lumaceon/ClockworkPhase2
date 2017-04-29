@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.block;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.block.CustomProperties;
 import lumaceon.mods.clockworkphase2.init.ModItems;
+import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileAssemblyTable;
 import net.minecraft.block.ITileEntityProvider;
@@ -91,7 +92,7 @@ public class BlockAssemblyTable extends BlockClockworkPhase implements ITileEnti
         if(!player.isSneaking())
         {
             if(!world.isRemote)
-                player.openGui(ClockworkPhase2.instance, 0, world, pos.getX(), pos.getY(), pos.getZ());
+                player.openGui(ClockworkPhase2.instance, GUIs.ASSEMBLY_TABLE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
         return false;

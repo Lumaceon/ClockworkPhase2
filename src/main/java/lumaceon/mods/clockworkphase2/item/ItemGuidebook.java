@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.item;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
+import lumaceon.mods.clockworkphase2.lib.GUIs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
@@ -32,7 +33,7 @@ public class ItemGuidebook extends ItemClockworkPhase
     public ActionResult<ItemStack> onItemRightClick(ItemStack is, World world, EntityPlayer player, EnumHand hand)
     {
         resolveContents(is, player);
-        player.openGui(ClockworkPhase2.instance, 7, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        player.openGui(ClockworkPhase2.instance, GUIs.GUIDEBOOK.ordinal(), world, (int) player.posX, (int) player.posY, (int) player.posZ);
         return ActionResult.newResult(EnumActionResult.SUCCESS, is);
     }
 

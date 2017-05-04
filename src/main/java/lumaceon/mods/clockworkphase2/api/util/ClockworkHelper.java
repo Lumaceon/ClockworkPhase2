@@ -45,6 +45,14 @@ public class ClockworkHelper
     }
 
     /**
+     * Machines are a little more friendly with their exponents, since they also grow more costly from the speed itself.
+     */
+    public static int getTensionCostFromStatsMachine(int baseCost, int quality, int speed) {
+        float efficiency = (float) speed / quality;
+        return (int) Math.round(baseCost * Math.pow(efficiency, 1.7));
+    }
+
+    /**
      * Used by machines (or item) that wish to have work speed increase exponentially with the speed stat. This method
      * provides a standard most tiles machines follow, which assumes a 'par' speed of 250.
      * @param speed The speed of the tiles.
@@ -55,6 +63,6 @@ public class ClockworkHelper
         if(speed <= 0)
             return 0;
         double d = (double) speed;
-        return Math.pow(d/250.0, 3.5);
+        return Math.pow(d/250.0, 4);
     }
 }

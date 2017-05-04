@@ -23,7 +23,7 @@ public class ItemBugSwatter extends ItemClockworkPhase
         TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof TileClockworkMachine)
         {
-            ((TileClockworkMachine) te).energyStorage.receiveEnergy(5000, false);
+            System.out.println(((TileClockworkMachine) te).getField(1));
         }
         return EnumActionResult.SUCCESS;
     }

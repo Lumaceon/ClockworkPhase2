@@ -16,17 +16,16 @@ public class EnergyStorageModular extends EnergyStorage
         super(capacity, maxReceive, maxExtract);
     }
 
-    /**
-     * Changes the max capacity. Will also delete all the energy inside, returning the amount deleted.
-     * @return The amount of energy deleted from the change.
-     */
-    public int setMaxCapacity(int capacity)
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public void setMaxCapacity(int capacity)
     {
         int previousEnergy = this.energy;
         this.capacity = capacity;
         this.maxExtract = capacity;
         this.maxReceive = capacity;
-        this.energy = 0;
-        return previousEnergy;
+        this.energy = Math.min(capacity, energy);
     }
 }

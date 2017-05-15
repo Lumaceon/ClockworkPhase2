@@ -52,6 +52,7 @@ public class ClockworkPhase2
 
         ModFluids.init();
 
+        Echoes.init();
         ModItems.init();
         ModBlocks.init();
         ModBlocks.initTE();

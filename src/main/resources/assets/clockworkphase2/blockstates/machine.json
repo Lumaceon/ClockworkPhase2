@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "inventory": { "model": "clockworkphase2:machine" },
+        "facing=north": { "model": "clockworkphase2:machine" },
+        "facing=south": { "model": "clockworkphase2:machine", "y": 180 },
+        "facing=west":  { "model": "clockworkphase2:machine", "y": 270 },
+        "facing=east":  { "model": "clockworkphase2:machine", "y": 90 }
+    }
+}

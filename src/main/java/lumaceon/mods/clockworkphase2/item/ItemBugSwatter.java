@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.item;
 
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileSimpleOverclocker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -10,6 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.lwjgl.input.Keyboard;
 
 public class ItemBugSwatter extends ItemClockworkPhase
 {
@@ -23,7 +25,18 @@ public class ItemBugSwatter extends ItemClockworkPhase
         TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof TileClockworkMachine)
         {
-            System.out.println(((TileClockworkMachine) te).getField(1));
+            if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+            {
+                ((TileClockworkMachine) te).toggleAntiMode();
+            }
+            else
+            {
+                ((TileClockworkMachine) te).energyStorage.receiveEnergy(10000, false);
+            }
+        }
+        if(te != null && te instanceof TileSimpleOverclocker)
+        {
+            System.out.println(((TileSimpleOverclocker) te).getTimezone().getTimeInTicks());
         }
         return EnumActionResult.SUCCESS;
     }

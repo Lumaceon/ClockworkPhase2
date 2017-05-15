@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.tile.TileTemporalZoningMachine;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalZoningMachine;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.event.world.WorldEvent;

@@ -56,4 +56,8 @@ public class TimeStorage implements ITimeStorage
         }
         return 0;
     }
+
+    public void setTimeStored(long time) {
+        timeStored = time;
+    }
 }

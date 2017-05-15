@@ -3,12 +3,15 @@ package lumaceon.mods.clockworkphase2.init;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.RelicExcavationRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
+import lumaceon.mods.clockworkphase2.block.itemblock.ItemBlockMachine;
 import lumaceon.mods.clockworkphase2.block.machine.BlockBasicWindingBox;
 import lumaceon.mods.clockworkphase2.block.machine.BlockClockworkFurnace;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
 import lumaceon.mods.clockworkphase2.block.temporal.*;
 import lumaceon.mods.clockworkphase2.tile.*;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkFurnace;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileSimpleOverclocker;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalZoningMachine;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -39,6 +42,7 @@ public class ModBlocks
     //MACHINES
     public static Block clockworkFurnace;
     //TEMPORAL BLOCKS
+    public static Block simpleOverlocker;
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     //MISC
@@ -87,9 +91,13 @@ public class ModBlocks
 
         //MACHINES
         clockworkFurnace = new BlockClockworkFurnace(Material.IRON, "clockwork_furnace");
-        register(clockworkFurnace); //TODO custom itemblock
+        registerWithoutItemBlock(clockworkFurnace);
+        GameRegistry.register(new ItemBlockMachine(clockworkFurnace).setRegistryName("clockwork_furnace"));
 
         //TEMPORAL BLOCKS
+        simpleOverlocker = new BlockSimpleOverclocker(Material.GLASS, "simple_overclocker");
+        register(simpleOverlocker);
+
             //registerBlock(celestialCompass, BlockCelestialCompass.class, matName, new Object[] {Material.IRON, celestialCompass.getUnlocalizedName()});
             //registerBlock(celestialCompassSB, BlockCelestialCompassSB.class, matName, new Object[] {Material.IRON, celestialCompassSB.getUnlocalizedName()});
         //MISC
@@ -127,6 +135,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileMultiblockAssembler.class, multiblockAssembler.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileAssemblyTable.class, assemblyTable.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkFurnace.class, clockworkFurnace.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileSimpleOverclocker.class, simpleOverlocker.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
         //GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
 

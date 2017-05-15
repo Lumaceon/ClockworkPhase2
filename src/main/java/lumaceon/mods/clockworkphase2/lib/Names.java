@@ -5,6 +5,9 @@ package lumaceon.mods.clockworkphase2.lib;
  */
 public class Names
 {
+    public static final String ENERGY_ACRONYM = "fe";
+
+
     public class BLOCK
     {
         public static final String TIME_COLLECTOR = "time_collector";

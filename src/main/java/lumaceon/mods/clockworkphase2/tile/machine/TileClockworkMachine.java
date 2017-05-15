@@ -1,7 +1,13 @@
 package lumaceon.mods.clockworkphase2.tile.machine;
 
 import lumaceon.mods.clockworkphase2.api.capabilities.EnergyStorageModular;
+import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkConstruct;
+import lumaceon.mods.clockworkphase2.api.temporal.Echo;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimeSink;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezoneRelay;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
+import lumaceon.mods.clockworkphase2.block.machine.BlockClockworkMachine;
 import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -9,6 +15,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
@@ -25,7 +32,10 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class TileClockworkMachine extends TileMod implements ISidedInventory, ITickable
+/**
+ * Classes extending this should also set the slots field after calling the super constructor.
+ */
+public abstract class TileClockworkMachine extends TileMod implements ISidedInventory, ITickable, ITimeSink
 {
     @CapabilityInject(IItemHandler.class)
     static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
@@ -51,24 +61,39 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
     protected ItemStack[] inventory;
     protected int inventoryStackSizeLimit = 64;
 
+    public ItemStack itemBlock;
     protected int progressTimer = 0;
-    protected int quality = 250;
-    protected int speed = 500;
-    protected int speedOfMachine = 50; //A good par is about 50 for simple machines. Must be greater than 0.
+    public int quality;
+    public int speed;
+    public int tier;
+    protected int speedOfMachine = 50; //Must be greater than 0. Higher = more energy cost but more progression.
     protected int progressForOperation = 10000;
 
-    public TileClockworkMachine()
-    {
-        slots = new Slot[0];
-        inventory = new ItemStack[1];
-    }
+    /* ~TEMPORAL FIELDS~ */
 
-    public TileClockworkMachine(int inventorySize, int maxStackSize, int speedOfMachine, int parEnergyForOperation)
+    private boolean isInTemporalMode = false;
+    public boolean hasReceivedTemporalUpgrade = false;
+
+    protected int energyPerTick;
+    protected int progressPerTick;
+    protected double energyPerOperation;
+    protected double ticksPerOperation;
+
+    /* ~ANTI FIELDS */
+
+    private boolean isInAntiMode = false;
+    public boolean hasReceivedAntiUpgrade = false;
+    protected Echo echoType;
+    protected int echoCount = 0;
+
+    public TileClockworkMachine(int inventorySize, int maxStackSize, int speedOfMachine, int progressForOperation, Echo echoType)
     {
         this.inventory = new ItemStack[inventorySize];
+        this.slots = new Slot[inventorySize];
         this.inventoryStackSizeLimit = maxStackSize;
         this.speedOfMachine = speedOfMachine;
-        this.progressForOperation = parEnergyForOperation;
+        this.progressForOperation = progressForOperation;
+        this.echoType = echoType;
     }
 
     @Override
@@ -80,18 +105,31 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             int energyCostPerTick = getEnergyCostPerTick();
             if(isOperable(energyCostPerTick))
             {
-                if(canWork())
+                if(!isInTemporalMode)
                 {
-                    if(energyStorage.extractEnergy(energyCostPerTick, false) >= energyCostPerTick)
+                    if(standardWorkUpdateTick(energyCostPerTick))
                     {
-                        this.progressTimer += (int) (ClockworkHelper.getStandardExponentialSpeedMultiplier(speed) * speedOfMachine);
-                        if(progressTimer >= progressForOperation)
+                        isDirty = true;
+                    }
+                }
+                else
+                {
+                    long timeAvailable = getTimeAvailable();
+                    int maxActions = Math.min((int) Math.floor(energyStorage.getEnergyStored() / energyPerOperation), (int) Math.floor(timeAvailable / ticksPerOperation));
+                    if(maxActions > 0)
+                    {
+                        int actionsCompleted = temporalActions(isInAntiMode, maxActions);
+                        if(actionsCompleted > 0)
                         {
-                            progressTimer -= progressForOperation;
-                            completeAction();
+                            energyStorage.extractEnergy((int) (energyPerOperation * actionsCompleted), false);
+                            spendTime((long) (actionsCompleted * ticksPerOperation));
+                            isDirty = true;
                         }
                     }
-                    isDirty = true;
+                    else if(standardWorkUpdateTick(energyCostPerTick))
+                    {
+                        isDirty = true;
+                    }
                 }
             }
         }
@@ -100,14 +138,196 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             markDirty();
     }
 
+    /**
+     * Performs standard work.
+     *
+     * @return True if this changed stuff, false if not.
+     */
+    private boolean standardWorkUpdateTick(int energyCostPerTick)
+    {
+        if(canWork(isInAntiMode))
+        {
+            if(energyStorage.extractEnergy(energyCostPerTick, false) >= energyCostPerTick)
+            {
+                this.progressTimer += progressPerTick;
+                if(progressTimer >= progressForOperation)
+                {
+                    progressTimer -= progressForOperation;
+                    completeAction(isInAntiMode);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isInAntiMode() {
+        return isInAntiMode;
+    }
+
+    public boolean isInTemporalMode() {
+        return isInTemporalMode;
+    }
+
+    public void toggleTemporalMode()
+    {
+        if(!worldObj.isRemote)
+        {
+            isInTemporalMode = !isInTemporalMode;
+            markDirty();
+            worldObj.notifyBlockUpdate(pos, getBlockType().getStateFromMeta(getBlockMetadata()), getBlockType().getActualState(getBlockType().getStateFromMeta(getBlockMetadata()), worldObj, getPos()), 3);
+            worldObj.setBlockState(pos, getBlockType().getActualState(getBlockType().getStateFromMeta(getBlockMetadata()), worldObj, getPos()));
+            worldObj.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+        }
+    }
+
+    public void toggleAntiMode()
+    {
+        if(!worldObj.isRemote)
+        {
+            isInAntiMode = !isInAntiMode;
+            markDirty();
+            worldObj.notifyBlockUpdate(pos, getBlockType().getStateFromMeta(getBlockMetadata()), getBlockType().getActualState(getBlockType().getStateFromMeta(getBlockMetadata()), worldObj, getPos()), 3);
+            worldObj.setBlockState(pos, getBlockType().getActualState(getBlockType().getStateFromMeta(getBlockMetadata()), worldObj, getPos()));
+            worldObj.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+        }
+    }
+
     public boolean isOperable(int energyCost) {
         return energyStorage.getEnergyStored() >= energyCost && speed > 0 && quality > 0;
     }
 
+    /**
+     * @return The number of echoes this tile has access to.
+     */
+    public int getEchoesAvailable()
+    {
+        int echoes = this.echoCount;
+        TileEntity te;
+        for(int i = 0; i < 6; i++)
+        {
+            te = worldObj.getTileEntity(this.getPos().offset(EnumFacing.getFront(i)));
+            if(te != null && te instanceof ITimezoneRelay)
+            {
+                ITimezone tz = ((ITimezoneRelay) te).getTimezone();
+                if(tz != null)
+                    echoes += tz.getEchoCountForType(echoType);
+            }
+        }
+        return echoes;
+    }
+
+    /**
+     * Consumes echoes from both this tile, and any timezones available.
+     * @param count Number of echoes to consume.
+     * @return The number of echoes that weren't consumed, or 0 if all were.
+     */
+    protected int consumeEchoes(int count)
+    {
+        count -= Math.min(count, echoCount);
+
+        TileEntity te;
+        for(int i = 0; i < 6; i++)
+        {
+            if(count <= 0)
+                return 0;
+            te = worldObj.getTileEntity(this.getPos().offset(EnumFacing.getFront(i)));
+            if(te != null && te instanceof ITimezoneRelay)
+            {
+                ITimezone tz = ((ITimezoneRelay) te).getTimezone();
+                if(tz != null)
+                {
+                    count -= tz.extractEchoes(echoType, count);
+                }
+            }
+        }
+
+        return count;
+    }
+
+    /**
+     * Produces echoes, prioritizing timezones as storage.
+     * @param count Number of echoes to produce.
+     * @return Number of echoes that weren't produced.
+     */
+    protected int produceEchoes(int count)
+    {
+        TileEntity te;
+        for(int i = 0; i < 6; i++)
+        {
+            if(count <= 0)
+                return 0;
+            te = worldObj.getTileEntity(this.getPos().offset(EnumFacing.getFront(i)));
+            if(te != null && te instanceof ITimezoneRelay)
+            {
+                ITimezone tz = ((ITimezoneRelay) te).getTimezone();
+                if(tz != null)
+                {
+                    count -= tz.insertEchoes(echoType, count);
+                }
+            }
+        }
+
+        if(count > 0)
+        {
+            int extras = Math.min(count, 10 - echoCount);
+            echoCount += extras;
+            count -= extras;
+        }
+
+        return count;
+    }
+
+    public long getTimeAvailable()
+    {
+        long time = 0;
+        TileEntity te;
+        for(int i = 0; i < 6; i++)
+        {
+            te = worldObj.getTileEntity(this.getPos().offset(EnumFacing.getFront(i)));
+            if(te != null && te instanceof ITimezoneRelay)
+            {
+                ITimezone tz = ((ITimezoneRelay) te).getTimezone();
+                if(tz != null)
+                    time += tz.getTimeInTicks();
+            }
+        }
+        return time;
+    }
+
+    public void spendTime(long timeToSpend)
+    {
+        TileEntity te;
+        int i = 0;
+        while(i < 6 && timeToSpend > 0)
+        {
+            te = worldObj.getTileEntity(this.getPos().offset(EnumFacing.getFront(i)));
+            if(te != null && te instanceof ITimezoneRelay)
+            {
+                ITimezone tz = ((ITimezoneRelay) te).getTimezone();
+                if(tz != null)
+                {
+                    timeToSpend -= tz.extractTime(timeToSpend);
+                }
+            }
+            i++;
+        }
+    }
+
     public int getEnergyCostPerTick() {
-        //Because the exponential gain will make the timer go up faster, we scale the base cost itself.
-        //The base cost should be relative to the amount of work done.
-        return ClockworkHelper.getTensionCostFromStatsMachine((int) (ClockworkHelper.getStandardExponentialSpeedMultiplier(speed) * speedOfMachine), quality, speed) / speedOfMachine;
+        return energyPerTick;
+    }
+
+    public int getProgressPerTick() {
+        return progressPerTick;
+    }
+
+    public double getEnergyCostPerOperation() {
+        return energyPerOperation;
+    }
+
+    public double getTicksPerOperation() {
+        return ticksPerOperation;
     }
 
     @SideOnly(Side.CLIENT)
@@ -115,12 +335,65 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
         return progressTimer * maxValue / progressForOperation;
     }
 
-    public abstract boolean canWork();
+    /**
+     * Called when speed and/or quality are changed to update various other mathematical values that are stored for the
+     * sake of code efficiency.
+     */
+    public void onUpdateSpeedOrEfficiencyOfMachine()
+    {
+        //Because the exponential gain will make the timer go up faster, we scale the base cost itself.
+        //The base cost should be relative to the amount of work done.
+        energyPerTick = ClockworkHelper.getTensionCostFromStatsMachine((int) (ClockworkHelper.getStandardExponentialSpeedMultiplier(speed) * speedOfMachine), quality, speed) / speedOfMachine;
+        progressPerTick = (int) (ClockworkHelper.getStandardExponentialSpeedMultiplier(speed) * speedOfMachine);
+        if(progressPerTick > 0)
+        {
+            ticksPerOperation = ((double) progressForOperation / (double) progressPerTick);
+            energyPerOperation = ticksPerOperation * (double) energyPerTick;
+        }
+        else
+        {
+            ticksPerOperation = Double.MAX_VALUE;
+            energyPerOperation = Double.MAX_VALUE;
+        }
+    }
 
     /**
-     * Processes a completed action, such as a furnace smelting an ingot.
+     * Called each tick to see if this machine can work. Energy cost is automatically handled, and this method will only
+     * be called when there is enough energy to work this tick.
+     *
+     * Good things to check for:
+     * -Is there an item that can be 'processed'?
+     * -Can the exports be placed somewhere?
+     * -Are there enough echoes to complete a reverse action (if isReversed is true).
+     *
+     * @param isReversed If true, check if a reverse action can be completed (also check for echoes).
+     * @return Whether or not this machine can work during this tick.
      */
-    public abstract void completeAction();
+    public abstract boolean canWork(boolean isReversed);
+
+    /**
+     * Processes a completed action, such as a furnace smelting an ingot. This confirms the action can be completely
+     * via the canWork method.
+     *
+     * @param isReversed If true, complete a reverse action: consume echoes here.
+     */
+    public abstract void completeAction(boolean isReversed);
+
+    /**
+     * Processes up to the specified number of actions instantly. Unlike completeAction, there is no guarantee the
+     * canWork method will be true for each action (or at all).
+     *
+     * This method is not responsible for consumption of energy or time. It is the responsibility of the method caller
+     * to consume these according to the return value. Anything else that would be consumed (additional items, fluid)
+     * can be consumed within this method.
+     *
+     * @param isReversed If true, complete reverse actions; check for and consume echoes as well.
+     * @param maxNumberOfActions The number of actions we have both the time and energy to complete.
+     * @return The number of actions successfully completed.
+     */
+    public abstract int temporalActions(boolean isReversed, int maxNumberOfActions);
+
+    public abstract boolean canExportToDirection(EnumFacing direction);
 
     /**
      * Attempt to export the given stack (usually a custom recipe result) to the given slots.
@@ -164,6 +437,10 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             ret.stackSize = simulatedExportStackSize;
             return ret;
         }
+        else
+        {
+            markDirty();
+        }
         return export;
     }
 
@@ -199,6 +476,7 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             if(direction.equals(EnumFacing.WEST))
                 slotsLEFT = activate(slotsLEFT, slotID);
         }
+        markDirty();
     }
 
     private int[] activate(int[] slots, int slotID)
@@ -236,6 +514,28 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
         }
 
         return ret;
+    }
+
+    public void setTileDataFromItemStack(ItemStack stack)
+    {
+        IEnergyStorage eStorage = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(eStorage != null)
+        {
+            energyStorage.setMaxCapacity(eStorage.getMaxEnergyStored());
+        }
+
+        IItemHandler cap = stack.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if(cap != null && cap instanceof ItemStackHandlerClockworkConstruct)
+        {
+            ItemStackHandlerClockworkConstruct ccHandler = (ItemStackHandlerClockworkConstruct) cap;
+            this.speed = ccHandler.getSpeed();
+            this.quality = ccHandler.getQuality();
+            this.tier = ccHandler.getTier();
+        }
+
+        this.itemBlock = stack;
+        markDirty();
+        onUpdateSpeedOrEfficiencyOfMachine();
     }
 
     @Override
@@ -390,9 +690,9 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             return slotsFRONT;
         if(side.equals(EnumFacing.SOUTH))
             return slotsBACK;
-        if(side.equals(EnumFacing.EAST))
-            return slotsRIGHT;
         if(side.equals(EnumFacing.WEST))
+            return slotsRIGHT;
+        if(side.equals(EnumFacing.EAST))
             return slotsLEFT;
         return new int[0];
     }
@@ -401,7 +701,28 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
      * Translates from a global EnumFacing to a local EnumFacing.
      * In the case of local, the faces are relative to the front, with north being the front face.
      */
-    private EnumFacing rotate(EnumFacing facing) {
+    private EnumFacing rotate(EnumFacing facing)
+    {
+        if(facing.equals(EnumFacing.UP) || facing.equals(EnumFacing.DOWN))
+            return facing;
+
+        EnumFacing direction = getBlockType().getStateFromMeta(this.getBlockMetadata()).getValue(BlockClockworkMachine.FACING);
+
+        if(direction.equals(EnumFacing.NORTH))
+            return facing;
+
+        facing = facing.rotateAround(EnumFacing.Axis.Y);
+        if(direction.equals(EnumFacing.WEST))
+            return facing;
+
+        facing = facing.rotateAround(EnumFacing.Axis.Y);
+        if(direction.equals(EnumFacing.SOUTH))
+            return facing;
+
+        facing = facing.rotateAround(EnumFacing.Axis.Y);
+        if(direction.equals(EnumFacing.EAST))
+            return facing;
+
         return facing;
     }
 
@@ -465,6 +786,31 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             nbt.setInteger("max_energy", energyStorage.getMaxEnergyStored());
         }
 
+        nbt.setInteger("quality", quality);
+        nbt.setInteger("speed", speed);
+        nbt.setInteger("tier", tier);
+
+        if(itemBlock != null)
+        {
+            NBTTagCompound t = new NBTTagCompound();
+            itemBlock.writeToNBT(t);
+            nbt.setTag("clockwork_stack", t);
+        }
+
+        nbt.setIntArray("up_slot", slotsUP);
+        nbt.setIntArray("down_slot", slotsDOWN);
+        nbt.setIntArray("front_slot", slotsFRONT);
+        nbt.setIntArray("back_slot", slotsBACK);
+        nbt.setIntArray("left_slot", slotsLEFT);
+        nbt.setIntArray("right_slot", slotsRIGHT);
+
+        nbt.setBoolean("has_temporal_upgrade", hasReceivedTemporalUpgrade);
+        nbt.setBoolean("is_temporal", isInTemporalMode);
+
+        nbt.setBoolean("has_anti_upgrade", hasReceivedAntiUpgrade);
+        nbt.setBoolean("is_anti", isInAntiMode);
+        nbt.setInteger("echo_count", echoCount);
+
         return nbt;
     }
 
@@ -497,6 +843,44 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
 
         if(nbt.hasKey("energy"))
             energyStorage.setEnergy(nbt.getInteger("energy"));
+
+        if(nbt.hasKey("speed"))
+            speed = nbt.getInteger("speed");
+        if(nbt.hasKey("quality"))
+            quality = nbt.getInteger("quality");
+        if(nbt.hasKey("tier"))
+            tier = nbt.getInteger("tier");
+        if(nbt.hasKey("clockwork_stack"))
+        {
+            NBTTagCompound t = (NBTTagCompound) nbt.getTag("clockwork_stack");
+            itemBlock = ItemStack.loadItemStackFromNBT(t);
+        }
+        onUpdateSpeedOrEfficiencyOfMachine();
+
+        if(nbt.hasKey("up_slot"))
+            slotsUP = nbt.getIntArray("up_slot");
+        if(nbt.hasKey("down_slot"))
+            slotsDOWN = nbt.getIntArray("down_slot");
+        if(nbt.hasKey("front_slot"))
+            slotsFRONT = nbt.getIntArray("front_slot");
+        if(nbt.hasKey("back_slot"))
+            slotsBACK = nbt.getIntArray("back_slot");
+        if(nbt.hasKey("left_slot"))
+            slotsLEFT = nbt.getIntArray("left_slot");
+        if(nbt.hasKey("right_slot"))
+            slotsRIGHT = nbt.getIntArray("right_slot");
+
+        if(nbt.hasKey("has_temporal_upgrade"))
+            hasReceivedTemporalUpgrade = nbt.getBoolean("has_temporal_upgrade");
+        if(nbt.hasKey("is_temporal"))
+            isInTemporalMode = nbt.getBoolean("is_temporal");
+
+        if(nbt.hasKey("has_anti_upgrade"))
+            hasReceivedAntiUpgrade = nbt.getBoolean("has_anti_upgrade");
+        if(nbt.hasKey("is_anti"))
+            isInAntiMode = nbt.getBoolean("is_anti");
+        if(nbt.hasKey("echo_count"))
+            echoCount = nbt.getInteger("echo_count");
     }
 
     @Override

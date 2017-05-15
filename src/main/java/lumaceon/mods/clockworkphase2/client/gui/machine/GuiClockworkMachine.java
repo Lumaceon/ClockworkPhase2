@@ -4,6 +4,7 @@ import lumaceon.mods.clockworkphase2.client.gui.GuiHelper;
 import lumaceon.mods.clockworkphase2.client.gui.components.GuiButtonItem;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkMachine;
+import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileMachineConfiguration;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class GuiClockworkMachine extends GuiContainer
 {
     static final int tweenTicks = 10;
     protected static ResourceLocation POWER_PEG = new ResourceLocation(Reference.MOD_ID, "textures/gui/power_peg.png");
+    public static ResourceLocation ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/icons.png");
     protected static ItemStack GEAR_STACK = new ItemStack(ModItems.gearCreative);
 
     protected RenderItem itemRenders;
@@ -129,7 +132,7 @@ public class GuiClockworkMachine extends GuiContainer
             {
                 if(h != null && mouseX >= this.guiLeft + h.getMinX() && mouseX <= this.guiLeft + h.getMaxX() && mouseY >= this.guiTop + h.getMinY() && mouseY <= this.guiTop + h.getMaxY())
                 {
-                    this.renderToolTip(h.getTooltip(), mouseX - this.guiLeft, mouseY - this.guiTop);
+                    this.renderToolTip(h.getTooltip(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)), mouseX - this.guiLeft, mouseY - this.guiTop);
                     break;
                 }
             }
@@ -198,7 +201,7 @@ public class GuiClockworkMachine extends GuiContainer
                     if(isPointInRegion(x, y, config.width, config.height, mouseX, mouseY))
                     {
                         drawRect(x, y, x + config.width, y + config.height, 0x80ffffff);
-                        this.renderToolTip(config.getTooltip(), mouseX - this.guiLeft, mouseY - this.guiTop);
+                        this.renderToolTip(config.getTooltip(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)), mouseX - this.guiLeft, mouseY - this.guiTop);
                     }
                 }
             }
@@ -370,7 +373,7 @@ public class GuiClockworkMachine extends GuiContainer
             return maxY;
         }
 
-        public List<String> getTooltip() {
+        public List<String> getTooltip(boolean isShiftDown) {
             return null;
         }
     }
@@ -385,13 +388,20 @@ public class GuiClockworkMachine extends GuiContainer
         }
 
         @Override
-        public List<String> getTooltip()
+        public List<String> getTooltip(boolean isShiftDown)
         {
             if(te.energyStorage != null)
             {
                 ArrayList<String> ret = new ArrayList<String>();
-                ret.add("Energy:");
-                ret.add(te.energyStorage.getEnergyStored() + " / " + te.energyStorage.getMaxEnergyStored() + " FE");
+                ret.add(Colors.RED + "Energy");
+                ret.add(Colors.GREY + te.energyStorage.getEnergyStored() + " / " + te.energyStorage.getMaxEnergyStored() + Names.ENERGY_ACRONYM);
+                if(isShiftDown)
+                {
+                    ret.add("");
+                    ret.add(Colors.GREY + "Cost: " + te.getEnergyCostPerTick() + Names.ENERGY_ACRONYM + " per tick");
+                    ret.add(Colors.GREY + "CW Quality: " + te.quality);
+                    ret.add(Colors.GREY + "CW Speed: " + te.speed);
+                }
                 return ret;
             }
             else
@@ -417,7 +427,7 @@ public class GuiClockworkMachine extends GuiContainer
             this.height = height;
         }
 
-        public abstract List<String> getTooltip();
+        public abstract List<String> getTooltip(boolean isShiftDown);
 
         public abstract void onIOChange(EnumFacing direction, boolean activate);
 
@@ -447,7 +457,7 @@ public class GuiClockworkMachine extends GuiContainer
         }
 
         @Override
-        public List<String> getTooltip()
+        public List<String> getTooltip(boolean isShiftDown)
         {
             retTip.clear();
             for(String s : toolTip)

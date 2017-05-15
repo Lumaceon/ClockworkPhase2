@@ -1,4 +1,4 @@
-package lumaceon.mods.clockworkphase2.api.timezone;
+package lumaceon.mods.clockworkphase2.api.temporal.timezone;
 
 import net.minecraft.nbt.NBTTagCompound;
 

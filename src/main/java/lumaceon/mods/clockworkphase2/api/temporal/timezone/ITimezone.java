@@ -1,5 +1,6 @@
-package lumaceon.mods.clockworkphase2.api.timezone;
+package lumaceon.mods.clockworkphase2.api.temporal.timezone;
 
+import lumaceon.mods.clockworkphase2.api.temporal.Echo;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -36,6 +37,18 @@ public interface ITimezone
     public TileEntity getTile();
 
     public ITimezoneFunction[] getTimezoneFunctions();
+
+    public int getEchoCountForType(Echo echoType);
+
+    /**
+     * @return Number of echoes successfully inserted.
+     */
+    public int insertEchoes(Echo echoType, int numberToInsert);
+
+    /**
+     * @return Number of echoes successfully extracted.
+     */
+    public int extractEchoes(Echo echoType, int numberToExtract);
 
     /**
      * Serialize this timezone to NBT. Should also include all ITimezoneFunctions attached to this timezone.

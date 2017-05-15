@@ -1,0 +1,8 @@
+{
+    "parent": "clockworkphase2:block/machine",
+    "textures": {
+        "top": "clockworkphase2:blocks/cw",
+        "front": "blocks/furnace_front_off",
+        "side": "blocks/furnace_side"
+    }
+}

@@ -1,9 +1,9 @@
-package lumaceon.mods.clockworkphase2.tile;
+package lumaceon.mods.clockworkphase2.tile.temporal;
 
 import com.google.common.collect.ImmutableSet;
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.timezone.Timezone;
-import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.Timezone;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.ChunkPos;

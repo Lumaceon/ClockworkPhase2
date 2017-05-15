@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.capabilities;
 
-import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.timezone.Timezone;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.temporal.timezone.Timezone;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

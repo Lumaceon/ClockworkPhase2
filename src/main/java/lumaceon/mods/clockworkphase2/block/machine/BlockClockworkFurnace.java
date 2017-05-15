@@ -26,7 +26,23 @@ public class BlockClockworkFurnace extends BlockClockworkMachine
     {
         if(!playerIn.isSneaking())
         {
-            playerIn.openGui(ClockworkPhase2.instance, GUIs.CLOCKWORK_FURNACE.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+            TileEntity te = worldIn.getTileEntity(pos);
+            if(te != null)
+            {
+                playerIn.openGui(ClockworkPhase2.instance, GUIs.CLOCKWORK_FURNACE.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+                return true;
+            }
+        }
+        else
+        {
+            if(!worldIn.isRemote)
+            {
+                TileEntity te = worldIn.getTileEntity(pos);
+                if(te != null && te instanceof TileClockworkFurnace)
+                {
+                    ((TileClockworkFurnace) te).toggleTemporalMode();
+                }
+            }
             return true;
         }
 

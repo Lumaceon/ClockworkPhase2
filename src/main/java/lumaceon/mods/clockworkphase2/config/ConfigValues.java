@@ -27,4 +27,6 @@ public class ConfigValues
     public static int BASE_ETHEREAL_TIMEFRAME_KEY_DROP_RATE = 1000;
     public static int BASE_PHASIC_TIMEFRAME_KEY_DROP_RATE = 50;
     public static int BASE_ETERNAL_TIMEFRAME_KEY_DROP_RATE = 10;
+
+    public static int SIMPLE_OVERCLOCKER_TIME = TimeConverter.MINUTE * 5;
 }

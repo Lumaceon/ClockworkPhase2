@@ -29,12 +29,6 @@ public class CapabilityTimezone
             public void readNBT(Capability<ITimezone> capability, ITimezone instance, EnumFacing side, NBTBase base) {
                 instance.deserializeNBT((NBTTagCompound) base);
             }
-        }, new Callable<ITimezone>()
-        {
-            @Override
-            public Timezone call() throws Exception {
-                return new Timezone();
-            }
-        });
+        }, () -> new Timezone());
     }
 }

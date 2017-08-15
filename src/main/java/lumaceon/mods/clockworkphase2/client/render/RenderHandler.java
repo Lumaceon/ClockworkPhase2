@@ -1,24 +1,48 @@
 package lumaceon.mods.clockworkphase2.client.render;
 
+import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
+import lumaceon.mods.clockworkphase2.capabilities.toolbelt.CapabilityTemporalToolbelt;
+import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
+import lumaceon.mods.clockworkphase2.client.gui.GuiHelper;
+import lumaceon.mods.clockworkphase2.client.handler.keybind.Keybindings;
+import lumaceon.mods.clockworkphase2.client.particle.ModParticles;
+import lumaceon.mods.clockworkphase2.config.ConfigValues;
+import lumaceon.mods.clockworkphase2.lib.Reference;
+import lumaceon.mods.clockworkphase2.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+
 public class RenderHandler
 {
-    protected static final ResourceLocation WIDGETS_TEX_PATH = new ResourceLocation("textures/gui/widgets.png");
+    static final ResourceLocation WIDGETS_TEX_PATH = new ResourceLocation("textures/gui/widgets.png");
+    static final ResourceLocation MOD_WIDGETS_TEX_PATH = new ResourceLocation(Reference.MOD_ID, "textures/gui/widgets.png");
+    static final ResourceLocation XP_TIER_ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/xp_tier_icons.png");
 
     private static RenderItem itemRenderer;
     public static Minecraft mc;
     public static EntityItem item;
     public static double interpolatedPosX, interpolatedPosY, interpolatedPosZ;
-    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+    FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+
+    private static int toolbeltTween = 0;
 
     public RenderHandler()
     {
@@ -26,27 +50,180 @@ public class RenderHandler
         itemRenderer = mc.getRenderItem();
     }
 
-    /*@SubscribeEvent
-    public void onPreRenderOverlay(RenderGameOverlayEvent.Pre event)
+    @SubscribeEvent
+    public void onPreRenderOverlay(RenderGameOverlayEvent.Post event)
     {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if(player == null)
-            return;
-        if(event.getType().equals(RenderGameOverlayEvent.ElementType.EXPERIENCE) && !player.isCreative())
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if(player != null)
         {
-            event.setCanceled(true);
-            EnumAchievementTier tier = EnumAchievementTier.START;
-            if(player.hasCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN))
+            GL11.glPushAttrib(0);
+            GlStateManager.pushMatrix();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+            ItemStack hourglass = HourglassHelper.getFirstActiveHourglass(player);
+            if(!hourglass.isEmpty())
             {
-                IAchievementScoreHandler achievementScoreHandler = player.getCapability(CapabilityAchievementScore.ACHIEVEMENT_HANDLER_CAPABILITY, EnumFacing.DOWN);
-                tier = achievementScoreHandler.getAchievementTier();
+                if(event.getType().equals(RenderGameOverlayEvent.ElementType.EXPERIENCE) && !player.isCreative())
+                {
+                    int xLoc = event.getResolution().getScaledWidth() / 2 - 91;
+                    renderExpBar(event.getResolution(), xLoc, player.experienceLevel);
+                }
             }
-            int xLoc = event.getResolution().getScaledWidth() / 2 - 91;
-            renderExpBar(event.getResolution(), xLoc, tier);
+
+            ITemporalToolbeltHandler toolbelt = player.getCapability(CapabilityTemporalToolbelt.TEMPORAL_TOOLBELT, EnumFacing.DOWN);
+            if(toolbelt != null && toolbelt.getRowCount() > 0)
+            {
+                if(Keybindings.toolbelt.isKeyDown())
+                {
+                    if(toolbeltTween < 50)
+                    {
+                        ++toolbeltTween;
+                    }
+                }
+                else if(toolbeltTween > 0)
+                {
+                    --toolbeltTween;
+                }
+
+                if(toolbeltTween > 0)
+                {
+                    int toolbeltRowSelectIndex = ClientProxy.toolbeltRowSelectIndex;
+                    NonNullList<NonNullList<ItemStack>> rows = toolbelt.getAllRows();
+
+                    //Stuff from GuiIngame
+                    ScaledResolution sr = event.getResolution();
+                    mc.getTextureManager().bindTexture(WIDGETS_TEX_PATH);
+                    int centerX = sr.getScaledWidth() / 2;
+
+                    GlStateManager.enableBlend();
+                    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+                    //Render the bars.
+                    for(int i = 0; i < rows.size(); i++)
+                    {
+                        GuiHelper.drawTexturedModalRect(centerX - 91, sr.getScaledHeight() - 22 - (int) ((22*(i+1)) * (toolbeltTween / 50.0F)), 0, 0, 182, 22, 256, 0);
+                        if(i == toolbeltRowSelectIndex - 1)
+                        {
+                            mc.getTextureManager().bindTexture(MOD_WIDGETS_TEX_PATH);
+                            GuiHelper.drawTexturedModalRect(centerX - 92, sr.getScaledHeight() - 23 - (int) ((22*(i+1)) * (toolbeltTween / 50.0F)), 0, 0, 184, 24, 256, 0);
+                            mc.getTextureManager().bindTexture(WIDGETS_TEX_PATH);
+                        }
+                    }
+
+                    //More stuff from GuiIngame
+                    GlStateManager.enableRescaleNormal();
+                    RenderHelper.enableGUIStandardItemLighting();
+
+                    //Render Items.
+                    if(toolbeltTween == 50)
+                    {
+                        for(int i = 0; i < rows.size(); i++)
+                        {
+                            NonNullList<ItemStack> row = rows.get(i);
+                            for(int l = 0; l < 9; ++l)
+                            {
+                                int i1 = centerX - 90 + l * 20 + 2;
+                                int j1 = sr.getScaledHeight() - 16 - 3;
+                                this.renderHotbarItem(i1, j1 - 22*(i+1), event.getPartialTicks(), player, row.get(l));
+                            }
+                        }
+                    }
+                    RenderHelper.disableStandardItemLighting();
+                    GlStateManager.disableRescaleNormal();
+                }
+            }
+            GlStateManager.popMatrix();
+            GL11.glPopAttrib();
         }
     }
 
-    int tweentimer = 0;
+    protected void renderHotbarItem(int p_184044_1_, int p_184044_2_, float p_184044_3_, EntityPlayer player, ItemStack stack)
+    {
+        if(!stack.isEmpty())
+        {
+            float f = (float)stack.getAnimationsToGo() - p_184044_3_;
+
+            if (f > 0.0F)
+            {
+                GlStateManager.pushMatrix();
+                float f1 = 1.0F + f / 5.0F;
+                GlStateManager.translate((float)(p_184044_1_ + 8), (float)(p_184044_2_ + 12), 0.0F);
+                GlStateManager.scale(1.0F / f1, (f1 + 1.0F) / 2.0F, 1.0F);
+                GlStateManager.translate((float)(-(p_184044_1_ + 8)), (float)(-(p_184044_2_ + 12)), 0.0F);
+            }
+
+            itemRenderer.renderItemAndEffectIntoGUI(player, stack, p_184044_1_, p_184044_2_);
+
+            if (f > 0.0F)
+            {
+                GlStateManager.popMatrix();
+            }
+
+            itemRenderer.renderItemOverlays(mc.fontRenderer, stack, p_184044_1_, p_184044_2_);
+        }
+    }
+
+    private void renderExpBar(ScaledResolution scaledRes, int x, int xpLevel)
+    {
+        int xpTier = 0;
+        if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_5)
+            xpTier = 5;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_4)
+            xpTier = 4;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_3)
+            xpTier = 3;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_2)
+            xpTier = 2;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_1)
+            xpTier = 1;
+
+        if(xpTier == 0)
+            return;
+
+        mc.getTextureManager().bindTexture(XP_TIER_ICONS);
+
+        int l = scaledRes.getScaledHeight() - 44;
+        float zLevel = 0;
+        float width = 208;
+        float fullHeight = 21;
+        float height = fullHeight - (1 + 4 * (xpTier));
+        x -= 13;
+        int y = l;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((double)(x + 0), (double)(y + fullHeight), zLevel).tex(0, 0).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + fullHeight), zLevel).tex(1, 0).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + height), zLevel).tex(1, (float) -(1 + 4 * (xpTier))/fullHeight).endVertex();
+        vertexbuffer.pos((double)(x + 0), (double)(y + height), zLevel).tex(0, (float) -(1 + 4 * (xpTier))/fullHeight).endVertex();
+        tessellator.draw();
+    }
+
+    private void drawTexturedModalRectVanilla(int x, int y, int textureX, int textureY, int width, int height, float zLevel)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((double)(x + 0), (double)(y + height), zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + height), zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + 0), zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
+        vertexbuffer.pos((double)(x + 0), (double)(y + 0), zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
+        tessellator.draw();
+    }
+
+    private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
+    {
+        float zLevel = 0;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder vertexbuffer = tessellator.getBuffer();
+        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexbuffer.pos((double)(x + 0), (double)(y + height), zLevel).tex((double)((float)(textureX + 0) * (1F/182F)), (double)((float)(textureY + height)*0.2)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + height), zLevel).tex((double)((float)(textureX + width) * (1F/182F)), (double)((float)(textureY + height)*0.2)).endVertex();
+        vertexbuffer.pos((double)(x + width), (double)(y + 0), zLevel).tex((double)((float)(textureX + width) * (1F/182F)), (double)((float)(textureY + 0)*0.2)).endVertex();
+        vertexbuffer.pos((double)(x + 0), (double)(y + 0), zLevel).tex((double)((float)(textureX + 0) * (1F/182F)), (double)((float)(textureY + 0)*0.2)).endVertex();
+        tessellator.draw();
+    }
+
+    /*int tweentimer = 0;
     @SubscribeEvent
     public void onPostRenderOverlay(RenderGameOverlayEvent.Post event)
     {
@@ -189,18 +366,7 @@ public class RenderHandler
         }
     }
 
-    private void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
-    {
-        float zLevel = 0;
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        vertexbuffer.pos((double)(x + 0), (double)(y + height), zLevel).tex((double)((float)(textureX + 0) * (1F/182F)), (double)((float)(textureY + height)*0.2)).endVertex();
-        vertexbuffer.pos((double)(x + width), (double)(y + height), zLevel).tex((double)((float)(textureX + width) * (1F/182F)), (double)((float)(textureY + height)*0.2)).endVertex();
-        vertexbuffer.pos((double)(x + width), (double)(y + 0), zLevel).tex((double)((float)(textureX + width) * (1F/182F)), (double)((float)(textureY + 0)*0.2)).endVertex();
-        vertexbuffer.pos((double)(x + 0), (double)(y + 0), zLevel).tex((double)((float)(textureX + 0) * (1F/182F)), (double)((float)(textureY + 0)*0.2)).endVertex();
-        tessellator.draw();
-    }
+
 
     private void drawTexturedModalRectVanilla(int x, int y, int textureX, int textureY, int width, int height, float zLevel)
     {
@@ -214,14 +380,57 @@ public class RenderHandler
         tessellator.draw();
     }*/
 
-    @SubscribeEvent(priority = EventPriority.HIGH) //TODO: fix the darn clouds. Git off my glyph...
+    public static ResourceLocation MOD_PARTICLES = new ResourceLocation(Reference.MOD_ID, "textures/particles.png");
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
     public void onRenderWorld(RenderWorldLastEvent event)
     {
         boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
         boolean light = GL11.glIsEnabled(GL11.GL_LIGHTING);
-        interpolatedPosX = mc.thePlayer.lastTickPosX + (mc.thePlayer.posX - mc.thePlayer.lastTickPosX) * (double)event.getPartialTicks();
-        interpolatedPosY = mc.thePlayer.lastTickPosY + (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) * (double)event.getPartialTicks();
-        interpolatedPosZ = mc.thePlayer.lastTickPosZ + (mc.thePlayer.posZ - mc.thePlayer.lastTickPosZ) * (double)event.getPartialTicks();
+        interpolatedPosX = mc.player.lastTickPosX + (mc.player.posX - mc.player.lastTickPosX) * (double)event.getPartialTicks();
+        interpolatedPosY = mc.player.lastTickPosY + (mc.player.posY - mc.player.lastTickPosY) * (double)event.getPartialTicks();
+        interpolatedPosZ = mc.player.lastTickPosZ + (mc.player.posZ - mc.player.lastTickPosZ) * (double)event.getPartialTicks();
+
+        Minecraft mc = Minecraft.getMinecraft();
+        Entity renderViewEntity = mc.getRenderViewEntity();
+
+        //Render custom mod particles.
+        if(renderViewEntity != null)
+        {
+            ArrayList<Particle> particleList = ModParticles.getParticleList();
+
+            if(!particleList.isEmpty())
+            {
+                GL11.glPushMatrix();
+                GL11.glPushAttrib(0);
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glDisable(GL11.GL_LIGHTING);
+                Minecraft.getMinecraft().renderEngine.bindTexture(MOD_PARTICLES);
+
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 0.8F);
+
+                Tessellator tessellator = Tessellator.getInstance();
+                BufferBuilder bufferbuilder = tessellator.getBuffer();
+                bufferbuilder.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+                for(int n = 0; n < particleList.size(); n++)
+                {
+                    Particle fx = particleList.get(n);
+                    if(fx == null || !fx.isAlive())
+                    {
+                        particleList.remove(n);
+                        --n;
+                    }
+                    else
+                    {
+                        fx.renderParticle(bufferbuilder, renderViewEntity, event.getPartialTicks(), ActiveRenderInfo.getRotationX(), ActiveRenderInfo.getRotationXZ(), ActiveRenderInfo.getRotationZ(), ActiveRenderInfo.getRotationYZ(), ActiveRenderInfo.getRotationXY());
+                    }
+                }
+                tessellator.draw();
+                GL11.glPopAttrib();
+                GL11.glPopMatrix();
+            }
+        }
 
         if(mc.getRenderManager().renderEngine == null)
             return;
@@ -229,13 +438,13 @@ public class RenderHandler
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if(mc.theWorld != null)
+        if(mc.world != null)
         {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             /*for(int[] area : TimezoneHandler.timezones)
             {
-                ITimezoneProvider timezone = TimezoneHandler.getTimeZoneFromWorldPosition(area[0], area[1], area[2], area[3]);
+                ITimezoneProvider timezone = TimezoneHandler.getFirstTimezoneFromWorldPosition(area[0], area[1], area[2], area[3]);
                 if(timezone != null)
                 {
                     TIMEZONE.renderGlyph(area, (double)area[0] - TileEntityRendererDispatcher.staticPlayerX, (double)area[1] - TileEntityRendererDispatcher.staticPlayerY, (double)area[2] - TileEntityRendererDispatcher.staticPlayerZ, timezone);

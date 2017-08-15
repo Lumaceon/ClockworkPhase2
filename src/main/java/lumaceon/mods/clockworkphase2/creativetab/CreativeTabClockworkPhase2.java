@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.creativetab;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class CreativeTabClockworkPhase2 extends CreativeTabs
 {
@@ -12,8 +13,8 @@ public class CreativeTabClockworkPhase2 extends CreativeTabs
     }
 
     @Override
-    public Item getTabIconItem()
+    public ItemStack getTabIconItem()
     {
-        return Items.CLOCK;
+        return new ItemStack(Items.CLOCK);
     }
 }

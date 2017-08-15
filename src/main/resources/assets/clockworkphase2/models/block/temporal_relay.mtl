@@ -1,0 +1,12 @@
+# Blender MTL File: 'temporal_relay_new.blend'
+# Material Count: 2
+
+newmtl ForwardAnimation
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+map_Kd clockworkphase2:blocks/armillary_forward
+
+newmtl MainMaterial
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+map_Kd clockworkphase2:blocks/temporal_relay

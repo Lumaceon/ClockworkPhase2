@@ -59,7 +59,7 @@ public class TileCelestialCompass extends TileMod implements ITickable
 
         for(int i = 0; i < 9; i++)
             if(nbt.hasKey("craftingitem_" + i))
-                craftingItems[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) nbt.getTag("craftingitem_" + i));
+                craftingItems[i] = new ItemStack((NBTTagCompound) nbt.getTag("craftingitem_" + i));
     }
 
     @Override
@@ -87,10 +87,10 @@ public class TileCelestialCompass extends TileMod implements ITickable
             if(item != null && craftingItems[circleClicked] == null)
             {
                 ItemStack newItem = item.copy();
-                newItem.stackSize = 1;
+                newItem.setCount(1);
                 setCraftingItem(newItem, circleClicked);
                 player.inventory.decrStackSize(currentItem, 1);
-                PacketHandler.INSTANCE.sendToAllAround(new MessageCelestialCompassItemGet(newItem, getPos(), (byte) circleClicked), new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
+                PacketHandler.INSTANCE.sendToAllAround(new MessageCelestialCompassItemGet(newItem, getPos(), (byte) circleClicked), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
                 markDirty();
                 return true;
             }
@@ -98,7 +98,7 @@ public class TileCelestialCompass extends TileMod implements ITickable
             {
                 player.inventory.setInventorySlotContents(currentItem, craftingItems[circleClicked]);
                 craftingItems[circleClicked] = null;
-                PacketHandler.INSTANCE.sendToAllAround(new MessageCelestialCompassItemGet(null, getPos(), (byte) circleClicked), new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
+                PacketHandler.INSTANCE.sendToAllAround(new MessageCelestialCompassItemGet(null, getPos(), (byte) circleClicked), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 256));
                 markDirty();
                 return true;
             }
@@ -109,19 +109,18 @@ public class TileCelestialCompass extends TileMod implements ITickable
     public static void destroyMultiblock(TileCelestialCompass te, World world, BlockPos pos)
     {
         te.isBeingDestroyed = true;
-        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModBlocks.multiblockAssembler)));
-        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.multiblockCelestialCompass)));
+        world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(ModItems.multiblockCelestialCompass)));
         ItemStack consBlocks1 = new ItemStack(ModBlocks.constructionBlock);
-        consBlocks1.stackSize = 64;
+        consBlocks1.setCount(64);
         ItemStack consBlocks2 = new ItemStack(ModBlocks.constructionBlock);
-        consBlocks2.stackSize = 32;
-        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), consBlocks1));
-        world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), consBlocks2));
+        consBlocks2.setCount(32);
+        world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), consBlocks1));
+        world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), consBlocks2));
         for(int i = 0; i < 9; i++)
         {
             ItemStack stack = te.getCraftingItem(i);
             if(stack != null)
-                world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack));
+                world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack));
             te.setCraftingItem(null, i);
         }
 

@@ -14,18 +14,19 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileMultiblockAssembler extends TileMod
 {
-    public ItemStack templateStack;
+    public ItemStack templateStack = ItemStack.EMPTY;
     public IMultiblockTemplate template;
+    public boolean isAssemblingMultiblock = false; //Used in the breakBlock to keep the template from dropping when this block is replaced.
 
     /**
      * @return True if the item was removed, false if not.
      */
     public boolean onRightClickWithEmptyHand(EntityPlayer player)
     {
-        if(templateStack != null)
+        if(!templateStack.isEmpty())
         {
             player.inventory.setInventorySlotContents(player.inventory.currentItem, templateStack.copy());
-            templateStack = null;
+            templateStack = ItemStack.EMPTY;
             template = null;
             markDirty();
         }
@@ -37,10 +38,10 @@ public class TileMultiblockAssembler extends TileMod
      */
     public boolean onRightClickWithMultiblockTemplate(ItemStack stack)
     {
-        if(templateStack == null && stack != null && stack.getItem() instanceof IMultiblockTemplateItem)
+        if(templateStack.isEmpty() && !stack.isEmpty() && stack.getItem() instanceof IMultiblockTemplateItem)
         {
             templateStack = stack.copy();
-            templateStack.stackSize = 1;
+            templateStack.setCount(1);
             template = ((IMultiblockTemplateItem) stack.getItem()).getTemplate();
             markDirty();
             return true;
@@ -55,7 +56,7 @@ public class TileMultiblockAssembler extends TileMod
     {
         if(template == null)
         {
-            if(templateStack == null)
+            if(templateStack.isEmpty())
                 return false;
             Item item = templateStack.getItem();
             if(item instanceof IMultiblockTemplateItem)
@@ -68,7 +69,7 @@ public class TileMultiblockAssembler extends TileMod
             for(int i = 0; i <= maxIndex; i++)
             {
                 IMultiblockTemplate.BlockData data = template.getBlockForIndex(i);
-                IBlockState state = worldObj.getBlockState(pos.add(data.getPosition()));
+                IBlockState state = world.getBlockState(pos.add(data.getPosition()));
                 if(state != null)
                 {
                     Block block = state.getBlock();
@@ -76,7 +77,7 @@ public class TileMultiblockAssembler extends TileMod
                     {
                         if((block.equals(ModBlocks.constructionBlock) || block.equals(ModBlocks.multiblockAssembler)))
                             continue; //The block is either a construction block, or the assembler itself, so we keep going.
-                        if(block.isReplaceable(worldObj, pos.add(data.getPosition())))
+                        if(block.isReplaceable(world, pos.add(data.getPosition())))
                         {
                             setNewBlock(data);
                             return true;
@@ -95,14 +96,14 @@ public class TileMultiblockAssembler extends TileMod
 
     private void setNewBlock(IMultiblockTemplate.BlockData data)
     {
-        worldObj.setBlockToAir(pos.add(data.getPosition()));
-        worldObj.setBlockState(pos.add(data.getPosition()), ModBlocks.constructionBlock.getDefaultState().withProperty(BlockMultiblockAssembler.METADATA, data.meta));
+        world.setBlockToAir(pos.add(data.getPosition()));
+        world.setBlockState(pos.add(data.getPosition()), ModBlocks.constructionBlock.getDefaultState().withProperty(BlockMultiblockAssembler.METADATA, data.meta));
 
         //Check to see if all of the blocks are ready for the full multiblock to form.
         for(int i = 0; i <= template.getMaxIndex(); i++)
         {
             data = template.getBlockForIndex(i);
-            IBlockState state = worldObj.getBlockState(pos.add(data.getPosition()));
+            IBlockState state = world.getBlockState(pos.add(data.getPosition()));
             if(state != null)
             {
                 Block block = state.getBlock();
@@ -126,18 +127,21 @@ public class TileMultiblockAssembler extends TileMod
                 assemblerReplacement = data;
                 continue; //We replace the assembler last...it probably wouldn't break, but best to make sure.
             }
-            worldObj.setBlockState(pos.add(data.getPosition()), data.getBlock().getStateFromMeta(data.meta));
+            world.setBlockState(pos.add(data.getPosition()), data.getBlock().getStateFromMeta(data.meta));
         }
 
         if(assemblerReplacement != null)
-            worldObj.setBlockState(pos, assemblerReplacement.getBlock().getStateFromMeta(assemblerReplacement.meta));
+        {
+            isAssemblingMultiblock = true;
+            world.setBlockState(pos, assemblerReplacement.getBlock().getStateFromMeta(assemblerReplacement.meta));
+        }
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        if(templateStack != null)
+        if(!templateStack.isEmpty())
         {
             NBTTagCompound stackTag = new NBTTagCompound();
             templateStack.writeToNBT(stackTag);
@@ -152,8 +156,8 @@ public class TileMultiblockAssembler extends TileMod
         super.readFromNBT(nbt);
         if(nbt.hasKey("template_stack"))
         {
-            templateStack = ItemStack.loadItemStackFromNBT((NBTTagCompound) nbt.getTag("template_stack"));
-            if(templateStack != null && templateStack.getItem() instanceof IMultiblockTemplateItem)
+            templateStack = new ItemStack((NBTTagCompound) nbt.getTag("template_stack"));
+            if(templateStack.getItem() instanceof IMultiblockTemplateItem)
                 template = ((IMultiblockTemplateItem) templateStack.getItem()).getTemplate();
         }
     }

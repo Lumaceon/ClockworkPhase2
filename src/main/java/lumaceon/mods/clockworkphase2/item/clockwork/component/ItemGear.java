@@ -3,11 +3,14 @@ package lumaceon.mods.clockworkphase2.item.clockwork.component;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemGear extends ItemClockworkPhase implements IClockwork
@@ -24,8 +27,9 @@ public class ItemGear extends ItemClockworkPhase implements IClockwork
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addClockworkComponentInformation(is, list);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        InformationDisplay.addClockworkComponentInformation(stack, tooltip);
     }
 
     @Override

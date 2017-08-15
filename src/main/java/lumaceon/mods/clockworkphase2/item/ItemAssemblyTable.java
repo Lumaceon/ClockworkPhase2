@@ -21,11 +21,12 @@ public class ItemAssemblyTable extends ItemClockworkPhase
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if(worldIn.isRemote)
             return EnumActionResult.SUCCESS;
 
+        ItemStack stack = player.getHeldItem(hand);
         IBlockState iblockstate = worldIn.getBlockState(pos);
         Block block = iblockstate.getBlock();
         boolean replaceable = block.isReplaceable(worldIn, pos);
@@ -33,7 +34,7 @@ public class ItemAssemblyTable extends ItemClockworkPhase
         if(!replaceable)
             pos = pos.up();
 
-        int i = MathHelper.floor_double((double) (playerIn.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int i = MathHelper.floor((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
         EnumFacing enumfacing = EnumFacing.NORTH;
         switch(i)
         {
@@ -52,7 +53,7 @@ public class ItemAssemblyTable extends ItemClockworkPhase
         }
         BlockPos blockpos = pos.offset(enumfacing);
 
-        if(playerIn.canPlayerEdit(pos, side, stack) && playerIn.canPlayerEdit(blockpos, side, stack))
+        if(player.canPlayerEdit(pos, facing, stack) && player.canPlayerEdit(blockpos, facing, stack))
         {
             boolean flag1 = worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos);
             boolean flag2 = replaceable || worldIn.isAirBlock(pos);
@@ -68,7 +69,7 @@ public class ItemAssemblyTable extends ItemClockworkPhase
                     worldIn.setBlockState(blockpos, iblockstate2, 3);
                 }
 
-                --stack.stackSize;
+                stack.shrink(1);
                 return EnumActionResult.SUCCESS;
             }
             else

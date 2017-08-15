@@ -25,21 +25,21 @@ public class GuiButtonItem extends GuiButton
     }
 
     @Override
-    public void drawButton(Minecraft p_146112_1_, int p_146112_2_, int p_146112_3_)
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
     {
         if(this.visible)
         {
-            p_146112_1_.getTextureManager().bindTexture(BUTTON_TEXTURES);
+            mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_LIGHTING);
-            this.hovered = p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition && p_146112_2_ < this.xPosition + this.width && p_146112_3_ < this.yPosition + this.height;
+            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             int k = this.getHoverState(this.hovered);
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + k * 20, this.width / 2, this.height);
-            this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + k * 20, this.width / 2, this.height);
-            this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
+            this.drawTexturedModalRect(this.x, this.y, 0, 46 + k * 20, this.width / 2, this.height);
+            this.drawTexturedModalRect(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + k * 20, this.width / 2, this.height);
+            this.mouseDragged(mc, mouseX, mouseY);
             int l = 14737632;
 
             if(packedFGColour != 0)
@@ -50,7 +50,7 @@ public class GuiButtonItem extends GuiButton
                 l = 16777120;
 
             if(item != null)
-                this.drawItemStack(item, this.xPosition + 2, this.yPosition + 2, this.displayString);
+                this.drawItemStack(item, this.x + 2, this.y + 2, this.displayString);
         }
     }
 

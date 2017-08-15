@@ -2,94 +2,32 @@ package lumaceon.mods.clockworkphase2.recipe;
 
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import lumaceon.mods.clockworkphase2.lib.Reference;
-import lumaceon.mods.clockworkphase2.recipe.customrecipe.ShapelessOreRecipeDegradeItem;
+import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Recipes
 {
     public static void init()
     {
-        RecipeSorter.register(Reference.MOD_ID + ":degradeitem", ShapelessOreRecipeDegradeItem.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
-        initClockworkComponentRecipes();
-        initClockworkConstructs();
-        initTemporalClockworkModules();
+        /*initTemporalClockworkModules();
         initMetalBlocks();
         initBlocks();
-        initMisc();
+        initMisc();*/
         initFurnaceRecipes();
-    }
-
-    public static IRecipe gearWood;
-    public static IRecipe gearCobbleStone;
-    public static IRecipe gearStone;
-    public static IRecipe gearIron;
-    public static IRecipe gearGold;
-    public static IRecipe gearQuartz;
-    public static IRecipe gearEmerald;
-    public static IRecipe gearDiamond;
-    public static IRecipe gearCopper;
-    public static IRecipe gearZinc;
-    public static IRecipe gearBrass;
-    public static void initClockworkComponentRecipes()
-    {
-        gearWood = addGearRecipe(new ItemStack(ModItems.gearWood), "plankWood");
-        gearCobbleStone = addGearRecipe(new ItemStack(ModItems.gearStone), "cobblestone");
-        gearStone = addGearRecipe(new ItemStack(ModItems.gearStone), "stone");
-        gearIron = addGearRecipe(new ItemStack(ModItems.gearIron), "ingotIron");
-        gearGold = addGearRecipe(new ItemStack(ModItems.gearGold), "ingotGold");
-        gearQuartz = addGearRecipe(new ItemStack(ModItems.gearQuartz), "gemQuartz");
-        gearEmerald = addGearRecipe(new ItemStack(ModItems.gearEmerald), "gemEmerald");
-        gearDiamond = addGearRecipe(new ItemStack(ModItems.gearDiamond), "gemDiamond");
-        gearCopper = addGearRecipe(new ItemStack(ModItems.gearCopper), "ingotCopper");
-        gearZinc = addGearRecipe(new ItemStack(ModItems.gearZinc), "ingotZinc");
-        gearBrass = addGearRecipe(new ItemStack(ModItems.gearBrass), "ingotBrass");
-    }
-
-    public static IRecipe mainspring;
-    public static IRecipe clockworkCore;
-    public static IRecipe clockworkPickaxe;
-    public static IRecipe clockworkAxeRight;
-    public static IRecipe clockworkAxeLeft;
-    public static IRecipe clockworkShovel;
-    public static IRecipe clockworkSword;
-    public static void initClockworkConstructs()
-    {
-        ItemStack result;
-
-        result = new ItemStack(ModItems.mainspring);
-        mainspring = new ShapedOreRecipe(result, "iii", "iIi", "iii", 'i', "ingotIron", 'I', "blockIron");
-        GameRegistry.addRecipe(mainspring);
-
-        result = new ItemStack(ModItems.clockworkCore);
-        clockworkCore = new ShapedOreRecipe(result, "bib", "iii", "bib", 'i', "ingotIron", 'b', "ingotBrass");
-        GameRegistry.addRecipe(clockworkCore);
-
-        result = new ItemStack(ModItems.clockworkPickaxe);
-        clockworkPickaxe = new ShapedOreRecipe(result, "bbb", "wiw", " i ", 'b', "ingotBrass", 'i', "ingotIron", 'w', "gearWood");
-        GameRegistry.addRecipe(clockworkPickaxe);
-
-        result = new ItemStack(ModItems.clockworkAxe);
-        clockworkAxeRight = new ShapedOreRecipe(result, "bbw", "biw", " i ", 'b', "ingotBrass", 'i', "ingotIron", 'w', "gearWood");
-        clockworkAxeLeft = new ShapedOreRecipe(result, "wbb", "wib", " i ", 'b', "ingotBrass", 'i', "ingotIron", 'w', "gearWood");
-        GameRegistry.addRecipe(clockworkAxeRight);
-        GameRegistry.addRecipe(clockworkAxeLeft);
-
-        result = new ItemStack(ModItems.clockworkShovel);
-        clockworkShovel = new ShapedOreRecipe(result, "wbw", " i ", " i ", 'b', "ingotBrass", 'i', "ingotIron", 'w', "gearWood");
-        GameRegistry.addRecipe(clockworkShovel);
-
-        result = new ItemStack(ModItems.clockworkSword);
-        clockworkSword = new ShapedOreRecipe(result, " b ", "ibi", "wiw", 'b', "ingotBrass", 'i', "ingotIron", 'w', "gearWood");
-        GameRegistry.addRecipe(clockworkSword);
+        initCrystallizerRecipes();
+        initArmillaryFishingRecipes();
     }
 
     public static IRecipe toolUpgradeTemporal;
@@ -106,7 +44,7 @@ public class Recipes
         //toolUpgradeFurnace = new ShapedOreRecipe(result, "bdb", "bSb", "bbb", 'b', "ingotBrass", 'd', ModItems.temporalDrive.getItem(), 'S', Items.LAVA_BUCKET);
         //GameRegistry.addRecipe(toolUpgradeFurnace);
 
-        result = new ItemStack(ModItems.toolUpgradeTemporalInfuser);
+        /*result = new ItemStack(ModItems.toolUpgradeTemporalInfuser);
         toolUpgradeTemporal = new ShapedOreRecipe(result, "bdb", "btb", "bbb", 'b', "ingotBrass", 't', "ingotTemporal", 'd', Items.DIAMOND_PICKAXE);
         GameRegistry.addRecipe(toolUpgradeTemporal);
 
@@ -124,32 +62,7 @@ public class Recipes
 
         result = new ItemStack(ModItems.toolUpgradeFortune);
         toolUpgradeFortune = new ShapedOreRecipe(result, "beb", "btb", "bbb", 'b', "ingotBrass", 't', "ingotTemporal", 'e', "gemEmerald");
-        GameRegistry.addRecipe(toolUpgradeFortune);
-    }
-
-    public static IRecipe copperBlock;
-    public static IRecipe zincBlock;
-    public static IRecipe brassBlock;
-    public static IRecipe temporalBlock;
-    public static void initMetalBlocks()
-    {
-        ItemStack result;
-
-        result = new ItemStack(ModBlocks.blockCopper);
-        copperBlock = new ShapedOreRecipe(result, "iii", "iii", "iii", 'i', ModItems.ingotCopper);
-        GameRegistry.addRecipe(copperBlock);
-
-        result = new ItemStack(ModBlocks.blockZinc);
-        zincBlock = new ShapedOreRecipe(result, "iii", "iii", "iii", 'i', ModItems.ingotZinc);
-        GameRegistry.addRecipe(zincBlock);
-
-        result = new ItemStack(ModBlocks.blockBrass);
-        brassBlock = new ShapedOreRecipe(result, "iii", "iii", "iii", 'i', ModItems.ingotBrass);
-        GameRegistry.addRecipe(brassBlock);
-
-        result = new ItemStack(ModBlocks.blockTemporal);
-        temporalBlock = new ShapedOreRecipe(result, "iii", "iii", "iii", 'i', ModItems.ingotTemporal);
-        GameRegistry.addRecipe(temporalBlock);
+        GameRegistry.addRecipe(toolUpgradeFortune);*/
     }
 
     public static IRecipe basicWindingBox;
@@ -157,7 +70,7 @@ public class Recipes
     public static IRecipe constructionBlock;
     public static void initBlocks()
     {
-        ItemStack result;
+        /*ItemStack result;
 
         result = new ItemStack(ModBlocks.basicWindingBox);
         basicWindingBox = new ShapedOreRecipe(result, "ibi", "bBb", "ibi", 'i', "ingotIron", 'b', "ingotBrass", 'B', "gearIron");
@@ -169,7 +82,7 @@ public class Recipes
 
         result = new ItemStack(ModBlocks.constructionBlock);
         constructionBlock = new ShapedOreRecipe(result, "sws", "wiw", "sws", 's', "stickWood", 'w', "plankWood", 'i', "ingotIron");
-        GameRegistry.addRecipe(constructionBlock);
+        GameRegistry.addRecipe(constructionBlock);*/
     }
 
     public static IRecipe brassLump;
@@ -181,9 +94,9 @@ public class Recipes
     public static IRecipe guidebook;
     public static void initMisc()
     {
-        ItemStack result;
+        /*ItemStack result;
 
-        result = new ItemStack(ModItems.lumpBrass);
+        result = new ItemStack(ModItems.dustBrass);
         result.stackSize = 2;
         brassLump = new ShapelessOreRecipeDegradeItem(result, ModItems.alloyHammer, "oreCopper", "oreCopper", "oreCopper", "oreZinc", ModItems.alloyHammer);
         GameRegistry.addRecipe(brassLump);
@@ -210,25 +123,99 @@ public class Recipes
 
         result = new ItemStack(ModItems.guidebook);
         guidebook = new ShapelessOreRecipe(result, "gearWood", "gearWood", Items.BOOK);
-        GameRegistry.addRecipe(guidebook);
+        GameRegistry.addRecipe(guidebook);*/
     }
 
     public static void initFurnaceRecipes()
     {
         GameRegistry.addSmelting(ModBlocks.oreCopper, new ItemStack(ModItems.ingotCopper), 0.7F);
         GameRegistry.addSmelting(ModBlocks.oreZinc, new ItemStack(ModItems.ingotZinc), 0.7F);
-        GameRegistry.addSmelting(ModItems.lumpBrass, new ItemStack(ModItems.ingotBrass), 1.5F);
+        GameRegistry.addSmelting(ModBlocks.oreAluminum, new ItemStack(ModItems.ingotAluminum), 0.7F);
+        GameRegistry.addSmelting(ModItems.dustCopper, new ItemStack(ModItems.ingotCopper), 0.0F);
+        GameRegistry.addSmelting(ModItems.dustZinc, new ItemStack(ModItems.ingotZinc), 0.0F);
+        GameRegistry.addSmelting(ModItems.dustBrass, new ItemStack(ModItems.ingotBrass), 0.0F);
+        GameRegistry.addSmelting(ModItems.dustAluminum, new ItemStack(ModItems.ingotAluminum), 0.0F);
         GameRegistry.addSmelting(ModItems.matterTemporal, new ItemStack(ModItems.ingotTemporal), 10F);
     }
 
-    public static IRecipe addGearRecipe(ItemStack result, String materialName) {
-        IRecipe ret = new ShapedOreRecipe(result, " m ", "msm", " m ", 'm', materialName, 's', "stickWood");
-        GameRegistry.addRecipe(ret);
-        return ret;
+    public static void initCrystallizerRecipes()
+    {
+        NonNullList<ItemStack> input;
+        FluidStack fluid;
+        ItemStack output;
+
+        //Coal(16) to Diamond.
+        input = NonNullList.withSize(1, ItemStack.EMPTY);
+        input.set(0, new ItemStack(Items.COAL));
+        input.get(0).setCount(8);
+        output = new ItemStack(Items.DIAMOND);
+        CrystallizerRecipes.instance.addCrystallizerRecipe(input, null, output);
+
+        //Charcoal(16) to Diamond.
+        input = NonNullList.withSize(1, ItemStack.EMPTY);
+        input.set(0, new ItemStack(Items.COAL));
+        input.get(0).setCount(8);
+        input.get(0).setItemDamage(1); //CHARCOAL
+        output = new ItemStack(Items.DIAMOND);
+        CrystallizerRecipes.instance.addCrystallizerRecipe(input, null, output);
+
+        //Cobblestone(64), Aluminum Ingot(1), Silicon(3), Water(10k) to Moonstone.
+        input = NonNullList.withSize(3, ItemStack.EMPTY);
+        input.set(0, new ItemStack(Blocks.COBBLESTONE));
+        input.get(0).setCount(64);
+        input.set(1, new ItemStack(ModItems.ingotAluminum));
+        input.get(1).setCount(1);
+        input.set(2, new ItemStack(ModItems.silicon));
+        input.get(2).setCount(3);
+        fluid = new FluidStack(FluidRegistry.WATER, 10000);
+        output = new ItemStack(ModItems.gemMoonstone);
+        CrystallizerRecipes.instance.addCrystallizerRecipe(input, fluid, output);
+
+        //Emerald(8), Aluminum Ingot(2), Water(4k) -> Chrysoberyl (Also known by its variant, Alexandrite).
+        input = NonNullList.withSize(2, ItemStack.EMPTY);
+        input.set(0, new ItemStack(Items.EMERALD));
+        input.get(0).setCount(8);
+        input.set(1, new ItemStack(ModItems.ingotAluminum));
+        input.get(1).setCount(2);
+        fluid = new FluidStack(FluidRegistry.WATER, 4000);
+        output = new ItemStack(ModItems.gemChrysoberyl);
+        CrystallizerRecipes.instance.addCrystallizerRecipe(input, fluid, output);
+
+        //Bone(3), Coal(3), Water(9k) -> Pearl
+        input = NonNullList.withSize(2, ItemStack.EMPTY);
+        input.set(0, new ItemStack(Items.BONE));
+        input.get(0).setCount(3);
+        input.set(1, new ItemStack(Items.COAL));
+        input.get(1).setCount(3);
+        fluid = new FluidStack(FluidRegistry.WATER, 9000);
+        output = new ItemStack(ModItems.gemPearl);
+        CrystallizerRecipes.instance.addCrystallizerRecipe(input, fluid, output);
+
+        //Leaves(32), Aluminum Ingot(2), Water(3k) -> Spinel
+        input = NonNullList.withSize(2, ItemStack.EMPTY);
+        input.set(0, new ItemStack(Blocks.LEAVES));
+        input.get(0).setCount(32);
+        input.set(1, new ItemStack(ModItems.ingotAluminum));
+        input.get(1).setCount(2);
+        fluid = new FluidStack(FluidRegistry.WATER, 3000);
+        output = new ItemStack(ModItems.gemSpinel);
+        CrystallizerRecipes.instance.addCrystallizerRecipe(input, fluid, output);
     }
 
+    public static void initArmillaryFishingRecipes()
+    {
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(Blocks.GRASS)));
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(Blocks.COBBLESTONE)));
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(Items.ARROW)));
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gearDiamond)));
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gearEmerald)));
+    }
+
+    /** START POST-INITIALIZATION MACHINE RECIPES **/
+    /** _________________________________________ **/
+
     /**
-     * Called during post-init as opposed to the initialization phase for the rest of the recipes.
+     * Initializes certain pre-specified recipes, as long as the respective ingots exist to the OreDictionary.
      */
     public static void initAlloyRecipes()
     {
@@ -253,8 +240,8 @@ public class Recipes
             first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
             second = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotZinc), (byte) 1);
             output = new ItemStack(ModItems.ingotBrass);
-            output.stackSize = 4;
-            AlloyRecipes.addAlloyRecipe(first, second, output);
+            output.setCount(4);
+            AlloyRecipes.instance.addAlloyRecipe(first, second, output);
         }
 
         if(copper && tin && bronze)
@@ -262,8 +249,8 @@ public class Recipes
             first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
             second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotTin").get(0), (byte) 1);
             output = OreDictionary.getOres("ingotBronze").get(0).copy();
-            output.stackSize = 4;
-            AlloyRecipes.addAlloyRecipe(first, second, output);
+            output.setCount(4);
+            AlloyRecipes.instance.addAlloyRecipe(first, second, output);
         }
 
         if(nickel && invar)
@@ -271,8 +258,8 @@ public class Recipes
             first = new AlloyRecipes.RecipeComponent(new ItemStack(Items.IRON_INGOT), (byte) 2);
             second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotNickel").get(0), (byte) 1);
             output = OreDictionary.getOres("ingotInvar").get(0).copy();
-            output.stackSize = 3;
-            AlloyRecipes.addAlloyRecipe(first, second, output);
+            output.setCount(3);
+            AlloyRecipes.instance.addAlloyRecipe(first, second, output);
         }
 
         if(copper && aluminum && aluminumBrass)
@@ -280,8 +267,8 @@ public class Recipes
             first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 1);
             second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotAluminum").get(0), (byte) 3);
             output = OreDictionary.getOres("ingotAluminumBrass").get(0).copy();
-            output.stackSize = 4;
-            AlloyRecipes.addAlloyRecipe(first, second, output);
+            output.setCount(4);
+            AlloyRecipes.instance.addAlloyRecipe(first, second, output);
         }
 
         if(cobalt && ardite && manyullyn)
@@ -289,8 +276,92 @@ public class Recipes
             first = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotCobalt").get(0), (byte) 1);
             second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotArdite").get(0), (byte) 1);
             output = OreDictionary.getOres("ingotManyullyn").get(0).copy();
-            output.stackSize = 2;
-            AlloyRecipes.addAlloyRecipe(first, second, output);
+            output.setCount(2);
+            AlloyRecipes.instance.addAlloyRecipe(first, second, output);
         }
+    }
+
+    public static void initCrusherRecipes()
+    {
+        ItemStack input;
+        ItemStack output;
+
+        String[] names = OreDictionary.getOreNames();
+        ArrayList<String> dusts = new ArrayList<>();
+        for(String name : names)
+        {
+            //Check to see if the name starts with dust and has a capital directly after it.
+            if(name.length() > 4 && name.startsWith("dust") && Character.isUpperCase(name.charAt(4)))
+            {
+                dusts.add(name);
+            }
+        }
+
+        //Of the dusts we found.
+        for(String dust : dusts)
+        {
+            List<ItemStack> validDusts = OreDictionary.getOres(dust);
+            if(validDusts.size() <= 0)
+                continue;
+
+            //Most of the time, we really only care about the first dust. Most modders agree on what dust does.
+            ItemStack firstDust = validDusts.get(0);
+
+            ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(firstDust);
+            if(smeltingResult.isEmpty())
+                continue; //Since we're reversing smelting recipes, if it doesn't have a smelting recipe, we ignore it.
+
+            if(smeltingResult.getCount() > 1)
+                continue; //We're also only concerned with 1-to-1 recipes here.
+
+            //Register a recipe for crushing the thing you can smelt the dust into (ex: gold ingot -> dust).
+            input = smeltingResult;
+            output = firstDust;
+            CrusherRecipes.instance.addCrusherRecipe(input, output);
+
+            String ore = "ore" + dust.substring(4); //Does the dust have a corresponding ore registered?
+            List<ItemStack> validOres = OreDictionary.getOres(ore);
+            if(validOres.size() <= 0)
+                continue;
+
+            ItemStack firstOre = validOres.get(0);
+            ItemStack oreSmelting = FurnaceRecipes.instance().getSmeltingResult(firstOre);
+            if(!oreSmelting.isEmpty() && OreDictionary.itemMatches(smeltingResult, oreSmelting, false))
+            {
+                //There is an ore, which smelts into the same item the dust does, so add the crusher recipe.
+                input = firstOre;
+                output = firstDust.copy();
+                output.setCount(2);
+                CrusherRecipes.instance.addCrusherRecipe(input, output);
+            }
+        }
+
+        //Stone bricks to cracked stone bricks.
+        input = new ItemStack(Blocks.STONEBRICK);
+        input.setItemDamage(BlockStoneBrick.DEFAULT_META);
+        output = new ItemStack(Blocks.STONEBRICK);
+        output.setItemDamage(BlockStoneBrick.CRACKED_META);
+        CrusherRecipes.instance.addCrusherRecipe(input, output);
+
+        //Cracked stone bricks to cobble.
+        input = new ItemStack(Blocks.STONEBRICK);
+        input.setItemDamage(BlockStoneBrick.CRACKED_META);
+        output = new ItemStack(Blocks.COBBLESTONE);
+        CrusherRecipes.instance.addCrusherRecipe(input, output);
+
+        //Stone to cobble.
+        input = new ItemStack(Blocks.STONE);
+        output = new ItemStack(Blocks.COBBLESTONE);
+        CrusherRecipes.instance.addCrusherRecipe(input, output);
+
+        //Cobble to gravel.
+        input = new ItemStack(Blocks.COBBLESTONE);
+        output = new ItemStack(Blocks.GRAVEL);
+        CrusherRecipes.instance.addCrusherRecipe(input, output);
+
+        //Gravel to snad.
+        input = new ItemStack(Blocks.GRAVEL);
+        output = new ItemStack(Blocks.SAND);
+        CrusherRecipes.instance.addCrusherRecipe(input, output);
     }
 }

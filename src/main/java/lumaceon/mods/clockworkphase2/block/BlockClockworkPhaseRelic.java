@@ -1,7 +1,6 @@
 package lumaceon.mods.clockworkphase2.block;
 
 import lumaceon.mods.clockworkphase2.api.block.ITrowelBlock;
-import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.api.util.WeightedChance;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -47,7 +46,7 @@ public class BlockClockworkPhaseRelic extends BlockClockworkPhase implements ITr
         if(possibleDrops.length <= 0)
             return;
         if(!world.isRemote)
-            world.spawnEntityInWorld(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), possibleDrops[0].getObjectFromWeightedChance(possibleDrops).copy()));
+            world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), possibleDrops[0].getObjectFromWeightedChance(possibleDrops).copy()));
     }
 
     @Override

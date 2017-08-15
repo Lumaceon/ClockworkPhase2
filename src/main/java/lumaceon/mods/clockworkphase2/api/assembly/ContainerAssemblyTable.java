@@ -16,7 +16,7 @@ public class ContainerAssemblyTable extends Container
     public InventoryAssemblyTableComponents componentInventory;
     public World world;
     public EntityPlayer player;
-    private ItemStack previousMainStack;
+    private ItemStack previousMainStack = ItemStack.EMPTY;
     public List buttonList = null;
     public int guiLeft = -1;
     public int guiTop = -1;
@@ -85,7 +85,7 @@ public class ContainerAssemblyTable extends Container
     @Override
     public boolean canInteractWith(EntityPlayer p_75145_1_)
     {
-        return mainInventory.isUseableByPlayer(p_75145_1_);
+        return mainInventory.isUsableByPlayer(p_75145_1_);
     }
 
     //TODO Ignores max stack size of slots.
@@ -94,7 +94,7 @@ public class ContainerAssemblyTable extends Container
     {
         Slot slot = this.inventorySlots.get(index);
         if(slot == null || !slot.getHasStack())
-            return null;
+            return ItemStack.EMPTY;
 
         ItemStack originalItem = slot.getStack();
         ItemStack copyItem = originalItem.copy();
@@ -102,7 +102,7 @@ public class ContainerAssemblyTable extends Container
         if(index >= 36) //Item is in our container, try placing in player's inventory.
         {
             if(!this.mergeItemStack(originalItem, 0, 36, true))
-                return null;
+                return ItemStack.EMPTY;
         }
         else
         {
@@ -110,25 +110,25 @@ public class ContainerAssemblyTable extends Container
             {
                 if(!this.mergeItemStack(originalItem, 36, 37, false))
                     if(!this.mergeItemStack(originalItem, 37, this.inventorySlots.size(), false))
-                        return null;
+                        return ItemStack.EMPTY;
             }
             else if(!this.mergeItemStack(originalItem, 37, this.inventorySlots.size(), false))
-                return null;
+                return ItemStack.EMPTY;
         }
 
-        if(copyItem.stackSize == 0)
-            slot.putStack(null);
+        if(copyItem.getCount() == 0)
+            slot.putStack(ItemStack.EMPTY);
         else
             slot.onSlotChanged();
 
-        if(originalItem.stackSize == 0)
-            slot.putStack(null);
+        if(originalItem.getCount() == 0)
+            slot.putStack(ItemStack.EMPTY);
         else
             slot.onSlotChanged();
 
-        if(copyItem.stackSize == originalItem.stackSize)
-            return null;
-        slot.onPickupFromSlot(player, copyItem);
+        if(copyItem.getCount() == originalItem.getCount())
+            return ItemStack.EMPTY;
+        slot.onTake(player, copyItem);
         return originalItem;
     }
 
@@ -143,25 +143,25 @@ public class ContainerAssemblyTable extends Container
 
         if(stack.isStackable())
         {
-            while(stack.stackSize > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex))
+            while(stack.getCount() > 0 && (!reverseDirection && i < endIndex || reverseDirection && i >= startIndex))
             {
                 Slot slot = this.inventorySlots.get(i);
                 ItemStack itemstack = slot.getStack();
 
-                if(itemstack != null && itemstack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack))
+                if(itemstack.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack))
                 {
-                    int j = itemstack.stackSize + stack.stackSize;
+                    int j = itemstack.getCount() + stack.getCount();
                     if(j <= stack.getMaxStackSize() && j <= slot.getSlotStackLimit())
                     {
-                        stack.stackSize = 0;
-                        itemstack.stackSize = j;
+                        stack = ItemStack.EMPTY;
+                        itemstack.setCount(j);
                         slot.onSlotChanged();
                         flag = true;
                     }
-                    else if(itemstack.stackSize < stack.getMaxStackSize() && itemstack.stackSize < slot.getSlotStackLimit())
+                    else if(itemstack.getCount() < stack.getMaxStackSize() && itemstack.getCount() < slot.getSlotStackLimit())
                     {
-                        stack.stackSize -= stack.getMaxStackSize() - itemstack.stackSize;
-                        itemstack.stackSize = stack.getMaxStackSize();
+                        stack.shrink(stack.getMaxStackSize() - itemstack.getCount());
+                        itemstack.setCount(stack.getMaxStackSize());
                         slot.onSlotChanged();
                         flag = true;
                     }
@@ -174,7 +174,7 @@ public class ContainerAssemblyTable extends Container
             }
         }
 
-        if(stack.stackSize > 0)
+        if(stack.getCount() > 0)
         {
             if(reverseDirection)
                 i = endIndex - 1;
@@ -186,15 +186,15 @@ public class ContainerAssemblyTable extends Container
                 Slot slot1 = this.inventorySlots.get(i);
                 ItemStack itemstack1 = slot1.getStack();
 
-                if(itemstack1 == null && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
+                if(itemstack1.isEmpty() && slot1.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
                 {
                     ItemStack newStack = stack.copy();
-                    newStack.stackSize = Math.min(stack.stackSize, slot1.getSlotStackLimit());
-                    stack.stackSize -= newStack.stackSize;
+                    newStack.setCount(Math.min(stack.getCount(), slot1.getSlotStackLimit()));
+                    stack.shrink(newStack.getCount());
                     slot1.putStack(newStack);
                     slot1.onSlotChanged();
                     flag = true;
-                    if(stack.stackSize <= 0)
+                    if(stack.getCount() <= 0)
                         break;
                 }
 

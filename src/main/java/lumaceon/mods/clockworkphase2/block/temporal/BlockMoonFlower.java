@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.block.temporal;
 
 import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import lumaceon.mods.clockworkphase2.init.ModItems;
-import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -10,7 +9,6 @@ import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -27,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
-
+//TODO auto-drop on nearby block changes.
 public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, IGrowable
 {
     public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 4);
@@ -47,7 +45,7 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        this.checkAndDropBlock(worldIn, pos, state);
+        //this.checkAndDropBlock(worldIn, pos, state);
         if(worldIn.canBlockSeeSky(pos))
         {
             int meta = state.getValue(AGE);
@@ -122,9 +120,9 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
         return super.canPlaceBlockAt(worldIn, pos) && worldIn.getBlockState(pos.down()).getBlock().canSustainPlant(worldIn.getBlockState(pos), worldIn, pos.down(), net.minecraft.util.EnumFacing.UP, this);
     }
 
-    @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn) {
-        this.checkAndDropBlock(worldIn, pos, state);
+    /*@Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        this.checkAndDropBlock(world, pos, world.getBlockState(neighbor));
     }
 
     protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state)
@@ -134,7 +132,7 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         }
-    }
+    }*/
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -144,7 +142,7 @@ public class BlockMoonFlower extends BlockClockworkPhase implements IPlantable, 
 
     @Override
     @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
         return NULL_AABB;
     }

@@ -2,7 +2,6 @@ package lumaceon.mods.clockworkphase2.item;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.block.ITrowelBlock;
-import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -35,8 +34,9 @@ public class ItemTrowel extends ItemTool implements ISimpleNamed
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        ItemStack stack = player.getHeldItem(hand);
         if(stack != null && stack.getItem() instanceof ItemTrowel)
         {
             Block block = worldIn.getBlockState(pos).getBlock();
@@ -44,7 +44,7 @@ public class ItemTrowel extends ItemTool implements ISimpleNamed
             {
                 ((ITrowelBlock) block).onTrowelRightClick(stack, worldIn, pos, toolMaterial.getHarvestLevel());
                 if(stack.isItemStackDamageable())
-                    stack.damageItem(1, playerIn);
+                    stack.damageItem(1, player);
             }
         }
         return EnumActionResult.SUCCESS;

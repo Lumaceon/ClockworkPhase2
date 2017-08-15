@@ -1,0 +1,21 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " G ",
+        " G ",
+        " s "
+    ],
+    "key": {
+        "G": {
+            "type": "forge:ore_dict",
+            "ore": "gearStone"
+        },
+        "s": {
+            "type": "forge:ore_dict",
+            "ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:clockwork_sword"
+    }
+}

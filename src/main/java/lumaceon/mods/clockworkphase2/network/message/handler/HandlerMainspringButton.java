@@ -18,23 +18,19 @@ public class HandlerMainspringButton implements IMessageHandler<MessageMainsprin
     {
         if(ctx.side != Side.SERVER)
         {
-            System.err.println("MessageToolUpgradeActivate received on wrong side:" + ctx.side);
+            System.err.println("MessageMainspringButton received on wrong side:" + ctx.side);
             return null;
         }
 
-        final EntityPlayerMP sendingPlayer = ctx.getServerHandler().playerEntity;
+        final EntityPlayerMP sendingPlayer = ctx.getServerHandler().player;
         if(sendingPlayer == null)
         {
-            System.err.println("MessageToolUpgradeActivate received with null player.");
+            System.err.println("MessageMainspringButton received with null player.");
             return null;
         }
 
         final WorldServer playerWorldServer = sendingPlayer.getServerWorld();
-        playerWorldServer.addScheduledTask(new Runnable() {
-            public void run() {
-                processMessage(message, ctx, sendingPlayer);
-            }
-        });
+        playerWorldServer.addScheduledTask(() -> processMessage(message, ctx, sendingPlayer));
         return null;
     }
 

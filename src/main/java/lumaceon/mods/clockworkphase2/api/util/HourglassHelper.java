@@ -37,7 +37,7 @@ public class HourglassHelper
         for(ItemStack stack : player.inventory.mainInventory)
             if(stack != null && stack.getItem() instanceof IHourglass && ((IHourglass) stack.getItem()).isActive(stack))
                 return stack;
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**

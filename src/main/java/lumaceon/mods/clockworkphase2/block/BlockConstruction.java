@@ -40,7 +40,4 @@ public class BlockConstruction extends BlockClockworkPhase
 
     @Override
     public boolean isFullCube(IBlockState state) { return true; }
-
-    @Override
-    public boolean isVisuallyOpaque() { return false; }
 }

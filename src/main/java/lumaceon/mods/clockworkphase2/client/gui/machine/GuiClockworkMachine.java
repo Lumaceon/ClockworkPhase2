@@ -7,22 +7,28 @@ import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkMachine;
 import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageMachineModeActivate;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileMachineConfiguration;
+import lumaceon.mods.clockworkphase2.network.message.MessageTileMachineConfigurationTank;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
 import lumaceon.mods.clockworkphase2.util.Colors;
+import lumaceon.mods.clockworkphase2.util.FluidTankSided;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,25 +37,43 @@ import java.util.List;
 public class GuiClockworkMachine extends GuiContainer
 {
     static final int tweenTicks = 10;
-    protected static ResourceLocation POWER_PEG = new ResourceLocation(Reference.MOD_ID, "textures/gui/power_peg.png");
+    protected static ResourceLocation PROGRESS_CLOCK = new ResourceLocation(Reference.MOD_ID, "textures/gui/progress_clock.png");
+    protected static ResourceLocation PROGRESS_CLOCK_TEMPORAL = new ResourceLocation(Reference.MOD_ID, "textures/gui/progress_clock_temporal.png");
+    protected static ResourceLocation PROGRESS_HAND = new ResourceLocation(Reference.MOD_ID, "textures/gui/progress_hand.png");
+    protected static ResourceLocation POWER_BAR_RED = new ResourceLocation(Reference.MOD_ID, "textures/gui/red_power_bar.png");
+    protected static ResourceLocation SIDE_CONFIG_ARROWS = new ResourceLocation(Reference.MOD_ID, "textures/gui/side_config_arrows.png");
     public static ResourceLocation ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/icons.png");
-    protected static ItemStack GEAR_STACK = new ItemStack(ModItems.gearCreative);
+    public static ResourceLocation OVERLAY = new ResourceLocation(Reference.MOD_ID, "textures/gui/overlayEffect.png");
+
+    protected static ItemStack GEAR_STACK_FOR_DISPLAY = new ItemStack(ModItems.gearCreative);
+    protected static ItemStack HOURGLASS_STACK_FOR_DISPLAY = new ItemStack(ModItems.temporalHourglass);
+    protected static ItemStack ENDER_PEARL_STACK_FOR_DISPLAY = new ItemStack(Items.ENDER_PEARL);
 
     protected RenderItem itemRenders;
 
     private boolean isInConfigState = false;
     protected EntityPlayer player;
     protected TileClockworkMachine tileEntity;
-    protected int powerPegX, powerPegY, configButtonX, configButtonY;
+
+    protected int powerBarX, powerBarY,
+            progressClockX, progressClockY,
+            configButtonX, configButtonY,
+            temporalButtonX, temporalButtonY;
+
     protected ResourceLocation background;
     protected HoverableLocation[] hoverables;
     protected IOConfiguration[] configs;
     protected IOConfiguration lastClicked = null;
     protected int timeSinceLastConfigClick = 0;
+    private int stateChangeTween = 0;
 
     public GuiClockworkMachine(EntityPlayer player,
                                Container inventorySlotsIn,
-                               int xSize, int ySize, int powerPegX, int powerPegY, int configButtonX, int configButtonY,
+                               int xSize, int ySize,
+                               int powerBarX, int powerBarY,
+                               int progressClockX, int progressClockY,
+                               int configButtonX, int configButtonY,
+                               int temporalButtonX, int temporalButtonY,
                                ResourceLocation background,
                                TileClockworkMachine te,
                                HoverableLocation[] hoverables,
@@ -60,14 +84,20 @@ public class GuiClockworkMachine extends GuiContainer
         this.xSize = xSize;
         this.ySize = ySize;
         this.player = player;
-        this.powerPegX = powerPegX;
-        this.powerPegY = powerPegY;
+        this.powerBarX = powerBarX;
+        this.powerBarY = powerBarY;
+        this.progressClockX = progressClockX;
+        this.progressClockY = progressClockY;
         this.configButtonX = configButtonX;
         this.configButtonY = configButtonY;
+        this.temporalButtonX = temporalButtonX;
+        this.temporalButtonY = temporalButtonY;
         this.background = background;
         this.tileEntity = te;
         this.hoverables = hoverables;
         this.configs = configs;
+
+        stateChangeTween = te.isInTemporalMode() ? 10 : 0;
     }
 
     @Override
@@ -75,7 +105,11 @@ public class GuiClockworkMachine extends GuiContainer
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButtonItem(GEAR_STACK, 0, this.guiLeft + configButtonX, this.guiTop + configButtonY, "", itemRenders, fontRendererObj, true));
+        this.buttonList.add(new GuiButtonItem(GEAR_STACK_FOR_DISPLAY, 0, this.guiLeft + configButtonX, this.guiTop + configButtonY, "", itemRenders, fontRenderer, true));
+        if(tileEntity.hasReceivedTemporalUpgrade)
+        {
+            this.buttonList.add(new GuiButtonItem(HOURGLASS_STACK_FOR_DISPLAY, 1, this.guiLeft + temporalButtonX, this.guiTop + temporalButtonY, "", itemRenders, fontRenderer, true));
+        }
     }
 
     @Override
@@ -83,11 +117,30 @@ public class GuiClockworkMachine extends GuiContainer
     {
         if(button.id == 0)
             changeConfigState();
+        else if(button.id == 1)
+            changeTemporalState();
+    }
+
+    private void changeTemporalState()
+    {
+        PacketHandler.INSTANCE.sendToServer(new MessageMachineModeActivate(tileEntity.getPos(), tileEntity.getWorld().provider.getDimension()));
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
+        boolean dev = true;
+
+        GlStateManager.pushMatrix();
+
+        //Apply tweening between temporal and normal modes.
         float color = 1.0F;
         if(lastClicked != null)
         {
@@ -100,33 +153,120 @@ public class GuiClockworkMachine extends GuiContainer
             color = 1 - ((float) timeSinceLastConfigClick / (float) tweenTicks) * 0.4F;
         }
 
+        //Configuration mode should look darker.
         if(isInConfigState())
             color = color * 0.7F;
-        GlStateManager.color(color, color, color, 1.0F);
 
+
+        //Render progress clock
+        if(stateChangeTween < 10)
+        {
+            Minecraft.getMinecraft().renderEngine.bindTexture(PROGRESS_CLOCK);
+            GlStateManager.color(color, color, color, 1.0F);
+            GuiHelper.drawTexturedModalRectStretched(this.guiLeft + this.progressClockX, this.guiTop + this.progressClockY, zLevel, 32, 32);
+        }
+
+
+        //Only is temporal mode is on.
+        if(tileEntity.isInTemporalMode() || stateChangeTween > 0)
+        {
+            if(stateChangeTween < 10 && tileEntity.isInTemporalMode())
+                stateChangeTween++;
+            else if(stateChangeTween > 0 && !tileEntity.isInTemporalMode())
+                stateChangeTween--;
+
+            Minecraft.getMinecraft().renderEngine.bindTexture(PROGRESS_CLOCK_TEMPORAL);
+            GuiHelper.drawTexturedModalRectStretched(this.guiLeft + this.progressClockX, this.guiTop + this.progressClockY, zLevel, 32, 32);
+
+            GlStateManager.enableBlend();
+            GlStateManager.enableAlpha();
+
+            if(stateChangeTween == 10)
+                GlStateManager.color(color, color, color, 0.3F);
+            else
+                GlStateManager.color(color, color, color, 0.3F * (stateChangeTween * 0.1F));
+
+            Minecraft.getMinecraft().renderEngine.bindTexture(OVERLAY);
+            float millisF = (System.currentTimeMillis() % 10000) / 10000.0F;
+            GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
+            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize, millisF, millisF * 2.0F);
+            GlStateManager.blendFunc(GL11.GL_ZERO, GL11.GL_DST_COLOR);
+            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize, -millisF * 2.0F, millisF);
+            GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
+            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize, -millisF * 2.0F, -millisF * 2.0F);
+
+            Minecraft.getMinecraft().renderEngine.bindTexture(PROGRESS_CLOCK_TEMPORAL);
+            GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
+            GlStateManager.color(color, color, color, stateChangeTween * 0.1F);
+            GuiHelper.drawTexturedModalRectStretched(this.guiLeft + this.progressClockX, this.guiTop + this.progressClockY, zLevel, 32, 32);
+        }
+
+
+        //Render main background
+        GlStateManager.disableBlend();
+        GlStateManager.color(color, color, color, 1.0F);
         Minecraft.getMinecraft().renderEngine.bindTexture(background);
         GuiHelper.drawTexturedModalRectStretched(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize);
 
-        float degrees = 0;
+
+        //Add weird border effect for reversal mode.
+        /*if(tileEntity.isInAntiMode())
+        {
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            float cycleSpeed = 1000;
+            int animTick = (int) (System.currentTimeMillis() % (int) cycleSpeed);
+            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.3F);
+            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
+            animTick = (int) ((System.currentTimeMillis() + 250) % (int) cycleSpeed);
+            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.2F);
+            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
+            animTick = (int) ((System.currentTimeMillis() + 500) % (int) cycleSpeed);
+            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.15F);
+            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
+            animTick = (int) ((System.currentTimeMillis() + 750) % (int) cycleSpeed);
+            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.12F);
+            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
+        }*/
+
+
+        //Render power bar.
+        float powerPercentage = 0; //Technically not a percentage. Ranges from 0 to 1 (empty to full).
         IEnergyStorage energyStorage = tileEntity.energyStorage;
         if(energyStorage != null && energyStorage.getMaxEnergyStored() > 0)
         {
-            degrees = ((float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()) * 180.0F;
+            powerPercentage = (float) energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored();
         }
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(POWER_PEG);
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(this.guiLeft + powerPegX + 15, this.guiTop + powerPegY + 2, 0.0F);
-        GlStateManager.rotate(degrees, 0.0F, 0.0F, 1.0F);
-        GlStateManager.translate(-15.0F, -2.0F, 0.0F);
-        GuiHelper.drawTexturedModalRectStretched(0, 0, this.zLevel, 17, 4);
+        Minecraft.getMinecraft().renderEngine.bindTexture(POWER_BAR_RED);
+        if(stateChangeTween > 0)
+        {
+            GlStateManager.color(color, color, color, stateChangeTween * 0.06F);
+        }
+        else
+        {
+            GlStateManager.color(color, color, color, 1.0F);
+        }
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GuiHelper.drawTexturedModalRectCutTop(this.guiLeft + powerBarX, this.guiTop + powerBarY, this.zLevel, 13, 68, (int) (powerPercentage * 68.0F));
+        GlStateManager.disableBlend();
+
+
+        //Render progress hand
+        float rotationAngle = tileEntity.getProgressScaled(360);
+        Minecraft.getMinecraft().renderEngine.bindTexture(PROGRESS_HAND);
+        GlStateManager.translate(this.guiLeft + this.progressClockX + 16, this.guiTop + this.progressClockY + 16, 0);
+        GlStateManager.rotate(rotationAngle, 0, 0, 1);
+        GlStateManager.translate(-(this.guiLeft + this.progressClockX + 16), -(this.guiTop + this.progressClockY + 16), 0);
+        GuiHelper.drawTexturedModalRectStretched(this.guiLeft + this.progressClockX, this.guiTop + this.progressClockY, this.zLevel, 32, 32);
         GlStateManager.popMatrix();
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        if(!isInConfigState() && player.inventory.getItemStack() == null)
+        if(!isInConfigState() && player.inventory.getItemStack().isEmpty())
         {
             for(HoverableLocation h : hoverables)
             {
@@ -142,55 +282,100 @@ public class GuiClockworkMachine extends GuiContainer
         {
             if(lastClicked != null)
             {
+                float offColor = 0.7F;
+                mc.renderEngine.bindTexture(SIDE_CONFIG_ARROWS);
+                GlStateManager.color(offColor, offColor, offColor);
+
                 int x, y;
 
                 //CENTER
                 x = lastClicked.left;
                 y = lastClicked.top;
                 if(isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80ffffff);
+                {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GuiHelper.drawTexturedModalRect(x, y, 16, 0, 16, 16, 64, zLevel);
+                    GlStateManager.color(offColor, offColor, offColor);
+                }
                 else
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80aaaaaa);
+                {
+                    GuiHelper.drawTexturedModalRect(x, y, 16, 0, 16, 16, 64, zLevel);
+                }
+
 
                 //UP
                 x = lastClicked.left;
                 y = (int) (lastClicked.top - (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
                 if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80ffffff);
+                {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GuiHelper.drawTexturedModalRect(x, y, 16, 32, 16, 16, 64, zLevel);
+                    GlStateManager.color(offColor, offColor, offColor);
+                }
                 else
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80aaaaaa);
+                {
+                    GuiHelper.drawTexturedModalRect(x, y, 16, 32, 16, 16, 64, zLevel);
+                }
+
 
                 //DOWN
                 x = lastClicked.left;
                 y = (int) (lastClicked.top + (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
                 if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80ffffff);
+                {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GuiHelper.drawTexturedModalRect(x, y, 0, 16, 16, 16, 64, zLevel);
+                    GlStateManager.color(offColor, offColor, offColor);
+                }
                 else
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80aaaaaa);
+                {
+                    GuiHelper.drawTexturedModalRect(x, y, 0, 16, 16, 16, 64, zLevel);
+                }
+
 
                 //RIGHT
                 x = (int) (lastClicked.left + (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
                 y = lastClicked.top;
                 if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80ffffff);
+                {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GuiHelper.drawTexturedModalRect(x, y, 0, 32, 16, 16, 64, zLevel);
+                    GlStateManager.color(offColor, offColor, offColor);
+                }
                 else
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80aaaaaa);
+                {
+                    GuiHelper.drawTexturedModalRect(x, y, 0, 32, 16, 16, 64, zLevel);
+                }
+
 
                 //LEFT
                 x = (int) (lastClicked.left - (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
                 y = lastClicked.top;
                 if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80ffffff);
+                {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GuiHelper.drawTexturedModalRect(x, y, 16, 16, 16, 16, 64, zLevel);
+                    GlStateManager.color(offColor, offColor, offColor);
+                }
                 else
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80aaaaaa);
+                {
+                    GuiHelper.drawTexturedModalRect(x, y, 16, 16, 16, 16, 64, zLevel);
+                }
+
 
                 //BACK
                 x = (int) (lastClicked.left - (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
                 y = (int) (lastClicked.top - (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
                 if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80ffffff);
+                {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GuiHelper.drawTexturedModalRect(x, y, 0, 0, 16, 16, 64, zLevel);
+                    GlStateManager.color(offColor, offColor, offColor);
+                }
                 else
-                    drawRect(x, y, x + lastClicked.width, y + lastClicked.height, 0x80aaaaaa);
+                {
+                    GuiHelper.drawTexturedModalRect(x, y, 0, 0, 16, 16, 64, zLevel);
+                }
             }
             else if(configs != null)
             {
@@ -317,7 +502,7 @@ public class GuiClockworkMachine extends GuiContainer
 
     protected void renderToolTip(List<String> list, int x, int y)
     {
-        this.drawHoveringText(list, x, y, fontRendererObj);
+        this.drawHoveringText(list, x, y, fontRenderer);
     }
 
     public void changeConfigState()
@@ -392,7 +577,7 @@ public class GuiClockworkMachine extends GuiContainer
         {
             if(te.energyStorage != null)
             {
-                ArrayList<String> ret = new ArrayList<String>();
+                ArrayList<String> ret = new ArrayList<>();
                 ret.add(Colors.RED + "Energy");
                 ret.add(Colors.GREY + te.energyStorage.getEnergyStored() + " / " + te.energyStorage.getMaxEnergyStored() + Names.ENERGY_ACRONYM);
                 if(isShiftDown)
@@ -410,6 +595,36 @@ public class GuiClockworkMachine extends GuiContainer
                 ret.add(Colors.RED + "Missing Mainspring....");
                 return ret;
             }
+        }
+    }
+
+    public static class HoverableLocationTank extends HoverableLocation
+    {
+        TileClockworkMachine te;
+        int tankID;
+
+        public HoverableLocationTank(int minX, int maxX, int minY, int maxY, TileClockworkMachine te, int tankID) {
+            super(minX, maxX, minY, maxY);
+            this.te = te;
+            this.tankID = tankID;
+        }
+
+        @Override
+        public List<String> getTooltip(boolean isShiftDown)
+        {
+            ArrayList<String> ret = new ArrayList<>();
+            if(te.fluidTanks != null && te.fluidTanks.length > tankID)
+            {
+                FluidTankSided tank = te.fluidTanks[tankID];
+                FluidStack fluid = tank.getFluid();
+
+                if(fluid != null && fluid.amount > 0)
+                {
+                    ret.add(fluid.getLocalizedName());
+                    ret.add(Colors.GREY + fluid.amount + " mB");
+                }
+            }
+            return ret;
         }
     }
 
@@ -453,7 +668,7 @@ public class GuiClockworkMachine extends GuiContainer
         }
 
         public IOConfigurationSlot(Slot slot, TileClockworkMachine te, List<String> toolTip) {
-            this(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, slot.getSlotIndex(), te, toolTip);
+            this(slot.xPos, slot.yPos, 16, 16, slot.getSlotIndex(), te, toolTip);
         }
 
         @Override
@@ -526,6 +741,76 @@ public class GuiClockworkMachine extends GuiContainer
                     return true;
 
             return false;
+        }
+    }
+
+    public static class IOConfigurationTank extends IOConfiguration
+    {
+        public int tankID;
+        private List<String> toolTip;
+        private List<String> retTip;
+
+        public IOConfigurationTank(int left, int top, int width, int height, int tankID, TileClockworkMachine te, List<String> toolTip) {
+            super(left, top, width, height, te);
+            this.tankID = tankID;
+            this.toolTip = new ArrayList<String>(toolTip.size());
+            this.retTip = new ArrayList<String>(toolTip.size());
+            for(String s : toolTip)
+            {
+                this.toolTip.add(s);
+                this.retTip.add(s);
+            }
+        }
+
+        @Override
+        public List<String> getTooltip(boolean isShiftDown)
+        {
+            retTip.clear();
+            for(String s : toolTip)
+            {
+                retTip.add(s);
+            }
+
+            String activeSides = null;
+            String temp = "ERROR";
+            EnumFacing d;
+            for(int i = 0; i < 6; i++)
+            {
+                d = EnumFacing.getFront(i);
+                if(isActiveOnSide(d))
+                {
+                    if(d.equals(EnumFacing.UP))
+                        temp = "UP";
+                    if(d.equals(EnumFacing.DOWN))
+                        temp = "DOWN";
+                    if(d.equals(EnumFacing.WEST))
+                        temp = "LEFT";
+                    if(d.equals(EnumFacing.EAST))
+                        temp = "RIGHT";
+                    if(d.equals(EnumFacing.SOUTH))
+                        temp = "BACK";
+
+                    if(activeSides == null)
+                        activeSides = Colors.GREY + "Sides: " + temp;
+                    else
+                        activeSides = activeSides + ", " + temp;
+                }
+            }
+            if(activeSides != null)
+                retTip.add(activeSides);
+
+            return retTip;
+        }
+
+        @Override
+        public void onIOChange(EnumFacing direction, boolean activate) {
+            te.changeTankIO(direction, tankID, activate);
+            PacketHandler.INSTANCE.sendToServer(new MessageTileMachineConfigurationTank(te.getPos(), te.getWorld().provider.getDimension(), tankID, direction, activate));
+        }
+
+        @Override
+        public boolean isActiveOnSide(EnumFacing direction) {
+            return te.fluidTanks[tankID].isAvailableForSide(direction);
         }
     }
 }

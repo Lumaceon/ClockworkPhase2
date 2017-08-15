@@ -18,7 +18,7 @@ public class RelicExcavationRegistry
         return MOON_FLOWER_RELIC_DROPS;
     }
 
-    public static void registerUnknownRelicDrop(WeightedChance<ItemStack> chance) {
+    public static void registerOtherRelicDrop(WeightedChance<ItemStack> chance) {
         UNKNOWN_RELIC_DROPS.add(chance);
     }
 

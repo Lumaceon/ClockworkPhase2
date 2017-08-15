@@ -3,7 +3,6 @@ package lumaceon.mods.clockworkphase2.network.message.handler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTileMachineConfiguration;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

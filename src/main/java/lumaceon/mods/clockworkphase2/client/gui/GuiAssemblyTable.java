@@ -7,9 +7,6 @@ import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -55,6 +52,13 @@ public class GuiAssemblyTable extends GuiContainer
             if(mainItem != null && mainItem.getItem() instanceof IAssemblableButtons)
                 ((IAssemblableButtons) mainItem.getItem()).onButtonClicked(button.id, buttonList);
         }
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
     @Override

@@ -89,7 +89,7 @@ public class NBTHelper
                 byte slotIndex = tagCompound.getByte("slot_index");
                 if(slotIndex >= 0 && slotIndex < inventory.length)
                 {
-                    inventory[slotIndex] = ItemStack.loadItemStackFromNBT(tagCompound);
+                    inventory[slotIndex] = new ItemStack(tagCompound);
                 }
             }
             return inventory;

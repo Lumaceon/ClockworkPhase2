@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.item.temporal.excavator;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
-import lumaceon.mods.clockworkphase2.capabilities.ActivatableHandler;
-import lumaceon.mods.clockworkphase2.capabilities.IActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.activatable.ActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandler;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

@@ -1,0 +1,69 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+            "particle": "clockworkphase2:blocks/armillary_top_straight",
+            "down": "clockworkphase2:blocks/armillary_top_straight",
+            "up": "clockworkphase2:blocks/armillary_top_straight",
+            "north": "clockworkphase2:blocks/armillary_top_side",
+            "east": "clockworkphase2:blocks/armillary_top_side",
+            "south": "clockworkphase2:blocks/armillary_top_side",
+            "west": "clockworkphase2:blocks/armillary_top_side"
+	    },
+		"model": "cube",
+		"transform": "forge:default-block",
+        "uvlock": false
+    },
+	"variants": {
+		"facing": {
+            "up": {},
+            "down": {},
+            "north": {},
+            "south": {},
+            "east": {},
+            "west": {}
+        },
+        "texture_orientation": {
+            "straight_ns": {
+                "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_straight",
+                    "up": "clockworkphase2:blocks/armillary_top_straight"
+                }
+            },
+            "straight_ew": {
+                "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_straight",
+                    "up": "clockworkphase2:blocks/armillary_top_straight"
+                },
+                "y": 90
+            },
+            "corner_ne": {
+                "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                    "up": "clockworkphase2:blocks/armillary_top_corner"
+                },
+                "y": 270
+            },
+            "corner_es": {
+                "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                    "up": "clockworkphase2:blocks/armillary_top_corner"
+                }
+            },
+            "corner_sw": {
+                "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                    "up": "clockworkphase2:blocks/armillary_top_corner"
+                },
+                "y": 90
+            },
+            "corner_wn": {
+                "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                    "up": "clockworkphase2:blocks/armillary_top_corner"
+                },
+                "y": 180
+            }
+        }
+    }
+}

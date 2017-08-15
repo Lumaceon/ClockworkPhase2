@@ -22,22 +22,22 @@ public class BlockClockworkFurnace extends BlockClockworkMachine
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(!playerIn.isSneaking())
+        if(!player.isSneaking())
         {
-            TileEntity te = worldIn.getTileEntity(pos);
+            TileEntity te = world.getTileEntity(pos);
             if(te != null)
             {
-                playerIn.openGui(ClockworkPhase2.instance, GUIs.CLOCKWORK_FURNACE.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+                player.openGui(ClockworkPhase2.instance, GUIs.CLOCKWORK_FURNACE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
                 return true;
             }
         }
         else
         {
-            if(!worldIn.isRemote)
+            if(!world.isRemote)
             {
-                TileEntity te = worldIn.getTileEntity(pos);
+                TileEntity te = world.getTileEntity(pos);
                 if(te != null && te instanceof TileClockworkFurnace)
                 {
                     ((TileClockworkFurnace) te).toggleTemporalMode();

@@ -12,8 +12,6 @@ import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
-import lumaceon.mods.clockworkphase2.util.NBTTags;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
@@ -23,6 +21,7 @@ import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -75,15 +74,15 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if(is != null)
+        if(!stack.isEmpty())
         {
-            IEnergyStorage cap = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            IEnergyStorage cap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
             if(cap != null)
             {
                 String color = InformationDisplay.getColorFromTension(cap.getEnergyStored(), cap.getMaxEnergyStored());
-                list.add("Energy: " + color + cap.getEnergyStored() + "/" + cap.getMaxEnergyStored() + " fe");
+                tooltip.add("Energy: " + color + cap.getEnergyStored() + "/" + cap.getMaxEnergyStored() + " fe");
             }
         }
     }
@@ -102,22 +101,22 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
         if(inventory != null)
         {
             item = inventory.getPickaxe();
-            if(item != null && item.getItem() instanceof ItemClockworkTool)
+            if(!item.isEmpty() && item.getItem() instanceof ItemClockworkTool)
                 strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
 
             item = inventory.getAxe();
-            if(item != null && item.getItem() instanceof ItemClockworkTool)
+            if(!item.isEmpty() && item.getItem() instanceof ItemClockworkTool)
                 strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
 
             item = inventory.getShovel();
-            if(item != null && item.getItem() instanceof ItemClockworkTool)
+            if(!item.isEmpty() && item.getItem() instanceof ItemClockworkTool)
                 strengthVsBlock = Math.max(strengthVsBlock, item.getItem().getStrVsBlock(item, state));
 
 
             for(int n = 3; n < inventory.getSlots(); n++)
             {
                 item = inventory.getStackInSlot(n);
-                if(item != null && item.getItem() instanceof ItemToolUpgradeTemporalInfuser)
+                if(!item.isEmpty() && item.getItem() instanceof ItemToolUpgradeTemporalInfuser)
                     if(((ItemToolUpgradeTemporalInfuser) item.getItem()).getActive(item, is))
                         return 1000000000F;
             }
@@ -133,7 +132,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
         if(blockHardness <= 0)
             return true;
 
-        ItemStack mostSpeedyTool = null;
+        ItemStack mostSpeedyTool = ItemStack.EMPTY;
         float greatestStrength = 0.0F;
         ItemStack component;
 
@@ -143,7 +142,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             for(int i = 0; i < inventory.getSlots(); i++)
             {
                 component = inventory.getStackInSlot(i);
-                if(component != null)
+                if(!component.isEmpty())
                 {
                     if(component.getItem() instanceof ItemToolUpgradeTemporalInfuser)
                     {
@@ -166,7 +165,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             }
         }
 
-        if(greatestStrength > 1.0F && mostSpeedyTool != null && mostSpeedyTool.getItem() instanceof IClockwork)
+        if(greatestStrength > 1.0F && !mostSpeedyTool.isEmpty() && mostSpeedyTool.getItem() instanceof IClockwork)
         {
             IClockwork clockworkConstruct = (IClockwork) mostSpeedyTool.getItem();
             IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
@@ -189,7 +188,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
     @Override
     public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player)
     {
-        IBlockState blockState = player.worldObj.getBlockState(pos);
+        IBlockState blockState = player.world.getBlockState(pos);
         if(blockState.getBlock() == null || !isEffective(stack, blockState)) //The tool is ineffective or non-functional.
             return super.onBlockStartBreak(stack, pos, player);
 
@@ -203,7 +202,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             for(int i = 0; i < inventory.getSlots(); i++) //Loop through the tool's component inventory.
             {
                 item = inventory.getStackInSlot(i);
-                if(item != null && item.getItem() instanceof ItemToolUpgradeArea && ((ItemToolUpgradeArea) item.getItem()).getActive(item, stack))
+                if(!item.isEmpty() && item.getItem() instanceof ItemToolUpgradeArea && ((ItemToolUpgradeArea) item.getItem()).getActive(item, stack))
                 {
                     areaRadius = ((ItemToolUpgradeArea) item.getItem()).getAreaRadius(item);
                     found = true;
@@ -214,7 +213,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
         if(!found) //No area upgrade found.
             return super.onBlockStartBreak(stack, pos, player);
 
-        RayTraceResult mop = RayTraceHelper.rayTrace(player.worldObj, player, false, 4.5);
+        RayTraceResult mop = RayTraceHelper.rayTrace(player.world, player, false, 4.5);
         if(mop == null)
             return super.onBlockStartBreak(stack, pos, player);
 
@@ -250,7 +249,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
                 {
                     if((x1 == x && y1 == y && z1 == z) || super.onBlockStartBreak(stack, new BlockPos(x1, y1, z1), player))
                         continue;
-                    aoeBlockBreak(stack, player.worldObj, new BlockPos(x1, y1, z1), player);
+                    aoeBlockBreak(stack, player.world, new BlockPos(x1, y1, z1), player);
                 }
         return false;
     }
@@ -304,7 +303,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
     protected boolean isEffective(ItemStack is, IBlockState state)
     {
-        if(is != null)
+        if(!is.isEmpty())
         {
             ItemStackHandlerTemporalExcavator inventory = getInventoryHandler(is);
             if(inventory != null)
@@ -382,7 +381,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
     @Override
     public void onKeyPressed(ItemStack item, EntityPlayer player) {
-        player.openGui(ClockworkPhase2.instance, GUIs.TEMPORAL_EXCAVATOR.ordinal(), player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
+        player.openGui(ClockworkPhase2.instance, GUIs.TEMPORAL_EXCAVATOR.ordinal(), player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
     }
 
     @Override
@@ -402,7 +401,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
     public ItemStackHandlerTemporalExcavator getInventoryHandler(ItemStack item)
     {
-        if(item != null)
+        if(!item.isEmpty())
         {
             IItemHandler handler = item.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
             if(handler != null && handler instanceof  ItemStackHandlerTemporalExcavator)
@@ -465,7 +464,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
     public static class ItemStackHandlerTemporalExcavator extends ItemStackHandler
     {
-        ItemStack stack;
+        ItemStack stack = ItemStack.EMPTY;
 
         public ItemStackHandlerTemporalExcavator(int size, ItemStack stack) {
             super(size);
@@ -490,7 +489,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             int maxEnergy = 0;
             for(ItemStack s : stacks)
             {
-                if(s != null)
+                if(!s.isEmpty())
                 {
                     IEnergyStorage cap = s.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
                     if(cap != null)
@@ -502,7 +501,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
                 }
             }
 
-            if(stack != null)
+            if(!stack.isEmpty())
             {
                 IEnergyStorage cap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
                 if(cap != null && cap instanceof EnergyStorageModular)

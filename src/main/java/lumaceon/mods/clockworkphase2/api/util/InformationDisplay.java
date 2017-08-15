@@ -47,10 +47,9 @@ public class InformationDisplay
     /**
      * Used as a conventional tool-tip for tiles itemstacks. Call during addInformation() in a custom Item class.
      * @param construct Itemstack representing the construct.
-     * @param player Player looking at the itemstack.
      * @param list A list of information to add to.
      */
-    public static void addClockworkConstructInformation(ItemStack construct, EntityPlayer player, List list, boolean displayTension)
+    public static void addClockworkConstructInformation(ItemStack construct, List list, boolean displayTension)
     {
         /*if(construct.getItem() instanceof IClockworkConstruct)
         {
@@ -97,7 +96,7 @@ public class InformationDisplay
         IClockwork clockworkComponent = (IClockwork) tool.getItem();
         int quality = clockworkComponent.getQuality(tool);
         int speed = clockworkComponent.getSpeed(tool);
-        int harvestLevel = Math.max(Math.max(tool.getItem().getHarvestLevel(tool, "pickaxe"), tool.getItem().getHarvestLevel(tool, "axe")), tool.getItem().getHarvestLevel(tool, "shovel"));
+        int harvestLevel = Math.max(Math.max(tool.getItem().getHarvestLevel(tool, "pickaxe", player, null), tool.getItem().getHarvestLevel(tool, "axe", player, null)), tool.getItem().getHarvestLevel(tool, "shovel", player, null));
 
         list.add(Colors.WHITE + "Harvest Level: " + Colors.GOLD + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
         list.add(Colors.WHITE + "Mining Speed: " + Colors.GOLD + speed / 25);

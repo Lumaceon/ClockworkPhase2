@@ -4,10 +4,10 @@ import lumaceon.mods.clockworkphase2.block.temporal.BlockCelestialCompassSB;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -31,7 +31,7 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
@@ -40,7 +40,7 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer renderer = tessellator.getBuffer();
+        BufferBuilder renderer = tessellator.getBuffer();
         bindTexture(Textures.MISC.CELESTIAL_COMPASS_SIDE);
         renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
         addSideVerticies(renderer, te, partialTicks);
@@ -48,7 +48,6 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
 
         GL11.glTranslatef(-5.0F, 0.0F, -5.0F);
         GL11.glScalef(11.0F, 1.0F, 11.0F);
-        func_190053_a(true);
 
         bindTexture(Textures.MISC.CELESTIAL_COMPASS_MAIN);
         renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
@@ -142,7 +141,7 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
                 item = new EntityItem(te.getWorld());
             if(itemToRender != null)
             {
-                item.setEntityItemStack(itemToRender);
+                item.setItem(itemToRender);
                 itemRenderer.renderItem(itemToRender, ItemCameraTransforms.TransformType.FIXED);
             }
             GL11.glRotatef(-(((System.currentTimeMillis()) % (360*rotationSpeed)) / (float)rotationSpeed), 0.0F, 1.0F, 0.0F);
@@ -223,7 +222,7 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
         }
     }
 
-    private void addSideVerticies(VertexBuffer renderer, TileEntity te, float partialTicks)
+    private void addSideVerticies(BufferBuilder renderer, TileEntity te, float partialTicks)
     {
         renderer.pos(4, 0, 4).tex(1, 1).endVertex(); //Bottom-right
         renderer.pos(4, 1, 4).tex(1, 0).endVertex(); //Top-right

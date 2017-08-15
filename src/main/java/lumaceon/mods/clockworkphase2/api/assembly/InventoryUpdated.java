@@ -4,70 +4,77 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentBase;
 
 public class InventoryUpdated implements IInventory
 {
-    private ItemStack[] inventory;
+    private NonNullList<ItemStack> inventory;
     private Container eventHandler;
     private int stackLimit;
 
     public InventoryUpdated(Container eventHandler, int size, int stackLimit) {
-        this.inventory = new ItemStack[size];
+        this.inventory = NonNullList.withSize(size, ItemStack.EMPTY);
         this.eventHandler = eventHandler;
         this.stackLimit = stackLimit;
     }
 
     @Override
     public int getSizeInventory() {
-        return this.inventory.length;
+        return this.inventory.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int p_70301_1_) {
-        return p_70301_1_ >= this.getSizeInventory() ? null : this.inventory[p_70301_1_];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_)
+    public boolean isEmpty()
     {
-        if (this.inventory[p_70298_1_] != null)
+        for(ItemStack item : inventory)
         {
-            ItemStack itemstack;
+            if(!item.isEmpty())
+                return false;
+        }
+        return true;
+    }
 
-            if (this.inventory[p_70298_1_].stackSize <= p_70298_2_)
-            {
-                itemstack = this.inventory[p_70298_1_];
-                this.inventory[p_70298_1_] = null;
-                this.eventHandler.onCraftMatrixChanged(this);
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.inventory[p_70298_1_].splitStack(p_70298_2_);
+    @Override
+    public ItemStack getStackInSlot(int index) {
+        return index >= this.getSizeInventory() ? null : this.inventory.get(index);
+    }
 
-                if (this.inventory[p_70298_1_].stackSize == 0)
-                    this.inventory[p_70298_1_] = null;
+    @Override
+    public ItemStack decrStackSize(int index, int p_70298_2_)
+    {
+        ItemStack itemstack;
 
-                this.eventHandler.onCraftMatrixChanged(this);
-                return itemstack;
-            }
+        if (this.inventory.get(index).getCount() <= p_70298_2_)
+        {
+            itemstack = this.inventory.get(index);
+            this.inventory.set(index, ItemStack.EMPTY);
+            this.eventHandler.onCraftMatrixChanged(this);
+            return itemstack;
         }
         else
-            return null;
+        {
+            itemstack = this.inventory.get(index).splitStack(p_70298_2_);
+
+            if (this.inventory.get(index).getCount() == 0)
+                this.inventory.set(index, ItemStack.EMPTY);
+
+            this.eventHandler.onCraftMatrixChanged(this);
+            return itemstack;
+        }
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        ItemStack item = inventory[index];
-        inventory[index] = null;
+        ItemStack item = inventory.get(index);
+        inventory.set(index, ItemStack.EMPTY);
         this.eventHandler.onCraftMatrixChanged(this);
         return item;
     }
 
     @Override
-    public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-        this.inventory[p_70299_1_] = p_70299_2_;
+    public void setInventorySlotContents(int index, ItemStack item) {
+        this.inventory.set(index, item);
         this.eventHandler.onCraftMatrixChanged(this);
     }
 
@@ -80,7 +87,7 @@ public class InventoryUpdated implements IInventory
     public void markDirty() {}
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+    public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {
         return true;
     }
 
@@ -116,8 +123,8 @@ public class InventoryUpdated implements IInventory
 
     @Override
     public void clear() {
-        for(int n = 0; n < inventory.length; n++)
-            inventory[n] = null;
+        for(int n = 0; n < inventory.size(); n++)
+            inventory.set(n, ItemStack.EMPTY);
         this.eventHandler.onCraftMatrixChanged(this);
     }
 

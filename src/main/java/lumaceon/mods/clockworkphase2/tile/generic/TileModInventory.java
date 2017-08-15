@@ -74,7 +74,7 @@ public abstract class TileModInventory extends TileMod implements IInventory
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -128,6 +128,9 @@ public abstract class TileModInventory extends TileMod implements IInventory
     protected void onInventoryContentsChanged() {
         markDirty();
     }
+
+    //TODO - Technically, the inventory will fail to save, because we have to save the inventory capability ourselves.
+    //....but I don't use this generic class.
 
     @Override
     public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, net.minecraft.util.EnumFacing facing) {

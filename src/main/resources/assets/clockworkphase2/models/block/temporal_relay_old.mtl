@@ -1,0 +1,7 @@
+# Blender MTL File: 'temporal_relay.blend'
+# Material Count: 1
+
+newmtl MainMaterial
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+map_Kd clockworkphase2:blocks/temporal_relay

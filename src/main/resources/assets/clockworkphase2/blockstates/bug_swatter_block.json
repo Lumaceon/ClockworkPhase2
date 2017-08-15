@@ -1,0 +1,23 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+			"all": "clockworkphase2:blocks/armillary_item_case"
+	    },
+		"model": "cube_all",
+		"transform": "forge:default-block"
+    },
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"test=0": [{
+
+		}],
+        "test=1": [{
+
+        }],
+        "test=2": [{
+
+        }]
+    }
+}

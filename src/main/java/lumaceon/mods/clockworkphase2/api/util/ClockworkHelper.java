@@ -39,6 +39,9 @@ public class ClockworkHelper
         return handler == null ? 0 : handler.getTier();
     }
 
+    /**
+     * Used primarily by tools, where machines tend to have a slightly smaller exponent to them.
+     */
     public static int getTensionCostFromStats(int baseCost, int quality, int speed) {
         float efficiency = (float) speed / quality;
         return (int) Math.round(baseCost * Math.pow(efficiency, 4));
@@ -49,7 +52,7 @@ public class ClockworkHelper
      */
     public static int getTensionCostFromStatsMachine(int baseCost, int quality, int speed) {
         float efficiency = (float) speed / quality;
-        return (int) Math.round(baseCost * Math.pow(efficiency, 1.7));
+        return (int) Math.round(baseCost * Math.pow(efficiency, 1.5));
     }
 
     /**
@@ -63,6 +66,6 @@ public class ClockworkHelper
         if(speed <= 0)
             return 0;
         double d = (double) speed;
-        return Math.pow(d/250.0, 4);
+        return Math.pow(d/250.0, 3);
     }
 }

@@ -10,10 +10,13 @@ import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.proxy.IProxy;
 import lumaceon.mods.clockworkphase2.recipe.Recipes;
+import lumaceon.mods.clockworkphase2.util.LogHelper;
 import lumaceon.mods.clockworkphase2.world.gen.WorldGeneratorOres;
+import lumaceon.mods.clockworkphase2.world.schematic.SchematicHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -24,12 +27,15 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 import java.util.Random;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class ClockworkPhase2
 {
     public static Random random = new Random(System.nanoTime());
     public static File sourceFile;
+    public static Logger logger = LogManager.getLogManager().getLogger(Reference.MOD_NAME);
 
     @Mod.Instance(Reference.MOD_ID)
     public static ClockworkPhase2 instance;
@@ -41,32 +47,39 @@ public class ClockworkPhase2
 
     public WorldGeneratorOres oreGenerator = new WorldGeneratorOres();
 
+    static
+    {
+        FluidRegistry.enableUniversalBucket();
+    }
+
     @Mod.EventHandler
     public void preInitialize(FMLPreInitializationEvent event)
     {
+        LogHelper.logger = event.getModLog();
+
         Reference.MOD_DIRECTORY = event.getSourceFile();
         ConfigurationHandler.init(event.getModConfigurationDirectory());
+
+        SchematicHandler.INSTANCE.setModResourceLocation(event.getSourceFile(), Reference.MOD_ID);
+        SchematicHandler.INSTANCE.setMinecraftDirectory(proxy.getMinecraftDataDirectory());
 
         ModCapabilities.init();
         CustomProperties.init();
 
-        ModFluids.init();
-
-        Echoes.init();
         ModItems.init();
         ModBlocks.init();
         ModBlocks.initTE();
+        ModFluids.registerFluidContainers();
         proxy.registerCustomModels();
 
-        GameRegistry.registerWorldGenerator(oreGenerator, 0);
+        ModBiomes.init();
 
-        ModFluids.bindBlocks();
+        GameRegistry.registerWorldGenerator(oreGenerator, 0);
 
         proxy.registerFluidModels();
         proxy.registerKeybindings();
         sourceFile = event.getSourceFile();
         proxy.preInit();
-
     }
 
     @Mod.EventHandler
@@ -79,15 +92,21 @@ public class ClockworkPhase2
 
         Recipes.init();
 
-        MinecraftForge.EVENT_BUS.register(BucketHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new PlayerHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());
         MinecraftForge.EVENT_BUS.register(new TickHandler());
+        MinecraftForge.EVENT_BUS.register(new CapabilityAttachHandler());
+        WorldGenHandler wgh = new WorldGenHandler();
+        MinecraftForge.TERRAIN_GEN_BUS.register(wgh);
+        MinecraftForge.EVENT_BUS.register(wgh);
+        MinecraftForge.ORE_GEN_BUS.register(wgh);
         proxy.initSideHandlers();
         if(event.getSide() == Side.SERVER)
             ForgeChunkManager.setForcedChunkLoadingCallback(ClockworkPhase2.instance, new ChunkLoadingHandler.CP2ChunkLoadingCallback());
 
         PacketHandler.init();
+        proxy.init();
     }
 
     @Mod.EventHandler
@@ -95,9 +114,6 @@ public class ClockworkPhase2
     {
         MainspringMetalRegistry.INTERNAL.initDefaults();
         Recipes.initAlloyRecipes();
-
-        ModArticles.initRecipes();
-        if(event.getSide().isClient()) //The guidebook is client only.
-            ModArticles.init(sourceFile);
+        Recipes.initCrusherRecipes();
     }
 }

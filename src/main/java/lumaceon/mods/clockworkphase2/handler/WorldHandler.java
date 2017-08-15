@@ -1,7 +1,9 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
+import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeFurnace;
+import lumaceon.mods.clockworkphase2.recipe.ArmillaryFishingRecipes;
 import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeRelocate;
@@ -10,6 +12,7 @@ import lumaceon.mods.clockworkphase2.network.message.MessageParticleSpawn;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -17,8 +20,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -29,6 +34,39 @@ import java.util.List;
 
 public class WorldHandler
 {
+    @SubscribeEvent
+    public void onItemFished(ItemFishedEvent event)
+    {
+        EntityFishHook fishHook = event.getHookEntity();
+        if(fishHook != null)
+        {
+            BlockPos pos = fishHook.getPosition();
+            IBlockState blockState = fishHook.world.getBlockState(pos);
+            IBlockState blockStateBelow = fishHook.world.getBlockState(pos.down());
+            if(blockState != null && blockState.getBlock() != null)
+            {
+                Block block = blockState.getBlock();
+                if(block.equals(ModFluids.TIMESTREAM.getBlock()))
+                {
+                    NonNullList<ItemStack> dropList = event.getDrops();
+                    dropList.clear();
+                    dropList.add(ArmillaryFishingRecipes.INSTANCE.getResultForFishing(fishHook.world, pos).copy());
+                }
+            }
+
+            if(blockState != null && blockState.getBlock() != null)
+            {
+                Block block = blockState.getBlock();
+                if(block.equals(ModFluids.TIMESTREAM.getBlock()))
+                {
+                    NonNullList<ItemStack> dropList = event.getDrops();
+                    dropList.clear();
+                    dropList.add(ArmillaryFishingRecipes.INSTANCE.getResultForFishing(fishHook.world, pos).copy());
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onBlockHarvested(BlockEvent.HarvestDropsEvent event)
     {
@@ -81,7 +119,7 @@ public class WorldHandler
                             {
                                 size = 1;
                             }
-                            smeltedOutput.stackSize = size;
+                            smeltedOutput.setCount(size);
                             drops.remove(n);
                             drops.add(n, smeltedOutput);
                         }
@@ -124,9 +162,9 @@ public class WorldHandler
                                         ItemStack inventorySlotItem = sidedInventory.getStackInSlot(currentSlot);
                                         if(inventorySlotItem != null)
                                         {
-                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.stackSize + drop.stackSize)
+                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.getCount() + drop.getCount())
                                             {
-                                                inventorySlotItem.stackSize += drop.stackSize;
+                                                inventorySlotItem.grow(drop.getCount());
                                                 sidedInventory.setInventorySlotContents(currentSlot, inventorySlotItem);
                                                 drops.remove(n);
                                                 --n;
@@ -160,9 +198,9 @@ public class WorldHandler
                                         ItemStack inventorySlotItem = tileInventory.getStackInSlot(n2);
                                         if(inventorySlotItem != null)
                                         {
-                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.stackSize + drop.stackSize)
+                                            if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.getCount() + drop.getCount())
                                             {
-                                                inventorySlotItem.stackSize += drop.stackSize;
+                                                inventorySlotItem.grow(drop.getCount());
                                                 tileInventory.setInventorySlotContents(n2, inventorySlotItem);
                                                 drops.remove(n);
                                                 --n;

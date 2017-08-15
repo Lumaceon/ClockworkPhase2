@@ -3,10 +3,13 @@ package lumaceon.mods.clockworkphase2.item.temporal;
 import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.item.IHourglass;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
-import lumaceon.mods.clockworkphase2.capabilities.ActivatableHandler;
-import lumaceon.mods.clockworkphase2.capabilities.IActivatableHandler;
-import lumaceon.mods.clockworkphase2.capabilities.TimeStorage;
+import lumaceon.mods.clockworkphase2.capabilities.activatable.ActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.timestorage.TimeStorage;
+import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.util.ExperienceHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,21 +44,22 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        ITimeStorage timeStorage = is.getCapability(TIME, EnumFacing.DOWN);
+        ITimeStorage timeStorage = stack.getCapability(TIME, EnumFacing.DOWN);
         if(timeStorage != null)
         {
-            list.add("Time: " + TimeConverter.parseNumber(timeStorage.getTimeInTicks(), 2));
+            tooltip.add("Time: " + TimeConverter.parseNumber(timeStorage.getTimeInTicks(), 2));
         }
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-        if(playerIn.isSneaking())
+        if(player.isSneaking())
             return EnumActionResult.FAIL;
 
+        ItemStack stack = player.getHeldItem(hand);
         IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
         if(cap != null)
             cap.setActive();
@@ -64,8 +68,9 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack is, World world, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand handIn)
     {
+        ItemStack is = player.getHeldItem(handIn);
         if(!player.isSneaking())
         {
             IActivatableHandler cap = is.getCapability(ACTIVATABLE, EnumFacing.DOWN);
@@ -88,8 +93,67 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
     }
 
     @Override
+    public boolean generateTime(ItemStack stack, EntityPlayer player)
+    {
+        int xpLevel = player.experienceLevel;
+        int xpTier = 1;
+
+        if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_5)
+            xpTier = 5;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_4)
+            xpTier = 4;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_3)
+            xpTier = 3;
+        else if(xpLevel >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_2)
+            xpTier = 2;
+
+        ITimeStorage timeStorage = stack.getCapability(TIME, EnumFacing.DOWN);
+        if(timeStorage != null)
+        {
+            if(timeStorage.getTimeInTicks() >= timeStorage.getMaxCapacity())
+            {
+                return false;
+            }
+
+            int timeToAdd = 0;
+            int percentageChance = 100;
+            switch(xpTier)
+            {
+                case 1:
+                    timeToAdd = 1;
+                    percentageChance = 20;
+                    break;
+                case 2:
+                    timeToAdd = 1;
+                    break;
+                case 3:
+                    timeToAdd = 4;
+                    break;
+                case 4:
+                    timeToAdd = 16;
+                    break;
+                case 5:
+                    timeToAdd = 64;
+                    break;
+            }
+
+            if(percentageChance > itemRand.nextInt(100))
+            {
+                long amountAccepted = timeStorage.insertTime(timeToAdd);
+                if(amountAccepted > 0)
+                {
+                    if(xpTier > 2 && itemRand.nextInt(50) == 0)
+                        ExperienceHelper.addPlayerXP(player, -1);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.getItem().equals(newStack.getItem());
+        return !oldStack.getItem().equals(newStack.getItem()) || oldStack.hasEffect() != newStack.hasEffect();
     }
 
     @Override
@@ -99,11 +163,6 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
 
     public static class HourglassCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
     {
-        @CapabilityInject(IActivatableHandler.class)
-        public static final Capability<IActivatableHandler> ACTIVATABLE = null;
-        @CapabilityInject(ITimeStorage.class)
-        public static final Capability<ITimeStorage> TIME = null;
-
         ActivatableHandler activatableHandler = new ActivatableHandler();
         TimeStorage timeStorage;
 

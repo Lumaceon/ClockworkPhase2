@@ -46,7 +46,7 @@ public class MainspringMetalRegistry
             if(metal.metal != null)
             {
                 if(is.equals(metal.metal))
-                    return metal.metalValue * is.stackSize;
+                    return metal.metalValue * is.getCount();
             }
 
             if(metal.metalName != null)
@@ -55,7 +55,7 @@ public class MainspringMetalRegistry
                 for(ItemStack item : ores)
                 {
                     if(OreDictionary.itemMatches(item, is, false))
-                        return metal.metalValue * is.stackSize;
+                        return metal.metalValue * is.getCount();
                 }
             }
         }

@@ -1,12 +1,23 @@
 #Item
 
-clockworkphase2:copper_ingot=Copper Ingot
-clockworkphase2:zinc_ingot=Zinc Ingot
-clockworkphase2:brass_ingot=Brass Ingot
-clockworkphase2:temporal_ingot=Temporal Ingot
+clockworkphase2:ingot_copper=Copper Ingot
+clockworkphase2:ingot_zinc=Copper Ingot
+clockworkphase2:ingot_brass=Copper Ingot
+clockworkphase2:ingot_aluminum=Copper Ingot
+clockworkphase2:ingot_temporal=Temporal Ingot
 
-clockworkphase2:brass_lump=Brass Lump
-clockworkphase2:matter_temporal=Temporal Matter
+clockworkphase2:dust_copper=Copper Dust
+clockworkphase2:dust_zinc=Zinc Dust
+clockworkphase2:dust_brass=Brass Dust
+clockworkphase2:dust_aluminum=Aluminum Dust
+clockworkphase2:dust_temporal=Temporal Dust
+
+clockworkphase2:moonstone=Moonstone
+clockworkphase2:chrysoberyl=Chrysoberyl
+clockworkphase2:pearl=Pearl
+clockworkphase2:spinel=Spinel
+
+clockworkphase2:silicon=Silicon
 
 clockworkphase2:mainspring=Mainspring
 clockworkphase2:clockwork_core=Clockwork Core

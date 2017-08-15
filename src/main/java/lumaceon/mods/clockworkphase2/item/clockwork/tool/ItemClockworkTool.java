@@ -18,6 +18,7 @@ import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -69,21 +70,21 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        IEnergyStorage energyCap = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
         if(energyCap != null)
         {
-            list.add("Energy: " + energyCap.getEnergyStored() + " fe");
-            list.add("");
+            tooltip.add("Energy: " + energyCap.getEnergyStored() + " fe");
+            tooltip.add("");
         }
 
-        ItemStackHandlerClockworkConstruct cap = getClockworkItemHandler(is);
+        ItemStackHandlerClockworkConstruct cap = getClockworkItemHandler(stack);
         if(cap != null)
         {
-            list.add("Quality: " + cap.getQuality());
-            list.add("Speed: " + cap.getSpeed());
-            list.add("Tier: " + cap.getTier());
+            tooltip.add("Quality: " + cap.getQuality());
+            tooltip.add("Speed: " + cap.getSpeed());
+            tooltip.add("Tier: " + cap.getTier());
         }
         //InformationDisplay.addClockworkConstructInformation(is, player, list, true);
     }
@@ -100,7 +101,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public int getHarvestLevel(ItemStack stack, String toolClass)
+    public int getHarvestLevel(ItemStack stack, String toolClass, @javax.annotation.Nullable net.minecraft.entity.player.EntityPlayer player, @javax.annotation.Nullable IBlockState blockState)
     {
         int harvestLevel = -1;
 
@@ -113,7 +114,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @Override
     public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player)
     {
-        IBlockState state = player.worldObj.getBlockState(pos);
+        IBlockState state = player.world.getBlockState(pos);
         if(state == null || !isEffective(state)) //The tool is ineffective or non-functional.
             return super.onBlockStartBreak(stack, pos, player);
 
@@ -131,7 +132,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         if(!found) //No area upgrade found.
             return super.onBlockStartBreak(stack, pos, player);
 
-        RayTraceResult mop = RayTraceHelper.rayTrace(player.worldObj, player, false, 4.5);
+        RayTraceResult mop = RayTraceHelper.rayTrace(player.world, player, false, 4.5);
         if(mop == null)
             return super.onBlockStartBreak(stack, pos, player);
 
@@ -167,7 +168,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
                 {
                     if((x1 == x && y1 == y && z1 == z) || super.onBlockStartBreak(stack, new BlockPos(x1, y1, z1), player))
                         continue;
-                    aoeBlockBreak(stack, player.worldObj, new BlockPos(x1, y1, z1), player);
+                    aoeBlockBreak(stack, player.world, new BlockPos(x1, y1, z1), player);
                 }
         return false;
     }

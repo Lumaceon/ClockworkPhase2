@@ -23,20 +23,14 @@ public class HandlerCelestialCompassItemGet implements IMessageHandler<MessageCe
         }
 
         Minecraft minecraft = Minecraft.getMinecraft();
-        final WorldClient worldClient = minecraft.theWorld;
-        minecraft.addScheduledTask(new Runnable()
-        {
-            public void run()
-            {
-                processMessage(message, ctx, worldClient);
-            }
-        });
+        final WorldClient worldClient = minecraft.world;
+        minecraft.addScheduledTask(() -> processMessage(message, ctx, worldClient));
         return null;
     }
 
     private void processMessage(MessageCelestialCompassItemGet message, MessageContext ctx, WorldClient worldClient)
     {
-        World world = Minecraft.getMinecraft().theWorld;
+        World world = Minecraft.getMinecraft().world;
         if(world != null)
         {
             TileEntity te = world.getTileEntity(message.pos);

@@ -40,12 +40,12 @@ public class GuiTemporalExcavatorUpgrades extends GuiScreen
             {
                 if(items[index].getItem() instanceof IToolUpgrade)
                 {
-                    buttonList.add(new GuiButtonItem(items[index], index, guiLeft + (x % 10) * 30, guiTop + 15, "", itemRenders, fontRendererObj, ((IToolUpgrade) items[index].getItem()).getActive(items[index], this.mc.thePlayer.inventory.getCurrentItem())));
+                    buttonList.add(new GuiButtonItem(items[index], index, guiLeft + (x % 10) * 30, guiTop + 15, "", itemRenders, fontRenderer, ((IToolUpgrade) items[index].getItem()).getActive(items[index], this.mc.player.inventory.getCurrentItem())));
                 }
             }
             else
             {
-                buttonList.add(new GuiButtonItem(null, index, guiLeft + (x % 10) * 30, guiTop + 15, "", itemRenders, fontRendererObj, false));
+                buttonList.add(new GuiButtonItem(null, index, guiLeft + (x % 10) * 30, guiTop + 15, "", itemRenders, fontRenderer, false));
             }
             index++;
         }
@@ -66,7 +66,7 @@ public class GuiTemporalExcavatorUpgrades extends GuiScreen
     @Override
     protected void keyTyped(char p_73869_1_, int p_73869_2_) {
         if(p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode())
-            this.mc.thePlayer.closeScreen();
+            this.mc.player.closeScreen();
     }
 
     @Override

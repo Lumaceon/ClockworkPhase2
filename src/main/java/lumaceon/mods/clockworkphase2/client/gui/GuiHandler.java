@@ -2,15 +2,19 @@ package lumaceon.mods.clockworkphase2.client.gui;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkAlloyFurnace;
+import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkCrusher;
+import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkFurnace;
-import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkMachine;
+import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkAlloyFurnace;
+import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkCrusher;
+import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkFurnace;
 import lumaceon.mods.clockworkphase2.lib.GUIs;
+import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkAlloyFurnace;
+import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrusher;
+import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkFurnace;
-import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
-import lumaceon.mods.clockworkphase2.util.NBTTags;
-import lumaceon.mods.clockworkphase2.client.gui.guidebook.GuiGuidebook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -42,6 +46,24 @@ public class GuiHandler implements IGuiHandler
             if(te != null && te instanceof TileClockworkFurnace)
                 return new ContainerClockworkFurnace(player, (TileClockworkFurnace) te);
         }
+        else if(ID == GUIs.CLOCKWORK_ALLOY_FURNACE.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileClockworkAlloyFurnace)
+                return new ContainerClockworkAlloyFurnace(player, (TileClockworkAlloyFurnace) te);
+        }
+        else if(ID == GUIs.CLOCKWORK_CRUSHER.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileClockworkCrusher)
+                return new ContainerClockworkCrusher(player, (TileClockworkCrusher) te);
+        }
+        else if(ID == GUIs.CLOCKWORK_CRYSTALLIZER.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileClockworkCrystallizer)
+                return new ContainerClockworkCrystallizer(player, (TileClockworkCrystallizer) te);
+        }
         return null;
     }
 
@@ -70,15 +92,29 @@ public class GuiHandler implements IGuiHandler
 
             return new GuiTemporalExcavatorUpgrades(items);
         }
-        else if(ID == GUIs.GUIDEBOOK.ordinal())
-        {
-            return new GuiGuidebook(player);
-        }
         else if(ID == GUIs.CLOCKWORK_FURNACE.ordinal())
         {
             TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
             if(te != null && te instanceof TileClockworkFurnace)
                 return new GuiClockworkFurnace(player, (TileClockworkFurnace) te);
+        }
+        else if(ID == GUIs.CLOCKWORK_ALLOY_FURNACE.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileClockworkAlloyFurnace)
+                return new GuiClockworkAlloyFurnace(player, (TileClockworkAlloyFurnace) te);
+        }
+        else if(ID == GUIs.CLOCKWORK_CRUSHER.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileClockworkCrusher)
+                return new GuiClockworkCrusher(player, (TileClockworkCrusher) te);
+        }
+        else if(ID == GUIs.CLOCKWORK_CRYSTALLIZER.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileClockworkCrystallizer)
+                return new GuiClockworkCrystallizer(player, (TileClockworkCrystallizer) te);
         }
         return null;
     }

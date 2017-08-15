@@ -5,8 +5,8 @@ import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
@@ -23,6 +23,8 @@ public class WorldGeneratorOres implements IWorldGenerator
                 spawnOres(ModBlocks.oreCopper, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 35, 128);
             if(ConfigValues.SPAWN_ZINC)
                 spawnOres(ModBlocks.oreZinc, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 10, 20, 128);
+            if(ConfigValues.SPAWN_ALUMINUM)
+                spawnOres(ModBlocks.oreAluminum, world, random, chunkX, chunkZ, 16, 16, 4 + random.nextInt(5), 16, 50, 128);
             if(ConfigValues.SPAWN_MOON_FLOWER_RELIC)
                 spawnOres(ModBlocks.relicMoonFlower, world, random, chunkX, chunkZ, 16, 16, 1 + random.nextInt(20), 1, 1, 20);
             if(ConfigValues.SPAWN_UNKNOWN_RELIC)

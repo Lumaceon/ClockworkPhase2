@@ -1,0 +1,96 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+            "down": "clockworkphase2:blocks/armillary_top_straight",
+            "up": "clockworkphase2:blocks/armillary_top_straight",
+            "north": "clockworkphase2:blocks/armillary_left",
+            "east": "clockworkphase2:blocks/armillary_left",
+            "south": "clockworkphase2:blocks/armillary_left",
+            "west": "clockworkphase2:blocks/armillary_left"
+	    },
+		"model": "cube",
+		"transform": "forge:default-block",
+        "uvlock": false
+    },
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"facing=down,frame_type=straight": [{}],
+		"facing=down,frame_type=corner": [{}],
+		"facing=up,frame_type=straight": [{
+		    "textures": {
+                "down": "clockworkphase2:blocks/armillary_left",
+                "up": "clockworkphase2:blocks/armillary_left",
+                "north": "clockworkphase2:blocks/armillary_forward",
+                "east": "clockworkphase2:blocks/armillary_forward",
+                "south": "clockworkphase2:blocks/armillary_forward",
+                "west": "clockworkphase2:blocks/armillary_forward"
+            }
+		}],
+		"facing=up,frame_type=corner": [{
+            "textures": {
+                "down": "clockworkphase2:blocks/armillary_left",
+                "up": "clockworkphase2:blocks/armillary_left",
+                "north": "clockworkphase2:blocks/armillary_forward",
+                "east": "clockworkphase2:blocks/armillary_forward",
+                "south": "clockworkphase2:blocks/armillary_forward",
+                "west": "clockworkphase2:blocks/armillary_forward"
+            }
+		}],
+		"facing=north,frame_type=straight": [{
+		}],
+		"facing=north,frame_type=corner": [{
+		    "textures": {
+                "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                "up": "clockworkphase2:blocks/armillary_top_corner",
+                "north": "clockworkphase2:blocks/armillary_left",
+                "east": "clockworkphase2:blocks/armillary_left",
+                "south": "clockworkphase2:blocks/armillary_left",
+                "west": "clockworkphase2:blocks/armillary_left"
+            },
+            "y": 180
+		}],
+		"facing=east,frame_type=straight": [{
+            "y": 90
+		}],
+		"facing=east,frame_type=corner": [{
+            "textures": {
+                        "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                        "up": "clockworkphase2:blocks/armillary_top_corner",
+                        "north": "clockworkphase2:blocks/armillary_left",
+                        "east": "clockworkphase2:blocks/armillary_left",
+                        "south": "clockworkphase2:blocks/armillary_left",
+                        "west": "clockworkphase2:blocks/armillary_left"
+                    }
+		}],
+		"facing=south,frame_type=straight": [{
+            "y": 180
+		}],
+		"facing=south,frame_type=corner": [{
+            "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                    "up": "clockworkphase2:blocks/armillary_top_corner",
+                    "north": "clockworkphase2:blocks/armillary_left",
+                    "east": "clockworkphase2:blocks/armillary_left",
+                    "south": "clockworkphase2:blocks/armillary_left",
+                    "west": "clockworkphase2:blocks/armillary_left"
+                },
+            "y": 90
+		}],
+		"facing=west,frame_type=straight": [{
+            "y": 270
+		}],
+		"facing=west,frame_type=corner": [{
+            "textures": {
+                    "down": "clockworkphase2:blocks/armillary_top_corner_flip",
+                    "up": "clockworkphase2:blocks/armillary_top_corner",
+                    "north": "clockworkphase2:blocks/armillary_left",
+                    "east": "clockworkphase2:blocks/armillary_left",
+                    "south": "clockworkphase2:blocks/armillary_left",
+                    "west": "clockworkphase2:blocks/armillary_left"
+                },
+            "y": 270
+		}]
+    }
+}

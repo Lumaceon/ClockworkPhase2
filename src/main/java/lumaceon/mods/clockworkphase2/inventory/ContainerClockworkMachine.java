@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.inventory;
 
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotNever;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
+import lumaceon.mods.clockworkphase2.util.FluidTankSided;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,11 +19,13 @@ public class ContainerClockworkMachine extends Container
     private int progressTimer = 0;
     private int energy = 0;
     private int maxEnergy = 0;
+    int[] tankValues;
 
     public ContainerClockworkMachine(TileClockworkMachine tile, int playerInventoryX, int playerInventoryY) {
         this.tile = tile;
         this.playerInventoryX = playerInventoryX;
         this.playerInventoryY = playerInventoryY;
+        this.tankValues = new int[this.tile.fluidTanks.length];
     }
 
     @Override
@@ -42,23 +45,42 @@ public class ContainerClockworkMachine extends Container
 
             if(this.progressTimer != this.tile.getField(0))
             {
-                icontainerlistener.sendProgressBarUpdate(this, 0, this.tile.getField(0));
+                icontainerlistener.sendWindowProperty(this, 0, this.tile.getField(0));
             }
 
             if(this.energy != this.tile.getField(1))
             {
-                icontainerlistener.sendProgressBarUpdate(this, 1, this.tile.getField(1));
+                icontainerlistener.sendWindowProperty(this, 1, this.tile.getField(1));
             }
 
             if(this.maxEnergy != this.tile.getField(2))
             {
-                icontainerlistener.sendProgressBarUpdate(this, 2, this.tile.getField(2));
+                icontainerlistener.sendWindowProperty(this, 2, this.tile.getField(2));
             }
+
+            if(tankValues != null)
+            {
+                for(int n = 0; n < tile.fluidTanks.length; n++)
+                {
+                    if(tile.fluidTanks.length > n && tile.fluidTanks[n] != null && tile.fluidTanks[n].getFluidAmount() != tankValues[n])
+                    {
+                        icontainerlistener.sendWindowProperty(this, 3+n, tile.fluidTanks[n].getFluidAmount());
+                    }
+                }
+            }
+
         }
 
         this.progressTimer = this.tile.getField(0);
         this.energy = this.tile.getField(1);
         this.maxEnergy = this.tile.getField(2);
+        for(int i = 0 ; i < tile.fluidTanks.length; i++)
+        {
+            if(tile.fluidTanks[i] != null)
+            {
+                tankValues[i] = tile.fluidTanks[i].getFluidAmount();
+            }
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -112,6 +134,6 @@ public class ContainerClockworkMachine extends Container
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return tile.isUseableByPlayer(playerIn);
+        return tile.isUsableByPlayer(playerIn);
     }
 }

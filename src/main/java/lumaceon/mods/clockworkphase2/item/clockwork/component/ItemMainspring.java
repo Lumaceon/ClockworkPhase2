@@ -12,6 +12,7 @@ import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -43,8 +45,9 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag) {
-        InformationDisplay.addMainspringInformation(is, list);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        InformationDisplay.addMainspringInformation(stack, tooltip);
     }
 
     @Override
@@ -95,7 +98,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
     public static void onButtonClickedServer(ContainerAssemblyTable container)
     {
         ItemStack mainItem = container.mainInventory.getStackInSlot(0);
-        if(mainItem != null && mainItem.getItem() instanceof ItemMainspring)
+        if(!mainItem.isEmpty() && mainItem.getItem() instanceof ItemMainspring)
         {
             IMainspring mainspring = (IMainspring) mainItem.getItem();
             int baseValues = 0;
@@ -123,7 +126,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
 
                     ((ItemStackHandlerMainspring) handler).setCapacity(newMaxTension);
                     for(int n = 0; n < container.componentInventory.getSizeInventory(); n++)
-                        container.componentInventory.setInventorySlotContents(n, null);
+                        container.componentInventory.setInventorySlotContents(n, ItemStack.EMPTY);
                 }
             }
         }

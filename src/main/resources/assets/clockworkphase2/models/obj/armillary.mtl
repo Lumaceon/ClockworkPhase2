@@ -1,0 +1,17 @@
+# Blender MTL File: 'armillarySphere.blend'
+# Material Count: 3
+
+newmtl MainRing
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+map_Kd clockworkphase2:blocks/armillary_ring2
+
+newmtl Midbeam
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+map_Kd clockworkphase2:blocks/armillary_ring
+
+newmtl TiltedRings
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+map_Kd clockworkphase2:blocks/armillary_ring3

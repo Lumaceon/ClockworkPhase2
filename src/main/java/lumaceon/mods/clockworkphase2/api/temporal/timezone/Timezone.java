@@ -1,24 +1,18 @@
 package lumaceon.mods.clockworkphase2.api.temporal.timezone;
 
-import lumaceon.mods.clockworkphase2.api.temporal.Echo;
-import lumaceon.mods.clockworkphase2.api.temporal.EchoRegistry;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
-import lumaceon.mods.clockworkphase2.capabilities.TimeStorage;
+import lumaceon.mods.clockworkphase2.capabilities.timestorage.TimeStorage;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A class representing a timezone, which is an area of space-time manipulated by a timezone provider. Functionally,
@@ -26,12 +20,9 @@ import java.util.Map;
  */
 public class Timezone implements ITimezone
 {
-    public static final int MAX_ECHO_CAPACITY = 2000000000; //Two billion, which is close to a signed integer's maximum.
-
     @CapabilityInject(ITimezoneFunction.class)
     public static final Capability<ITimezoneFunction> TIMEZONE_FUNCTION = null;
 
-    protected HashMap<String, Integer> echoes = new HashMap<String, Integer>();
     protected TileEntity te;
 
     protected TimeStorage timeStorage = new TimeStorage(TimeConverter.DAY);
@@ -94,53 +85,11 @@ public class Timezone implements ITimezone
     }
 
     @Override
-    public int getEchoCountForType(Echo echoType)
-    {
-        Integer i = echoes.get(echoType.getRegistryName());
-        if(i == null)
-            return 0;
-        return i;
-    }
-
-    @Override
-    public int insertEchoes(Echo echoType, int numberToInsert)
-    {
-        int count = getEchoCountForType(echoType);
-        int echoesAccepted = Math.min(MAX_ECHO_CAPACITY - count, numberToInsert);
-        count += echoesAccepted;
-        echoes.put(echoType.getRegistryName(), count);
-
-        return echoesAccepted;
-    }
-
-    @Override
-    public int extractEchoes(Echo echoType, int numberToExtract)
-    {
-        int count = getEchoCountForType(echoType);
-        int echoesRemoved = Math.min(count, numberToExtract);
-        count -= echoesRemoved;
-        echoes.put(echoType.getRegistryName(), count);
-
-        return echoesRemoved;
-    }
-
-    @Override
     public NBTTagCompound serializeNBT()
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setLong("time_stored", timeStorage.getTimeInTicks());
         nbt.setLong("time_capacity", timeStorage.getMaxCapacity());
-
-        NBTTagList list = new NBTTagList();
-        NBTTagCompound tag;
-        for(Map.Entry<String, Integer> entry : echoes.entrySet())
-        {
-            tag = new NBTTagCompound();
-            tag.setString("registry_name", entry.getKey());
-            tag.setInteger("count", entry.getValue());
-            list.appendTag(tag);
-        }
-        nbt.setTag("echoes", list);
 
         return nbt;
     }
@@ -150,17 +99,6 @@ public class Timezone implements ITimezone
     {
         timeStorage.setMaxCapacity(nbt.getLong("time_capacity"));
         timeStorage.setTimeStored(nbt.getLong("time_stored"));
-
-        NBTTagList list = nbt.getTagList("echoes", Constants.NBT.TAG_COMPOUND);
-        for(int i = 0; i < list.tagCount(); i++)
-        {
-            NBTTagCompound tag = (NBTTagCompound) list.get(i);
-            String registryName = tag.getString("registry_name");
-            Echo e = EchoRegistry.getEchoFromRegistryName(registryName);
-
-            if(e != null)
-                echoes.put(registryName, tag.getInteger("count"));
-        }
     }
 
     @Override
@@ -196,6 +134,7 @@ public class Timezone implements ITimezone
      */
     public void markDirty()
     {
-        te.markDirty();
+        if(te != null)
+            te.markDirty();
     }
 }

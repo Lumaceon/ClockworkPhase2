@@ -1,9 +1,10 @@
 package lumaceon.mods.clockworkphase2.item.temporal.excavator;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
-import lumaceon.mods.clockworkphase2.capabilities.ActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.activatable.ActivatableHandler;
 import lumaceon.mods.clockworkphase2.util.Colors;
 import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,7 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if(NBTHelper.hasTag(stack, "cp_name"))
         {
@@ -47,19 +48,20 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        ItemStack stack = player.getHeldItem(hand);
         TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof IInventory)
         {
             NBTHelper.INT.set(stack, "cp_x", pos.getX());
             NBTHelper.INT.set(stack, "cp_y", pos.getY());
             NBTHelper.INT.set(stack, "cp_z", pos.getZ());
-            NBTHelper.INT.set(stack, "cp_side", side.ordinal());
+            NBTHelper.INT.set(stack, "cp_side", facing.ordinal());
             String blockName = te.getBlockType().getLocalizedName();
             NBTHelper.STRING.set(stack, "cp_name", blockName);
             if(!worldIn.isRemote)
-                playerIn.addChatComponentMessage(new TextComponentString(Colors.AQUA + "Inventory location saved: " + blockName));
+                player.sendMessage(new TextComponentString(Colors.AQUA + "Inventory location saved: " + blockName));
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.FAIL;

@@ -8,10 +8,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TimezoneHandler
 {
@@ -19,10 +16,38 @@ public class TimezoneHandler
     public static final Capability<ITimezone> TIMEZONE = null;
 
     /**
+     * Returns all timezones available for the given location on the given world, or an empty list if none exist.
+     * @return The first registered timezone available at the location, or an empty list if none are.
+     */
+    public static List<ITimezone> getTimezonesFromWorldPosition(double x, double y, double z, World world)
+    {
+        ArrayList<ITimezone> ret = new ArrayList<>();
+        Collection<ITimezone> timezoneList = timezones.values();
+        for(ITimezone timezone : timezoneList)
+        {
+            boolean inRange = timezone.isInRange(x, y, z, world);
+            if(inRange)
+            {
+                ret.add(timezone);
+            }
+        }
+        return ret;
+    }
+
+    public static List<ITimezone> getTimezonesFromWorldPosition(double x, double y, double z, int dimensionId)
+    {
+        World world = DimensionManager.getWorld(dimensionId);
+        if(world == null)
+            return new ArrayList<>(0);
+
+        return getTimezonesFromWorldPosition(x, y, z, world);
+    }
+
+    /**
      * Returns the first timezone available for the given location on the given world, or null if none exist.
      * @return The first registered timezone available at the location, or null if none are.
      */
-    public static ITimezone getTimeZoneFromWorldPosition(double x, double y, double z, World world)
+    public static ITimezone getFirstTimezoneFromWorldPosition(double x, double y, double z, World world)
     {
         Collection<ITimezone> timezoneList = timezones.values();
         for(ITimezone timezone : timezoneList)
@@ -40,16 +65,16 @@ public class TimezoneHandler
      * Returns the first timezone available for the given location on the given world, or null if none exist.
      * @return The first registered timezone available at the location, or null if none are.
      */
-    public static ITimezone getTimeZoneFromWorldPosition(double x, double y, double z, int dimensionId)
+    public static ITimezone getFirstTimezoneFromWorldPosition(double x, double y, double z, int dimensionId)
     {
         World world = DimensionManager.getWorld(dimensionId);
         if(world == null)
             return null;
 
-        return getTimeZoneFromWorldPosition(x, y, z, world);
+        return getFirstTimezoneFromWorldPosition(x, y, z, world);
     }
 
-    public static HashMap<int[], ITimezone> timezones = new HashMap<int[], ITimezone>(20);
+    public static HashMap<int[], ITimezone> timezones = new HashMap<>(20);
     public static class INTERNAL
     {
         public static boolean alreadyExists(TileEntity te) {
@@ -82,6 +107,8 @@ public class TimezoneHandler
          */
         public static void timezoneCleanup()
         {
+            ArrayList<int[]> itemsToRemove = new ArrayList<>();
+
             Set<Map.Entry<int[], ITimezone>> entries = timezones.entrySet();
             for(Map.Entry<int[], ITimezone> e : entries)
             {
@@ -103,8 +130,15 @@ public class TimezoneHandler
 
                 if(e != null && e.getKey() != null)
                 {
-                    timezones.remove(e.getKey());
+                    itemsToRemove.add(e.getKey());
                 }
+            }
+
+            for(int i = 0; i < itemsToRemove.size(); i++)
+            {
+                timezones.remove(itemsToRemove.get(i));
+                itemsToRemove.remove(i);
+                --i;
             }
         }
     }

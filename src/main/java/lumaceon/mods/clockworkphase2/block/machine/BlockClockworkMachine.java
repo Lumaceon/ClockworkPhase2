@@ -18,6 +18,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -31,11 +32,10 @@ public abstract class BlockClockworkMachine extends BlockClockworkPhase implemen
 {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool TEMPORAL = PropertyBool.create("temporal");
-    public static final PropertyBool ANTI = PropertyBool.create("anti");
 
     public BlockClockworkMachine(Material blockMaterial, String name) {
         super(blockMaterial, name);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TEMPORAL, false).withProperty(ANTI, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TEMPORAL, false));
     }
 
     @Override
@@ -49,7 +49,7 @@ public abstract class BlockClockworkMachine extends BlockClockworkPhase implemen
      * IBlockstate
      */
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
         return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
@@ -76,7 +76,7 @@ public abstract class BlockClockworkMachine extends BlockClockworkPhase implemen
         if(te != null && te instanceof TileClockworkMachine)
         {
             TileClockworkMachine cnMachine = (TileClockworkMachine) te;
-            cnMachine.setTileDataFromItemStack(stack);
+            cnMachine.setTileDataFromItemStack(stack.copy());
             cnMachine.markDirty();
         }
     }
@@ -99,7 +99,7 @@ public abstract class BlockClockworkMachine extends BlockClockworkPhase implemen
                 EntityItem entityitem = new EntityItem(world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, result);
 
                 entityitem.setPickupDelay(10);
-                world.spawnEntityInWorld(entityitem);
+                world.spawnEntity(entityitem);
             }
         }
 
@@ -151,7 +151,7 @@ public abstract class BlockClockworkMachine extends BlockClockworkPhase implemen
         TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof TileClockworkMachine)
         {
-            return state.withProperty(TEMPORAL, ((TileClockworkMachine) te).isInTemporalMode()).withProperty(ANTI, ((TileClockworkMachine) te).isInAntiMode());
+            return state.withProperty(TEMPORAL, ((TileClockworkMachine) te).isInTemporalMode());
         }
         return state;
     }
@@ -179,7 +179,7 @@ public abstract class BlockClockworkMachine extends BlockClockworkPhase implemen
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, new IProperty[] {FACING, TEMPORAL, ANTI});
+        return new BlockStateContainer(this, new IProperty[] {FACING, TEMPORAL});
     }
 
     private void setDefaultFacing(World worldIn, BlockPos pos, IBlockState state)

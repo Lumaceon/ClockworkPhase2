@@ -3,7 +3,10 @@ package lumaceon.mods.clockworkphase2.init;
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.RelicExcavationRegistry;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
-import lumaceon.mods.clockworkphase2.item.multiblocktemplate.ItemMultiblockTemplateCelestialCompass;
+import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateArmillaryRing;
+import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
+import lumaceon.mods.clockworkphase2.item.armillary.ItemAquaticScepter;
+import lumaceon.mods.clockworkphase2.item.multiblocktemplate.ItemMultiblockTemplate;
 import lumaceon.mods.clockworkphase2.item.temporal.*;
 import lumaceon.mods.clockworkphase2.api.util.WeightedChance;
 import lumaceon.mods.clockworkphase2.item.*;
@@ -17,14 +20,14 @@ import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
 public class ModItems
 {
-    public static ArrayList<Item> itemsForModel = new ArrayList<Item>(200);
+    public static ArrayList<Item> itemsForModel = new ArrayList<>(200);
 
     public static Item.ToolMaterial clockworkMaterial = EnumHelper.addToolMaterial("CLOCKWORK", 3, 100, 1, 1, 0);
     public static Item.ToolMaterial temporalMaterial = EnumHelper.addToolMaterial("TEMPORAL", 3, 100, 8.0F, 0, 0);
@@ -33,9 +36,21 @@ public class ModItems
     public static Item ingotCopper;
     public static Item ingotZinc;
     public static Item ingotBrass;
+    public static Item ingotAluminum;
     public static Item ingotTemporal;
-    public static Item lumpBrass;
+    public static Item dustCopper;
+    public static Item dustZinc;
+    public static Item dustBrass;
+    public static Item dustAluminum;
+    public static Item gemMoonstone;
+    public static Item gemChrysoberyl;
+    public static Item gemPearl;
+    public static Item gemSpinel;
+    //public static Item gemMetasite;
+    //public static Item gemLuasite;
+    //public static Item gemAeonite;
     public static Item matterTemporal;
+    public static Item silicon;
     //CLOCKWORK COMPONENTS (GEARS/CLOCKWORK/MAINSPRING)
     public static Item mainspring;
     public static Item clockworkCore;
@@ -57,6 +72,10 @@ public class ModItems
     public static Item clockworkShovel;
     public static Item temporalExcavator;
     public static Item temporalHourglass;
+    public static Item temporalToolbelt;
+    public static Item temporalFishingRod;
+    public static Item stasisShield;
+    public static Item aquaticScepter;
     public static Item trowelIron;
     public static Item trowelDiamond;
     public static Item alloyHammer;
@@ -67,90 +86,153 @@ public class ModItems
     public static Item toolUpgradeRelocate;
     public static Item toolUpgradeArea;
     public static Item toolUpgradeFortune;
+    //MACHINE UPGRADES
+    public static Item temporalMachineConduit;
     //WEAPONS
     public static Item clockworkSword;
     //MULTIBLOCK ASSEMBLERS
     public static Item multiblockCelestialCompass;
+    public static Item multiblockArmillaryRing;
+    //ARTIFACTS
+    public static Item temporalToolbeltArtifact;
     //MISC
     public static Item bugSwatter;
     public static Item moonFlowerSeeds;
-    public static Item guidebook;
     public static Item assemblyTable;
     public static void init()
     {
         //MATERIALS
-        ingotCopper = new ItemClockworkPhase(64, 100, "copper_ingot");
+
+        //ingots
+        ingotCopper = new ItemClockworkPhase(64, 100, "ingot_copper");
         register(ingotCopper);
         OreDictionary.registerOre("ingotCopper", ingotCopper);
 
-        ingotZinc = new ItemClockworkPhase(64, 100, "zinc_ingot");
+        ingotZinc = new ItemClockworkPhase(64, 100, "ingot_zinc");
         register(ingotZinc);
         OreDictionary.registerOre("ingotZinc", ingotZinc);
 
-        ingotBrass = new ItemClockworkPhase(64, 100, "brass_ingot");
+        ingotBrass = new ItemClockworkPhase(64, 100, "ingot_brass");
         register(ingotBrass);
         OreDictionary.registerOre("ingotBrass", ingotBrass);
 
-        ingotTemporal = new ItemClockworkPhase(64, 100, "temporal_ingot");
+        ingotAluminum = new ItemClockworkPhase(64, 100, "ingot_aluminum");
+        register(ingotAluminum);
+        OreDictionary.registerOre("ingotAluminum", ingotAluminum);
+
+        ingotTemporal = new ItemClockworkPhase(64, 100, "ingot_temporal");
         register(ingotTemporal);
         OreDictionary.registerOre("ingotTemporal", ingotTemporal);
 
-        lumpBrass = new ItemClockworkPhase(64, 100, "brass_lump");
-        register(lumpBrass);
+        //dusts
+        dustCopper = new ItemClockworkPhase(64, 100, "dust_copper");
+        register(dustCopper);
+        OreDictionary.registerOre("dustCopper", dustCopper);
 
+        dustZinc = new ItemClockworkPhase(64, 100, "dust_zinc");
+        register(dustZinc);
+        OreDictionary.registerOre("dustZinc", dustZinc);
+
+        dustBrass = new ItemClockworkPhase(64, 100, "dust_brass");
+        register(dustBrass);
+        OreDictionary.registerOre("dustBrass", dustBrass);
+
+        dustAluminum = new ItemClockworkPhase(64, 100, "dust_aluminum");
+        register(dustAluminum);
+        OreDictionary.registerOre("dustAluminum", dustAluminum);
+
+        //gems
+        gemMoonstone = new ItemClockworkPhase(64, 100, "moonstone");
+        register(gemMoonstone);
+        OreDictionary.registerOre("gemMoonstone", gemMoonstone);
+
+        gemChrysoberyl = new ItemClockworkPhase(64, 100, "chrysoberyl");
+        register(gemChrysoberyl);
+        OreDictionary.registerOre("gemChrysoberyl", gemChrysoberyl);
+
+        gemPearl = new ItemClockworkPhase(64, 100, "pearl");
+        register(gemPearl);
+
+        gemSpinel = new ItemClockworkPhase(64, 100, "spinel");
+        register(gemSpinel);
+        OreDictionary.registerOre("gemSpinel", gemSpinel);
+
+        /*gemMetasite = new ItemClockworkPhase(64, 100, "metasite");
+        register(gemMetasite);
+
+        gemLuasite = new ItemClockworkPhase(64, 100, "luasite"); //These three are for later....
+        register(gemLuasite);
+
+        gemAeonite = new ItemClockworkPhase(64, 100, "aeonite");
+        register(gemAeonite);*/
+
+        //other
         matterTemporal = new ItemClockworkPhase(64, 100, "matter_temporal");
         register(matterTemporal);
 
+        silicon = new ItemClockworkPhase(64, 100, "silicon");
+        register(silicon);
+        OreDictionary.registerOre("itemSilicon", silicon);
+
         //CLOCKWORK COMPONENTS (GEARS/CLOCKWORK/MAINSPRING)
+
+        //main components
         mainspring = new ItemMainspring(1, 100, "mainspring");
         register(mainspring);
 
         clockworkCore = new ItemClockworkCore(1, 100, "clockwork_core");
         register(clockworkCore);
 
-        gearWood = new ItemGear("wood_gear", 10, 15, 0);
+        //gears
+        gearWood = new ItemGear("gear_wood", 10, 15, 0);
         register(gearWood);
         OreDictionary.registerOre("gearWood", gearWood);
 
-        gearStone = new ItemGear("stone_gear", 15, 10, 1);
+        gearStone = new ItemGear("gear_stone", 15, 10, 1);
         register(gearStone);
         OreDictionary.registerOre("gearStone", gearStone);
 
-        gearIron = new ItemGear("iron_gear", 35, 25, 2);
+        gearIron = new ItemGear("gear_iron", 35, 25, 2);
         register(gearIron);
         OreDictionary.registerOre("gearIron", gearIron);
 
-        gearDiamond = new ItemGear("diamond_gear", 50, 40, 3);
+        gearGold = new ItemGear("gear_gold", 5, 70, 1);
+        register(gearGold);
+        OreDictionary.registerOre("gearGold", gearGold);
+
+        gearDiamond = new ItemGear("gear_diamond", 50, 40, 3);
         register(gearDiamond);
         OreDictionary.registerOre("gearDiamond", gearDiamond);
 
-        gearEmerald = new ItemGear("emerald_gear", 40, 50, 3);
+        gearEmerald = new ItemGear("gear_emerald", 40, 50, 3);
         register(gearEmerald);
         OreDictionary.registerOre("gearEmerald", gearEmerald);
 
-        gearQuartz = new ItemGear("quartz_gear", 70, 10, 2);
+        gearQuartz = new ItemGear("gear_quartz", 70, 10, 2);
         register(gearQuartz);
         OreDictionary.registerOre("gearQuartz", gearQuartz);
 
-        gearCopper = new ItemGear("copper_gear", 20, 30, 1);
+        gearCopper = new ItemGear("gear_copper", 20, 30, 1);
         register(gearCopper);
         OreDictionary.registerOre("gearCopper", gearCopper);
 
-        gearZinc = new ItemGear("zinc_gear", 30, 20, 1);
+        gearZinc = new ItemGear("gear_zinc", 30, 20, 1);
         register(gearZinc);
         OreDictionary.registerOre("gearZinc", gearZinc);
 
-        gearBrass = new ItemGear("brass_gear", 60, 30, 2);
+        gearBrass = new ItemGear("gear_brass", 60, 30, 2);
         register(gearBrass);
         OreDictionary.registerOre("gearBrass", gearBrass);
 
-        gearCreative = new ItemGear("creative_gear", 120, 120, 100);
+        gearCreative = new ItemGear("gear_creative", 120, 120, 100);
         register(gearCreative);
         OreDictionary.registerOre("gearCreative", gearCreative);
 
         //registerItem(gearParadoxium, ItemGearParadoxium.class, nameQualitySpeedLevel, new Object[] {gearParadoxium.getUnlocalizedName(), 0, 0, 0}, "gearParadoxium");
 
         //TOOLS
+
+        //clockwork
         clockworkPickaxe = new ItemClockworkPickaxe(clockworkMaterial, "clockwork_pickaxe");
         register(clockworkPickaxe);
 
@@ -160,12 +242,26 @@ public class ModItems
         clockworkShovel = new ItemClockworkShovel(clockworkMaterial, "clockwork_shovel");
         register(clockworkShovel);
 
+        //multitool shenanigans
         temporalExcavator = new ItemTemporalExcavator(temporalMaterial, "temporal_excavator");
         register(temporalExcavator);
 
         temporalHourglass = new ItemHourglass(1, 100, "temporal_hourglass", TimeConverter.HOUR);
         register(temporalHourglass);
 
+        temporalToolbelt = new ItemTemporalToolbelt(1, 100, "temporal_toolbelt");
+        register(temporalToolbelt);
+
+        temporalFishingRod = new ItemTemporalFishingRod("temporal_fishing_rod");
+        register(temporalFishingRod);
+
+        stasisShield = new ItemPersonalStasisShield(1, 100, "stasis_shield");
+        register(stasisShield);
+
+        aquaticScepter = new ItemAquaticScepter(1, 100, "aquatic_scepter");
+        register(aquaticScepter);
+
+        //misc
         trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, "iron_trowel");
         register(trowelIron);
 
@@ -194,20 +290,28 @@ public class ModItems
         toolUpgradeFurnace = new ItemToolUpgradeFurnace(1, 100, "tool_upgrade_furnace");
         register(toolUpgradeFurnace);
 
+        //MACHINE UPGRADES
+        temporalMachineConduit = new ItemMachineUpgrade(1, 100, "machine_upgrade_temporal");
+        register(temporalMachineConduit);
+
         //WEAPONS
         clockworkSword = new ItemClockworkSword(1, 100, "clockwork_sword");
         register(clockworkSword);
 
         //MULTIBLOCK ASSEMBLERS
-        multiblockCelestialCompass = new ItemMultiblockTemplateCelestialCompass(64, 100, "multiblock_template_celestial_compass");
+        multiblockCelestialCompass = new ItemMultiblockTemplate(1, 100, "multiblock_template_celestial_compass", MultiblockTemplateCelestialCompass.INSTANCE);
         register(multiblockCelestialCompass);
+
+        multiblockArmillaryRing = new ItemMultiblockTemplate(1, 100, "multiblock_template_armillary_ring", MultiblockTemplateArmillaryRing.INSTANCE);
+        register(multiblockArmillaryRing);
+
+        //ARTIFACTS
+        temporalToolbeltArtifact = new ItemClockworkPhase(64, 100, "temporal_toolbelt_artifact");
+        register(temporalToolbeltArtifact);
 
         //MISC
         moonFlowerSeeds = new ItemMoonFlowerSeeds(64, 100, "moon_flower_seeds");
         register(moonFlowerSeeds);
-
-        guidebook = new ItemGuidebook(1, 100, "guidebook");
-        register(guidebook);
 
         assemblyTable = new ItemAssemblyTable(64, 100, "assembly_table_item");
         register(assemblyTable);
@@ -215,14 +319,15 @@ public class ModItems
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         register(bugSwatter);
 
-        RelicExcavationRegistry.registerMoonFlowerRelicDrop(new WeightedChance<ItemStack>(new ItemStack(moonFlowerSeeds), 100));
+        RelicExcavationRegistry.registerMoonFlowerRelicDrop(new WeightedChance<>(new ItemStack(moonFlowerSeeds), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(temporalToolbeltArtifact), 100));
     }
 
     //************ START HELPER METHODS ************\\
 
     private static void register(Item item)
     {
-        GameRegistry.register(item);
+        ForgeRegistries.ITEMS.register(item);
         itemsForModel.add(item);
     }
 

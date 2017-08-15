@@ -1,21 +1,51 @@
 {
-    "variants": {
-        "inventory": { "model": "clockworkphase2:clockwork_furnace" },
-        "anti=false,facing=north,temporal=false": { "model": "clockworkphase2:clockwork_furnace" },
-        "anti=false,facing=south,temporal=false": { "model": "clockworkphase2:clockwork_furnace", "y": 180 },
-        "anti=false,facing=west,temporal=false":  { "model": "clockworkphase2:clockwork_furnace", "y": 270 },
-        "anti=false,facing=east,temporal=false":  { "model": "clockworkphase2:clockwork_furnace", "y": 90 },
-        "anti=false,facing=north,temporal=true": { "model": "clockworkphase2:clockwork_furnace_t" },
-        "anti=false,facing=south,temporal=true": { "model": "clockworkphase2:clockwork_furnace_t", "y": 180 },
-        "anti=false,facing=west,temporal=true":  { "model": "clockworkphase2:clockwork_furnace_t", "y": 270 },
-        "anti=false,facing=east,temporal=true":  { "model": "clockworkphase2:clockwork_furnace_t", "y": 90 },
-        "anti=true,facing=north,temporal=false": { "model": "clockworkphase2:clockwork_furnace_a" },
-        "anti=true,facing=south,temporal=false": { "model": "clockworkphase2:clockwork_furnace_a", "y": 180 },
-        "anti=true,facing=west,temporal=false":  { "model": "clockworkphase2:clockwork_furnace_a", "y": 270 },
-        "anti=true,facing=east,temporal=false":  { "model": "clockworkphase2:clockwork_furnace_a", "y": 90 },
-        "anti=true,facing=north,temporal=true": { "model": "clockworkphase2:clockwork_furnace_ta" },
-        "anti=true,facing=south,temporal=true": { "model": "clockworkphase2:clockwork_furnace_ta", "y": 180 },
-        "anti=true,facing=west,temporal=true":  { "model": "clockworkphase2:clockwork_furnace_ta", "y": 270 },
-        "anti=true,facing=east,temporal=true":  { "model": "clockworkphase2:clockwork_furnace_ta", "y": 90 }
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+            "front": "clockworkphase2:blocks/clockwork_furnace_front",
+            "top": "clockworkphase2:blocks/machine_top",
+            "side": "clockworkphase2:blocks/machine_side"
+	    },
+		"model": "orientable",
+		"transform": "forge:default-block"
+    },
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"facing":
+		{
+            "north":
+            {
+
+            },
+            "east":
+            {
+                "y": 90
+            },
+            "south":
+            {
+                "y": 180
+            },
+            "west":
+            {
+                "y": 270
+            }
+		},
+		"temporal":
+		{
+		    "false":
+		    {
+
+		    },
+		    "true":
+		    {
+		        "textures":
+		        {
+                    "front": "clockworkphase2:blocks/armillary_top_straight",
+                    "top": "clockworkphase2:blocks/machine_top",
+                    "side": "clockworkphase2:blocks/machine_side"
+                }
+		    }
+		}
     }
 }

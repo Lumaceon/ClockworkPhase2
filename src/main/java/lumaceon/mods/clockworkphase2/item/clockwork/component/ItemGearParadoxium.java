@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.item.clockwork.component;
 
 import lumaceon.mods.clockworkphase2.util.Colors;
 import lumaceon.mods.clockworkphase2.util.NBTHelper;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemGearParadoxium extends ItemGear
@@ -24,17 +26,17 @@ public class ItemGearParadoxium extends ItemGear
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack is, EntityPlayer player, List list, boolean flag)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if(!NBTHelper.hasTag(is, "quality") || !NBTHelper.hasTag(is, "speed") || !NBTHelper.hasTag(is, "tier"))
+        if(!NBTHelper.hasTag(stack, "quality") || !NBTHelper.hasTag(stack, "speed") || !NBTHelper.hasTag(stack, "tier"))
         {
-            list.add(Colors.LIGHT_PURPLE + "Right-click while holding to roll stats.");
-            list.add(Colors.WHITE + "Quality: " + Colors.LIGHT_PURPLE + "?");
-            list.add(Colors.WHITE + "Speed: " + Colors.LIGHT_PURPLE + "?");
-            list.add(Colors.WHITE + "Harvest Level: " + Colors.LIGHT_PURPLE + "?");
+            tooltip.add(Colors.LIGHT_PURPLE + "Right-click while holding to roll stats.");
+            tooltip.add(Colors.WHITE + "Quality: " + Colors.LIGHT_PURPLE + "?");
+            tooltip.add(Colors.WHITE + "Speed: " + Colors.LIGHT_PURPLE + "?");
+            tooltip.add(Colors.WHITE + "Harvest Level: " + Colors.LIGHT_PURPLE + "?");
         }
         else
-            super.addInformation(is, player, list, flag);
+            super.addInformation(stack, worldIn, tooltip, flagIn);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ItemGearParadoxium extends ItemGear
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         /*if(stack != null && stack.getItem().equals(ModItems.gearParadoxium.getItem()))
             if(!NBTHelper.hasTag(stack, "quality") || !NBTHelper.hasTag(stack, "speed") || !NBTHelper.hasTag(stack, "tier"))
@@ -71,8 +73,9 @@ public class ItemGearParadoxium extends ItemGear
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack is, World world, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand handIn)
     {
+        ItemStack is = player.getHeldItem(handIn);
         /*if(is != null && is.getItem().equals(ModItems.gearParadoxium.getItem()))
             if(!NBTHelper.hasTag(is, "quality") || !NBTHelper.hasTag(is, "speed") || !NBTHelper.hasTag(is, "tier"))
             {

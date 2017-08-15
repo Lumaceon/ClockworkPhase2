@@ -1,12 +1,10 @@
 package lumaceon.mods.clockworkphase2.item.clockwork.tool;
 
 import com.google.common.collect.Sets;
-import lumaceon.mods.clockworkphase2.util.NBTTags;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
+
 import java.util.Set;
 
 public class ItemClockworkAxe extends ItemClockworkTool

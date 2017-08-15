@@ -26,6 +26,8 @@ public class Textures
         public static ResourceLocation ASSEMBLY_TABLE_TEMPORAL_EXCAVATOR = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_temporal_excavator.png");
 
         public static ResourceLocation GUIDEBOOK_CRAFTING = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook/crafting_table_guide.png");
+
+        public static ResourceLocation TANK_LINES_10K = new ResourceLocation(Reference.MOD_ID, "textures/gui/misc/tank_lines_10k.png");
     }
 
     public static class MISC

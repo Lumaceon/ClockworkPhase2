@@ -24,7 +24,7 @@ public class InventoryAssemblyTableComponents implements IInventory
 
     public InventoryAssemblyTableComponents(ContainerAssemblyTable eventHandler, int stackLimit, ItemStack construct)
     {
-        if(construct == null)
+        if(construct.isEmpty())
         {
             itemHandler = new ItemStackHandler(0);
         }
@@ -47,6 +47,18 @@ public class InventoryAssemblyTableComponents implements IInventory
         return itemHandler == null ? 0 : itemHandler.getSlots();
     }
 
+    @Override
+    public boolean isEmpty()
+    {
+        if(itemHandler == null)
+            return true;
+
+        if(itemHandler.getSlots() > 0)
+            return false;
+
+        return true;
+    }
+
     @Nullable
     @Override
     public ItemStack getStackInSlot(int index) {
@@ -66,7 +78,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public void setInventorySlotContents(int index, @Nullable ItemStack stack)
+    public void setInventorySlotContents(int index, ItemStack stack)
     {
         if(itemHandler != null)
         {
@@ -86,7 +98,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return true;
     }
 
@@ -118,7 +130,7 @@ public class InventoryAssemblyTableComponents implements IInventory
     public void clear()
     {
         if(itemHandler != null)
-            for (int i = 0; i < itemHandler.getSlots(); i++)
+            for(int i = 0; i < itemHandler.getSlots(); i++)
                 itemHandler.extractItem(i, 64, false);
     }
 

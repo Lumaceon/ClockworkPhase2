@@ -7,12 +7,14 @@ import java.util.ArrayList;
 
 public class AlloyRecipes
 {
-    private static ArrayList<AlloyRecipe> RECIPES = new ArrayList<AlloyRecipe>(10);
+    public static final AlloyRecipes instance = new AlloyRecipes();
+
+    private ArrayList<AlloyRecipe> RECIPES = new ArrayList<AlloyRecipe>(10);
 
     /**
      * @return The alloy this will create, or null if none exist.
      */
-    public static AlloyRecipe getRecipe(ItemStack firstSlot, ItemStack secondSlot)
+    public AlloyRecipe getRecipe(ItemStack firstSlot, ItemStack secondSlot)
     {
         AlloyRecipe theRecipe = null;
         for(AlloyRecipe recipe : RECIPES)
@@ -22,14 +24,14 @@ public class AlloyRecipes
                 break;
             }
 
-        return theRecipe == null ? null : theRecipe;
+        return theRecipe;
     }
 
     /**
      * Adds an alloy recipe to those available.
      * @param output A desired output for this recipe
      */
-    public static void addAlloyRecipe(RecipeComponent firstComponent, RecipeComponent secondComponent, ItemStack output)
+    public void addAlloyRecipe(RecipeComponent firstComponent, RecipeComponent secondComponent, ItemStack output)
     {
         if(output == null)
             return;
@@ -44,7 +46,12 @@ public class AlloyRecipes
         RECIPES.add(recipe);
     }
 
-    public static class AlloyRecipe
+    public ArrayList<AlloyRecipe> getRecipes()
+    {
+        return RECIPES;
+    }
+
+    public class AlloyRecipe
     {
         public RecipeComponent first;
         public RecipeComponent second;
@@ -91,9 +98,9 @@ public class AlloyRecipes
         /**
          * Checks to see if the item passed is this item. Also checks ratio + stack size.
          */
-        public boolean itemMatches(ItemStack item)
+        private boolean itemMatches(ItemStack item)
         {
-            if(item == null || item.stackSize < ratio)
+            if(item == null || item.getCount() < ratio)
                 return false;
 
             return this.item != null && OreDictionary.itemMatches(this.item, item, false);

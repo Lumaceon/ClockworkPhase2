@@ -1,0 +1,17 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "iii",
+        "iii",
+        "iii"
+    ],
+    "key": {
+        "i": {
+            "type": "forge:ore_dict",
+            "ore": "ingotZinc"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:zinc_block"
+    }
+}

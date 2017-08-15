@@ -1,0 +1,51 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"textures": {
+            "front": "clockworkphase2:blocks/clockwork_crystallizer_front",
+            "top": "clockworkphase2:blocks/machine_top",
+            "side": "clockworkphase2:blocks/machine_side"
+	    },
+		"model": "orientable",
+		"transform": "forge:default-block"
+    },
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+		"facing":
+		{
+            "north":
+            {
+
+            },
+            "east":
+            {
+                "y": 90
+            },
+            "south":
+            {
+                "y": 180
+            },
+            "west":
+            {
+                "y": 270
+            }
+		},
+		"temporal":
+		{
+		    "false":
+		    {
+
+		    },
+		    "true":
+		    {
+		        "textures":
+		        {
+                    "front": "clockworkphase2:blocks/clockwork_crystallizer_front",
+                    "top": "clockworkphase2:blocks/machine_top",
+                    "side": "clockworkphase2:blocks/machine_side"
+                }
+		    }
+		}
+    }
+}

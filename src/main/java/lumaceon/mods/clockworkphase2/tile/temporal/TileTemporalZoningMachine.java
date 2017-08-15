@@ -27,9 +27,9 @@ public class TileTemporalZoningMachine extends TileMod implements ITickable
     @Override
     public void update()
     {
-        if(!worldObj.isRemote)
+        if(!world.isRemote)
         {
-            ForgeChunkManager.Ticket ticket = chunkloadingTickets.get(worldObj);
+            ForgeChunkManager.Ticket ticket = chunkloadingTickets.get(world);
             if(ticket != null)
             {
                 boolean chunkAlreadyLoaded = false;
@@ -39,7 +39,7 @@ public class TileTemporalZoningMachine extends TileMod implements ITickable
                 {
                     for(ChunkPos c : loadedChunks)
                     {
-                        if(c.chunkXPos == thisChunkPos.chunkXPos && c.chunkZPos == thisChunkPos.chunkZPos)
+                        if(c.x == thisChunkPos.x && c.z == thisChunkPos.z)
                         {
                             chunkAlreadyLoaded = true;
                         }

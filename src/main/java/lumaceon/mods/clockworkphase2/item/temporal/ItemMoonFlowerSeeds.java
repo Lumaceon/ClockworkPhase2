@@ -21,15 +21,16 @@ public class ItemMoonFlowerSeeds extends ItemClockworkPhase implements IPlantabl
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+        ItemStack stack = player.getHeldItem(hand);
         BlockPos above = pos.up();
-        if(playerIn.canPlayerEdit(pos, side, stack) && playerIn.canPlayerEdit(above, side, stack))
+        if(player.canPlayerEdit(pos, facing, stack) && player.canPlayerEdit(above, facing, stack))
         {
             if(worldIn.getBlockState(pos).getBlock().canSustainPlant(worldIn.getBlockState(pos), worldIn, pos, EnumFacing.UP, this) && worldIn.isAirBlock(above))
             {
                 worldIn.setBlockState(above, getPlant(worldIn, pos));
-                --stack.stackSize;
+                stack.shrink(1);
                 return EnumActionResult.SUCCESS;
             }
             else

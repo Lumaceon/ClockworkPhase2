@@ -29,15 +29,21 @@ public class BlockMultiblockAssembler extends BlockClockworkPhase implements ITi
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    {
         TileEntity te = worldIn.getTileEntity(pos);
-        if(te != null && te instanceof TileMultiblockAssembler && ((TileMultiblockAssembler) te).templateStack != null)
-            worldIn.spawnEntityInWorld(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TileMultiblockAssembler) te).templateStack));
+        if(te != null && te instanceof TileMultiblockAssembler && ((TileMultiblockAssembler) te).templateStack != null && !((TileMultiblockAssembler) te).isAssemblingMultiblock)
+        {
+            //If the tile has a template stack, and this block isn't destroying itself to create the multiblock, drop the template.
+            //Multiblocks are responsible for dropping a template stack when destroyed. All we care about here is premature breakage.
+            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), ((TileMultiblockAssembler) te).templateStack));
+        }
+
         super.breakBlock(worldIn, pos, state);
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if(world.isRemote)
             return true;
@@ -46,7 +52,7 @@ public class BlockMultiblockAssembler extends BlockClockworkPhase implements ITi
         {
             TileMultiblockAssembler multiblockAssembler = (TileMultiblockAssembler) te;
             ItemStack itemInHand = player.inventory.getCurrentItem();
-            if(itemInHand == null)
+            if(itemInHand.isEmpty())
                 return multiblockAssembler.onRightClickWithEmptyHand(player);
 
             boolean consumeItem = false;
@@ -58,9 +64,9 @@ public class BlockMultiblockAssembler extends BlockClockworkPhase implements ITi
 
             if(consumeItem)
             {
-                --itemInHand.stackSize;
-                if(itemInHand.stackSize <= 0)
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                itemInHand.shrink(1);
+                if(itemInHand.getCount() <= 0)
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
                 return true;
             }
         }

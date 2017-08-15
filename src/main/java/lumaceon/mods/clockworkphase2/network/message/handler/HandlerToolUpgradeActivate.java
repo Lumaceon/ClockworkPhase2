@@ -6,8 +6,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
-import lumaceon.mods.clockworkphase2.util.NBTTags;
 import lumaceon.mods.clockworkphase2.network.message.MessageToolUpgradeActivate;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -27,7 +25,7 @@ public class HandlerToolUpgradeActivate implements IMessageHandler<MessageToolUp
             return null;
         }
 
-        final EntityPlayerMP sendingPlayer = ctx.getServerHandler().playerEntity;
+        final EntityPlayerMP sendingPlayer = ctx.getServerHandler().player;
         if(sendingPlayer == null)
         {
             System.err.println("MessageToolUpgradeActivate received with null player.");

@@ -1,6 +1,8 @@
 package lumaceon.mods.clockworkphase2.init;
 
 import lumaceon.mods.clockworkphase2.capabilities.activatable.CapabilityActivatable;
+import lumaceon.mods.clockworkphase2.capabilities.custombehavior.CapabilityCustomBehavior;
+import lumaceon.mods.clockworkphase2.capabilities.entitycontainer.CapabilityEntityContainer;
 import lumaceon.mods.clockworkphase2.capabilities.machinedata.CapabilityMachineData;
 import lumaceon.mods.clockworkphase2.capabilities.mode.CapabilityMode;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.CapabilityStasis;
@@ -21,5 +23,7 @@ public class ModCapabilities
         CapabilityMode.register();
         CapabilityStasis.register();
         CapabilityStasisItem.register();
+        CapabilityEntityContainer.register();
+        CapabilityCustomBehavior.register();
     }
 }

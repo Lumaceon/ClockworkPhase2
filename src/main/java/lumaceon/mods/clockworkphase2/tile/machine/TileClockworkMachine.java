@@ -85,6 +85,8 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
     protected int speedOfMachine = 50; //Must be greater than 0. Higher = more energy cost but more progression.
     protected int progressForOperation = 10000;
 
+    public long internalTimer = 0;
+
     /* ~TEMPORAL FIELDS~ */
 
     private boolean isInTemporalMode = false;
@@ -108,10 +110,30 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
     @Override
     public void update()
     {
+        ++internalTimer;
         boolean isDirty = false;
         if(!this.world.isRemote)
         {
-            //energyStorage.receiveEnergy(1000, false);
+            //Every so often, attempt to export any stacks remaining in the export slots.
+            if(internalTimer % 50 == 0)
+            {
+                ArrayList<ItemStack> exportStacks = new ArrayList<>();
+                for(int slot : EXPORT_SLOTS)
+                {
+                    ItemStack stack = getStackInSlot(slot);
+                    if(!stack.isEmpty())
+                    {
+                        exportStacks.add(stack);
+                    }
+                    setInventorySlotContents(slot, ItemStack.EMPTY);
+                }
+
+                if(!exportStacks.isEmpty())
+                {
+                    outputItems(exportStacks);
+                }
+            }
+
             int energyCostPerTick = getEnergyCostPerTick();
             if(isOperable(energyCostPerTick))
             {
@@ -769,7 +791,7 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
         return facing;
     }
 
-    protected ArrayList<ItemStack> outputItems(ArrayList<ItemStack> items, @Nullable ItemStack itemsInOutputSlot)
+    protected ArrayList<ItemStack> outputItems(ArrayList<ItemStack> items)
     {
         for(int i = 0; i < 6; i++)
         {
@@ -786,9 +808,10 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
                     IItemHandler cap = te.getCapability(ITEM_HANDLER_CAPABILITY, direction);
                     if(cap != null)
                     {
-                        if(itemsInOutputSlot != null)
-                            setInventorySlotContents(EXPORT_SLOTS[0], ItemHandlerHelper.insertItem(cap, itemsInOutputSlot, false)); //TODO
+                        //if(itemsInOutputSlot != null)
+                        //    setInventorySlotContents(EXPORT_SLOTS[0], ItemHandlerHelper.insertItem(cap, itemsInOutputSlot, false));
 
+                        //Try importing items until there's leftovers, which usually means the target inventory is full.
                         for(int n = 0; n < items.size(); n++)
                         {
                             ItemStack temp = items.get(n);
@@ -796,12 +819,12 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
                             if(!leftover.isEmpty())
                             {
                                 items.set(n, leftover);
-                                break; //If there's leftover, that implies the target is full, so we can stop.
+                                break; //If there's leftover, that means the target is full, so we can stop.
                             }
                             else
                             {
                                 items.remove(n);
-                                n--; //Since removing an element shifts the array, make sure we do too.
+                                n--;
                             }
                         }
                     }
@@ -818,12 +841,11 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
                 if(!leftover.isEmpty())
                 {
                     items.set(n, leftover);
-                    break; //If there's leftover, that implies the target is full, so we can stop.
                 }
                 else
                 {
                     items.remove(n);
-                    n--; //Since removing an element shifts the array, make sure we do too.
+                    n--;
                 }
             }
         }

@@ -137,7 +137,7 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
 
         ArrayList<ItemStack> exports = new ArrayList<>(1);
         exports.add(output.copy());
-        outputItems(exports, this.inventory.get(7));
+        outputItems(exports);
     }
 
     @Override

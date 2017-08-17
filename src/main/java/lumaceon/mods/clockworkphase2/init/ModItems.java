@@ -6,6 +6,7 @@ import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateArmillaryRing;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
 import lumaceon.mods.clockworkphase2.item.armillary.ItemAquaticScepter;
+import lumaceon.mods.clockworkphase2.item.mob.ItemMobCapsule;
 import lumaceon.mods.clockworkphase2.item.multiblocktemplate.ItemMultiblockTemplate;
 import lumaceon.mods.clockworkphase2.item.temporal.*;
 import lumaceon.mods.clockworkphase2.api.util.WeightedChance;
@@ -79,6 +80,8 @@ public class ModItems
     public static Item trowelIron;
     public static Item trowelDiamond;
     public static Item alloyHammer;
+    //LIFE MODIFICATION
+    public static Item mobCapsule;
     //TOOL UPGRADES
     public static Item toolUpgradeTemporalInfuser;
     public static Item toolUpgradeSilk;
@@ -270,6 +273,11 @@ public class ModItems
 
         alloyHammer = new ItemClockworkPhase(1, 64, "alloy_hammer");
         register(alloyHammer);
+
+        //LIFE MODIFICATION
+
+        mobCapsule = new ItemMobCapsule(1, 64, "mob_capsule");
+        register(mobCapsule);
 
         //TOOL UPGRADES
         toolUpgradeTemporalInfuser = new ItemToolUpgradeTemporalInfuser(1, 100, "tool_upgrade_temporal_infusion");

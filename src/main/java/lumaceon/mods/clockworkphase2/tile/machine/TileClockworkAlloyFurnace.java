@@ -67,7 +67,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
 
         ArrayList<ItemStack> items = new ArrayList<>(1);
         items.add(itemstack);
-        outputItems(items, this.inventory.get(2));
+        outputItems(items);
     }
 
     @Override
@@ -118,8 +118,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
             tempTrueSize -= stackSize;
         }
 
-        ItemStack outputSlot = getStackInSlot(2);
-        outputStacks = outputItems(outputStacks, outputSlot); //Do the actual output.
+        outputStacks = outputItems(outputStacks); //Do the actual output.
 
         int remainingStack = 0;
         for(ItemStack s : outputStacks)

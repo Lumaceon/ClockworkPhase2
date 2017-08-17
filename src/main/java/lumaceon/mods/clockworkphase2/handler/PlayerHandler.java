@@ -1,15 +1,18 @@
 package lumaceon.mods.clockworkphase2.handler;
 
+import lumaceon.mods.clockworkphase2.api.EntityStack;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.item.IHourglass;
 import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.entitycontainer.IEntityContainer;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.IStasis;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.stasisitem.IStasisItemHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.entity.EntityTemporalFishHook;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
+import lumaceon.mods.clockworkphase2.item.mob.ItemMobCapsule;
 import lumaceon.mods.clockworkphase2.util.Colors;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeTemporalInfuser;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemTemporalExcavator;
@@ -26,6 +29,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -33,12 +37,18 @@ public class PlayerHandler
 {
     @CapabilityInject(IStasis.class)
     public static final Capability<IStasis> STASIS_CAPABILITY = null;
+
     @CapabilityInject(IStasisItemHandler.class)
     public static final Capability<IStasisItemHandler> STASIS_ITEM_CAPABILITY = null;
+
     @CapabilityInject(IActivatableHandler.class)
     public static final Capability<IActivatableHandler> ACTIVATABLE_CAPABILITY = null;
+
     @CapabilityInject(ITimeStorage.class)
     public static final Capability<ITimeStorage> TIME_STORAGE_CAPABILITY = null;
+
+    @CapabilityInject(IEntityContainer.class)
+    public static final Capability<IEntityContainer> ENTITY_CONTAINER = null;
 
     @SubscribeEvent
     public void onPlayerUpdateTick(TickEvent.PlayerTickEvent event)
@@ -97,6 +107,31 @@ public class PlayerHandler
         if(stasisCap != null)
         {
             stasisCap.onUpdate(player);
+        }
+    }
+
+    @SubscribeEvent
+    public void onRightclickEntity(PlayerInteractEvent.EntityInteract event)
+    {
+        EntityPlayer player = event.getEntityPlayer();
+        ItemStack heldItem = player.inventory.getCurrentItem();
+        if(!event.getWorld().isRemote && heldItem != null && heldItem.getItem() instanceof ItemMobCapsule)
+        {
+            if(heldItem.hasCapability(ENTITY_CONTAINER, EnumFacing.DOWN))
+            {
+                Entity e = event.getTarget();
+                if(e != null && !e.isDead)
+                {
+                    IEntityContainer cap = heldItem.getCapability(ENTITY_CONTAINER, EnumFacing.DOWN);
+                    if(cap != null)
+                    {
+                        if(cap.addEntity(new EntityStack(event.getTarget().serializeNBT())))
+                        {
+                            event.getTarget().setDead();
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -34,7 +34,7 @@ public class InventoryAssemblyTableComponents implements IInventory
             if(itemHandler == null)
             {
                 itemHandler = new ItemStackHandler(0);
-                System.err.println("[" + Reference.MOD_NAME + "] Attach an IItemHandler capability to your item, baka!");
+                System.err.println("[" + Reference.MOD_NAME + "] Attach an IItemHandler capability to your item.");
             }
         }
 
@@ -62,19 +62,19 @@ public class InventoryAssemblyTableComponents implements IInventory
     @Nullable
     @Override
     public ItemStack getStackInSlot(int index) {
-        return itemHandler == null ? null : itemHandler.getStackInSlot(index);
+        return itemHandler == null ? ItemStack.EMPTY : itemHandler.getStackInSlot(index);
     }
 
     @Nullable
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return itemHandler == null ? null : itemHandler.extractItem(index, count, false);
+        return itemHandler == null ? ItemStack.EMPTY : itemHandler.extractItem(index, count, false);
     }
 
     @Nullable
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return itemHandler == null ? null : itemHandler.extractItem(index, 64, false);
+        return itemHandler == null ? ItemStack.EMPTY : itemHandler.extractItem(index, 64, false);
     }
 
     @Override

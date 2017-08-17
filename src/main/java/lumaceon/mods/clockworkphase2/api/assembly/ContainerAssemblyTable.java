@@ -89,47 +89,50 @@ public class ContainerAssemblyTable extends Container
     }
 
     //TODO Ignores max stack size of slots.
+    //Index is the index of the item to be moved elsewhere by a shift-click.
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
-        Slot slot = this.inventorySlots.get(index);
-        if(slot == null || !slot.getHasStack())
+        List<Slot> slots = this.inventorySlots;
+        Slot sourceSlot = slots.get(index);
+        ItemStack inputStack = sourceSlot.getStack();
+
+        if(inputStack.isEmpty())
             return ItemStack.EMPTY;
 
-        ItemStack originalItem = slot.getStack();
-        ItemStack copyItem = originalItem.copy();
+        ItemStack copy = inputStack.copy();
+        boolean tranferFromPlayer = sourceSlot.inventory == player.inventory;
 
-        if(index >= 36) //Item is in our container, try placing in player's inventory.
+        if(!tranferFromPlayer) //Item is in our container, try placing in player's inventory.
         {
-            if(!this.mergeItemStack(originalItem, 0, 36, true))
+            if(!this.mergeItemStack(inputStack, 0, 36, true))
                 return ItemStack.EMPTY;
         }
         else
         {
-            if(originalItem.getItem() instanceof IAssemblable)
+            if(inputStack.getItem() instanceof IAssemblable)
             {
-                if(!this.mergeItemStack(originalItem, 36, 37, false))
-                    if(!this.mergeItemStack(originalItem, 37, this.inventorySlots.size(), false))
+                if(!this.mergeItemStack(inputStack, 36, 37, false))
+                    if(!this.mergeItemStack(inputStack, 37, this.inventorySlots.size(), false))
                         return ItemStack.EMPTY;
             }
-            else if(!this.mergeItemStack(originalItem, 37, this.inventorySlots.size(), false))
+            else if(!this.mergeItemStack(inputStack, 37, this.inventorySlots.size(), false))
                 return ItemStack.EMPTY;
         }
 
-        if(copyItem.getCount() == 0)
-            slot.putStack(ItemStack.EMPTY);
+        if(inputStack.getCount() == 0)
+        {
+            sourceSlot.putStack(ItemStack.EMPTY);
+        }
         else
-            slot.onSlotChanged();
+        {
+            sourceSlot.onSlotChanged();
+        }
 
-        if(originalItem.getCount() == 0)
-            slot.putStack(ItemStack.EMPTY);
-        else
-            slot.onSlotChanged();
-
-        if(copyItem.getCount() == originalItem.getCount())
+        if(copy.getCount() == inputStack.getCount())
             return ItemStack.EMPTY;
-        slot.onTake(player, copyItem);
-        return originalItem;
+        sourceSlot.onTake(player, copy);
+        return inputStack;
     }
 
     @Override
@@ -190,7 +193,24 @@ public class ContainerAssemblyTable extends Container
                 {
                     ItemStack newStack = stack.copy();
                     newStack.setCount(Math.min(stack.getCount(), slot1.getSlotStackLimit()));
+
+                    //Calling shrink on the old stack often sets it's stack size to 0.
+                    //If the old stack is at count <= 0 when transferStackInSlot sets it null, the item stack handler won't call onContentsChanged.
+                    //So instead we loop through all available slots looking for this, and change it that way.
+                    ItemStack replacementForOldStack = stack.copy();
+                    replacementForOldStack.shrink(newStack.getCount());
+                    for(Slot tempSlot : this.inventorySlots)
+                    {
+                        ItemStack is = tempSlot.getStack();
+                        if(!is.isEmpty() && is == stack) //The exact same stack...
+                        {
+                            tempSlot.putStack(replacementForOldStack); //...so we set it to a shrunk copy of itself.
+                        }
+                    }
+
+                    //Now that we've set it to its replacement, we can modify the actual stack so we don't dupe stuff.
                     stack.shrink(newStack.getCount());
+
                     slot1.putStack(newStack);
                     slot1.onSlotChanged();
                     flag = true;

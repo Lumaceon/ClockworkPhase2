@@ -5,6 +5,9 @@ import lumaceon.mods.clockworkphase2.api.RelicExcavationRegistry;
 import lumaceon.mods.clockworkphase2.block.*;
 import lumaceon.mods.clockworkphase2.block.itemblock.ItemBlockMachine;
 import lumaceon.mods.clockworkphase2.block.machine.*;
+import lumaceon.mods.clockworkphase2.block.machine.lifeform.BlockLifeformConstructor;
+import lumaceon.mods.clockworkphase2.block.machine.lifeform.BlockLifeformDeconstructor;
+import lumaceon.mods.clockworkphase2.block.machine.lifeform.BlockLifeformReconstructor;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateArmillaryRing;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
 import lumaceon.mods.clockworkphase2.block.temporal.*;
@@ -14,6 +17,9 @@ import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkAlloyFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrusher;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkFurnace;
+import lumaceon.mods.clockworkphase2.tile.machine.lifeform.TileLifeformConstructor;
+import lumaceon.mods.clockworkphase2.tile.machine.lifeform.TileLifeformDeconstructor;
+import lumaceon.mods.clockworkphase2.tile.machine.lifeform.TileLifeformReconstructor;
 import lumaceon.mods.clockworkphase2.tile.temporal.*;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.Block;
@@ -50,6 +56,9 @@ public class ModBlocks
     public static Block clockworkCrusher;
     public static Block clockworkCrystallizer;
     public static Block experienceExtractor;
+    public static Block lifeformConstructor;
+    public static Block lifeformReconstructor;
+    public static Block lifeformDeconstructor;
     //TEMPORAL BLOCKS
     public static Block temporalRelay;
     public static Block celestialCompass;
@@ -109,6 +118,8 @@ public class ModBlocks
         register(moonFlower);
 
         //MACHINES
+
+        //standard clockwork machines
         clockworkFurnace = new BlockClockworkFurnace(Material.IRON, "clockwork_furnace");
         registerWithoutItemBlock(clockworkFurnace);
         ForgeRegistries.ITEMS.register(new ItemBlockMachine(clockworkFurnace).setRegistryName("clockwork_furnace"));
@@ -125,9 +136,23 @@ public class ModBlocks
         registerWithoutItemBlock(clockworkCrystallizer);
         ForgeRegistries.ITEMS.register(new ItemBlockMachine(clockworkCrystallizer).setRegistryName("clockwork_crystallizer"));
 
+        //experience machines
         experienceExtractor = new BlockExperienceExtractor(Material.IRON, "experience_extractor");
         registerWithoutItemBlock(experienceExtractor);
         ForgeRegistries.ITEMS.register(new ItemBlockMachine(experienceExtractor).setRegistryName("experience_extractor"));
+
+        //lifeform machines
+        lifeformConstructor = new BlockLifeformConstructor(Material.IRON, "lifeform_constructor");
+        registerWithoutItemBlock(lifeformConstructor);
+        ForgeRegistries.ITEMS.register(new ItemBlockMachine(lifeformConstructor).setRegistryName("lifeform_constructor"));
+
+        lifeformReconstructor = new BlockLifeformReconstructor(Material.IRON, "lifeform_reconstructor");
+        registerWithoutItemBlock(lifeformReconstructor);
+        ForgeRegistries.ITEMS.register(new ItemBlockMachine(lifeformReconstructor).setRegistryName("lifeform_reconstructor"));
+
+        lifeformDeconstructor = new BlockLifeformDeconstructor(Material.IRON, "lifeform_deconstructor");
+        registerWithoutItemBlock(lifeformDeconstructor);
+        ForgeRegistries.ITEMS.register(new ItemBlockMachine(lifeformDeconstructor).setRegistryName("lifeform_deconstructor"));
 
         //TEMPORAL BLOCKS
         temporalRelay = new BlockTemporalRelay(Material.IRON, "temporal_relay");
@@ -195,6 +220,9 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileClockworkAlloyFurnace.class, clockworkAlloyFurnace.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkCrusher.class, clockworkCrusher.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileClockworkCrystallizer.class, clockworkCrystallizer.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileLifeformConstructor.class, lifeformConstructor.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileLifeformReconstructor.class, lifeformReconstructor.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileLifeformDeconstructor.class, lifeformDeconstructor.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalRelay.class, temporalRelay.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileArmillaryRing.class, armillaryRing.getUnlocalizedName());

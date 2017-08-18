@@ -18,6 +18,10 @@ public interface IEntityContainer
     public int getCurrentEntityIndex();
     public void setCurrentEntityIndex(int index);
 
+    /**
+     * Get the number of entities current stored.
+     * @return The number of entities in the container.
+     */
     public int getEntityCount();
 
     /**

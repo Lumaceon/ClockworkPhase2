@@ -134,6 +134,7 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
                 }
             }
 
+            //Handle work ticks.
             int energyCostPerTick = getEnergyCostPerTick();
             if(isOperable(energyCostPerTick))
             {

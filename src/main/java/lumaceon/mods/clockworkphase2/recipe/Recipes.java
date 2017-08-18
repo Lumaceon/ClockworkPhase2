@@ -3,6 +3,9 @@ package lumaceon.mods.clockworkphase2.recipe;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -28,6 +31,7 @@ public class Recipes
         initFurnaceRecipes();
         initCrystallizerRecipes();
         initArmillaryFishingRecipes();
+        initEntityConstructionRecipes();
     }
 
     public static IRecipe toolUpgradeTemporal;
@@ -209,6 +213,25 @@ public class Recipes
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(Items.ARROW)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gearDiamond)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gearEmerald)));
+    }
+
+    public static void initEntityConstructionRecipes()
+    {
+        NonNullList<ItemStack> inputStacks;
+        ItemStack input = null;
+
+        inputStacks = NonNullList.withSize(2, ItemStack.EMPTY);
+        inputStacks.set(0, new ItemStack(Items.FEATHER));
+        inputStacks.set(1, new ItemStack(Items.CHICKEN));
+        EntityConstructionRecipes.INSTANCE.addRecipe("chicken", inputStacks, EntityChicken.class);
+
+        inputStacks = NonNullList.withSize(2, ItemStack.EMPTY);
+        inputStacks.set(0, new ItemStack(Items.LEATHER));
+        inputStacks.set(1, new ItemStack(Items.BEEF));
+        EntityConstructionRecipes.INSTANCE.addRecipe("cow", inputStacks, EntityCow.class);
+
+        inputStacks = NonNullList.withSize(1, new ItemStack(Items.PORKCHOP));
+        EntityConstructionRecipes.INSTANCE.addRecipe("pig", inputStacks, EntityPig.class);
     }
 
     /** START POST-INITIALIZATION MACHINE RECIPES **/

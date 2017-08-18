@@ -88,8 +88,6 @@ public class ContainerAssemblyTable extends Container
         return mainInventory.isUsableByPlayer(p_75145_1_);
     }
 
-    //TODO Ignores max stack size of slots.
-    //Index is the index of the item to be moved elsewhere by a shift-click.
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int index)
     {
@@ -120,7 +118,7 @@ public class ContainerAssemblyTable extends Container
                 return ItemStack.EMPTY;
         }
 
-        if(inputStack.getCount() == 0)
+        if(inputStack.isEmpty())
         {
             sourceSlot.putStack(ItemStack.EMPTY);
         }
@@ -156,7 +154,7 @@ public class ContainerAssemblyTable extends Container
                     int j = itemstack.getCount() + stack.getCount();
                     if(j <= stack.getMaxStackSize() && j <= slot.getSlotStackLimit())
                     {
-                        stack = ItemStack.EMPTY;
+                        stack.setCount(0);
                         itemstack.setCount(j);
                         slot.onSlotChanged();
                         flag = true;
@@ -205,11 +203,10 @@ public class ContainerAssemblyTable extends Container
                         if(!is.isEmpty() && is == stack) //The exact same stack...
                         {
                             tempSlot.putStack(replacementForOldStack); //...so we set it to a shrunk copy of itself.
+                            stack = replacementForOldStack;
+                            break;
                         }
                     }
-
-                    //Now that we've set it to its replacement, we can modify the actual stack so we don't dupe stuff.
-                    stack.shrink(newStack.getCount());
 
                     slot1.putStack(newStack);
                     slot1.onSlotChanged();

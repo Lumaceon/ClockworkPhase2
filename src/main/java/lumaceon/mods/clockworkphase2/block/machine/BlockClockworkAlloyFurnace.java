@@ -33,18 +33,6 @@ public class BlockClockworkAlloyFurnace extends BlockClockworkMachine
                 return true;
             }
         }
-        else
-        {
-            if(!worldIn.isRemote)
-            {
-                TileEntity te = worldIn.getTileEntity(pos);
-                if(te != null && te instanceof TileClockworkAlloyFurnace)
-                {
-                    ((TileClockworkAlloyFurnace) te).toggleTemporalMode();
-                }
-            }
-            return true;
-        }
 
         return false;
     }

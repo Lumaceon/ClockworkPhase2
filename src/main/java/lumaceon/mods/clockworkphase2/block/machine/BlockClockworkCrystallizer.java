@@ -33,18 +33,6 @@ public class BlockClockworkCrystallizer extends BlockClockworkMachine
                 return true;
             }
         }
-        else
-        {
-            if(!worldIn.isRemote)
-            {
-                TileEntity te = worldIn.getTileEntity(pos);
-                if(te != null && te instanceof TileClockworkCrystallizer)
-                {
-                    ((TileClockworkCrystallizer) te).toggleTemporalMode();
-                }
-            }
-            return true;
-        }
 
         return false;
     }

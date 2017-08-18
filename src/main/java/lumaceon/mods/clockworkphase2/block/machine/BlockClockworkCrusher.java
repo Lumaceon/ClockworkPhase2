@@ -33,18 +33,6 @@ public class BlockClockworkCrusher extends BlockClockworkMachine
                 return true;
             }
         }
-        else
-        {
-            if(!worldIn.isRemote)
-            {
-                TileEntity te = worldIn.getTileEntity(pos);
-                if(te != null && te instanceof TileClockworkCrusher)
-                {
-                    ((TileClockworkCrusher) te).toggleTemporalMode();
-                }
-            }
-            return true;
-        }
 
         return false;
     }

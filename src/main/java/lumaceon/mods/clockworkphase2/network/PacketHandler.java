@@ -23,6 +23,7 @@ public class PacketHandler
     public static final int MACHINE_MODE_ACTIVATE = 57;
     public static final int TEMPORAL_TOOLBELT_SWAP = 58;
     public static final int PLAYER_DATA_CLIENT_UPDATE = 59;
+    public static final int ENTITY_CONSTRUCTOR_SET_RECIPE = 60;
 
     public static void init()
     {
@@ -36,5 +37,6 @@ public class PacketHandler
         INSTANCE.registerMessage(HandlerMachineModeActivate.class, MessageMachineModeActivate.class, MACHINE_MODE_ACTIVATE, Side.SERVER);
         INSTANCE.registerMessage(HandlerTemporalToolbeltSwap.class, MessageTemporalToolbeltSwap.class, TEMPORAL_TOOLBELT_SWAP, Side.SERVER);
         INSTANCE.registerMessage(DummyHandlerPlayerDataOnWorldJoin.class, MessagePlayerDataOnWorldJoin.class, PLAYER_DATA_CLIENT_UPDATE, Side.SERVER);
+        INSTANCE.registerMessage(HandlerEntityConstructorSetRecipe.class, MessageEntityConstructorSetRecipe.class, ENTITY_CONSTRUCTOR_SET_RECIPE, Side.SERVER);
     }
 }

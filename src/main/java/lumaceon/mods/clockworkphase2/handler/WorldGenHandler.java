@@ -2,8 +2,9 @@ package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModBiomes;
-import lumaceon.mods.clockworkphase2.util.LogHelper;
+import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.world.deadzone.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -14,8 +15,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.MapGenRavine;
 import net.minecraft.world.gen.structure.*;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
@@ -25,13 +24,13 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class WorldGenHandler
 {
-    int deathCircleRadius = 350;
+    public int deathCircleRadius = 350;
+    public Block deathCircleFloorBlock = ModBlocks.ruinedLand;
+    public Block deathCircleWaterReplacement = Blocks.OBSIDIAN;
 
     /**
      * Replaces old map generators with gens that do the exact thing, but only if outside our borders.
@@ -79,33 +78,42 @@ public class WorldGenHandler
     @SubscribeEvent
     public void onOreGeneration(OreGenEvent.GenerateMinable event)
     {
-        int x = event.getPos().getX();
-        int z = event.getPos().getZ();
-        if((x <= deathCircleRadius && x >= -deathCircleRadius) && (z <= deathCircleRadius && z >= -deathCircleRadius))
+        if(event.getWorld().provider.getDimension() == 0)
         {
-            event.setResult(Event.Result.DENY);
+            int x = event.getPos().getX();
+            int z = event.getPos().getZ();
+            if(Math.sqrt((x*x) + (z*z)) < 378)
+            {
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 
     @SubscribeEvent
     public void onBiomeDecoration(DecorateBiomeEvent.Decorate event)
     {
-        int x = event.getPos().getX();
-        int z = event.getPos().getZ();
-        if((x <= 352 && x >= -352) && (z <= 352 && z >= -352)) //Must be multiples of 16 to match the chunks.
+        if(event.getWorld().provider.getDimension() == 0)
         {
-            event.setResult(Event.Result.DENY);
+            int x = event.getPos().getX();
+            int z = event.getPos().getZ();
+            if(Math.sqrt((x*x) + (z*z)) < 378)
+            {
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 
     @SubscribeEvent
     public void onBiomePopulate(PopulateChunkEvent.Populate event)
     {
-        int chunkX = event.getChunkX();
-        int chunkZ = event.getChunkZ();
-        if(( (chunkX*16+16 <= deathCircleRadius || chunkX*16 <= deathCircleRadius) && (chunkX*16+16 >= -deathCircleRadius || chunkX*16 >= -deathCircleRadius) ) && ( (chunkZ*16+16 <= deathCircleRadius || chunkZ*16 <= deathCircleRadius) && (chunkZ*16+16 >= -deathCircleRadius || chunkZ*16 >= -deathCircleRadius) ))
+        if(event.getWorld().provider.getDimension() == 0)
         {
-            event.setResult(Event.Result.DENY);
+            int chunkX = event.getChunkX();
+            int chunkZ = event.getChunkZ();
+            if(Math.sqrt(((chunkX*16)*(chunkX*16)) + ((chunkZ*16)*(chunkZ*16))) < 378)
+            {
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 
@@ -198,7 +206,7 @@ public class WorldGenHandler
                                     int actualHeight = stack*16 + y;
                                     if(actualHeight < heightMap[x][z])
                                     {
-                                        if(actualHeight < 20) //Set the ground below height 20 to stone.
+                                        if(actualHeight < 6) //Set the ground below height 20 to floor material.
                                         {
                                             if(actualHeight < 2) //Set the ground below height 2 to bedrock.
                                             {
@@ -206,7 +214,7 @@ public class WorldGenHandler
                                             }
                                             else
                                             {
-                                                storage.set(x, y, z, Blocks.OBSIDIAN.getDefaultState());
+                                                storage.set(x, y, z, deathCircleFloorBlock.getDefaultState());
                                             }
                                         }
 
@@ -216,7 +224,7 @@ public class WorldGenHandler
                                             IBlockState blockState = storage.get(x, y, z);
                                             if(blockState != null && blockState.getBlock() instanceof BlockLiquid)
                                             {
-                                                storage.set(x, y, z, Blocks.SAND.getDefaultState());
+                                                storage.set(x, y, z, deathCircleWaterReplacement.getDefaultState());
                                             }
                                         }
                                     }

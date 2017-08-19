@@ -3,11 +3,10 @@ package lumaceon.mods.clockworkphase2.recipe;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
@@ -220,6 +219,8 @@ public class Recipes
         NonNullList<ItemStack> inputStacks;
         ItemStack input = null;
 
+        //TODO - More sensable recipes...
+
         inputStacks = NonNullList.withSize(2, ItemStack.EMPTY);
         inputStacks.set(0, new ItemStack(Items.FEATHER));
         inputStacks.set(1, new ItemStack(Items.CHICKEN));
@@ -232,6 +233,26 @@ public class Recipes
 
         inputStacks = NonNullList.withSize(1, new ItemStack(Items.PORKCHOP));
         EntityConstructionRecipes.INSTANCE.addRecipe("pig", inputStacks, EntityPig.class);
+
+        inputStacks = NonNullList.withSize(1, new ItemStack(Items.DYE, 1, EnumDyeColor.BLACK.getMetadata()));
+        EntityConstructionRecipes.INSTANCE.addRecipe("squid", inputStacks, EntitySquid.class);
+
+        inputStacks = NonNullList.withSize(1, new ItemStack(Blocks.WOOL));
+        EntityConstructionRecipes.INSTANCE.addRecipe("sheep", inputStacks, EntitySheep.class);
+
+        input = new ItemStack(Items.EMERALD);
+        input.setCount(3);
+        inputStacks = NonNullList.withSize(1, input);
+        EntityConstructionRecipes.INSTANCE.addRecipe("villager", inputStacks, EntityVillager.class);
+
+        inputStacks = NonNullList.withSize(1, new ItemStack(Items.BONE));
+        EntityConstructionRecipes.INSTANCE.addRecipe("wolf", inputStacks, EntityWolf.class);
+
+        inputStacks = NonNullList.withSize(1, new ItemStack(Items.RABBIT_FOOT));
+        EntityConstructionRecipes.INSTANCE.addRecipe("rabbit", inputStacks, EntityRabbit.class);
+
+        inputStacks = NonNullList.withSize(1, new ItemStack(Items.GUNPOWDER));
+        EntityConstructionRecipes.INSTANCE.addRecipe("ocelot", inputStacks, EntityOcelot.class);
     }
 
     /** START POST-INITIALIZATION MACHINE RECIPES **/

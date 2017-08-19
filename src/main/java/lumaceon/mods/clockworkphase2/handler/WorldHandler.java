@@ -4,6 +4,7 @@ import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeFurnace;
 import lumaceon.mods.clockworkphase2.recipe.ArmillaryFishingRecipes;
+import lumaceon.mods.clockworkphase2.util.LogHelper;
 import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeRelocate;
@@ -23,14 +24,21 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.gen.feature.WorldGeneratorBonusChest;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
+import java.util.Random;
 
 public class WorldHandler
 {
@@ -222,6 +230,78 @@ public class WorldHandler
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * Mostly copied from WorldServer. Used to find a spawn point away from the center of the world, which is now
+     * dangerous because of the crater of death.
+     */
+    @SubscribeEvent
+    public void onWorldFindSpawn(WorldEvent.CreateSpawnPosition event)
+    {
+        World world = event.getWorld();
+        if(world != null && !world.isRemote && world.provider.getDimension() == 0)
+        {
+            event.setCanceled(true);
+            BiomeProvider biomeprovider = world.provider.getBiomeProvider();
+            List<Biome> list = biomeprovider.getBiomesToSpawnIn();
+            Random random = new Random(world.getSeed());
+            BlockPos blockpos = biomeprovider.findBiomePosition(700, 0, 256, list, random);
+            int i = 8;
+            int j = world.provider.getAverageGroundLevel();
+            int k = 8;
+
+            if (blockpos != null)
+            {
+                i = blockpos.getX();
+                k = blockpos.getZ();
+            }
+            else
+            {
+                LogHelper.info("Unable to find spawn biome");
+            }
+
+            int l = 0;
+
+            while (!world.provider.canCoordinateBeSpawn(i, k))
+            {
+                i += random.nextInt(64) - random.nextInt(64);
+                k += random.nextInt(64) - random.nextInt(64);
+                ++l;
+
+                if (l == 1000)
+                {
+                    break;
+                }
+            }
+
+            world.getWorldInfo().setSpawn(new BlockPos(i, j, k));
+
+            if(event.getSettings().isBonusChestEnabled())
+            {
+                createBonusChest(world);
+            }
+        }
+    }
+
+    /**
+     * Creates the bonus chest in the specified world.
+     */
+    protected void createBonusChest(World world)
+    {
+        WorldGeneratorBonusChest worldgeneratorbonuschest = new WorldGeneratorBonusChest();
+
+        for (int i = 0; i < 10; ++i)
+        {
+            int j = world.getWorldInfo().getSpawnX() + world.rand.nextInt(6) - world.rand.nextInt(6);
+            int k = world.getWorldInfo().getSpawnZ() + world.rand.nextInt(6) - world.rand.nextInt(6);
+            BlockPos blockpos = world.getTopSolidOrLiquidBlock(new BlockPos(j, 0, k)).up();
+
+            if(worldgeneratorbonuschest.generate(world, world.rand, blockpos))
+            {
+                break;
             }
         }
     }

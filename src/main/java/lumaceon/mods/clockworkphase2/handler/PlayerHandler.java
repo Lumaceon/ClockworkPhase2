@@ -5,12 +5,14 @@ import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.item.IHourglass;
 import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
+import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandler;
 import lumaceon.mods.clockworkphase2.capabilities.entitycontainer.IEntityContainer;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.IStasis;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.stasisitem.IStasisItemHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.entity.EntityTemporalFishHook;
+import lumaceon.mods.clockworkphase2.init.ModBiomes;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.item.mob.ItemMobCapsule;
 import lumaceon.mods.clockworkphase2.util.Colors;
@@ -21,9 +23,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -107,6 +114,33 @@ public class PlayerHandler
         if(stasisCap != null)
         {
             stasisCap.onUpdate(player);
+        }
+
+        //Check the player's position and apply negative effects if it's inside the temporal fallout biome.
+        //The exception being when they have enough time to consume from hourglasses.
+        BlockPos pos = player.getPosition();
+        Biome biome = player.world.getBiome(pos);
+        if(biome != null && biome == ModBiomes.temporalFallout)
+        {
+            if(player.world.getTotalWorldTime() % 20 == 0)
+            {
+                ItemStack[] hourglasses = HourglassHelper.getHourglasses(player);
+                if(!HourglassHelper.consumeTimeAllOrNothing(hourglasses, TimeConverter.SECOND))
+                {
+                    //Failed to consume time, wreck the player up.
+                    if(player.isCreative())
+                    {
+                        player.attackEntityFrom(new DamageSource("temporal").setDamageBypassesArmor().setDamageIsAbsolute().setDamageAllowedInCreativeMode(), 2.0F);
+                    }
+                    else
+                    {
+                        player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 40, 2));
+                        player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 40, 4));
+                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 40, 3));
+                        player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 40, 3));
+                    }
+                }
+            }
         }
     }
 

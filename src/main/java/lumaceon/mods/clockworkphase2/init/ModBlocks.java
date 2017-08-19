@@ -75,6 +75,7 @@ public class ModBlocks
     public static Block multiblockAssembler;
     public static Block constructionBlock;
     public static Block bugSwatter;
+    public static Block ruinedLand;
     public static void init()
     {
         //ORES
@@ -199,6 +200,9 @@ public class ModBlocks
 
         bugSwatter = new BlockBugSwatter(Material.GLASS, "bug_swatter_block");
         register(bugSwatter);
+
+        ruinedLand = new BlockClockworkPhase(Material.ROCK, "ruined_land");
+        register(ruinedLand);
 
         postInit();
     }

@@ -47,7 +47,6 @@ public class GuiClockworkMachine extends GuiContainer
 
     protected static ItemStack GEAR_STACK_FOR_DISPLAY = new ItemStack(ModItems.gearCreative);
     protected static ItemStack HOURGLASS_STACK_FOR_DISPLAY = new ItemStack(ModItems.temporalHourglass);
-    protected static ItemStack ENDER_PEARL_STACK_FOR_DISPLAY = new ItemStack(Items.ENDER_PEARL);
 
     protected RenderItem itemRenders;
 

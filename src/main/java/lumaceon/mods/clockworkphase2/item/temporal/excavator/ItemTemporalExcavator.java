@@ -148,7 +148,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
                     {
                         if(((ItemToolUpgradeTemporalInfuser) component.getItem()).getActive(component, is))
                         {
-                            HourglassHelper.consumeTimeMostPossible(HourglassHelper.getActiveHourglasses((EntityPlayer) playerIn), HourglassHelper.getTimeToBreakBlock(world, pos, state, playerIn, is));
+                            HourglassHelper.consumeTimeMostPossible(HourglassHelper.getHourglasses((EntityPlayer) playerIn), HourglassHelper.getTimeToBreakBlock(world, pos, state, playerIn, is));
                             break;
                         }
                     }
@@ -290,7 +290,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             if(state.getBlock().removedByPlayer(state, world, pos, player, true))
                 state.getBlock().onBlockDestroyedByPlayer(world, pos, state);
             ItemStack itemstack = player.getActiveItemStack();
-            if(itemstack != null)
+            if(!itemstack.isEmpty())
             {
                 itemstack.onBlockDestroyed(world, state, pos, player);
                 //if(itemstack.stackSize == 0)
@@ -311,17 +311,17 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
                 ItemStack temp;
 
                 temp = inventory.getPickaxe();
-                if(temp != null && temp.getItem() instanceof ItemClockworkTool)
+                if(!temp.isEmpty() && temp.getItem() instanceof ItemClockworkTool)
                     if(((ItemClockworkTool) temp.getItem()).isEffective(state))
                         return true;
 
                 temp = inventory.getAxe();
-                if(temp != null && temp.getItem() instanceof ItemClockworkTool)
+                if(!temp.isEmpty() && temp.getItem() instanceof ItemClockworkTool)
                     if(((ItemClockworkTool) temp.getItem()).isEffective(state))
                         return true;
 
                 temp = inventory.getShovel();
-                if(temp != null && temp.getItem() instanceof ItemClockworkTool)
+                if(!temp.isEmpty() && temp.getItem() instanceof ItemClockworkTool)
                     if(((ItemClockworkTool) temp.getItem()).isEffective(state))
                         return true;
             }

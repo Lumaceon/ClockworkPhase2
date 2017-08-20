@@ -15,6 +15,7 @@ public class BlockBugSwatter extends BlockClockworkPhase
 
     public BlockBugSwatter(Material blockMaterial, String name) {
         super(blockMaterial, name);
+        this.setCreativeTab(null);
         this.setDefaultState(this.blockState.getBaseState().withProperty(TEST_PROP, 0));
     }
 

@@ -23,6 +23,7 @@ public class BlockArmillaryRingFrameBottom extends BlockClockworkPhase
     public BlockArmillaryRingFrameBottom(Material blockMaterial, String name) {
         super(blockMaterial, name);
         this.setLightLevel(1.0F);
+        this.setCreativeTab(null);
         this.setDefaultState(this.blockState.getBaseState().withProperty(BlockDirectional.FACING, EnumFacing.NORTH));
     }
 

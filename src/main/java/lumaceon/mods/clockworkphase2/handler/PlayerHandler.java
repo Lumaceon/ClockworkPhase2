@@ -186,7 +186,7 @@ public class PlayerHandler
                 IStasis stasis = player.getCapability(STASIS_CAPABILITY, EnumFacing.DOWN);
                 if(stasis != null)
                 {
-                    ItemStack[] hourglasses = HourglassHelper.getActiveHourglasses(player);
+                    ItemStack[] hourglasses = HourglassHelper.getHourglasses(player);
                     long availableTime = 0;
                     for(ItemStack hg : hourglasses)
                     {
@@ -247,7 +247,7 @@ public class PlayerHandler
                         if(!component.isEmpty() && component.getItem() instanceof ItemToolUpgradeTemporalInfuser)
                             if(((ItemToolUpgradeTemporalInfuser) component.getItem()).getActive(component, currentItem))
                             {
-                                ItemStack[] hourglasses = HourglassHelper.getActiveHourglasses(player);
+                                ItemStack[] hourglasses = HourglassHelper.getHourglasses(player);
                                 if(HourglassHelper.getTimeFromHourglasses(hourglasses) < HourglassHelper.getTimeToBreakBlock(event.getEntity().world, event.getPos(), event.getState(), event.getEntityPlayer(), currentItem))
                                     event.setCanceled(true);
                             }

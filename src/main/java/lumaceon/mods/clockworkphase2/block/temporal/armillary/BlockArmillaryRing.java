@@ -19,6 +19,7 @@ public class BlockArmillaryRing extends BlockClockworkPhase implements ITileEnti
 {
     public BlockArmillaryRing(Material blockMaterial, String name) {
         super(blockMaterial, name);
+        this.setCreativeTab(null);
     }
 
     @Override

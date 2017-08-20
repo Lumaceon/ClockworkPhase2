@@ -2,6 +2,8 @@ package lumaceon.mods.clockworkphase2.item.temporal.excavator;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.capabilities.activatable.ActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.coordinate.CoordinateHandler;
+import lumaceon.mods.clockworkphase2.capabilities.coordinate.ICoordinateHandler;
 import lumaceon.mods.clockworkphase2.util.Colors;
 import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import net.minecraft.client.util.ITooltipFlag;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,6 +29,9 @@ import java.util.List;
 
 public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpgrade
 {
+    @CapabilityInject(ICoordinateHandler.class)
+    public static final Capability<ICoordinateHandler> COORDINATE = null;
+
     public ItemToolUpgradeRelocate(int maxStack, int maxDamage, String unlocalizedName) {
         super(maxStack, maxDamage, unlocalizedName);
     }
@@ -34,16 +40,25 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if(NBTHelper.hasTag(stack, "cp_name"))
+        ICoordinateHandler coordinateHandler = stack.getCapability(COORDINATE, EnumFacing.DOWN);
+        if(coordinateHandler != null)
         {
-            tooltip.add("Relocating to [X" + NBTHelper.INT.get(stack, "cp_x") + ", Y" + NBTHelper.INT.get(stack, "cp_y") + ", Z" + NBTHelper.INT.get(stack, "cp_z") + "]");
-            tooltip.add("Last seen block at that location: " + NBTHelper.STRING.get(stack, "cp_name"));
-            tooltip.add("Inserting into the " + EnumFacing.getFront(NBTHelper.INT.get(stack, "cp_side")).getName().toUpperCase() + " side");
+            BlockPos pos = coordinateHandler.getCoordinate();
+            if(pos != null)
+            {
+                tooltip.add("Target: [" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + "]");
+            }
+
+            EnumFacing facing = coordinateHandler.getSide();
+            if(facing != null)
+            {
+                tooltip.add("Target side: " + facing.getName());
+            }
         }
         else
         {
-            tooltip.add("Shift-right-click on an inventory to set the target.");
-            tooltip.add("Selection is side-sensitive, depending on the inventory.");
+            tooltip.add("Shift-right-click on an inventory to set the target");
+            tooltip.add("Selection is side-sensitive");
         }
     }
 
@@ -54,14 +69,17 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
         TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof IInventory)
         {
-            NBTHelper.INT.set(stack, "cp_x", pos.getX());
-            NBTHelper.INT.set(stack, "cp_y", pos.getY());
-            NBTHelper.INT.set(stack, "cp_z", pos.getZ());
-            NBTHelper.INT.set(stack, "cp_side", facing.ordinal());
+            ICoordinateHandler coordinateHandler = stack.getCapability(COORDINATE, EnumFacing.DOWN);
+            if(coordinateHandler != null)
+            {
+                coordinateHandler.setCoordinate(pos);
+                coordinateHandler.setSide(facing);
+            }
             String blockName = te.getBlockType().getLocalizedName();
-            NBTHelper.STRING.set(stack, "cp_name", blockName);
+
             if(!worldIn.isRemote)
                 player.sendMessage(new TextComponentString(Colors.AQUA + "Inventory location saved: " + blockName));
+
             return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.FAIL;
@@ -75,10 +93,11 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
     private static class RelocateCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
     {
         ActivatableHandler activatableHandler = new ActivatableHandler();
+        CoordinateHandler coordinateHandler = new CoordinateHandler();
 
         @Override
         public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-            return capability != null && capability == ACTIVATABLE;
+            return capability != null && (capability == ACTIVATABLE || capability == COORDINATE);
         }
 
         @Override
@@ -88,6 +107,8 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
             {
                 if(capability == ACTIVATABLE)
                     return ACTIVATABLE.cast(activatableHandler);
+                else if(capability == COORDINATE)
+                    return COORDINATE.cast(coordinateHandler);
             }
             return null;
         }
@@ -96,13 +117,44 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
         public NBTTagCompound serializeNBT()
         {
             NBTTagCompound nbt = new NBTTagCompound();
+
             nbt.setBoolean("active", activatableHandler.getActive());
+
+            BlockPos pos = coordinateHandler.getCoordinate();
+            nbt.setInteger("x", pos.getX());
+            nbt.setInteger("y", pos.getY());
+            nbt.setInteger("z", pos.getZ());
+            EnumFacing facing = coordinateHandler.getSide();
+            int facingInteger = facing == null ? -1 : facing.getIndex();
+            nbt.setInteger("side", facingInteger);
             return nbt;
         }
 
         @Override
-        public void deserializeNBT(NBTTagCompound nbt) {
+        public void deserializeNBT(NBTTagCompound nbt)
+        {
             activatableHandler.setActive(nbt.getBoolean("active"));
+
+            BlockPos pos;
+            if(nbt.hasKey("x") && nbt.hasKey("y") && nbt.hasKey("z"))
+            {
+                pos = new BlockPos(nbt.getInteger("x"), nbt.getInteger("y"), nbt.getInteger("z"));
+            }
+            else
+            {
+                pos = new BlockPos(0, 0, 0);
+            }
+            coordinateHandler.setCoordinate(pos);
+
+            int facingInteger = nbt.getInteger("side");
+            if(facingInteger == -1)
+            {
+                coordinateHandler.setSide(null);
+            }
+            else
+            {
+                coordinateHandler.setSide(EnumFacing.getFront(facingInteger));
+            }
         }
     }
 }

@@ -96,12 +96,24 @@ public class ModItems
     //MULTIBLOCK ASSEMBLERS
     public static Item multiblockCelestialCompass;
     public static Item multiblockArmillaryRing;
-    //ARTIFACTS
-    public static Item temporalToolbeltArtifact;
     //MISC
     public static Item bugSwatter;
     public static Item moonFlowerSeeds;
     public static Item assemblyTable;
+    public static Item gizmoLife;
+    public static Item gizmoLifeRelic;
+    public static Item gizmoLight;
+    public static Item gizmoLightRelic;
+    public static Item gizmoWater;
+    public static Item gizmoWaterRelic;
+    public static Item gizmoEarth;
+    public static Item gizmoEarthRelic;
+    public static Item gizmoAir;
+    public static Item gizmoAirRelic;
+    public static Item gizmoFire;
+    public static Item gizmoFireRelic;
+    public static Item gizmoAura;
+    public static Item gizmoAuraRelic;
     public static void init()
     {
         //MATERIALS
@@ -313,10 +325,6 @@ public class ModItems
         multiblockArmillaryRing = new ItemMultiblockTemplate(1, 100, "multiblock_template_armillary_ring", MultiblockTemplateArmillaryRing.INSTANCE);
         register(multiblockArmillaryRing);
 
-        //ARTIFACTS
-        temporalToolbeltArtifact = new ItemClockworkPhase(64, 100, "temporal_toolbelt_artifact");
-        register(temporalToolbeltArtifact);
-
         //MISC
         moonFlowerSeeds = new ItemMoonFlowerSeeds(64, 100, "moon_flower_seeds");
         register(moonFlowerSeeds);
@@ -327,8 +335,60 @@ public class ModItems
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         register(bugSwatter);
 
+        //gizmos
+        //Technically these all have very complex localized names, but for my own sanity, they're "gizmos" in code.
+        //Since they're just crafting items, I'm unlikely to be making any huge changes here.
+        gizmoLife = new ItemClockworkPhase(64, 100, "gizmo_life");
+        register(gizmoLife);
+
+        gizmoLifeRelic = new ItemClockworkPhase(64, 100, "gizmo_life_relic");
+        register(gizmoLifeRelic);
+
+        gizmoLight = new ItemClockworkPhase(64, 100, "gizmo_light");
+        register(gizmoLight);
+
+        gizmoLightRelic = new ItemClockworkPhase(64, 100, "gizmo_light_relic");
+        register(gizmoLightRelic);
+
+        gizmoWater = new ItemClockworkPhase(64, 100, "gizmo_water");
+        register(gizmoWater);
+
+        gizmoWaterRelic = new ItemClockworkPhase(64, 100, "gizmo_water_relic");
+        register(gizmoWaterRelic);
+
+        gizmoEarth = new ItemClockworkPhase(64, 100, "gizmo_earth");
+        register(gizmoEarth);
+
+        gizmoEarthRelic = new ItemClockworkPhase(64, 100, "gizmo_earth_relic");
+        register(gizmoEarthRelic);
+
+        gizmoAir = new ItemClockworkPhase(64, 100, "gizmo_air");
+        register(gizmoAir);
+
+        gizmoAirRelic = new ItemClockworkPhase(64, 100, "gizmo_air_relic");
+        register(gizmoAirRelic);
+
+        gizmoFire = new ItemClockworkPhase(64, 100, "gizmo_fire");
+        register(gizmoFire);
+
+        gizmoFireRelic = new ItemClockworkPhase(64, 100, "gizmo_fire_relic");
+        register(gizmoFireRelic);
+
+        gizmoAura = new ItemClockworkPhase(64, 100, "gizmo_aura");
+        register(gizmoAura);
+
+        gizmoAuraRelic = new ItemClockworkPhase(64, 100, "gizmo_aura_relic");
+        register(gizmoAuraRelic);
+
+
         RelicExcavationRegistry.registerMoonFlowerRelicDrop(new WeightedChance<>(new ItemStack(moonFlowerSeeds), 100));
-        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(temporalToolbeltArtifact), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoLifeRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoLightRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoWaterRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoEarthRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoAirRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoFireRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoAuraRelic), 100));
     }
 
     //************ START HELPER METHODS ************\\

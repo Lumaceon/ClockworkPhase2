@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
+import lumaceon.mods.clockworkphase2.capabilities.coordinate.ICoordinateHandler;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeFurnace;
 import lumaceon.mods.clockworkphase2.recipe.ArmillaryFishingRecipes;
@@ -29,6 +30,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.feature.WorldGeneratorBonusChest;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -42,6 +45,9 @@ import java.util.Random;
 
 public class WorldHandler
 {
+    @CapabilityInject(ICoordinateHandler.class)
+    public static final Capability<ICoordinateHandler> COORDINATE = null;
+
     @SubscribeEvent
     public void onItemFished(ItemFishedEvent event)
     {
@@ -148,12 +154,15 @@ public class WorldHandler
                 item = inventory.getStackInSlot(i);
                 if(item != null && item.getItem().equals(ModItems.toolUpgradeRelocate) && ((ItemToolUpgradeRelocate) item.getItem()).getActive(item, heldItem))
                 {
-                    int x = NBTHelper.INT.get(item, "cp_x");
-                    int y = NBTHelper.INT.get(item, "cp_y");
-                    int z = NBTHelper.INT.get(item, "cp_z");
-                    EnumFacing side = EnumFacing.VALUES[NBTHelper.INT.get(item, "cp_side")];
+                    ICoordinateHandler coordinateHandler = item.getCapability(COORDINATE, EnumFacing.DOWN);
+                    BlockPos targetPosition = coordinateHandler.getCoordinate();
+                    EnumFacing side = coordinateHandler.getSide();
+                    if(side == null)
+                    {
+                        side = EnumFacing.DOWN;
+                    }
 
-                    TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+                    TileEntity te = world.getTileEntity(targetPosition);
                     if(te != null && te instanceof IInventory)
                     {
                         if(te instanceof ISidedInventory) //Inventory is side-specific.

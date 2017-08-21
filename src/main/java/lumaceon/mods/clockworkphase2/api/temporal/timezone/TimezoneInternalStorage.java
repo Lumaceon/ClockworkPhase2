@@ -33,15 +33,10 @@ public class TimezoneInternalStorage extends Timezone
     public ItemStack setTimeStorageStack(ItemStack stack)
     {
         ItemStack oldStack = timeStorageStack;
-        if(timeStorageStack.isEmpty())
-        {
-            ITimeStorage timeStorage = stack.getCapability(TIME_STORAGE_CAPABILITY, EnumFacing.DOWN);
-            if(timeStorage != null)
-            {
-                timeStorageStack = stack;
-                markDirty();
-            }
-        }
+
+        timeStorageStack = stack;
+        markDirty();
+
         return oldStack;
     }
 

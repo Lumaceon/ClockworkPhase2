@@ -26,7 +26,7 @@ public class Timezone implements ITimezone
     protected TileEntity te;
 
     protected TimeStorage timeStorage = new TimeStorage(TimeConverter.DAY);
-    int radius = 16;
+    int radius = 48;
 
     public Timezone()
     {
@@ -42,7 +42,7 @@ public class Timezone implements ITimezone
     public boolean isInRange(double x, double y, double z, World world)
     {
         BlockPos pos = getPosition();
-        return y <= pos.getY() && pos.getDistance((int) x, pos.getY(), (int) z) <= radius;
+        return y <= 256 && pos.getDistance((int) x, pos.getY(), (int) z) <= radius;
     }
 
     @Override

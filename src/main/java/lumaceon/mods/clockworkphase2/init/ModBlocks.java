@@ -68,7 +68,6 @@ public class ModBlocks
     public static Block armillaryRingFrame;
     public static Block armillaryRingFrameBottom;
     public static Block armillaryRingFrameBottomCorner;
-    public static Block armillaryRingController;
     //MISC
     public static Block basicWindingBox;
     public static Block assemblyTable;
@@ -175,9 +174,6 @@ public class ModBlocks
         armillaryRingFrameBottomCorner = new BlockArmillaryRingFrameBottomCorner(Material.IRON, "armillary_ring_frame_bottom_corner");
         register(armillaryRingFrameBottomCorner);
 
-        armillaryRingController = new BlockArmillaryRingController(Material.IRON, "armillary_ring_controller");
-        register(armillaryRingController);
-
         celestialCompass = new BlockCelestialCompass(Material.GLASS, "celestial_compass");
         register(celestialCompass);
 
@@ -230,7 +226,6 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileTemporalRelay.class, temporalRelay.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileArmillaryRing.class, armillaryRing.getUnlocalizedName());
-        GameRegistry.registerTileEntity(TileArmillaryRingController.class, armillaryRingController.getUnlocalizedName());
         //GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
 
         //CLOCKWORK NETWORK

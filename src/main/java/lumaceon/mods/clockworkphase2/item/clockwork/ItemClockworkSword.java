@@ -136,21 +136,6 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocal(this.getUnlocalizedName(stack));
-    }
-
-    @Override
-    public String getUnlocalizedName() {
-        return this.getRegistryName().toString();
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return this.getUnlocalizedName();
-    }
-
-    @Override
     public String getSimpleName() {
         return simpleName;
     }

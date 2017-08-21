@@ -19,7 +19,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -42,11 +41,6 @@ public class ItemAquaticScepter extends ItemClockworkPhase
 
     public ItemAquaticScepter(int maxStack, int maxDamage, String name) {
         super(maxStack, maxDamage, name);
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocal(this.getUnlocalizedName(stack));
     }
 
     @Override

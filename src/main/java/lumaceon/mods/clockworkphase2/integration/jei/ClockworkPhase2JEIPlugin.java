@@ -79,7 +79,6 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
         registry.addIngredientInfo(new ItemStack(ModBlocks.experienceExtractor), ItemStack.class, Reference.MOD_ID + ":i_experience_extractor");
         registry.addIngredientInfo(new ItemStack(ModBlocks.temporalRelay), ItemStack.class, Reference.MOD_ID + ":i_temporal_relay");
         registry.addIngredientInfo(new ItemStack(ModBlocks.temporalZoningMachine), ItemStack.class, Reference.MOD_ID + ":i_timezones");
-        registry.addIngredientInfo(new ItemStack(ModBlocks.armillaryRingController), ItemStack.class, Reference.MOD_ID + ":i_armillary_ring");
         registry.addIngredientInfo(new ItemStack(ModBlocks.basicWindingBox), ItemStack.class, Reference.MOD_ID + ":i_basic_winding_box");
         registry.addIngredientInfo(new ItemStack(ModBlocks.multiblockAssembler), ItemStack.class, Reference.MOD_ID + ":i_multiblock_assembler");
         registry.addIngredientInfo(new ItemStack(ModBlocks.constructionBlock), ItemStack.class, Reference.MOD_ID + ":i_multiblock_assembler");
@@ -95,6 +94,15 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
         itemList.add(new ItemStack(ModBlocks.relicMoonFlower));
         itemList.add(new ItemStack(ModBlocks.relicUnknown));
         registry.addIngredientInfo(itemList, ItemStack.class, Reference.MOD_ID + ":i_relics");
+
+        itemList.add(new ItemStack(ModItems.gizmoLife));
+        itemList.add(new ItemStack(ModItems.gizmoLight));
+        itemList.add(new ItemStack(ModItems.gizmoWater));
+        itemList.add(new ItemStack(ModItems.gizmoEarth));
+        itemList.add(new ItemStack(ModItems.gizmoAir));
+        itemList.add(new ItemStack(ModItems.gizmoFire));
+        itemList.add(new ItemStack(ModItems.gizmoAura));
+        registry.addIngredientInfo(itemList, ItemStack.class, Reference.MOD_ID + ":i_gizmos");
 
         IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
         if(blacklist != null)

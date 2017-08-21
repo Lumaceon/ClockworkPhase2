@@ -340,21 +340,6 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocal(this.getUnlocalizedName(stack));
-    }
-
-    @Override
-    public String getUnlocalizedName() {
-        return this.getRegistryName().toString();
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return this.getUnlocalizedName();
-    }
-
-    @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
         return Textures.GUI.ASSEMBLY_TABLE_TEMPORAL_EXCAVATOR;
     }

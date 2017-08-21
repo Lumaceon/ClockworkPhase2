@@ -31,7 +31,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
@@ -289,21 +288,6 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         energyStorage.extractEnergy(tensionCost, false);
 
         return true;
-    }
-
-    @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocal(this.getUnlocalizedName(stack));
-    }
-
-    @Override
-    public String getUnlocalizedName() {
-        return this.getRegistryName().toString();
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return this.getUnlocalizedName();
     }
 
     @Override

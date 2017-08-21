@@ -11,6 +11,7 @@ import lumaceon.mods.clockworkphase2.block.machine.BlockClockworkMachine;
 import lumaceon.mods.clockworkphase2.capabilities.machinedata.IMachineDataHandler;
 import lumaceon.mods.clockworkphase2.item.temporal.ItemMachineUpgrade;
 import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
+import lumaceon.mods.clockworkphase2.util.BlockStateUpdateHelper;
 import lumaceon.mods.clockworkphase2.util.FluidTankSided;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -215,10 +216,7 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             isInTemporalMode = !isInTemporalMode;
             updateItemBlockData();
             markDirty();
-            world.notifyBlockUpdate(pos, getBlockType().getStateFromMeta(getBlockMetadata()), getBlockType().getActualState(getBlockType().getStateFromMeta(getBlockMetadata()), world, getPos()), 3);
-            world.setBlockState(pos, getBlockType().getActualState(getBlockType().getStateFromMeta(getBlockMetadata()), world, getPos()));
-            world.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
-            world.scheduleBlockUpdate(pos, getBlockType(), 0, 0);
+            BlockStateUpdateHelper.updateBlockState(world, pos, getBlockType(), getBlockMetadata());
         }
     }
 

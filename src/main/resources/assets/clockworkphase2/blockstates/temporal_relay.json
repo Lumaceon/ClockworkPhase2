@@ -2,7 +2,7 @@
 	"forge_marker": 1,
 	"defaults": {
 		"textures": {},
-		"model": "clockworkphase2:temporal_relay.obj"
+		"model": "clockworkphase2:temporal_relay_inactive.obj"
     },
 	"variants": {
 		"normal": [{}],
@@ -29,6 +29,22 @@
             "west": {
                 "x": 90,
                 "y": 270
+            }
+        },
+        "timezone": {
+            "true": {
+                "model": "clockworkphase2:temporal_relay.obj"
+            },
+            "false": {
+
+            }
+        },
+        "hourglass": {
+            "true": {
+                "model": "clockworkphase2:temporal_relay_hourglass.obj"
+            },
+            "false": {
+
             }
         }
     }

@@ -20,12 +20,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockTemporalRelay extends BlockClockworkPhase implements ITileEntityProvider
@@ -112,6 +116,65 @@ public class BlockTemporalRelay extends BlockClockworkPhase implements ITileEnti
         }
     }
 
+    private static final double heightWithoutHourglass = 0.4;
+    private static final double heightWithHourglass = 0.8;
+
+    public static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, heightWithoutHourglass, 1.0);
+    public static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.0, 1.0 - heightWithoutHourglass, 0.0, 1.0, 1.0, 1.0);
+    public static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, heightWithoutHourglass, 1.0, 1.0);
+    public static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(1.0 - heightWithoutHourglass, 0.0, 0.0, 1.0, 1.0, 1.0);
+    public static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.0, 0.0, 1.0 - heightWithoutHourglass, 1.0, 1.0, 1.0);
+    public static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, heightWithoutHourglass);
+
+    public static final AxisAlignedBB UP_HOURGLASS_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, heightWithHourglass, 1.0);
+    public static final AxisAlignedBB DOWN_HOURGLASS_AABB = new AxisAlignedBB(0.0, 1.0 - heightWithHourglass, 0.0, 1.0, 1.0, 1.0);
+    public static final AxisAlignedBB EAST_HOURGLASS_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, heightWithHourglass, 1.0, 1.0);
+    public static final AxisAlignedBB WEST_HOURGLASS_AABB = new AxisAlignedBB(1.0 - heightWithHourglass, 0.0, 0.0, 1.0, 1.0, 1.0);
+    public static final AxisAlignedBB NORTH_HOURGLASS_AABB = new AxisAlignedBB(0.0, 0.0, 1.0 - heightWithHourglass, 1.0, 1.0, 1.0);
+    public static final AxisAlignedBB SOUTH_HOURGLASS_AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, heightWithHourglass);
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        if(state.getValue(HAS_HOURGLASS))
+        {
+            switch(state.getValue(BlockDirectional.FACING))
+            {
+                case UP:
+                    return UP_HOURGLASS_AABB;
+                case DOWN:
+                    return DOWN_HOURGLASS_AABB;
+                case NORTH:
+                    return NORTH_HOURGLASS_AABB;
+                case SOUTH:
+                    return SOUTH_HOURGLASS_AABB;
+                case EAST:
+                    return EAST_HOURGLASS_AABB;
+                case WEST:
+                    return WEST_HOURGLASS_AABB;
+            }
+        }
+        else
+        {
+            switch(state.getValue(BlockDirectional.FACING))
+            {
+                case UP:
+                    return UP_AABB;
+                case DOWN:
+                    return DOWN_AABB;
+                case NORTH:
+                    return NORTH_AABB;
+                case SOUTH:
+                    return SOUTH_AABB;
+                case EAST:
+                    return EAST_AABB;
+                case WEST:
+                    return WEST_AABB;
+            }
+        }
+        return FULL_BLOCK_AABB;
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public IBlockState getActualState (IBlockState state, IBlockAccess world, BlockPos position)
@@ -154,6 +217,13 @@ public class BlockTemporalRelay extends BlockClockworkPhase implements ITileEnti
     @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 }

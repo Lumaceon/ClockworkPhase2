@@ -65,12 +65,6 @@ public class BlockAssemblyTable extends BlockClockworkPhase implements ITileEnti
     }
 
     @Override
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return blockState.getBoundingBox(worldIn, pos);
-    }
-
-    @Override
     public IBlockState getStateFromMeta(int meta) {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
         return (meta & 8) > 0 ? this.getDefaultState().withProperty(PART, EnumPartType.RIGHT).withProperty(CustomProperties.FACING_HORIZONTAL, enumfacing) : this.getDefaultState().withProperty(PART, EnumPartType.LEFT).withProperty(CustomProperties.FACING_HORIZONTAL, enumfacing);

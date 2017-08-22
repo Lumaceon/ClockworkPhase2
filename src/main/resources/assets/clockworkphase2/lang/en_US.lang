@@ -67,12 +67,19 @@ item.assembly_table_item.name=Assembly Table
 item.bug_swatter.name=Bug Swatter
 
 item.gizmo_life.name=Metabolic Stasis Container
+item.gizmo_life_relic.name=Gizmo
 item.gizmo_light.name=Luminator
-item.gizmo_water.name=Fluic Space-time Compression Unit
+item.gizmo_light_relic.name=Thingamabob
+item.gizmo_water.name=Fluidc Space-time Compression Unit
+item.gizmo_water_relic.name=Doohickey
 item.gizmo_earth.name=Environmental Singularity
+item.gizmo_earth_relic.name=Thingamajig
 item.gizmo_air.name=Anti-gravitational Field Generator
+item.gizmo_air_relic.name=Whatchamacallit
 item.gizmo_fire.name=Dimensional Energy Conduit
+item.gizmo_fire_relic.name=Widget
 item.gizmo_aura.name=Hyper-compressed Memory Orb
+item.gizmo_aura_relic.name=Thingy
 
 #Block
 

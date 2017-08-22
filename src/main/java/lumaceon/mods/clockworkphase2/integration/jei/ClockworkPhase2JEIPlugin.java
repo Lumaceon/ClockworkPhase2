@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.integration.jei;
 
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
+import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.integration.jei.alloyfurnace.AlloyFurnaceRecipeCategory;
 import lumaceon.mods.clockworkphase2.integration.jei.alloyfurnace.AlloyFurnaceRecipeHandler;
@@ -116,6 +117,7 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.celestialCompassSB));
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.assemblyTable));
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.moonFlower));
+            blacklist.addIngredientToBlacklist(new ItemStack(ModFluids.TIMESTREAM.getBlock()));
         }
     }
 

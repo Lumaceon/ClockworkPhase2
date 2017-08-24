@@ -47,7 +47,7 @@ public class ItemBlockMachine extends ItemBlock implements IAssemblable
 
     @Override
     public ResourceLocation getGUIBackground(ContainerAssemblyTable container) {
-        return Textures.GUI.ASSEMBLY_TABLE_CONSTRUCT;
+        return Textures.GUI.ASSEMBLY_TABLE_MACHINE_TEMPORAL_UPGRADE;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ItemBlockMachine extends ItemBlock implements IAssemblable
                 {
                         new SlotItemSpecific(inventory, 0, 160, 41, ModItems.mainspring),
                         new SlotItemSpecific(inventory, 1, 125, 41, ModItems.clockworkCore),
-                        new SlotItemSpecific(inventory, 2, 125, 62, ModItems.temporalMachineConduit)
+                        new SlotItemSpecific(inventory, 2, 143, 41, ModItems.temporalMachineConduit)
                 };
     }
 

@@ -270,11 +270,11 @@ public class ModItems
         temporalFishingRod = new ItemTemporalFishingRod("temporal_fishing_rod");
         register(temporalFishingRod);
 
-        stasisShield = new ItemPersonalStasisShield(1, 100, "stasis_shield");
-        register(stasisShield);
+        //stasisShield = new ItemPersonalStasisShield(1, 100, "stasis_shield");
+        //register(stasisShield);
 
-        aquaticScepter = new ItemAquaticScepter(1, 100, "aquatic_scepter");
-        register(aquaticScepter);
+        //aquaticScepter = new ItemAquaticScepter(1, 100, "aquatic_scepter");
+        //register(aquaticScepter);
 
         //misc
         trowelIron = new ItemTrowel(Item.ToolMaterial.IRON, "iron_trowel");
@@ -288,8 +288,8 @@ public class ModItems
 
         //LIFE MODIFICATION
 
-        mobCapsule = new ItemMobCapsule(1, 64, "mob_capsule");
-        register(mobCapsule);
+        //mobCapsule = new ItemMobCapsule(1, 64, "mob_capsule");
+        //register(mobCapsule);
 
         //TOOL UPGRADES
         toolUpgradeTemporalInfuser = new ItemToolUpgradeTemporalInfuser(1, 100, "tool_upgrade_temporal_infusion");

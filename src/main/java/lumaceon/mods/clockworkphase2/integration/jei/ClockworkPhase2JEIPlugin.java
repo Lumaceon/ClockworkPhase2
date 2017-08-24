@@ -57,7 +57,7 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
         registry.addIngredientInfo(new ItemStack(ModItems.temporalExcavator), ItemStack.class, Reference.MOD_ID + ":i_temporal_excavator");
         registry.addIngredientInfo(new ItemStack(ModItems.temporalHourglass), ItemStack.class, Reference.MOD_ID + ":i_temporal_hourglass");
         registry.addIngredientInfo(new ItemStack(ModItems.temporalToolbelt), ItemStack.class, Reference.MOD_ID + ":i_temporal_toolbelt");
-        registry.addIngredientInfo(new ItemStack(ModItems.aquaticScepter), ItemStack.class, Reference.MOD_ID + ":i_aquatic_scepter");
+        //registry.addIngredientInfo(new ItemStack(ModItems.aquaticScepter), ItemStack.class, Reference.MOD_ID + ":i_aquatic_scepter");
         //Trowels
         //Alloy hammer
         registry.addIngredientInfo(new ItemStack(ModItems.toolUpgradeTemporalInfuser), ItemStack.class, Reference.MOD_ID + ":i_tool_upgrade_temporal");
@@ -77,7 +77,7 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
         registry.addIngredientInfo(new ItemStack(ModBlocks.clockworkAlloyFurnace), ItemStack.class, Reference.MOD_ID + ":i_clockwork_alloy_furnace");
         registry.addIngredientInfo(new ItemStack(ModBlocks.clockworkCrusher), ItemStack.class, Reference.MOD_ID + ":i_clockwork_crusher");
         registry.addIngredientInfo(new ItemStack(ModBlocks.clockworkCrystallizer), ItemStack.class, Reference.MOD_ID + ":i_clockwork_crystallizer");
-        registry.addIngredientInfo(new ItemStack(ModBlocks.experienceExtractor), ItemStack.class, Reference.MOD_ID + ":i_experience_extractor");
+        //registry.addIngredientInfo(new ItemStack(ModBlocks.experienceExtractor), ItemStack.class, Reference.MOD_ID + ":i_experience_extractor");
         registry.addIngredientInfo(new ItemStack(ModBlocks.temporalRelay), ItemStack.class, Reference.MOD_ID + ":i_temporal_relay");
         registry.addIngredientInfo(new ItemStack(ModBlocks.temporalZoningMachine), ItemStack.class, Reference.MOD_ID + ":i_timezones");
         registry.addIngredientInfo(new ItemStack(ModBlocks.basicWindingBox), ItemStack.class, Reference.MOD_ID + ":i_basic_winding_box");
@@ -118,6 +118,13 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.assemblyTable));
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.moonFlower));
             blacklist.addIngredientToBlacklist(new ItemStack(ModFluids.TIMESTREAM.getBlock()));
+            //blacklist.addIngredientToBlacklist(new ItemStack(ModItems.aquaticScepter)); //TODO
+            //blacklist.addIngredientToBlacklist(new ItemStack(ModItems.mobCapsule)); //TODO
+            blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.lifeformConstructor)); //TODO
+            blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.lifeformReconstructor)); //TODO
+            blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.lifeformDeconstructor)); //TODO
+            //blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.experienceExtractor)); //TODO
+            blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.temporalZoningMachine)); //TODO
         }
     }
 

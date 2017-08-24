@@ -23,6 +23,7 @@ public class Textures
         public static ResourceLocation ASSEMBLY_TABLE_MAINSPRING_ADD = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_mainspring_add.png");
         public static ResourceLocation ASSEMBLY_TABLE_GEARS = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_gears.png");
         public static ResourceLocation ASSEMBLY_TABLE_CONSTRUCT = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_construct.png");
+        public static ResourceLocation ASSEMBLY_TABLE_MACHINE_TEMPORAL_UPGRADE = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_machine_temporal_upgrade.png");
         public static ResourceLocation ASSEMBLY_TABLE_TEMPORAL_EXCAVATOR = new ResourceLocation(Reference.MOD_ID, "textures/gui/assembly_table_temporal_excavator.png");
 
         public static ResourceLocation GUIDEBOOK_CRAFTING = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook/crafting_table_guide.png");

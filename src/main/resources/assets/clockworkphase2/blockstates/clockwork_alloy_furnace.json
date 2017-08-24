@@ -41,9 +41,9 @@
 		    {
 		        "textures":
 		        {
-                    "front": "clockworkphase2:blocks/clockwork_alloy_furnace_front",
-                    "top": "clockworkphase2:blocks/machine_top",
-                    "side": "clockworkphase2:blocks/machine_side"
+                    "front": "clockworkphase2:blocks/temporal_clockwork_alloy_furnace_front",
+                    "top": "clockworkphase2:blocks/machine_side_temporal",
+                    "side": "clockworkphase2:blocks/machine_side_temporal"
                 }
 		    }
 		}

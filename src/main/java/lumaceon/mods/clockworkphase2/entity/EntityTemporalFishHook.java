@@ -36,7 +36,7 @@ import java.util.List;
 
 public class EntityTemporalFishHook extends EntityFishHook
 {
-    private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.<Integer>createKey(EntityFishHook.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> DATA_HOOKED_ENTITY = EntityDataManager.createKey(EntityFishHook.class, DataSerializers.VARINT);
     private boolean inGround;
     private int ticksInGround;
     private EntityPlayer angler;

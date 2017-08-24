@@ -45,6 +45,7 @@ public class ModBlocks
     public static Block blockCopper;
     public static Block blockZinc;
     public static Block blockBrass;
+    public static Block blockAluminum;
     public static Block blockTemporal;
     //PLANTS
     public static Block moonFlower;
@@ -109,6 +110,10 @@ public class ModBlocks
         register(blockBrass);
         OreDictionary.registerOre("blockBrass", blockBrass);
 
+        blockAluminum = new BlockClockworkPhase(Material.IRON, "aluminum_block");
+        register(blockAluminum);
+        OreDictionary.registerOre("blockAluminum", blockAluminum);
+
         blockTemporal = new BlockClockworkPhase(Material.IRON, "temporal_block");
         register(blockTemporal);
         OreDictionary.registerOre("blockTemporal", blockTemporal);
@@ -137,9 +142,9 @@ public class ModBlocks
         ForgeRegistries.ITEMS.register(new ItemBlockMachine(clockworkCrystallizer).setRegistryName("clockwork_crystallizer"));
 
         //experience machines
-        experienceExtractor = new BlockExperienceExtractor(Material.IRON, "experience_extractor");
+        /*experienceExtractor = new BlockExperienceExtractor(Material.IRON, "experience_extractor");
         registerWithoutItemBlock(experienceExtractor);
-        ForgeRegistries.ITEMS.register(new ItemBlockMachine(experienceExtractor).setRegistryName("experience_extractor"));
+        ForgeRegistries.ITEMS.register(new ItemBlockMachine(experienceExtractor).setRegistryName("experience_extractor"));*/
 
         //lifeform machines
         lifeformConstructor = new BlockLifeformConstructor(Material.IRON, "lifeform_constructor");
@@ -194,8 +199,8 @@ public class ModBlocks
         constructionBlock = new BlockConstruction(Material.IRON, "construction_block");
         register(constructionBlock);
 
-        bugSwatter = new BlockBugSwatter(Material.GLASS, "bug_swatter_block");
-        register(bugSwatter);
+        //bugSwatter = new BlockBugSwatter(Material.GLASS, "bug_swatter_block");
+        //register(bugSwatter);
 
         ruinedLand = new BlockClockworkPhase(Material.ROCK, "ruined_land");
         register(ruinedLand);

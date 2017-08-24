@@ -1,0 +1,6 @@
+{
+    "parent": "clockworkphase2:item/temporal_fishing_rod",
+    "textures": {
+        "layer0": "clockworkphase2:item/temporal_fishing_rod_cast"
+    }
+}

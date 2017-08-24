@@ -185,7 +185,7 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
                     ((ContainerClockworkMachine) c).initializeSlots(player.inventory, true);
                 }
             }
-            else
+            else if(!isInConfigState())
             {
                 Container c = this.inventorySlots;
                 if(c != null && c instanceof ContainerClockworkMachine)

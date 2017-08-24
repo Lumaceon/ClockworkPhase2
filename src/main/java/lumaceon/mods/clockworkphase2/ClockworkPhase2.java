@@ -92,6 +92,8 @@ public class ClockworkPhase2
 
         Recipes.init();
 
+        ModEntities.init();
+
         MinecraftForge.EVENT_BUS.register(new PlayerHandler());
         MinecraftForge.EVENT_BUS.register(new EntityHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());

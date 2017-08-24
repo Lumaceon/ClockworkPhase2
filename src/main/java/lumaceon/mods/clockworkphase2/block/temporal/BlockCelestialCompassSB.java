@@ -71,14 +71,9 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
         {
             pos = pos.offset(direction);
             state = worldIn.getBlockState(pos);
-            if(state != null)
-            {
-                block = state.getBlock();
-                if(block.equals(this))
-                    direction = EnumFacing.getFront(getMetaFromState(state));
-            }
-            else
-                block = null;
+            block = state.getBlock();
+            if(block.equals(this))
+                direction = EnumFacing.getFront(getMetaFromState(state));
             ++iterations;
         }
         TileEntity te = worldIn.getTileEntity(pos);
@@ -86,7 +81,7 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
             TileCelestialCompass.destroyMultiblock((TileCelestialCompass) te, worldIn, pos);
     }
 
-    @Override
+    /*@Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         if(hitY != 1.0F)
@@ -129,7 +124,7 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
         return false;
     }
 
-    private boolean handleBlockClick(EntityPlayer player, TileCelestialCompass te, double xOffset, double zOffset)
+    /*private boolean handleBlockClick(EntityPlayer player, TileCelestialCompass te, double xOffset, double zOffset)
     {
         //if(player.worldObj.isRemote)
         //    return false;
@@ -153,7 +148,7 @@ public class BlockCelestialCompassSB extends BlockClockworkPhase
             return te.onSubBlockClicked(player, 7);
         else
             return te.onSubBlockClicked(player, -1);
-    }
+    }*/
 
     @Override
     @SuppressWarnings("deprecation")

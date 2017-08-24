@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.entity;
 
 import lumaceon.mods.clockworkphase2.api.item.IFishingRelic;
+import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.recipe.ArmillaryFishingRecipes;
@@ -164,7 +165,7 @@ public class EntityTemporalFishHook extends EntityFishHook
     @Override
     public void onUpdate()
     {
-        super.onUpdate();
+        //super.onUpdate();
 
         if (this.angler == null)
         {
@@ -381,8 +382,8 @@ public class EntityTemporalFishHook extends EntityFishHook
         {
             if (raytraceresult.typeOfHit == RayTraceResult.Type.ENTITY)
             {
-                this.caughtEntity = raytraceresult.entityHit;
-                this.setHookedEntity();
+                //this.caughtEntity = raytraceresult.entityHit;
+                //this.setHookedEntity();
             }
             else
             {
@@ -410,6 +411,23 @@ public class EntityTemporalFishHook extends EntityFishHook
         if (this.rand.nextFloat() < 0.5F && !this.world.canSeeSky(blockpos))
         {
             --i;
+        }
+
+        if(this.ticksCatchable <= 0)
+        {
+            IBlockState block = world.getBlockState(this.getPosition());
+            IBlockState blockBelow = world.getBlockState(this.getPosition().down());
+            if(!((block != null && block.getBlock().equals(ModFluids.TIMESTREAM.getBlock())) || (blockBelow != null && blockBelow.getBlock().equals(ModFluids.TIMESTREAM.getBlock()))))
+            {
+                //If we're not in a timestream.
+                ItemStack[] hourglasses = HourglassHelper.getHourglasses(angler);
+                int timeToCatchAFish = MathHelper.getInt(this.rand, 100, 600);
+                timeToCatchAFish -= this.lureSpeed * 20 * 5;
+                if(HourglassHelper.consumeTimeAllOrNothing(hourglasses, 50 + timeToCatchAFish))
+                {
+                    this.ticksCatchable = 100;
+                }
+            }
         }
 
         if (this.ticksCatchable > 0)
@@ -621,7 +639,10 @@ public class EntityTemporalFishHook extends EntityFishHook
                     entityitem.motionY = d1 * 0.1D + (double)MathHelper.sqrt(d3) * 0.08D;
                     entityitem.motionZ = d2 * 0.1D;
                     this.world.spawnEntity(entityitem);
-                    this.angler.world.spawnEntity(new EntityXPOrb(this.angler.world, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(6) + 1));
+                    if(armillaryCatch)
+                    {
+                        this.angler.world.spawnEntity(new EntityXPOrb(this.angler.world, this.angler.posX, this.angler.posY + 0.5D, this.angler.posZ + 0.5D, this.rand.nextInt(6) + 1));
+                    }
                     Item item = itemstack.getItem();
 
                     if (item == Items.FISH || item == Items.COOKED_FISH)

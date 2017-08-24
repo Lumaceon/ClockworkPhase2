@@ -46,7 +46,7 @@ public class EntityStack
         this.entityID = nbt.getString("id");
         if(nbt.hasKey("CustomName"))
             this.customName = nbt.getString("CustomName");
-        this.entityClass = EntityList.getClass(new ResourceLocation(getEntityTypeID())); //TODO - this may be broken
+        this.entityClass = EntityList.getClass(new ResourceLocation(getEntityTypeID()));
         if(nbt.hasKey("ForgeCaps"))
         {
             if(this.capabilities == null)

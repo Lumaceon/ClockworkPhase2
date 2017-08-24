@@ -184,9 +184,8 @@ public class ModBlocks
 
         celestialCompassSB = new BlockCelestialCompassSB(Material.GLASS, "celestial_compass_sb");
         register(celestialCompassSB);
+
         //MISC
-
-
         basicWindingBox = new BlockBasicWindingBox(Material.IRON, "basic_winding_box");
         register(basicWindingBox);
 
@@ -204,6 +203,12 @@ public class ModBlocks
 
         ruinedLand = new BlockClockworkPhase(Material.ROCK, "ruined_land");
         register(ruinedLand);
+
+        //TODO later....
+        lifeformConstructor.setCreativeTab(null);
+        lifeformReconstructor.setCreativeTab(null);
+        lifeformDeconstructor.setCreativeTab(null);
+        temporalZoningMachine.setCreativeTab(null);
 
         postInit();
     }

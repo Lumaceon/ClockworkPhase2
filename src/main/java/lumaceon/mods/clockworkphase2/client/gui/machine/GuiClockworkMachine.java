@@ -19,7 +19,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -43,7 +42,7 @@ public class GuiClockworkMachine extends GuiContainer
     protected static ResourceLocation POWER_BAR_RED = new ResourceLocation(Reference.MOD_ID, "textures/gui/red_power_bar.png");
     protected static ResourceLocation SIDE_CONFIG_ARROWS = new ResourceLocation(Reference.MOD_ID, "textures/gui/side_config_arrows.png");
     public static ResourceLocation ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/icons.png");
-    public static ResourceLocation OVERLAY = new ResourceLocation(Reference.MOD_ID, "textures/gui/overlayEffect.png");
+    public static ResourceLocation OVERLAY = new ResourceLocation(Reference.MOD_ID, "textures/gui/overlayeffect.png");
 
     protected static ItemStack GEAR_STACK_FOR_DISPLAY = new ItemStack(ModItems.gearCreative);
     protected static ItemStack HOURGLASS_STACK_FOR_DISPLAY = new ItemStack(ModItems.temporalHourglass);
@@ -188,11 +187,11 @@ public class GuiClockworkMachine extends GuiContainer
             Minecraft.getMinecraft().renderEngine.bindTexture(OVERLAY);
             float millisF = (System.currentTimeMillis() % 10000) / 10000.0F;
             GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize, millisF, millisF * 2.0F);
+            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft + progressClockX, this.guiTop + progressClockY, this.zLevel, 32, 32, millisF, millisF * 2.0F);
             GlStateManager.blendFunc(GL11.GL_ZERO, GL11.GL_DST_COLOR);
-            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize, -millisF * 2.0F, millisF);
+            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft + progressClockX, this.guiTop + progressClockY, this.zLevel, 32, 32, -millisF * 2.0F, millisF);
             GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR);
-            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize, -millisF * 2.0F, -millisF * 2.0F);
+            GuiHelper.drawTexturedModalRectStretchedWithUVOffset(this.guiLeft + progressClockX, this.guiTop + progressClockY, this.zLevel, 32, 32, -millisF * 2.0F, -millisF * 2.0F);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(PROGRESS_CLOCK_TEMPORAL);
             GlStateManager.blendFunc(GL11.GL_SRC_COLOR, GL11.GL_DST_COLOR);
@@ -208,27 +207,6 @@ public class GuiClockworkMachine extends GuiContainer
         GuiHelper.drawTexturedModalRectStretched(this.guiLeft, this.guiTop, this.zLevel, this.xSize, this.ySize);
 
 
-        //Add weird border effect for reversal mode.
-        /*if(tileEntity.isInAntiMode())
-        {
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            float cycleSpeed = 1000;
-            int animTick = (int) (System.currentTimeMillis() % (int) cycleSpeed);
-            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.3F);
-            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
-            animTick = (int) ((System.currentTimeMillis() + 250) % (int) cycleSpeed);
-            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.2F);
-            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
-            animTick = (int) ((System.currentTimeMillis() + 500) % (int) cycleSpeed);
-            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.15F);
-            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
-            animTick = (int) ((System.currentTimeMillis() + 750) % (int) cycleSpeed);
-            GlStateManager.color(color, color, color, (animTick / cycleSpeed) * 0.12F);
-            GuiHelper.drawTexturedModalRectStretched((this.guiLeft - 20) + (int) ((animTick / cycleSpeed) * 20), (this.guiTop - 20) + (int) ((animTick / cycleSpeed) * 20), this.zLevel, (this.xSize + 40) - (int) ((animTick / cycleSpeed) * 40), (this.ySize + 40) - (int) ((animTick / cycleSpeed) * 40));
-        }*/
-
-
         //Render power bar.
         float powerPercentage = 0; //Technically not a percentage. Ranges from 0 to 1 (empty to full).
         IEnergyStorage energyStorage = tileEntity.energyStorage;
@@ -238,16 +216,8 @@ public class GuiClockworkMachine extends GuiContainer
         }
 
         Minecraft.getMinecraft().renderEngine.bindTexture(POWER_BAR_RED);
-        if(stateChangeTween > 0)
-        {
-            GlStateManager.color(color, color, color, stateChangeTween * 0.06F);
-        }
-        else
-        {
-            GlStateManager.color(color, color, color, 1.0F);
-        }
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(color, color, color, 1.0F);
+
         GuiHelper.drawTexturedModalRectCutTop(this.guiLeft + powerBarX, this.guiTop + powerBarY, this.zLevel, 13, 68, (int) (powerPercentage * 68.0F));
         GlStateManager.disableBlend();
 

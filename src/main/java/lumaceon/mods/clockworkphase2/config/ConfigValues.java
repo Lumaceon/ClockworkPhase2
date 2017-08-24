@@ -6,7 +6,7 @@ public class ConfigValues
 {
     public static boolean DEVELOPING = false;
 
-    public static boolean RAGNAROK_MODE = true;
+    public static boolean SPAWN_WORLD_CRATER = true;
 
     public static boolean SPAWN_COPPER = true;
     public static boolean SPAWN_ZINC = true;
@@ -24,10 +24,7 @@ public class ConfigValues
     public static int HOURGLASS_XP_LEVEL_TIER_4 = 100;
     public static int HOURGLASS_XP_LEVEL_TIER_5 = 150;
 
-    public static int TEMPORAL_HOURGLASS_START = TimeConverter.MINUTE;
-    public static int TEMPORAL_HOURGLASS_HARD_CAP = TEMPORAL_HOURGLASS_START * 60;
-    public static int ETHEREAL_HOURGLASS_START = TimeConverter.HOUR;
-    public static int ETHEREAL_HOURGLASS_HARD_CAP = ETHEREAL_HOURGLASS_START * 24;
+    public static int TEMPORAL_HOURGLASS_MAX = TimeConverter.HOUR;
 
-    public static int SIMPLE_OVERCLOCKER_TIME = TimeConverter.MINUTE * 5;
+    public static boolean TEMPORAL_HOURGLASS_CONSUMES_XP = true;
 }

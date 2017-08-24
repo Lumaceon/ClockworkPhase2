@@ -91,18 +91,19 @@ public class GuiHandler implements IGuiHandler
         }
         else if(ID == GUIs.TEMPORAL_EXCAVATOR.ordinal())
         {
-            if (player == null)
+            if(player == null)
                 return false;
-            ItemStack stack = player.inventory.getCurrentItem();
-            if (stack == null)
+
+            ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
+            if(stack.isEmpty())
                 return null;
 
             IItemHandler inventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-            if (inventory == null)
+            if(inventory == null)
                 return null;
 
             ItemStack[] items = new ItemStack[inventory.getSlots() - 3];
-            for (int i = 3; i < inventory.getSlots(); i++)
+            for(int i = 3; i < inventory.getSlots(); i++)
                 items[i - 3] = inventory.getStackInSlot(i);
 
             return new GuiTemporalExcavatorUpgrades(items);

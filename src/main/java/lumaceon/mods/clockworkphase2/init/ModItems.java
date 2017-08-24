@@ -2,11 +2,9 @@ package lumaceon.mods.clockworkphase2.init;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
 import lumaceon.mods.clockworkphase2.api.RelicExcavationRegistry;
-import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateArmillaryRing;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
-import lumaceon.mods.clockworkphase2.item.armillary.ItemAquaticScepter;
-import lumaceon.mods.clockworkphase2.item.mob.ItemMobCapsule;
+import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.item.multiblocktemplate.ItemMultiblockTemplate;
 import lumaceon.mods.clockworkphase2.item.temporal.*;
 import lumaceon.mods.clockworkphase2.api.util.WeightedChance;
@@ -261,7 +259,7 @@ public class ModItems
         temporalExcavator = new ItemTemporalExcavator(temporalMaterial, "temporal_excavator");
         register(temporalExcavator);
 
-        temporalHourglass = new ItemHourglass(1, 100, "temporal_hourglass", TimeConverter.HOUR);
+        temporalHourglass = new ItemHourglass(1, 100, "temporal_hourglass", ConfigValues.TEMPORAL_HOURGLASS_MAX);
         register(temporalHourglass);
 
         temporalToolbelt = new ItemTemporalToolbelt(1, 100, "temporal_toolbelt");

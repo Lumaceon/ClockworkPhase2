@@ -1,18 +1,14 @@
 package lumaceon.mods.clockworkphase2.client.tesr;
 
-import lumaceon.mods.clockworkphase2.block.temporal.BlockCelestialCompassSB;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
@@ -123,7 +119,7 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
         renderer.pos(0, 0.99, 0).tex(1, 0).endVertex();
         tessellator.draw();*/
 
-        GL11.glScalef(1/11.0F, 1.0F, 1/11.0F);
+        /*GL11.glScalef(1/11.0F, 1.0F, 1/11.0F);
         GL11.glTranslatef(5.0F, 0.0F, 5.0F);
         if(te != null && te instanceof TileCelestialCompass)
         {
@@ -148,11 +144,11 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
             GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
             renderSideItems(timezoneController, rotationSpeed);
             GL11.glPopMatrix();
-        }
+        }*/
         GL11.glPopMatrix();
     }
 
-    private void renderSideItems(TileCelestialCompass timezoneController, int rotationSpeed) //Slower speed is faster (weird, but easier to code). Never 0.
+    /*private void renderSideItems(TileCelestialCompass timezoneController, int rotationSpeed) //Slower speed is faster (weird, but easier to code). Never 0.
     {
         ItemStack itemToRender;
         for(int n = 0; n < 8; n++)
@@ -220,7 +216,7 @@ public class TESRTimezoneController extends TileEntitySpecialRenderer
                     break;
             }
         }
-    }
+    }*/
 
     private void addSideVerticies(BufferBuilder renderer, TileEntity te, float partialTicks)
     {

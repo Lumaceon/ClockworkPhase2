@@ -19,7 +19,7 @@ public class WorldGeneratorPOI implements IWorldGenerator
     {
         if(world.provider.getDimension() == 0)
         {
-            if(ConfigValues.RAGNAROK_MODE)
+            if(ConfigValues.SPAWN_WORLD_CRATER)
             {
                 if(chunkX >= 0 && chunkX < 21 && chunkZ >= 0 && chunkZ < 21)
                 {

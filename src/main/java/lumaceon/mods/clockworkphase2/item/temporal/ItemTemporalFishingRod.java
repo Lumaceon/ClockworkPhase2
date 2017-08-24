@@ -43,8 +43,7 @@ public class ItemTemporalFishingRod extends ItemFishingRod implements ISimpleNam
 
         if(playerIn.fishEntity != null)
         {
-            int i = playerIn.fishEntity.handleHookRetraction();
-            itemstack.damageItem(i, playerIn);
+            playerIn.fishEntity.handleHookRetraction();
             playerIn.swingArm(handIn);
             worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_BOBBER_RETRIEVE, SoundCategory.NEUTRAL, 1.0F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
         }

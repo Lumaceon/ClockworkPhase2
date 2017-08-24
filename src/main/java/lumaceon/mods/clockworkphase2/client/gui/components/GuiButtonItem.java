@@ -65,5 +65,6 @@ public class GuiButtonItem extends GuiButton
         itemRender.renderItemAndEffectIntoGUI(is, x, y);
         this.zLevel = zLevelOrigin;
         itemRender.zLevel = 0.0F;
+        GL11.glDisable(GL11.GL_LIGHTING);
     }
 }

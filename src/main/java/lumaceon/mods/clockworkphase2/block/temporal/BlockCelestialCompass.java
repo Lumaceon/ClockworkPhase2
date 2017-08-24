@@ -23,18 +23,6 @@ public class BlockCelestialCompass extends BlockClockworkPhase implements ITileE
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-    {
-        if(!player.isSneaking())
-        {
-            TileEntity te = world.getTileEntity(pos);
-            if(te != null && te instanceof TileCelestialCompass)
-                return ((TileCelestialCompass) te).onSubBlockClicked(player, 8);
-        }
-        return false;
-    }
-
-    @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntity te = worldIn.getTileEntity(pos);
         if(te != null && te instanceof TileCelestialCompass && !((TileCelestialCompass) te).isBeingDestroyed)

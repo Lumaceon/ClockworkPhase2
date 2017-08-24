@@ -98,6 +98,7 @@ tile.unknown_relic.name=Unknown Relic
 tile.copper_block.name=Copper Block
 tile.zinc_block.name=Zinc Block
 tile.brass_block.name=Brass Block
+tile.aluminum_block.name=Aluminum Block
 tile.temporal_block.name=Temporal Block
 
 tile.clockwork_furnace.name=Clockwork Furnace
@@ -125,4 +126,5 @@ tile.clockworkphase2:fluid.timestream.name=Timestream
 itemGroup.ClockworkPhase2=Clockwork Phase 2
 key.clockworkphase2.category=Clockwork Phase 2
 key.clockworkphase2.activate=General Activation Key
+key.clockworkphase2.toolbelt=Temporal Toolbelt Swap
 fluid.timestream=Timestream

@@ -38,53 +38,59 @@ public class WorldGenHandler
     @SubscribeEvent(priority = EventPriority.LOW)
     public void onMapGenInitialization(InitMapGenEvent event)
     {
-        if(event.getType().equals(InitMapGenEvent.EventType.NETHER_BRIDGE) || event.getType().equals(InitMapGenEvent.EventType.NETHER_CAVE))
-            return;
+        if(ConfigValues.SPAWN_WORLD_CRATER)
+        {
+            if(event.getType().equals(InitMapGenEvent.EventType.NETHER_BRIDGE) || event.getType().equals(InitMapGenEvent.EventType.NETHER_CAVE))
+                return;
 
-        if(event.getType().equals(InitMapGenEvent.EventType.CAVE))
-        {
-            event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
-        }
-        else if(event.getType().equals(InitMapGenEvent.EventType.STRONGHOLD))
-        {
-            event.setNewGen(new MapGenStrongholdDeadzone((MapGenStronghold) event.getOriginalGen()));
-        }
-        else if(event.getType().equals(InitMapGenEvent.EventType.VILLAGE))
-        {
-            event.setNewGen(new MapGenVillageDeadzone((MapGenVillage) event.getOriginalGen()));
-        }
-        else if(event.getType().equals(InitMapGenEvent.EventType.MINESHAFT))
-        {
-            event.setNewGen(new MapGenMineshaftDeadzone((MapGenMineshaft) event.getOriginalGen()));
-        }
-        else if(event.getType().equals(InitMapGenEvent.EventType.SCATTERED_FEATURE))
-        {
-            event.setNewGen(new MapGenScatteredFeatureDeadzone((MapGenScatteredFeature) event.getOriginalGen()));
-        }
-        else if(event.getType().equals(InitMapGenEvent.EventType.RAVINE))
-        {
-            event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
-        }
-        else if(event.getType().equals(InitMapGenEvent.EventType.OCEAN_MONUMENT))
-        {
-            event.setNewGen(new MapGenOceanMonumentDeadzone((StructureOceanMonument) event.getOriginalGen()));
-        }
-        else
-        {
-            event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
+            if(event.getType().equals(InitMapGenEvent.EventType.CAVE))
+            {
+                event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
+            }
+            else if(event.getType().equals(InitMapGenEvent.EventType.STRONGHOLD))
+            {
+                event.setNewGen(new MapGenStrongholdDeadzone((MapGenStronghold) event.getOriginalGen()));
+            }
+            else if(event.getType().equals(InitMapGenEvent.EventType.VILLAGE))
+            {
+                event.setNewGen(new MapGenVillageDeadzone((MapGenVillage) event.getOriginalGen()));
+            }
+            else if(event.getType().equals(InitMapGenEvent.EventType.MINESHAFT))
+            {
+                event.setNewGen(new MapGenMineshaftDeadzone((MapGenMineshaft) event.getOriginalGen()));
+            }
+            else if(event.getType().equals(InitMapGenEvent.EventType.SCATTERED_FEATURE))
+            {
+                event.setNewGen(new MapGenScatteredFeatureDeadzone((MapGenScatteredFeature) event.getOriginalGen()));
+            }
+            else if(event.getType().equals(InitMapGenEvent.EventType.RAVINE))
+            {
+                event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
+            }
+            else if(event.getType().equals(InitMapGenEvent.EventType.OCEAN_MONUMENT))
+            {
+                event.setNewGen(new MapGenOceanMonumentDeadzone((StructureOceanMonument) event.getOriginalGen()));
+            }
+            else
+            {
+                event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
+            }
         }
     }
 
     @SubscribeEvent
     public void onOreGeneration(OreGenEvent.GenerateMinable event)
     {
-        if(event.getWorld().provider.getDimension() == 0)
+        if(ConfigValues.SPAWN_WORLD_CRATER)
         {
-            int x = event.getPos().getX();
-            int z = event.getPos().getZ();
-            if(Math.sqrt((x*x) + (z*z)) < 378)
+            if(event.getWorld().provider.getDimension() == 0)
             {
-                event.setResult(Event.Result.DENY);
+                int x = event.getPos().getX();
+                int z = event.getPos().getZ();
+                if(Math.sqrt((x*x) + (z*z)) < 378)
+                {
+                    event.setResult(Event.Result.DENY);
+                }
             }
         }
     }
@@ -92,13 +98,16 @@ public class WorldGenHandler
     @SubscribeEvent
     public void onBiomeDecoration(DecorateBiomeEvent.Decorate event)
     {
-        if(event.getWorld().provider.getDimension() == 0)
+        if(ConfigValues.SPAWN_WORLD_CRATER)
         {
-            int x = event.getPos().getX();
-            int z = event.getPos().getZ();
-            if(Math.sqrt((x*x) + (z*z)) < 378)
+            if(event.getWorld().provider.getDimension() == 0)
             {
-                event.setResult(Event.Result.DENY);
+                int x = event.getPos().getX();
+                int z = event.getPos().getZ();
+                if(Math.sqrt((x*x) + (z*z)) < 378)
+                {
+                    event.setResult(Event.Result.DENY);
+                }
             }
         }
     }
@@ -106,13 +115,16 @@ public class WorldGenHandler
     @SubscribeEvent
     public void onBiomePopulate(PopulateChunkEvent.Populate event)
     {
-        if(event.getWorld().provider.getDimension() == 0)
+        if(ConfigValues.SPAWN_WORLD_CRATER)
         {
-            int chunkX = event.getChunkX();
-            int chunkZ = event.getChunkZ();
-            if(Math.sqrt(((chunkX*16)*(chunkX*16)) + ((chunkZ*16)*(chunkZ*16))) < 378)
+            if(event.getWorld().provider.getDimension() == 0)
             {
-                event.setResult(Event.Result.DENY);
+                int chunkX = event.getChunkX();
+                int chunkZ = event.getChunkZ();
+                if(Math.sqrt(((chunkX*16)*(chunkX*16)) + ((chunkZ*16)*(chunkZ*16))) < 378)
+                {
+                    event.setResult(Event.Result.DENY);
+                }
             }
         }
     }
@@ -122,7 +134,7 @@ public class WorldGenHandler
     {
         if(event.getWorld().provider.getDimension() == 0)
         {
-            if(ConfigValues.RAGNAROK_MODE)
+            if(ConfigValues.SPAWN_WORLD_CRATER)
             {
                 Chunk c = event.getWorld().getChunkFromChunkCoords(event.getChunkX(), event.getChunkZ());
                 ChunkPos cPos = c.getPos();

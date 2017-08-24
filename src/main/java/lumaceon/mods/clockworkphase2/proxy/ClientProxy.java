@@ -26,8 +26,10 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
@@ -90,6 +92,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerKeybindings() {
         ClientRegistry.registerKeyBinding(Keybindings.activate);
+        ClientRegistry.registerKeyBinding(Keybindings.toolbelt);
     }
 
     @Override
@@ -136,6 +139,12 @@ public class ClientProxy extends CommonProxy
     @Override
     public File getMinecraftDataDirectory() {
         return Minecraft.getMinecraft().mcDataDir;
+    }
+
+    @Override
+    public void sendBlockDestroyPacket(BlockPos pos) {
+        //noinspection ConstantConditions
+        Minecraft.getMinecraft().getConnection().sendPacket(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, Minecraft.getMinecraft().objectMouseOver.sideHit));
     }
 
     @Override

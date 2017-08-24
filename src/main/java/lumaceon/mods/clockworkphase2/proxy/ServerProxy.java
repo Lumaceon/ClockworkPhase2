@@ -6,6 +6,7 @@ import lumaceon.mods.clockworkphase2.handler.ChunkLoadingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
@@ -59,6 +60,11 @@ public class ServerProxy extends CommonProxy
     public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop) {}
     @Override
     public File getMinecraftDataDirectory() { return null; }
+
+    @Override
+    public void sendBlockDestroyPacket(BlockPos pos) {
+
+    }
 
     @Override
     public void onClientTick(TickEvent.ClientTickEvent event) {

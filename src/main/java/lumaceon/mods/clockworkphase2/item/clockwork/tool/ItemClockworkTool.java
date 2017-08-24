@@ -27,6 +27,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketBlockChange;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -199,23 +200,18 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
                 state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), stack);
                 state.getBlock().dropXpOnBlockBreak(world, pos, event);
             }
-            //playerMP.playerNetServerHandler.sendPacket(new SPacketBlockChange(world, pos));
-            //TODO fix
+            playerMP.connection.sendPacket(new SPacketBlockChange(world, pos));
         }
         else //CLIENT
         {
-            //world.playAuxSFX(2001, pos, Block.getIdFromBlock(block) + (metadata << 12));
             if(state.getBlock().removedByPlayer(state, world, pos, player, true))
                 state.getBlock().onBlockDestroyedByPlayer(world, pos, state);
             ItemStack itemstack = player.getActiveItemStack();
             if(itemstack != null)
             {
                 itemstack.onBlockDestroyed(world, state, pos, player);
-                //if(itemstack.stackSize == 0)
-                //    player.destroyCurrentEquippedItem();
             }
-            //Minecraft.getMinecraft().getNetHandler().addToSendQueue(new CPacketPlayerDigging(CPacketPlayerDigging.Action.STOP_DESTROY_BLOCK, pos, Minecraft.getMinecraft().objectMouseOver.sideHit));
-            //TODO fix
+            ClockworkPhase2.proxy.sendBlockDestroyPacket(pos);
         }
     }
 

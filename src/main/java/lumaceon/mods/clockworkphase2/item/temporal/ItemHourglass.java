@@ -121,29 +121,34 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
             {
                 case 1:
                     timeToAdd = 1;
-                    percentageChance = 20;
+                    percentageChance = 5;
                     break;
                 case 2:
                     timeToAdd = 1;
+                    percentageChance = 20;
                     break;
                 case 3:
                     timeToAdd = 4;
                     break;
                 case 4:
-                    timeToAdd = 16;
+                    timeToAdd = 12;
                     break;
                 case 5:
-                    timeToAdd = 64;
+                    timeToAdd = 32;
                     break;
             }
 
             if(percentageChance > itemRand.nextInt(100))
             {
                 long amountAccepted = timeStorage.insertTime(timeToAdd);
-                if(amountAccepted > 0)
+                if(amountAccepted > 0 && ConfigValues.TEMPORAL_HOURGLASS_CONSUMES_XP)
                 {
-                    if(xpTier > 2 && itemRand.nextInt(50) == 0)
-                        ExperienceHelper.addPlayerXP(player, -1);
+                    int xpToConsume = timeToAdd/10;
+
+                    if(xpToConsume <= 0)
+                        xpToConsume = 1;
+
+                    ExperienceHelper.addPlayerXP(player, -xpToConsume);
                     return true;
                 }
             }

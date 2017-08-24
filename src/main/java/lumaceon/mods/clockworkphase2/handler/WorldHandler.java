@@ -2,11 +2,9 @@ package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.capabilities.coordinate.ICoordinateHandler;
-import lumaceon.mods.clockworkphase2.init.ModFluids;
+import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeFurnace;
-import lumaceon.mods.clockworkphase2.recipe.ArmillaryFishingRecipes;
 import lumaceon.mods.clockworkphase2.util.LogHelper;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeRelocate;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
@@ -14,7 +12,6 @@ import lumaceon.mods.clockworkphase2.network.message.MessageParticleSpawn;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -22,17 +19,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.feature.WorldGeneratorBonusChest;
-import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -49,39 +43,6 @@ public class WorldHandler
     public static final Capability<ICoordinateHandler> COORDINATE = null;
 
     @SubscribeEvent
-    public void onItemFished(ItemFishedEvent event)
-    {
-        EntityFishHook fishHook = event.getHookEntity();
-        if(fishHook != null)
-        {
-            BlockPos pos = fishHook.getPosition();
-            IBlockState blockState = fishHook.world.getBlockState(pos);
-            IBlockState blockStateBelow = fishHook.world.getBlockState(pos.down());
-            if(blockState != null && blockState.getBlock() != null)
-            {
-                Block block = blockState.getBlock();
-                if(block.equals(ModFluids.TIMESTREAM.getBlock()))
-                {
-                    NonNullList<ItemStack> dropList = event.getDrops();
-                    dropList.clear();
-                    dropList.add(ArmillaryFishingRecipes.INSTANCE.getResultForFishing(fishHook.world, pos).copy());
-                }
-            }
-
-            if(blockState != null && blockState.getBlock() != null)
-            {
-                Block block = blockState.getBlock();
-                if(block.equals(ModFluids.TIMESTREAM.getBlock()))
-                {
-                    NonNullList<ItemStack> dropList = event.getDrops();
-                    dropList.clear();
-                    dropList.add(ArmillaryFishingRecipes.INSTANCE.getResultForFishing(fishHook.world, pos).copy());
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onBlockHarvested(BlockEvent.HarvestDropsEvent event)
     {
         World world = event.getWorld();
@@ -94,10 +55,10 @@ public class WorldHandler
         if(player.inventory == null || drops == null || drops.isEmpty())
             return;
 
-        ItemStack heldItem = player.inventory.getStackInSlot(player.inventory.currentItem);
+        ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
         IToolUpgrade smelt = null;
 
-        if(heldItem != null)
+        if(!heldItem.isEmpty())
         {
             IItemHandler inventory = heldItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
             if(inventory != null)
@@ -107,7 +68,7 @@ public class WorldHandler
                 {
                     item = inventory.getStackInSlot(i);
 
-                    if(item != null && item.getItem().equals(ModItems.toolUpgradeFurnace) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item, heldItem))
+                    if(!item.isEmpty() && item.getItem().equals(ModItems.toolUpgradeFurnace) && ((ItemToolUpgradeFurnace) item.getItem()).getActive(item, heldItem))
                         smelt = (IToolUpgrade) item.getItem();
                 }
             }
@@ -125,7 +86,7 @@ public class WorldHandler
                         int size = j + 1; //Modified to ignore quantity dropped, already handled by iterating through drops.
                         //Fortune code from BlockOre\\
 
-                        if(smeltedOutput != null)
+                        if(!smeltedOutput.isEmpty())
                         {
                             smeltedOutput = smeltedOutput.copy();
                             //Only drop 1 if the smelted item is a block or the same as the block broken
@@ -142,7 +103,7 @@ public class WorldHandler
         }
 
         //"RELOCATE ITEMS TO INVENTORY" UPGRADE
-        if(heldItem != null)
+        if(!heldItem.isEmpty())
         {
             IItemHandler inventory = heldItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
             if(inventory == null)
@@ -152,7 +113,7 @@ public class WorldHandler
             for(int i = 3; i < inventory.getSlots(); i++)
             {
                 item = inventory.getStackInSlot(i);
-                if(item != null && item.getItem().equals(ModItems.toolUpgradeRelocate) && ((ItemToolUpgradeRelocate) item.getItem()).getActive(item, heldItem))
+                if(!item.isEmpty() && item.getItem().equals(ModItems.toolUpgradeRelocate) && ((ItemToolUpgradeRelocate) item.getItem()).getActive(item, heldItem))
                 {
                     ICoordinateHandler coordinateHandler = item.getCapability(COORDINATE, EnumFacing.DOWN);
                     BlockPos targetPosition = coordinateHandler.getCoordinate();
@@ -177,7 +138,7 @@ public class WorldHandler
                                     if(sidedInventory.isItemValidForSlot(currentSlot, drop) && sidedInventory.canInsertItem(currentSlot, drop, side))
                                     {
                                         ItemStack inventorySlotItem = sidedInventory.getStackInSlot(currentSlot);
-                                        if(inventorySlotItem != null)
+                                        if(!inventorySlotItem.isEmpty())
                                         {
                                             if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.getCount() + drop.getCount())
                                             {
@@ -213,7 +174,7 @@ public class WorldHandler
                                     if(tileInventory.isItemValidForSlot(n2, drop))
                                     {
                                         ItemStack inventorySlotItem = tileInventory.getStackInSlot(n2);
-                                        if(inventorySlotItem != null)
+                                        if(!inventorySlotItem.isEmpty())
                                         {
                                             if(drop.getItem().equals(inventorySlotItem.getItem()) && drop.getItemDamage() == inventorySlotItem.getItemDamage() && inventorySlotItem.getMaxStackSize() >= inventorySlotItem.getCount() + drop.getCount())
                                             {
@@ -250,47 +211,50 @@ public class WorldHandler
     @SubscribeEvent
     public void onWorldFindSpawn(WorldEvent.CreateSpawnPosition event)
     {
-        World world = event.getWorld();
-        if(world != null && !world.isRemote && world.provider.getDimension() == 0)
+        if(ConfigValues.SPAWN_WORLD_CRATER)
         {
-            event.setCanceled(true);
-            BiomeProvider biomeprovider = world.provider.getBiomeProvider();
-            List<Biome> list = biomeprovider.getBiomesToSpawnIn();
-            Random random = new Random(world.getSeed());
-            BlockPos blockpos = biomeprovider.findBiomePosition(700, 0, 256, list, random);
-            int i = 8;
-            int j = world.provider.getAverageGroundLevel();
-            int k = 8;
-
-            if (blockpos != null)
+            World world = event.getWorld();
+            if(world != null && !world.isRemote && world.provider.getDimension() == 0)
             {
-                i = blockpos.getX();
-                k = blockpos.getZ();
-            }
-            else
-            {
-                LogHelper.info("Unable to find spawn biome");
-            }
+                event.setCanceled(true);
+                BiomeProvider biomeprovider = world.provider.getBiomeProvider();
+                List<Biome> list = biomeprovider.getBiomesToSpawnIn();
+                Random random = new Random(world.getSeed());
+                BlockPos blockpos = biomeprovider.findBiomePosition(700, 0, 256, list, random);
+                int i = 8;
+                int j = world.provider.getAverageGroundLevel();
+                int k = 8;
 
-            int l = 0;
-
-            while (!world.provider.canCoordinateBeSpawn(i, k))
-            {
-                i += random.nextInt(64) - random.nextInt(64);
-                k += random.nextInt(64) - random.nextInt(64);
-                ++l;
-
-                if (l == 1000)
+                if (blockpos != null)
                 {
-                    break;
+                    i = blockpos.getX();
+                    k = blockpos.getZ();
                 }
-            }
+                else
+                {
+                    LogHelper.info("Unable to find spawn biome");
+                }
 
-            world.getWorldInfo().setSpawn(new BlockPos(i, j, k));
+                int l = 0;
 
-            if(event.getSettings().isBonusChestEnabled())
-            {
-                createBonusChest(world);
+                while (!world.provider.canCoordinateBeSpawn(i, k))
+                {
+                    i += random.nextInt(64) - random.nextInt(64);
+                    k += random.nextInt(64) - random.nextInt(64);
+                    ++l;
+
+                    if (l == 1000)
+                    {
+                        break;
+                    }
+                }
+
+                world.getWorldInfo().setSpawn(new BlockPos(i, j, k));
+
+                if(event.getSettings().isBonusChestEnabled())
+                {
+                    createBonusChest(world);
+                }
             }
         }
     }

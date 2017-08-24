@@ -1,91 +1,50 @@
-package lumaceon.mods.clockworkphase2.api.assembly;
+package lumaceon.mods.clockworkphase2.inventory;
 
+import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
+import lumaceon.mods.clockworkphase2.api.item.IFishingRelic;
+import lumaceon.mods.clockworkphase2.inventory.slot.SlotFishingRelic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
 
-public class ContainerAssemblyTable extends Container
+public class ContainerTemporalFishingRod extends Container
 {
-    public InventoryUpdated mainInventory = new InventoryUpdated(this, 1, 1);
-    public InventoryAssemblyTableComponents componentInventory;
-    public World world;
-    public EntityPlayer player;
-    private ItemStack previousMainStack = ItemStack.EMPTY;
-    public List buttonList = null;
-    public int guiLeft = -1;
-    public int guiTop = -1;
+    public InventoryAssemblyTableComponents internalObjectInventory;
 
-    public ContainerAssemblyTable(InventoryPlayer ip, World world)
+    public ContainerTemporalFishingRod(EntityPlayer player, ItemStack fishingRodStack)
     {
-        this.world = world;
-        this.player = ip.player;
+        IItemHandler itemHandler = fishingRodStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if(fishingRodStack.isEmpty() || itemHandler == null)
+        {
+            return;
+        }
 
-        for(int y = 0; y < 3; y++)
-            for(int x = 0; x < 9; x++)
-                this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, 70 + x * 18, 147 + y * 18));
+        int playerInventoryX = 8;
+        int playerInventoryY = 51;
+
+        InventoryPlayer ip = player.inventory;
+
+        //Player Inventory
+        for(int x = 0; x < 9; x++)
+            if(ip.getStackInSlot(x) != fishingRodStack)
+                this.addSlotToContainer(new Slot(ip, x, playerInventoryX + x * 18 , playerInventoryY+58));
 
         for(int x = 0; x < 9; x++)
-            this.addSlotToContainer(new Slot(ip, x, 70 + x * 18 , 205));
+            for(int y = 0; y < 3; y++)
+                if(ip.getStackInSlot(9 + y * 9 + x) != fishingRodStack)
+                    this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, playerInventoryX + x * 18, playerInventoryY + y * 18));
 
-        this.addSlotToContainer(new SlotAssemblable(mainInventory, 0, 142, 68));
-    }
+        internalObjectInventory = new InventoryAssemblyTableComponents(64, fishingRodStack);
 
-    @Override
-    public void onCraftMatrixChanged(IInventory p_75130_1_)
-    {
-        ItemStack item = mainInventory.getStackInSlot(0);
-        boolean mainItemChanged = item != previousMainStack;
-
-        //Handle changes to the main item.
-        if(mainItemChanged)
-        {
-            //Remove the component inventory if the change is removal of the main item.
-            if((item == null || !(item.getItem() instanceof IAssemblable)) && componentInventory != null)
-            {
-                cleanContainerAndGUI();
-            }
-
-            //Set up the new component inventory if the main item has changed from a separate main item.
-            if(item != null && componentInventory != null && item.getItem() instanceof IAssemblable)
-            {
-                cleanContainerAndGUI();
-
-                setupNewContainerAndGUI(item);
-            }
-
-            //Set up a component inventory if the main item has been added from the default screen.
-            if(item != null && componentInventory == null && item.getItem() instanceof IAssemblable)
-            {
-                setupNewContainerAndGUI(item);
-            }
-        }
-
-        previousMainStack = item;
-    }
-
-    @Override
-    public void onContainerClosed(EntityPlayer p_75134_1_)
-    {
-        super.onContainerClosed(p_75134_1_);
-
-        if(!this.world.isRemote)
-        {
-            ItemStack itemstack = this.mainInventory.getStackInSlot(0);
-            if(itemstack != null)
-                p_75134_1_.dropItem(itemstack, false);
-        }
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer p_75145_1_)
-    {
-        return mainInventory.isUsableByPlayer(p_75145_1_);
+        this.addSlotToContainer(new SlotFishingRelic(internalObjectInventory, 0, 80, 20));
     }
 
     @Override
@@ -103,19 +62,16 @@ public class ContainerAssemblyTable extends Container
 
         if(!tranferFromPlayer) //Item is in our container, try placing in player's inventory.
         {
-            if(!this.mergeItemStack(inputStack, 0, 36, true))
+            if(!this.mergeItemStack(inputStack, 0, this.inventorySlots.size() - 1, false))
                 return ItemStack.EMPTY;
         }
         else
         {
-            if(inputStack.getItem() instanceof IAssemblable)
+            if(inputStack.getItem() instanceof IFishingRelic)
             {
-                if(!this.mergeItemStack(inputStack, 36, 37, false))
-                    if(!this.mergeItemStack(inputStack, 37, this.inventorySlots.size(), false))
-                        return ItemStack.EMPTY;
+                if(!this.mergeItemStack(inputStack, this.inventorySlots.size() - 1, this.inventorySlots.size(), false))
+                    return ItemStack.EMPTY;
             }
-            else if(!this.mergeItemStack(inputStack, 37, this.inventorySlots.size(), false))
-                return ItemStack.EMPTY;
         }
 
         if(inputStack.isEmpty())
@@ -225,45 +181,8 @@ public class ContainerAssemblyTable extends Container
         return flag;
     }
 
-    public void onGUIResize()
-    {
-        ItemStack item = mainInventory.getStackInSlot(0);
-        if(item != null && item.getItem() instanceof IAssemblableButtons && buttonList != null && guiLeft != -1 && guiTop != -1)
-        {
-            ((IAssemblableButtons) item.getItem()).initButtons(buttonList, this, guiLeft, guiTop);
-        }
-    }
-
-    private void setupNewContainerAndGUI(ItemStack item)
-    {
-        IAssemblable constructGUI = (IAssemblable) item.getItem();
-        componentInventory = new InventoryAssemblyTableComponents(1, item);
-        Slot[] slots = constructGUI.getContainerSlots(componentInventory);
-        for(Slot slot : slots)
-        {
-            this.addSlotToContainer(slot);
-        }
-
-        if(item.getItem() instanceof IAssemblableButtons && buttonList != null && guiLeft != -1 && guiTop != -1)
-        {
-            IAssemblableButtons buttonGUI = (IAssemblableButtons) item.getItem();
-
-            buttonGUI.initButtons(buttonList, this, guiLeft, guiTop);
-        }
-    }
-
-    private void cleanContainerAndGUI()
-    {
-        componentInventory = null;
-        while (this.inventorySlots.size() > 37)
-        {
-            this.inventorySlots.remove(this.inventorySlots.size() - 1); //Remove the slot from container.
-            this.inventoryItemStacks.remove(this.inventoryItemStacks.size() - 1); //Remove the itemstack from container.
-        }
-
-        if(buttonList != null)
-        {
-            buttonList.clear();
-        }
+    @Override
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return true;
     }
 }

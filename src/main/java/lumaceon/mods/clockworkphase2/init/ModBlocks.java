@@ -182,7 +182,7 @@ public class ModBlocks
         celestialCompass = new BlockCelestialCompass(Material.GLASS, "celestial_compass");
         register(celestialCompass);
 
-        celestialCompassSB = new BlockCelestialCompass(Material.GLASS, "celestial_compass_sb");
+        celestialCompassSB = new BlockCelestialCompassSB(Material.GLASS, "celestial_compass_sb");
         register(celestialCompassSB);
         //MISC
 
@@ -231,7 +231,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileTemporalRelay.class, temporalRelay.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileArmillaryRing.class, armillaryRing.getUnlocalizedName());
-        //GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
 
         //CLOCKWORK NETWORK
         /*GameRegistry.registerTileEntity(TileClockworkNetworkConnector.class, clockworkNetworkConnector.getUnlocalizedName());

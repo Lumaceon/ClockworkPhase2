@@ -10,6 +10,7 @@ import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandle
 import lumaceon.mods.clockworkphase2.capabilities.entitycontainer.IEntityContainer;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.IStasis;
 import lumaceon.mods.clockworkphase2.capabilities.stasis.stasisitem.IStasisItemHandler;
+import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.entity.EntityTemporalFishHook;
 import lumaceon.mods.clockworkphase2.init.ModBiomes;
@@ -25,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -42,6 +42,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class PlayerHandler
 {
+    @CapabilityInject(ITemporalToolbeltHandler.class)
+    public static final Capability<ITemporalToolbeltHandler> TEMPORAL_TOOLBELT = null;
+
     @CapabilityInject(IStasis.class)
     public static final Capability<IStasis> STASIS_CAPABILITY = null;
 
@@ -56,6 +59,29 @@ public class PlayerHandler
 
     @CapabilityInject(IEntityContainer.class)
     public static final Capability<IEntityContainer> ENTITY_CONTAINER = null;
+
+    /**
+     * Copies data to the new player when respawning after death.
+     */
+    @SubscribeEvent
+    public void onPlayerRespawning(PlayerEvent.Clone event)
+    {
+        if(event.isWasDeath())
+        {
+            EntityPlayer original = event.getOriginal();
+            EntityPlayer newPlayer = event.getEntityPlayer();
+            ITemporalToolbeltHandler temporalToolbeltHandler = original.getCapability(TEMPORAL_TOOLBELT, EnumFacing.DOWN);
+            ITemporalToolbeltHandler newTemporalToolbeltHandler = newPlayer.getCapability(TEMPORAL_TOOLBELT, EnumFacing.DOWN);
+            if(temporalToolbeltHandler != null && newTemporalToolbeltHandler != null)
+            {
+                newTemporalToolbeltHandler.setRowCount(temporalToolbeltHandler.getRowCount());
+                for(int i = 0; i < temporalToolbeltHandler.getRowCount(); i++)
+                {
+                    newTemporalToolbeltHandler.setRow(i, temporalToolbeltHandler.getRow(i));
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onPlayerUpdateTick(TickEvent.PlayerTickEvent event)

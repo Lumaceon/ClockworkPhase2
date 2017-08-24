@@ -341,43 +341,85 @@ public class ModItems
         gizmoLife = new ItemClockworkPhase(64, 100, "gizmo_life");
         register(gizmoLife);
 
-        gizmoLifeRelic = new ItemClockworkPhase(64, 100, "gizmo_life_relic");
+        gizmoLifeRelic = new ItemRelic(64, 100, "gizmo_life_relic") {
+            ItemStack result = new ItemStack(gizmoLife);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoLifeRelic);
 
         gizmoLight = new ItemClockworkPhase(64, 100, "gizmo_light");
         register(gizmoLight);
 
-        gizmoLightRelic = new ItemClockworkPhase(64, 100, "gizmo_light_relic");
+        gizmoLightRelic = new ItemRelic(64, 100, "gizmo_light_relic") {
+            ItemStack result = new ItemStack(gizmoLight);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoLightRelic);
 
         gizmoWater = new ItemClockworkPhase(64, 100, "gizmo_water");
         register(gizmoWater);
 
-        gizmoWaterRelic = new ItemClockworkPhase(64, 100, "gizmo_water_relic");
+        gizmoWaterRelic = new ItemRelic(64, 100, "gizmo_water_relic") {
+            ItemStack result = new ItemStack(gizmoWater);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoWaterRelic);
 
         gizmoEarth = new ItemClockworkPhase(64, 100, "gizmo_earth");
         register(gizmoEarth);
 
-        gizmoEarthRelic = new ItemClockworkPhase(64, 100, "gizmo_earth_relic");
+        gizmoEarthRelic = new ItemRelic(64, 100, "gizmo_earth_relic") {
+            ItemStack result = new ItemStack(gizmoEarth);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoEarthRelic);
 
         gizmoAir = new ItemClockworkPhase(64, 100, "gizmo_air");
         register(gizmoAir);
 
-        gizmoAirRelic = new ItemClockworkPhase(64, 100, "gizmo_air_relic");
+        gizmoAirRelic = new ItemRelic(64, 100, "gizmo_air_relic") {
+            ItemStack result = new ItemStack(gizmoAir);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoAirRelic);
 
         gizmoFire = new ItemClockworkPhase(64, 100, "gizmo_fire");
         register(gizmoFire);
 
-        gizmoFireRelic = new ItemClockworkPhase(64, 100, "gizmo_fire_relic");
+        gizmoFireRelic = new ItemRelic(64, 100, "gizmo_fire_relic") {
+            ItemStack result = new ItemStack(gizmoFire);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoFireRelic);
 
         gizmoAura = new ItemClockworkPhase(64, 100, "gizmo_aura");
         register(gizmoAura);
 
-        gizmoAuraRelic = new ItemClockworkPhase(64, 100, "gizmo_aura_relic");
+        gizmoAuraRelic = new ItemRelic(64, 100, "gizmo_aura_relic") {
+            ItemStack result = new ItemStack(gizmoAura);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
         register(gizmoAuraRelic);
 
 

@@ -108,7 +108,7 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
         IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
         if(blacklist != null)
         {
-            blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.bugSwatter));
+            //blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.bugSwatter));
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.armillaryRing));
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.armillaryRingFrame));
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.armillaryRingFrameBottom));

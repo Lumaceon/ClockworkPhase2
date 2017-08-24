@@ -19,10 +19,9 @@ public class InventoryAssemblyTableComponents implements IInventory
     static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
 
     private IItemHandler itemHandler;
-    private ContainerAssemblyTable eventHandler;
     private int stackLimit;
 
-    public InventoryAssemblyTableComponents(ContainerAssemblyTable eventHandler, int stackLimit, ItemStack construct)
+    public InventoryAssemblyTableComponents(int stackLimit, ItemStack construct)
     {
         if(construct.isEmpty())
         {
@@ -38,7 +37,6 @@ public class InventoryAssemblyTableComponents implements IInventory
             }
         }
 
-        this.eventHandler = eventHandler;
         this.stackLimit = stackLimit;
     }
 

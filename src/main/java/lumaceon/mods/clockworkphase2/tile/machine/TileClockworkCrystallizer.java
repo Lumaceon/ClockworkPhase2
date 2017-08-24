@@ -26,13 +26,13 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
 
         this.slots = new Slot[]
         {
-                new Slot(this, 0, 30, 16),
-                new Slot(this, 1, 48, 16),
-                new Slot(this, 2, 30, 34),
-                new Slot(this, 3, 48, 34),
-                new Slot(this, 4, 30, 52),
-                new Slot(this, 5, 48, 52),
-                new SlotFluidContainer(this, 6, 132, 60),
+                new SlotFluidContainer(this, 0, 132, 60),
+                new Slot(this, 1, 30, 16),
+                new Slot(this, 2, 48, 16),
+                new Slot(this, 3, 30, 34),
+                new Slot(this, 4, 48, 34),
+                new Slot(this, 5, 30, 52),
+                new Slot(this, 6, 48, 52),
                 new SlotNever(this, 7, 112, 34)
         };
 
@@ -45,7 +45,7 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
     @Override
     public void update()
     {
-        ItemStack stack = inventory.get(6);
+        ItemStack stack = inventory.get(0);
         if(!stack.isEmpty() && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, EnumFacing.DOWN))
         {
             IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack);
@@ -58,7 +58,7 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
                 if(amountDrained != null && amountDrained.amount > 0)
                 {
                     fluidTanks[0].fillInternal(amountDrained, true);
-                    inventory.set(6, fh.getContainer());
+                    inventory.set(0, fh.getContainer());
                 }
             }
         }
@@ -69,9 +69,9 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
     public boolean canWork()
     {
         NonNullList<ItemStack> craftingInventory = NonNullList.withSize(6, ItemStack.EMPTY);
-        for(int i = 0; i < 6; i++)
+        for(int i = 1; i < 7; i++)
         {
-            craftingInventory.set(i, inventory.get(i));
+            craftingInventory.set(i-1, inventory.get(i-1));
         }
 
         FluidStack fluid = fluidTanks[0].getFluid();
@@ -91,9 +91,9 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
     public void completeAction()
     {
         NonNullList<ItemStack> craftingInventory = NonNullList.withSize(6, ItemStack.EMPTY);
-        for(int i = 0; i < 6; i++)
+        for(int i = 1; i < 7; i++)
         {
-            craftingInventory.set(i, inventory.get(i));
+            craftingInventory.set(i-1, inventory.get(i-1));
         }
 
         FluidStack fluid = fluidTanks[0].getFluid();
@@ -112,7 +112,7 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
         for(ItemStack payment : unpaidItems)
         {
             int requiredPayment = payment.getCount();
-            for(int i = 0; i < 6 && requiredPayment > 0; i++)
+            for(int i = 1; i < 7 && requiredPayment > 0; i++)
             {
                 ItemStack is = inventory.get(i);
                 if(!is.isEmpty() && OreDictionary.itemMatches(payment, is, false))

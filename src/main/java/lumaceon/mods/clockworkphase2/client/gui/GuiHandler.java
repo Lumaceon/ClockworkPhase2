@@ -7,10 +7,7 @@ import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkCrusher;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkFurnace;
 import lumaceon.mods.clockworkphase2.client.gui.machine.lifeform.GuiLifeformConstructor;
-import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkAlloyFurnace;
-import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkCrusher;
-import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkCrystallizer;
-import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkFurnace;
+import lumaceon.mods.clockworkphase2.inventory.*;
 import lumaceon.mods.clockworkphase2.inventory.lifeform.ContainerLifeformConstructor;
 import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkAlloyFurnace;
@@ -22,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -72,6 +70,14 @@ public class GuiHandler implements IGuiHandler
             TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
             if(te != null && te instanceof TileLifeformConstructor)
                 return new ContainerLifeformConstructor(player, (TileLifeformConstructor) te);
+        }
+        else if(ID == GUIs.TEMPORAL_FISHING_ROD.ordinal())
+        {
+            ItemStack stackInHand = player.getHeldItem(EnumHand.MAIN_HAND);
+            if(!stackInHand.isEmpty() && stackInHand.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
+            {
+                return new ContainerTemporalFishingRod(player, stackInHand);
+            }
         }
         return null;
     }
@@ -130,6 +136,14 @@ public class GuiHandler implements IGuiHandler
             TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
             if(te != null && te instanceof TileLifeformConstructor)
                 return new GuiLifeformConstructor(player, (TileLifeformConstructor) te);
+        }
+        else if(ID == GUIs.TEMPORAL_FISHING_ROD.ordinal())
+        {
+            ItemStack stackInHand = player.getHeldItem(EnumHand.MAIN_HAND);
+            if(!stackInHand.isEmpty() && stackInHand.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN))
+            {
+                return new GuiTemporalFishingRod(player, stackInHand);
+            }
         }
         return null;
     }

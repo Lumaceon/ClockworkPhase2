@@ -289,8 +289,8 @@ public class GuiClockworkMachine extends GuiContainer
 
                 //CENTER
                 x = lastClicked.left;
-                y = lastClicked.top;
-                if(isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+                y = lastClicked.top + (lastClicked.height / 2) - 8;
+                if(isPointInRegion(x, y, 16, 16, mouseX, mouseY))
                 {
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GuiHelper.drawTexturedModalRect(x, y, 16, 0, 16, 16, 64, zLevel);
@@ -304,8 +304,8 @@ public class GuiClockworkMachine extends GuiContainer
 
                 //UP
                 x = lastClicked.left;
-                y = (int) (lastClicked.top - (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+                y = (int) ((lastClicked.top + (lastClicked.height / 2) - 8) - 18 * ((float) timeSinceLastConfigClick / (float) tweenTicks));
+                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
                 {
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GuiHelper.drawTexturedModalRect(x, y, 16, 32, 16, 16, 64, zLevel);
@@ -319,8 +319,8 @@ public class GuiClockworkMachine extends GuiContainer
 
                 //DOWN
                 x = lastClicked.left;
-                y = (int) (lastClicked.top + (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+                y = (int) ((lastClicked.top + (lastClicked.height / 2) - 8) + 18 * ((float) timeSinceLastConfigClick / (float) tweenTicks));
+                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
                 {
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GuiHelper.drawTexturedModalRect(x, y, 0, 16, 16, 16, 64, zLevel);
@@ -334,8 +334,8 @@ public class GuiClockworkMachine extends GuiContainer
 
                 //RIGHT
                 x = (int) (lastClicked.left + (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-                y = lastClicked.top;
-                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+                y = lastClicked.top + (lastClicked.height / 2) - 8;
+                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
                 {
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GuiHelper.drawTexturedModalRect(x, y, 0, 32, 16, 16, 64, zLevel);
@@ -349,8 +349,8 @@ public class GuiClockworkMachine extends GuiContainer
 
                 //LEFT
                 x = (int) (lastClicked.left - (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-                y = lastClicked.top;
-                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+                y = lastClicked.top + (lastClicked.height / 2) - 8;
+                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
                 {
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GuiHelper.drawTexturedModalRect(x, y, 16, 16, 16, 16, 64, zLevel);
@@ -364,8 +364,8 @@ public class GuiClockworkMachine extends GuiContainer
 
                 //BACK
                 x = (int) (lastClicked.left - (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-                y = (int) (lastClicked.top - (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+                y = (int) ((lastClicked.top + (lastClicked.height / 2) - 8) - 18 * ((float) timeSinceLastConfigClick / (float) tweenTicks));
+                if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
                 {
                     GlStateManager.color(1.0F, 1.0F, 1.0F);
                     GuiHelper.drawTexturedModalRect(x, y, 0, 0, 16, 16, 64, zLevel);
@@ -441,8 +441,8 @@ public class GuiClockworkMachine extends GuiContainer
 
             //CENTER
             x = lastClicked.left;
-            y = lastClicked.top;
-            if(isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+            y = lastClicked.top + (lastClicked.height / 2) - 8;
+            if(isPointInRegion(x, y, 16, 16, mouseX, mouseY))
             {
                 for(int i = 0; i < 6; i++)
                 {
@@ -452,8 +452,8 @@ public class GuiClockworkMachine extends GuiContainer
 
             //UP
             x = lastClicked.left;
-            y = (int) (lastClicked.top - (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+            y = (int) ((lastClicked.top + (lastClicked.height / 2) - 8) - 18 * ((float) timeSinceLastConfigClick / (float) tweenTicks));
+            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
             {
                 direction = EnumFacing.UP;
                 lastClicked.onIOChange(direction, !lastClicked.isActiveOnSide(direction));
@@ -461,8 +461,8 @@ public class GuiClockworkMachine extends GuiContainer
 
             //DOWN
             x = lastClicked.left;
-            y = (int) (lastClicked.top + (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+            y = (int) ((lastClicked.top + (lastClicked.height / 2) - 8) + 18 * ((float) timeSinceLastConfigClick / (float) tweenTicks));
+            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
             {
                 direction = EnumFacing.DOWN;
                 lastClicked.onIOChange(direction, !lastClicked.isActiveOnSide(direction));
@@ -470,8 +470,8 @@ public class GuiClockworkMachine extends GuiContainer
 
             //RIGHT
             x = (int) (lastClicked.left + (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-            y = lastClicked.top;
-            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+            y = lastClicked.top + (lastClicked.height / 2) - 8;
+            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
             {
                 direction = EnumFacing.EAST;
                 lastClicked.onIOChange(direction, !lastClicked.isActiveOnSide(direction));
@@ -479,8 +479,8 @@ public class GuiClockworkMachine extends GuiContainer
 
             //LEFT
             x = (int) (lastClicked.left - (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-            y = lastClicked.top;
-            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+            y = lastClicked.top + (lastClicked.height / 2) - 8;
+            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
             {
                 direction = EnumFacing.WEST;
                 lastClicked.onIOChange(direction, !lastClicked.isActiveOnSide(direction));
@@ -488,8 +488,8 @@ public class GuiClockworkMachine extends GuiContainer
 
             //BACK
             x = (int) (lastClicked.left - (lastClicked.width + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-            y = (int) (lastClicked.top - (lastClicked.height + 2) * ((float) timeSinceLastConfigClick / (float) tweenTicks));
-            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, lastClicked.width, lastClicked.height, mouseX, mouseY))
+            y = (int) ((lastClicked.top + (lastClicked.height / 2) - 8) - 18 * ((float) timeSinceLastConfigClick / (float) tweenTicks));
+            if(timeSinceLastConfigClick >= tweenTicks && isPointInRegion(x, y, 16, 16, mouseX, mouseY))
             {
                 direction = EnumFacing.SOUTH;
                 lastClicked.onIOChange(direction, !lastClicked.isActiveOnSide(direction));

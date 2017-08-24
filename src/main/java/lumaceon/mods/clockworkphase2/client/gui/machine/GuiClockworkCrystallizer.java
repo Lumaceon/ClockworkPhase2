@@ -77,13 +77,13 @@ public class GuiClockworkCrystallizer extends GuiClockworkMachine
                 },
                 new IOConfiguration[]
                 {
-                        new IOConfigurationSlot(te.slots[0], te, INPUT_TT1),
-                        new IOConfigurationSlot(te.slots[1], te, INPUT_TT2),
-                        new IOConfigurationSlot(te.slots[2], te, INPUT_TT3),
-                        new IOConfigurationSlot(te.slots[3], te, INPUT_TT4),
-                        new IOConfigurationSlot(te.slots[4], te, INPUT_TT5),
-                        new IOConfigurationSlot(te.slots[5], te, INPUT_TT6),
-                        new IOConfigurationSlot(te.slots[6], te, BUCKET_TT),
+                        new IOConfigurationSlot(te.slots[0], te, BUCKET_TT),
+                        new IOConfigurationSlot(te.slots[1], te, INPUT_TT1),
+                        new IOConfigurationSlot(te.slots[2], te, INPUT_TT2),
+                        new IOConfigurationSlot(te.slots[3], te, INPUT_TT3),
+                        new IOConfigurationSlot(te.slots[4], te, INPUT_TT4),
+                        new IOConfigurationSlot(te.slots[5], te, INPUT_TT5),
+                        new IOConfigurationSlot(te.slots[6], te, INPUT_TT6),
                         new IOConfigurationTank(132, 6, 16, 50, 0, te, TANK_TT),
                         new IOConfigurationSlot(te.slots[7], te, OUTPUT_TT)
                 }

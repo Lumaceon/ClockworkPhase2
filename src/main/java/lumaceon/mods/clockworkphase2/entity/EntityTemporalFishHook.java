@@ -1,6 +1,8 @@
 package lumaceon.mods.clockworkphase2.entity;
 
+import lumaceon.mods.clockworkphase2.api.item.IFishingRelic;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
+import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.recipe.ArmillaryFishingRecipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
@@ -22,6 +24,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
@@ -30,6 +34,8 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -559,7 +565,34 @@ public class EntityTemporalFishHook extends EntityFishHook
                 if(armillaryCatch)
                 {
                     result = new ArrayList<>();
-                    result.add(ArmillaryFishingRecipes.INSTANCE.getResultForFishing(world, getPosition()).copy());
+                    ItemStack relicOverride = ItemStack.EMPTY;
+
+                    ItemStack stackInHand = angler.getHeldItem(EnumHand.MAIN_HAND);
+                    if(!stackInHand.isEmpty() && stackInHand.getItem().equals(ModItems.temporalFishingRod))
+                    {
+                        IItemHandler itemHandler = stackInHand.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                        if(itemHandler != null)
+                        {
+                            ItemStack relicStack = itemHandler.extractItem(0, 1, true);
+                            if(!relicStack.isEmpty() && relicStack.getItem() instanceof IFishingRelic)
+                            {
+                                relicOverride = ((IFishingRelic) relicStack.getItem()).getResultItem(relicStack);
+                                if(!relicOverride.isEmpty())
+                                {
+                                    itemHandler.extractItem(0, 1, false);
+                                }
+                            }
+                        }
+                    }
+
+                    if(!relicOverride.isEmpty())
+                    {
+                        result.add(relicOverride.copy());
+                    }
+                    else
+                    {
+                        result.add(ArmillaryFishingRecipes.INSTANCE.getResultForFishing(world, getPosition()).copy());
+                    }
                 }
                 else
                 {

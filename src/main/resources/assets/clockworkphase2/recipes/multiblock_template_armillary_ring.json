@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "BmB",
+        "dTd",
+        "BmB"
+    ],
+    "key": {
+        "T": {
+            "type": "forge:ore_dict",
+            "ore": "blockTemporal"
+        },
+        "d": {
+            "item": "clockworkphase2:temporal_drive"
+        },
+        "B": {
+            "type": "forge:ore_dict",
+            "ore": "blockBrass"
+        },
+        "m": {
+            "type": "forge:ore_dict",
+            "ore": "gemMoonstone"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:multiblock_template_armillary_ring"
+    }
+}

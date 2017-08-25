@@ -34,7 +34,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
             return false;
 
         itemstack = itemstack.copy();
-        return this.exportItem(itemstack, EXPORT_SLOTS, true) == null;
+        return this.exportItem(itemstack, EXPORT_SLOTS, true).isEmpty();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
     {
         ItemStack itemstack;
         AlloyRecipes.AlloyRecipe recipe = AlloyRecipes.instance.getRecipe(this.inventory.get(0), this.inventory.get(1));
-        if(recipe == null || recipe.output == null)
+        if(recipe == null)
             return;
 
         //Recipes will always retain the same order but this may not be the way the player places the items.
@@ -81,7 +81,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
         ItemStack result;
         AlloyRecipes.AlloyRecipe recipe =  AlloyRecipes.instance.getRecipe(firstSmelt, secondSmelt);
 
-        if(recipe == null || recipe.output == null)
+        if(recipe == null)
             return 0;
 
         //Recipes will always retain the same order but this may not be the way the player places the items.
@@ -122,8 +122,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
 
         int remainingStack = 0;
         for(ItemStack s : outputStacks)
-            if(s != null)
-                remainingStack += s.getCount();
+            remainingStack += s.getCount();
 
         int completeActions = (int) Math.ceil((double) (trueStackSize - remainingStack) / (double) result.getCount());
 

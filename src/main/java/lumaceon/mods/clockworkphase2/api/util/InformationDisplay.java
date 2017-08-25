@@ -33,13 +33,13 @@ public class InformationDisplay
             int quality = clockworkComponent.getQuality(component);
             int speed = clockworkComponent.getSpeed(component);
             int harvestLevel = clockworkComponent.getTier(component);
-            String color = getColorFromComponentStat(quality);
 
-            if(quality > 0)
-                list.add(Colors.WHITE + "Quality: " + color + quality);
+            String color = getColorFromComponentStat(quality);
+            list.add(Colors.WHITE + "Quality: " + color + quality);
+
             color = getColorFromComponentStat(speed);
-            if(speed > 0)
-                list.add(Colors.WHITE + "Speed: " + color + speed);
+            list.add(Colors.WHITE + "Speed: " + color + speed);
+
             list.add(Colors.WHITE + "Harvest Level: " + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
         }
     }
@@ -100,7 +100,7 @@ public class InformationDisplay
 
         list.add(Colors.WHITE + "Harvest Level: " + Colors.GOLD + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
         list.add(Colors.WHITE + "Mining Speed: " + Colors.GOLD + speed / 25);
-        list.add(Colors.WHITE + "Tension Per Block: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(defaultTensionPerBlock, quality, speed));
+        list.add(Colors.WHITE + "Energy Per Block: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(defaultTensionPerBlock, quality, speed));
     }
 
     public static void addMainspringInformation(ItemStack is, List list)

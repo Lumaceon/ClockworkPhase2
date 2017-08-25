@@ -6,6 +6,6 @@ import org.lwjgl.input.Keyboard;
 
 public class Keybindings
 {
-    public static KeyBinding activate = new KeyBinding(KeyLib.ACTIVATE, Keyboard.KEY_R, KeyLib.CATEGORY);
+    public static KeyBinding activate = new KeyBinding(KeyLib.ACTIVATE, Keyboard.KEY_F, KeyLib.CATEGORY);
     public static KeyBinding toolbelt = new KeyBinding(KeyLib.TOOLBELT, Keyboard.KEY_LCONTROL, KeyLib.CATEGORY);
 }

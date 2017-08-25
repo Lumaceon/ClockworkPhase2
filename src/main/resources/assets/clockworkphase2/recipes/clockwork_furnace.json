@@ -1,0 +1,24 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "bgb",
+        "bfb",
+        "bgb"
+    ],
+    "key": {
+        "f": {
+            "item": "minecraft:furnace"
+        },
+        "b": {
+            "type": "forge:ore_dict",
+            "ore": "ingotBrass"
+        },
+        "g": {
+            "type": "forge:ore_dict",
+            "ore": "gearIron"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:clockwork_furnace"
+    }
+}

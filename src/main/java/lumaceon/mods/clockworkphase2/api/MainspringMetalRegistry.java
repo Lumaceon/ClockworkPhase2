@@ -68,9 +68,10 @@ public class MainspringMetalRegistry
         //If you wish to change these, do so during your mod's FMLInitializationEvent phase.
         public static int tin = 80;
         public static int aluminium = 90;
-        public static int gold = 100;
+        public static int gold = 80;
         public static int iron = 120;
         public static int copper = 120;
+        public static int zinc = 80;
         public static int nickel = 130; //Commonly known as "Ferrous" (Thermal Expansion).
         public static int lead = 150;
         public static int silver = 160;
@@ -98,6 +99,8 @@ public class MainspringMetalRegistry
             MainspringMetalRegistry.registerMetal("blockIron", iron * 9);
             MainspringMetalRegistry.registerMetal("ingotCopper", copper);
             MainspringMetalRegistry.registerMetal("blockCopper", copper * 9);
+            MainspringMetalRegistry.registerMetal("ingotZinc", zinc);
+            MainspringMetalRegistry.registerMetal("blockZinc", zinc * 9);
             MainspringMetalRegistry.registerMetal("ingotNickel", nickel);
             MainspringMetalRegistry.registerMetal("blockNickel", nickel * 9);
             MainspringMetalRegistry.registerMetal("ingotLead", lead);

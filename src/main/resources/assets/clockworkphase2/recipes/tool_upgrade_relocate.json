@@ -1,0 +1,23 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "beb",
+        "ede",
+        "beb"
+    ],
+    "key": {
+        "e": {
+            "item": "minecraft:ender_pearl"
+        },
+        "d": {
+            "item": "clockworkphase2:temporal_drive"
+        },
+        "b": {
+            "type": "forge:ore_dict",
+            "ore": "ingotBrass"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:tool_upgrade_relocate"
+    }
+}

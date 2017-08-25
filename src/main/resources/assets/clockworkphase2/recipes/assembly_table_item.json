@@ -1,0 +1,25 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "www",
+        "ppp",
+        "s s"
+    ],
+    "key": {
+        "w": {
+            "item": "minecraft:wool",
+            "data": 32767
+        },
+        "p": {
+            "type": "forge:ore_dict",
+            "ore": "plankWood"
+        },
+        "s": {
+            "type": "forge:ore_dict",
+            "ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:assembly_table_item"
+    }
+}

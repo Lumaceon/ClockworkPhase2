@@ -1,0 +1,29 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "bgb",
+        "GwG",
+        "bgb"
+    ],
+    "key": {
+        "G": {
+            "type": "forge:ore_dict",
+            "ore": "blockGlass"
+        },
+        "b": {
+            "type": "forge:ore_dict",
+            "ore": "ingotBrass"
+        },
+        "g": {
+            "type": "forge:ore_dict",
+            "ore": "gearIron"
+        },
+        "w": {
+            "item": "minecraft:bucket"
+        }
+
+    },
+    "result": {
+        "item": "clockworkphase2:clockwork_crystallizer"
+    }
+}

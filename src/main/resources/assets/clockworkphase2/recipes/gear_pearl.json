@@ -1,0 +1,20 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " m ",
+        "msm",
+        " m "
+    ],
+    "key": {
+        "m": {
+            "item": "clockworkphase2:pearl"
+        },
+        "s": {
+            "type": "forge:ore_dict",
+            "ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:gear_pearl"
+    }
+}

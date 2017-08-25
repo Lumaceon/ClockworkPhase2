@@ -57,7 +57,7 @@ public class BlockMultiblockAssembler extends BlockClockworkPhase implements ITi
 
             boolean consumeItem = false;
             if(itemInHand.getItem().equals(Item.getItemFromBlock(ModBlocks.constructionBlock)))
-                consumeItem = multiblockAssembler.onRightClickWithConstructionBlock();
+                consumeItem = multiblockAssembler.onRightClickWithConstructionBlock(player);
 
             if(itemInHand.getItem() instanceof IMultiblockTemplateItem)
                 consumeItem = multiblockAssembler.onRightClickWithMultiblockTemplate(itemInHand);
@@ -70,7 +70,7 @@ public class BlockMultiblockAssembler extends BlockClockworkPhase implements ITi
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     @Override

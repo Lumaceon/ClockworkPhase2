@@ -1,0 +1,24 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " rt",
+        "rdr",
+        "tr "
+    ],
+    "key": {
+        "t": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTemporal"
+        },
+        "r": {
+            "type": "forge:ore_dict",
+            "ore": "dustRedstone"
+        },
+        "d": {
+            "item": "clockworkphase2:temporal_drive"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:machine_upgrade_temporal"
+    }
+}

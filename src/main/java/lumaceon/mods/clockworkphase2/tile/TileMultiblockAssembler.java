@@ -5,12 +5,14 @@ import lumaceon.mods.clockworkphase2.api.item.IMultiblockTemplateItem;
 import lumaceon.mods.clockworkphase2.block.BlockMultiblockAssembler;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
+import lumaceon.mods.clockworkphase2.util.Colors;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentString;
 
 public class TileMultiblockAssembler extends TileMod
 {
@@ -52,7 +54,7 @@ public class TileMultiblockAssembler extends TileMod
     /**
      * @return True if a block was placed, false if it failed.
      */
-    public boolean onRightClickWithConstructionBlock()
+    public boolean onRightClickWithConstructionBlock(EntityPlayer player)
     {
         if(template == null)
         {
@@ -81,6 +83,11 @@ public class TileMultiblockAssembler extends TileMod
                         {
                             setNewBlock(data);
                             return true;
+                        }
+
+                        if(world != null && !world.isRemote)
+                        {
+                            player.sendMessage(new TextComponentString(Colors.RED + "Block in the way: " + data.getPosition().toString()));
                         }
                         return false; //Here, a block exists, but it's in the way, so we can't put anything down.
                     }

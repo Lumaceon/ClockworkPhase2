@@ -1,0 +1,23 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "  t",
+        " ts",
+        "t d"
+    ],
+    "key": {
+        "d": {
+            "item": "clockworkphase2:temporal_drive"
+        },
+        "s": {
+            "item": "minecraft:string"
+        },
+        "t": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTemporal"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:temporal_fishing_rod"
+    }
+}

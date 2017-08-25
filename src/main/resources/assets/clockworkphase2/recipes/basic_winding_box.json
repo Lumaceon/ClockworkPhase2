@@ -1,0 +1,21 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "gGg",
+        "GgG",
+        "gGg"
+    ],
+    "key": {
+        "G": {
+            "type": "forge:ore_dict",
+            "ore": "gearStone"
+        },
+        "g": {
+            "type": "forge:ore_dict",
+            "ore": "gearWood"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:basic_winding_box"
+    }
+}

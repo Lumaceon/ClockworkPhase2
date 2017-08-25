@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.handler;
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.capabilities.coordinate.ICoordinateHandler;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
+import lumaceon.mods.clockworkphase2.init.ModBiomes;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeFurnace;
 import lumaceon.mods.clockworkphase2.util.LogHelper;
 import lumaceon.mods.clockworkphase2.init.ModItems;
@@ -220,7 +221,7 @@ public class WorldHandler
                 BiomeProvider biomeprovider = world.provider.getBiomeProvider();
                 List<Biome> list = biomeprovider.getBiomesToSpawnIn();
                 Random random = new Random(world.getSeed());
-                BlockPos blockpos = biomeprovider.findBiomePosition(700, 0, 256, list, random);
+                BlockPos blockpos = biomeprovider.findBiomePosition(700, 700, 256, list, random);
                 int i = 8;
                 int j = world.provider.getAverageGroundLevel();
                 int k = 8;
@@ -237,7 +238,7 @@ public class WorldHandler
 
                 int l = 0;
 
-                while (!world.provider.canCoordinateBeSpawn(i, k))
+                while (!world.provider.canCoordinateBeSpawn(i, k) || world.getBiome(new BlockPos(i, 0, k)) == ModBiomes.temporalFallout)
                 {
                     i += random.nextInt(64) - random.nextInt(64);
                     k += random.nextInt(64) - random.nextInt(64);

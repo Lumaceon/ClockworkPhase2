@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.handler.ChunkLoadingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -32,6 +33,10 @@ public class ServerProxy extends CommonProxy
 
     @Override
     public World getClientWorld() { return null; }
+
+    @Override
+    public EntityPlayer getClientPlayer() { return null; }
+
     @Override
     public void registerTESR() {}
     @Override

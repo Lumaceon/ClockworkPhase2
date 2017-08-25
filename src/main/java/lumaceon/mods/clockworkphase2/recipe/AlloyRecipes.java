@@ -33,7 +33,7 @@ public class AlloyRecipes
      */
     public void addAlloyRecipe(RecipeComponent firstComponent, RecipeComponent secondComponent, ItemStack output)
     {
-        if(output == null)
+        if(output == null || output.isEmpty())
             return;
         else if(!firstComponent.metalExists() || !secondComponent.metalExists())
             return;
@@ -65,7 +65,7 @@ public class AlloyRecipes
 
         public boolean matchesRecipe(ItemStack firstSlot, ItemStack secondSlot)
         {
-            if(firstSlot == null || secondSlot == null || first == null || second == null)
+            if(firstSlot.isEmpty() || secondSlot.isEmpty() || first == null || second == null)
                 return false;
 
             if((first.itemMatches(firstSlot) || first.itemMatches(secondSlot)) && (second.itemMatches(firstSlot) || second.itemMatches(secondSlot)))
@@ -75,9 +75,6 @@ public class AlloyRecipes
 
         public boolean sameRecipe(AlloyRecipe anotherRecipe)
         {
-            if(anotherRecipe.output == null)
-                return false;
-
             if((this.first.itemMatches(anotherRecipe.first.item) || this.first.itemMatches(anotherRecipe.second.item))
             && (this.second.itemMatches(anotherRecipe.first.item) || this.second.itemMatches(anotherRecipe.second.item)))
                 return true;
@@ -100,7 +97,7 @@ public class AlloyRecipes
          */
         private boolean itemMatches(ItemStack item)
         {
-            if(item == null || item.getCount() < ratio)
+            if(item.isEmpty() || item.getCount() < ratio)
                 return false;
 
             return this.item != null && OreDictionary.itemMatches(this.item, item, false);

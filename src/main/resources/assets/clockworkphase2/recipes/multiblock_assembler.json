@@ -1,0 +1,25 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "bib",
+        "iGi",
+        "bib"
+    ],
+    "key": {
+        "G": {
+            "type": "forge:ore_dict",
+            "ore": "gearIron"
+        },
+        "b": {
+            "type": "forge:ore_dict",
+            "ore": "ingotBrass"
+        },
+        "i": {
+            "type": "forge:ore_dict",
+            "ore": "ingotIron"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:multiblock_assembler"
+    }
+}

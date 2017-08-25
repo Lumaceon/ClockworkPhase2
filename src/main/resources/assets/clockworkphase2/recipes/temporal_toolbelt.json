@@ -1,0 +1,27 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "lll",
+        "dMd",
+        "ltl"
+    ],
+    "key": {
+        "M": {
+            "item": "clockworkphase2:split_timeline_matrix"
+        },
+        "d": {
+            "item": "clockworkphase2:temporal_drive"
+        },
+        "l": {
+            "item": "minecraft:leather"
+        },
+        "t": {
+            "type": "forge:ore_dict",
+            "ore": "ingotTemporal"
+        }
+
+    },
+    "result": {
+        "item": "clockworkphase2:temporal_toolbelt"
+    }
+}

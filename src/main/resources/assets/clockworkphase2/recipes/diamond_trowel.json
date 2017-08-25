@@ -1,0 +1,21 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "  d",
+        " s ",
+        "   "
+    ],
+    "key": {
+        "d": {
+            "type": "forge:ore_dict",
+            "ore": "gemDiamond"
+        },
+        "s": {
+            "type": "forge:ore_dict",
+            "ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:diamond_trowel"
+    }
+}

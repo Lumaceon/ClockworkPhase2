@@ -18,7 +18,7 @@ public class AlloyFurnaceRecipeWrapper implements IRecipeWrapper
 
     public AlloyFurnaceRecipeWrapper(AlloyRecipes.AlloyRecipe recipe)
     {
-        inputStacks = new ArrayList<ItemStack>();
+        inputStacks = new ArrayList<>();
         inputStacks.add(recipe.first.item);
         inputStacks.add(recipe.second.item);
         output = recipe.output;

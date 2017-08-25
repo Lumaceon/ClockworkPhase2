@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.proxy;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,6 +19,7 @@ public interface IProxy
     public void preInit();
     public void init();
     public World getClientWorld();
+    public EntityPlayer getClientPlayer();
     public void registerTESR();
     public void registerBlockModel(Block block, String unlocalizedName);
     public void registerItemModel(Item item, String unlocalizedName);

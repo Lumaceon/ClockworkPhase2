@@ -63,6 +63,10 @@ public class ModItems
     public static Item gearCopper;
     public static Item gearZinc;
     public static Item gearBrass;
+    public static Item gearChrysoberyl;
+    public static Item gearPearl;
+    public static Item gearSpinel;
+    public static Item gearMoonstone;
     //public static Item gearParadoxium = new Item("paradoxium_gear");
     public static Item gearCreative;
     //TOOLS
@@ -77,7 +81,6 @@ public class ModItems
     public static Item aquaticScepter;
     public static Item trowelIron;
     public static Item trowelDiamond;
-    public static Item alloyHammer;
     //LIFE MODIFICATION
     public static Item mobCapsule;
     //TOOL UPGRADES
@@ -98,6 +101,7 @@ public class ModItems
     public static Item bugSwatter;
     public static Item moonFlowerSeeds;
     public static Item assemblyTable;
+    //CRAFTING ITEMS
     public static Item gizmoLife;
     public static Item gizmoLifeRelic;
     public static Item gizmoLight;
@@ -112,6 +116,9 @@ public class ModItems
     public static Item gizmoFireRelic;
     public static Item gizmoAura;
     public static Item gizmoAuraRelic;
+    public static Item splitTimelineMatrix;
+    public static Item splitTimelineMatrixRelic;
+    public static Item temporalDrive;
     public static void init()
     {
         //MATERIALS
@@ -237,6 +244,22 @@ public class ModItems
         register(gearBrass);
         OreDictionary.registerOre("gearBrass", gearBrass);
 
+        gearChrysoberyl = new ItemGear("gear_chrysoberyl", 40, 70, 4);
+        register(gearChrysoberyl);
+        OreDictionary.registerOre("gearChrysoberyl", gearChrysoberyl);
+
+        gearPearl = new ItemGear("gear_pearl", 80, 30, 4);
+        register(gearPearl);
+        OreDictionary.registerOre("gearPearl", gearPearl);
+
+        gearSpinel = new ItemGear("gear_spinel", 70, 40, 4);
+        register(gearSpinel);
+        OreDictionary.registerOre("gearSpinel", gearSpinel);
+
+        gearMoonstone = new ItemGear("gear_moonstone", 10, 110, 4);
+        register(gearMoonstone);
+        OreDictionary.registerOre("gearMoonstone", gearMoonstone);
+
         gearCreative = new ItemGear("gear_creative", 120, 120, 100);
         register(gearCreative);
         OreDictionary.registerOre("gearCreative", gearCreative);
@@ -280,9 +303,6 @@ public class ModItems
 
         trowelDiamond = new ItemTrowel(Item.ToolMaterial.DIAMOND, "diamond_trowel");
         register(trowelDiamond);
-
-        alloyHammer = new ItemClockworkPhase(1, 64, "alloy_hammer");
-        register(alloyHammer);
 
         //LIFE MODIFICATION
 
@@ -333,9 +353,7 @@ public class ModItems
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         register(bugSwatter);
 
-        //gizmos
-        //Technically these all have very complex localized names, but for my own sanity, they're "gizmos" in code.
-        //Since they're just crafting items, I'm unlikely to be making any huge changes here.
+        //CRAFTING ITEMS
         gizmoLife = new ItemClockworkPhase(64, 100, "gizmo_life");
         register(gizmoLife);
 
@@ -420,6 +438,21 @@ public class ModItems
         };
         register(gizmoAuraRelic);
 
+        splitTimelineMatrix = new ItemClockworkPhase(64, 100, "split_timeline_matrix");
+        register(splitTimelineMatrix);
+
+        splitTimelineMatrixRelic = new ItemRelic(64, 100, "split_timeline_matrix_relic")  {
+            ItemStack result = new ItemStack(splitTimelineMatrix);
+            @Override
+            public ItemStack getResultItem(ItemStack inputStack) {
+                return result;
+            }
+        };
+        register(splitTimelineMatrixRelic);
+
+        temporalDrive = new ItemClockworkPhase(64, 100, "temporal_drive");
+        register(temporalDrive);
+
 
         RelicExcavationRegistry.registerMoonFlowerRelicDrop(new WeightedChance<>(new ItemStack(moonFlowerSeeds), 100));
         RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoLifeRelic), 100));
@@ -429,6 +462,7 @@ public class ModItems
         RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoAirRelic), 100));
         RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoFireRelic), 100));
         RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(gizmoAuraRelic), 100));
+        RelicExcavationRegistry.registerOtherRelicDrop(new WeightedChance<>(new ItemStack(splitTimelineMatrixRelic), 100));
     }
 
     //************ START HELPER METHODS ************\\

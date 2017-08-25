@@ -1,6 +1,0 @@
-{
-    "parent": "clockworkphase2:item/cp_standard",
-    "textures": {
-        "layer0": "clockworkphase2:item/timeframe_key_solar"
-    }
-}

@@ -11,11 +11,8 @@ import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeArea;
-import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
-import lumaceon.mods.clockworkphase2.util.NBTTags;
+import lumaceon.mods.clockworkphase2.util.*;
 import lumaceon.mods.clockworkphase2.lib.Textures;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
-import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -41,6 +38,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,16 +74,36 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         if(energyCap != null)
         {
             tooltip.add("Energy: " + energyCap.getEnergyStored() + " fe");
-            tooltip.add("");
         }
 
-        ItemStackHandlerClockworkConstruct cap = getClockworkItemHandler(stack);
+        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+        {
+            tooltip.add("");
+            InformationDisplay.addClockworkToolInformation(stack, ClockworkPhase2.proxy.getClientPlayer(), tooltip);
+        }
+        else
+        {
+            tooltip.add("");
+            tooltip.add(Colors.BLUE + "Shift - Construct Details");
+        }
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
+        {
+            tooltip.add("");
+            InformationDisplay.addClockworkComponentInformation(stack, tooltip);
+        }
+        else
+        {
+            tooltip.add(Colors.BLUE + "Ctrl - Clockwork Stats");
+        }
+
+        /*ItemStackHandlerClockworkConstruct cap = getClockworkItemHandler(stack);
         if(cap != null)
         {
             tooltip.add("Quality: " + cap.getQuality());
             tooltip.add("Speed: " + cap.getSpeed());
             tooltip.add("Tier: " + cap.getTier());
-        }
+        }*/
         //InformationDisplay.addClockworkConstructInformation(is, player, list, true);
     }
 

@@ -678,6 +678,7 @@ public class Recipes
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.trowelDiamond)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.silicon)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.assemblyTable)));
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.moonFlowerSeeds)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModBlocks.oreAluminum)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModBlocks.oreCopper)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModBlocks.oreZinc)));
@@ -689,6 +690,7 @@ public class Recipes
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gizmoAir)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gizmoFire)));
         ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.gizmoAura)));
+        ArmillaryFishingRecipes.INSTANCE.addRecipe(new ArmillaryFishingRecipes.ArmillaryFishingRecipe(new ItemStack(ModItems.splitTimelineMatrix)));
     }
 
     public static void initEntityConstructionRecipes()
@@ -755,20 +757,34 @@ public class Recipes
 
         AlloyRecipes.RecipeComponent first;
         AlloyRecipes.RecipeComponent second;
+        ItemStack firstItem;
+        ItemStack secondItem;
         ItemStack output;
         if(copper && zinc && brass)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
-            second = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotZinc), (byte) 1);
+            firstItem = new ItemStack(ModItems.ingotCopper);
+            firstItem.setCount(3);
+            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 3);
+
+            secondItem = new ItemStack(ModItems.ingotZinc);
+            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+
             output = new ItemStack(ModItems.ingotBrass);
             output.setCount(4);
+
             AlloyRecipes.instance.addAlloyRecipe(first, second, output);
         }
 
         if(copper && tin && bronze)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 3);
-            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotTin").get(0), (byte) 1);
+            firstItem = new ItemStack(ModItems.ingotCopper);
+            firstItem.setCount(3);
+            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 3);
+
+            secondItem = OreDictionary.getOres("ingotTin").get(0).copy();
+            secondItem.setCount(1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+
             output = OreDictionary.getOres("ingotBronze").get(0).copy();
             output.setCount(4);
             AlloyRecipes.instance.addAlloyRecipe(first, second, output);
@@ -776,8 +792,14 @@ public class Recipes
 
         if(nickel && invar)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(Items.IRON_INGOT), (byte) 2);
-            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotNickel").get(0), (byte) 1);
+            firstItem = new ItemStack(Items.IRON_INGOT);
+            firstItem.setCount(2);
+            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 2);
+
+            secondItem = OreDictionary.getOres("ingotNickel").get(0).copy();
+            secondItem.setCount(1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+
             output = OreDictionary.getOres("ingotInvar").get(0).copy();
             output.setCount(3);
             AlloyRecipes.instance.addAlloyRecipe(first, second, output);
@@ -785,8 +807,14 @@ public class Recipes
 
         if(copper && aluminum && aluminumBrass)
         {
-            first = new AlloyRecipes.RecipeComponent(new ItemStack(ModItems.ingotCopper), (byte) 1);
-            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotAluminum").get(0), (byte) 3);
+            firstItem = new ItemStack(ModItems.ingotCopper);
+            firstItem.setCount(1);
+            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 1);
+
+            secondItem = OreDictionary.getOres("ingotAluminum").get(0).copy();
+            secondItem.setCount(3);
+            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 3);
+
             output = OreDictionary.getOres("ingotAluminumBrass").get(0).copy();
             output.setCount(4);
             AlloyRecipes.instance.addAlloyRecipe(first, second, output);
@@ -794,8 +822,14 @@ public class Recipes
 
         if(cobalt && ardite && manyullyn)
         {
-            first = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotCobalt").get(0), (byte) 1);
-            second = new AlloyRecipes.RecipeComponent(OreDictionary.getOres("ingotArdite").get(0), (byte) 1);
+            firstItem = OreDictionary.getOres("ingotCobalt").get(0).copy();
+            firstItem.setCount(1);
+            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 1);
+
+            secondItem = OreDictionary.getOres("ingotArdite").get(0).copy();
+            secondItem.setCount(1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+
             output = OreDictionary.getOres("ingotManyullyn").get(0).copy();
             output.setCount(2);
             AlloyRecipes.instance.addAlloyRecipe(first, second, output);
@@ -883,6 +917,11 @@ public class Recipes
         //Gravel to snad.
         input = new ItemStack(Blocks.GRAVEL);
         output = new ItemStack(Blocks.SAND);
+        CrusherRecipes.instance.addCrusherRecipe(input, output);
+
+        //Snad to silicon
+        input = new ItemStack(Blocks.SAND);
+        output = new ItemStack(ModItems.silicon);
         CrusherRecipes.instance.addCrusherRecipe(input, output);
     }
 }

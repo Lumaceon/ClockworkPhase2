@@ -10,7 +10,7 @@ item.dust_copper.name=Copper Dust
 item.dust_zinc.name=Zinc Dust
 item.dust_brass.name=Brass Dust
 item.dust_aluminum.name=Aluminum Dust
-item.matter_temporal.name=Temporal Dust
+item.matter_temporal.name=Temporal Matter
 
 item.moonstone.name=Moonstone
 item.chrysoberyl.name=Chrysoberyl
@@ -32,6 +32,10 @@ item.gear_quartz.name=Quartz Gear
 item.gear_copper.name=Copper Gear
 item.gear_zinc.name=Zinc Gear
 item.gear_brass.name=Brass Gear
+item.gear_chrysoberyl.name=Chrysoberyl Gear
+item.gear_peral.name=Pearl Gear
+item.gear_spinel.name=Spinel Gear
+item.gear_moonstone.name=Moonstone Gear
 item.gear_creative.name=Creative Gear
 
 item.clockwork_pickaxe.name=Clockwork Pickaxe
@@ -80,6 +84,11 @@ item.gizmo_fire.name=Dimensional Energy Conduit
 item.gizmo_fire_relic.name=Widget
 item.gizmo_aura.name=Hyper-compressed Memory Orb
 item.gizmo_aura_relic.name=Thingy
+item.split_timeline_matrix.name=Split-timeline Matrix
+item.split_timeline_matrix_relic.name=Junk
+
+item.temporal_drive.name=Temporal Drive
+
 
 #Block
 
@@ -103,7 +112,7 @@ tile.temporal_block.name=Temporal Block
 
 tile.clockwork_furnace.name=Clockwork Furnace
 tile.clockwork_alloy_furnace.name=Clockwork Alloy Furance
-tile.clockwork_crusher.name=Clockwork Crusher
+tile.clockwork_crusher.name=Clockwork Macerator
 tile.clockwork_crystallizer.name=Clockwork Crystallizer
 
 tile.experience_extractor.name=Memory Extractor
@@ -122,9 +131,38 @@ tile.construction_block.name=Multiblock Construction Frame
 tile.ruined_land.name=Ruined Land
 tile.clockworkphase2:fluid.timestream.name=Timestream
 
-#Misc Localizations
+
+#Tutorial Info
+
+clockworkphase2:i_moon_flowers=Temporal matter is grown from an ancient, now-extinct plant called a moon flower, which can only be found in seed form as a relic underground.\n\nMoon flowers are the most self-entitled plants imaginable and only grow at night while the moon is showing. Even worse: their growth reverses during the day unless an opaque block is above them.
+clockworkphase2:i_clockwork=Clockwork consists of a series of gears and sometimes "not-gear"s. Each component usually adds to the overall stats of the clockwork. In most cases, speed determines how quickly the device will function, and higher quality results in a more energy-efficient tool.\n\nKeep in mind that quality's efficiency boost is relative to speed, so clockwork with 300 speed/500 quality is very efficient, but one with 600/500 will devour your energy.
+clockworkphase2:i_mainspring=The batteries of mechanical devices. Most common metals can be added on to a mainspring to increase its capacity, though stronger metals usually add a higher value per ingot. Remember the golden rule: rare items are always better at everything. Except gold; gold is terrible.
+clockworkphase2:i_temporal_excavator=Ever wanted a tool that could do everything? Well on it's own, the temporal excavator does nothing. However, it CAN be assembled with a full set of clockwork tools and several upgrades.\n\nAfter adding upgrades, press the General Activation Key (Default 'F') while holding the excavator.
+clockworkphase2:i_temporal_hourglass=To the average hourglass, living things are quite delicious. All those memories, all those experiences. Clearly, you don't need those, so you may as well let the hourglass eat them. At least you get time out of it.\n\nRight-click to active the hourglass, causing it to drain your xp to generate time energy. The more xp in that mind of yours, the faster they'll get yanked out to make time. This time energy can then be used by any tool that requests it.
+clockworkphase2:i_temporal_fishing_rod=Have you ever wanted to go fishing without having to wait ages for the fish to get their act together? With the temporal fishing rod and a bit of time in an hourglass, just toss the hook in the water and BAM: a fish is there, saving your hair from getting torn out in frustration again. Additionally, by shift-right-clicking, you can place relics in the rod to gain more control over what you yank out of an armillary ring.
+clockworkphase2:i_temporal_toolbelt=Sometimes, 9 hotbar slots just isn't enough to hold your collection of banana slicers. Through the power of timeline splitting, you can effectively store extra hotbars in an alternate timeline.\n\nRight-click with the temporal toolbelt to consume it and add another hotbar. By holding down the Temporal Toolbelt Swap key and scrolling the mouse wheel, you can select another hotbar to swap with. Up to 5 extra hotbars can be added this way.
+
+clockworkphase2:i_tool_upgrade_temporal=Mining obsidian is a pain. You spend several seconds hacking away at it, but a split-second twitch, and suddenly all that progress is undone.\n\nBy placing this upgrade in a temporal excavator and activating it, the excavator will automatically consume time from an hourglass to instantly break almost anything. Keep in mind, a slower tool and a harder block both increase the time cost.
+clockworkphase2:i_tool_upgrade_teleport=The age-old problem: you're Here and you need your ores There. You could, of course, walk all the way There, but you're Here and walking is hard. Wouldn't it be nice if the items could walk themselves There? Well now they can! Metaphorically.\n\nShift-right-click on a valid inventory with this upgrade to set a target block (and side). While this upgrade is active, any item the excavator harvests will automatically make their way to the inventory if possible.
+clockworkphase2:i_celestial_compass=WIP
+clockworkphase2:i_armillary_ring=The great fishbowl of occurrences great and small. A fully formed armillary ring will project events from across the timeline, allowing one to toss a fishing hook in and yank a random object out of its natural time and place. If you've ever inexplicably lost something, you may have had this happen to you... or you're just insane. Either way, if you're lucky you may even get something useful from the Ancients. Or just dirt. Then again, who has time for things like luck and dirt? Best use a temporal fishing rod.\n\n(Consult the Multiblock Assembler for more info)
+clockworkphase2:i_moon_flower_seeds=Once there were moon flowers. Now there aren't. Luckily for you, some seeds still exist, preserved underground. Just make sure to excavate them by right-clicking with a trowl.\n\nMoon flowers are the most self-entitled plants imaginable and only grow at night while the moon is showing. Even worse: their growth reverses during the day unless an opaque block is above them.
+
+clockworkphase2:i_temporal_relay=You know about your hourglass. Your items know about your hourglass. But what about this new machine you've upgraded with a temporal energy conduit? It could care less, and shoving the hourglass straight into a macerator sounds like a bad idea. Instead, introduce it to a temporal relay.\n\nBy placing an hourglass in a temporal relay, the machine attached to it will be able to drain time from the hourglass, provided the machine does, in fact, consume time.
+clockworkphase2:i_timezones=WIP
+clockworkphase2:i_basic_winding_box=Sometimes, you just need that quick burst of energy NOW. Rather than dumping black coffee on your tool, throw this down and right-click. Over and over again. Eventually you might build up enough energy to do something useful, though your fingers might be a bit sore.
+clockworkphase2:i_multiblock_assembler=5 blocks north and 3 west-- wait no, east. Yes, east. But did you go up a few blocks for that last one? Assembling custom multiblock structures is fun; assembling specific multblock structures is a pain. The multblock assembler removes all that pesky humanity from multiblock assembly. Just throw down the assembler, right-click with a multiblock template, and repeatedly right-click with several construction blocks. Once the final block is in place, the whole structure assembles for you.
+
+clockworkphase2:i_clockwork_tools=Clockwork tools require two components: a mainspring and a clockwork core. Mainsprings act like mechanical batteries, while the clockwork core determines the tool's effectiveness (speed) and energy efficiency (quality). These items can be customized and assembled in an assembly table. Finally, the tool needs energy. The simplest way to charge the tool is with a winding box.
+clockworkphase2:i_relics=Underground, you may come across several "relics" in the dirt. These must be right-clicked with a trowel to extract the relic.
+clockworkphase2:i_gizmos=The Ancients of the past had many incredible technologies not present today. Developing these yourself could take years, but why not just steal them from the past? If you're very lucky, you could chance upon one by fishing in an armillary ring. Alternatively, if you excavate a relic and recieve an artifact, you could throw it in a temporal fishing rod and use that to fish more selectively.
+clockworkphase2:i_clockwork_machines=Much like the clockwork tools, clockwork machines require assembly. Additionally, most of them can accept a temporal machine conduit, allowing them use time out of an adjacent temporal relay. This can be toggled with the hourglass button.\n\nFor more information on how clockwork works, see the clockwork tools.
+
+#Misc
+
 itemGroup.ClockworkPhase2=Clockwork Phase 2
 key.clockworkphase2.category=Clockwork Phase 2
 key.clockworkphase2.activate=General Activation Key
 key.clockworkphase2.toolbelt=Temporal Toolbelt Swap
 fluid.timestream=Timestream
+death.attack.temporal= 

@@ -1,0 +1,21 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " m ",
+        "msm",
+        " m "
+    ],
+    "key": {
+        "m": {
+            "type": "forge:ore_dict",
+            "ore": "gemSpinel"
+        },
+        "s": {
+            "type": "forge:ore_dict",
+            "ore": "stickWood"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:gear_spinel"
+    }
+}

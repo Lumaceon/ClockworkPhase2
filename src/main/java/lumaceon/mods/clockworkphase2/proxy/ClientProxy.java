@@ -65,6 +65,11 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
+    public EntityPlayer getClientPlayer() {
+        return Minecraft.getMinecraft() == null ? null : Minecraft.getMinecraft().player;
+    }
+
+    @Override
     public void registerTESR() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileArmillaryRing.class, new TESRArmillaryRing());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCelestialCompass.class, new TESRTimezoneController());

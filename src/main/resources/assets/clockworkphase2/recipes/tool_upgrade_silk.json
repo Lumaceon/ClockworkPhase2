@@ -1,0 +1,23 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "bsb",
+        "sds",
+        "bsb"
+    ],
+    "key": {
+        "s": {
+            "item": "minecraft:string"
+        },
+        "d": {
+            "item": "clockworkphase2:temporal_drive"
+        },
+        "b": {
+            "type": "forge:ore_dict",
+            "ore": "ingotBrass"
+        }
+    },
+    "result": {
+        "item": "clockworkphase2:tool_upgrade_silk"
+    }
+}

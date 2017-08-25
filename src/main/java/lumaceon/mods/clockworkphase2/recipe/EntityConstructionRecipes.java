@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
-import com.sun.istack.internal.NotNull;
 import lumaceon.mods.clockworkphase2.util.LogHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityEnderCrystal;
@@ -25,7 +24,7 @@ public class EntityConstructionRecipes
         return recipes.get(recipeID);
     }
 
-    public void addRecipe(@NotNull String recipeID, @NotNull NonNullList<ItemStack> inputItems, @NotNull Class<? extends Entity> output)
+    public void addRecipe(String recipeID, NonNullList<ItemStack> inputItems, Class<? extends Entity> output)
     {
         //Skip if the number of input items is greater than 9.
         if(inputItems.size() > 9)
@@ -91,7 +90,7 @@ public class EntityConstructionRecipes
             this.constructor = constructor;
         }
 
-        public boolean matchesRecipe(@NotNull NonNullList<ItemStack> inventory)
+        public boolean matchesRecipe(NonNullList<ItemStack> inventory)
         {
             for(ItemStack is : inputItems)
             {

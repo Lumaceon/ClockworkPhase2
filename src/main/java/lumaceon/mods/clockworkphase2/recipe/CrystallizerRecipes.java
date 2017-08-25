@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
-import com.sun.istack.internal.NotNull;
 import lumaceon.mods.clockworkphase2.util.LogHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -17,7 +16,7 @@ public class CrystallizerRecipes
 
     private ArrayList<CrystallizerRecipe> recipes = new ArrayList<>(10);
 
-    public CrystallizerRecipe getRecipe(@NotNull NonNullList<ItemStack> craftingInventory, FluidStack fluidInventory)
+    public CrystallizerRecipe getRecipe(NonNullList<ItemStack> craftingInventory, FluidStack fluidInventory)
     {
         for(CrystallizerRecipe recipe : recipes)
         {
@@ -35,7 +34,7 @@ public class CrystallizerRecipes
      * Input items can stack large stack sizes, but you should never make multiple stacks of a single item. For example:
      * a single stack of redstone with a stacksize of 3 is fine, but two stacks of a single redstone is not.
      */
-    public void addCrystallizerRecipe(@NotNull NonNullList<ItemStack> inputItems, @Nullable FluidStack fluid, ItemStack output)
+    public void addCrystallizerRecipe(NonNullList<ItemStack> inputItems, @Nullable FluidStack fluid, ItemStack output)
     {
         //Skip if the input items is null (not an empty array), or the output is null.
         if(inputItems == null || output.isEmpty())
@@ -101,7 +100,7 @@ public class CrystallizerRecipes
         public FluidStack fluidInventory;
         private ItemStack output;
 
-        public CrystallizerRecipe(@NotNull NonNullList<ItemStack> inputItems, FluidStack fluidInventory, ItemStack output)
+        public CrystallizerRecipe(NonNullList<ItemStack> inputItems, FluidStack fluidInventory, ItemStack output)
         {
             this.inputItems = inputItems;
             this.fluidInventory = fluidInventory;

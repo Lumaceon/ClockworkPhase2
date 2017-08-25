@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.client.gui.machine.lifeform;
 
-import com.sun.javafx.collections.ImmutableObservableList;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHelper;
 import lumaceon.mods.clockworkphase2.client.gui.components.GuiButtonInvisible;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkMachine;
@@ -24,27 +23,26 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class GuiLifeformConstructor extends GuiClockworkMachine
 {
     static ResourceLocation BG = new ResourceLocation(Reference.MOD_ID, "textures/gui/lifeform_constructor.png");
     static ResourceLocation BG_SELECTION = new ResourceLocation(Reference.MOD_ID, "textures/gui/lifeform_constructor_selection.png");
-    static List<String> INPUT_TT = new ImmutableObservableList<>(
+    static String[] INPUT_TT = new String[]{
             "Input Slot",
             Colors.GREY + "Accepts up to 64 of any item",
             Colors.GREY + "-Items are consumed to construct entities"
-    );
-    static List<String> INPUT_CAPSULE = new ImmutableObservableList<>(
+    };
+    static String[] INPUT_CAPSULE = new String[]{
             "Capsule Input Slot",
             Colors.GREY + "Accepts mob capsules with at least one empty space",
             Colors.GREY + "-Capsule is filled and placed in Capsule Output Slot"
-    );
-    static List<String> OUTPUT_TT = new ImmutableObservableList<> (
+    };
+    static String[] OUTPUT_TT = new String[]{
             "Capsule Output Slot",
             Colors.GREY + "Does not accept input",
             Colors.GREY + "+Filled capsules output here"
-    );
+    };
 
     private float oldMouseX;
     private boolean isSelectingEntity = false;

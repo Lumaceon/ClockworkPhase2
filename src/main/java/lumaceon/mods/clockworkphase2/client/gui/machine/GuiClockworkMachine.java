@@ -624,11 +624,11 @@ public class GuiClockworkMachine extends GuiContainer
         private List<String> toolTip;
         private List<String> retTip;
 
-        public IOConfigurationSlot(int left, int top, int width, int height, int slotID, TileClockworkMachine te, List<String> toolTip) {
+        public IOConfigurationSlot(int left, int top, int width, int height, int slotID, TileClockworkMachine te, String[] toolTip) {
             super(left, top, width, height, te);
             this.slotID = slotID;
-            this.toolTip = new ArrayList<String>(toolTip.size());
-            this.retTip = new ArrayList<String>(toolTip.size());
+            this.toolTip = new ArrayList<String>(toolTip.length);
+            this.retTip = new ArrayList<String>(toolTip.length);
             for(String s : toolTip)
             {
                 this.toolTip.add(s);
@@ -636,7 +636,7 @@ public class GuiClockworkMachine extends GuiContainer
             }
         }
 
-        public IOConfigurationSlot(Slot slot, TileClockworkMachine te, List<String> toolTip) {
+        public IOConfigurationSlot(Slot slot, TileClockworkMachine te, String[] toolTip) {
             this(slot.xPos, slot.yPos, 16, 16, slot.getSlotIndex(), te, toolTip);
         }
 
@@ -719,11 +719,11 @@ public class GuiClockworkMachine extends GuiContainer
         private List<String> toolTip;
         private List<String> retTip;
 
-        public IOConfigurationTank(int left, int top, int width, int height, int tankID, TileClockworkMachine te, List<String> toolTip) {
+        public IOConfigurationTank(int left, int top, int width, int height, int tankID, TileClockworkMachine te, String[] toolTip) {
             super(left, top, width, height, te);
             this.tankID = tankID;
-            this.toolTip = new ArrayList<String>(toolTip.size());
-            this.retTip = new ArrayList<String>(toolTip.size());
+            this.toolTip = new ArrayList<String>(toolTip.length);
+            this.retTip = new ArrayList<String>(toolTip.length);
             for(String s : toolTip)
             {
                 this.toolTip.add(s);

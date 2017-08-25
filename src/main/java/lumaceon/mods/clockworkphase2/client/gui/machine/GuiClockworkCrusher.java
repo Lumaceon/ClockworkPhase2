@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.client.gui.machine;
 
-import com.sun.javafx.collections.ImmutableObservableList;
 import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkCrusher;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrusher;
@@ -9,20 +8,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
-import java.util.List;
-
 public class GuiClockworkCrusher extends GuiClockworkMachine
 {
     static ResourceLocation BG = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockwork_crusher.png");
-    static List<String> INPUT_TT = new ImmutableObservableList<String>(
+    static String[] INPUT_TT = new String[] {
             "Input Slot",
             Colors.GREY + "Accepts up to 64 of any item",
             Colors.GREY + "-Items are crushed"
-    );
-    static List<String> OUTPUT_TT = new ImmutableObservableList<String> (
+    };
+    static String[] OUTPUT_TT = new String[]{
             "Crusher Output Slot",
             Colors.GREY + "Does not accept input"
-    );
+    };
 
     public GuiClockworkCrusher(EntityPlayer player, TileClockworkCrusher te) {
         super(  player,

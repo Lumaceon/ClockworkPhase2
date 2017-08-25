@@ -95,7 +95,7 @@ public class PlayerHandler
         int playerXP = player.experienceLevel;
         if(playerXP >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_1)
         {
-            if(player.world != null && !player.world.isRemote)
+            if(player.world != null)
             {
                 for(int i = 0; i < player.inventory.getSizeInventory(); i++)
                 {
@@ -153,17 +153,20 @@ public class PlayerHandler
                 ItemStack[] hourglasses = HourglassHelper.getHourglasses(player);
                 if(!HourglassHelper.consumeTimeAllOrNothing(hourglasses, TimeConverter.SECOND))
                 {
-                    //Failed to consume time, wreck the player up.
-                    if(player.isCreative())
+                    if(!player.world.isRemote)
                     {
-                        player.attackEntityFrom(new DamageSource("temporal").setDamageBypassesArmor().setDamageIsAbsolute().setDamageAllowedInCreativeMode(), 2.0F);
-                    }
-                    else
-                    {
-                        player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 40, 2));
-                        player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 40, 4));
-                        player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 40, 3));
-                        player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 40, 3));
+                        //Failed to consume time, wreck the player up.
+                        if(player.isCreative())
+                        {
+                            player.attackEntityFrom(new DamageSource("temporal").setDamageBypassesArmor().setDamageIsAbsolute().setDamageAllowedInCreativeMode(), 2.0F);
+                        }
+                        else
+                        {
+                            player.addPotionEffect(new PotionEffect(MobEffects.WITHER, 40, 2));
+                            player.addPotionEffect(new PotionEffect(MobEffects.HUNGER, 40, 4));
+                            player.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 40, 3));
+                            player.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 40, 3));
+                        }
                     }
                 }
             }

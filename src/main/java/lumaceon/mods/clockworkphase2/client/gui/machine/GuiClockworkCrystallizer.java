@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.client.gui.machine;
 
-import com.sun.javafx.collections.ImmutableObservableList;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHelper;
 import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.lib.Reference;
@@ -11,55 +10,32 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.List;
-
 public class GuiClockworkCrystallizer extends GuiClockworkMachine
 {
     static ResourceLocation BG = new ResourceLocation(Reference.MOD_ID, "textures/gui/clockwork_crystallizer.png");
-    static List<String> INPUT_TT1 = new ImmutableObservableList<String>(
+    static String[] INPUT_TT = new String[] {
             "Input Slot 1",
             Colors.GREY + "Accepts up to 64 of any item",
             Colors.GREY + "-Items are crystallized"
-    );
-    static List<String> INPUT_TT2 = new ImmutableObservableList<String>(
-            "Input Slot 2",
-            Colors.GREY + "Accepts up to 64 of any item",
-            Colors.GREY + "-Items are crystallized"
-    );
-    static List<String> INPUT_TT3 = new ImmutableObservableList<String>(
-            "Input Slot 3",
-            Colors.GREY + "Accepts up to 64 of any item",
-            Colors.GREY + "-Items are crystallized"
-    );
-    static List<String> INPUT_TT4 = new ImmutableObservableList<String>(
-            "Input Slot 4",
-            Colors.GREY + "Accepts up to 64 of any item",
-            Colors.GREY + "-Items are crystallized"
-    );
-    static List<String> INPUT_TT5 = new ImmutableObservableList<String>(
-            "Input Slot 5",
-            Colors.GREY + "Accepts up to 64 of any item",
-            Colors.GREY + "-Items are crystallized"
-    );
-    static List<String> INPUT_TT6 = new ImmutableObservableList<String>(
-            "Input Slot 6",
-            Colors.GREY + "Accepts up to 64 of any item",
-            Colors.GREY + "-Items are crystallized"
-    );
-    static List<String> BUCKET_TT = new ImmutableObservableList<String>(
-            "Fluid Insertion Slot",
-            Colors.GREY + "Accepts any item which contains fluid",
-            Colors.GREY + "-Fluid is inserted to the machine from the item"
-    );
-    static List<String> TANK_TT = new ImmutableObservableList<String> (
+    };
+
+    static String[] BUCKET_TT = new String[]
+    {
+        "Fluid Insertion Slot",
+                Colors.GREY + "Accepts any item which contains fluid",
+                Colors.GREY + "-Fluid is inserted to the machine from the item"
+    };
+
+    static String[] TANK_TT = new String[] {
             "Internal Fluid Tank",
             Colors.GREY + "Accepts up to 10 buckets of fluids",
             Colors.GREY + "-Fluid can be used in crystallization"
-    );
-    static List<String> OUTPUT_TT = new ImmutableObservableList<String> (
+    };
+
+    static String[] OUTPUT_TT = new String[] {
             "Crystal Output Slot",
             Colors.GREY + "Does not accept input"
-    );
+    };
 
     public GuiClockworkCrystallizer(EntityPlayer player, TileClockworkCrystallizer te)
     {
@@ -78,12 +54,12 @@ public class GuiClockworkCrystallizer extends GuiClockworkMachine
                 new IOConfiguration[]
                 {
                         new IOConfigurationSlot(te.slots[0], te, BUCKET_TT),
-                        new IOConfigurationSlot(te.slots[1], te, INPUT_TT1),
-                        new IOConfigurationSlot(te.slots[2], te, INPUT_TT2),
-                        new IOConfigurationSlot(te.slots[3], te, INPUT_TT3),
-                        new IOConfigurationSlot(te.slots[4], te, INPUT_TT4),
-                        new IOConfigurationSlot(te.slots[5], te, INPUT_TT5),
-                        new IOConfigurationSlot(te.slots[6], te, INPUT_TT6),
+                        new IOConfigurationSlot(te.slots[1], te, INPUT_TT),
+                        new IOConfigurationSlot(te.slots[2], te, INPUT_TT),
+                        new IOConfigurationSlot(te.slots[3], te, INPUT_TT),
+                        new IOConfigurationSlot(te.slots[4], te, INPUT_TT),
+                        new IOConfigurationSlot(te.slots[5], te, INPUT_TT),
+                        new IOConfigurationSlot(te.slots[6], te, INPUT_TT),
                         new IOConfigurationTank(132, 6, 16, 50, 0, te, TANK_TT),
                         new IOConfigurationSlot(te.slots[7], te, OUTPUT_TT)
                 }

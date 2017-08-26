@@ -1,12 +1,12 @@
 package lumaceon.mods.clockworkphase2.creativetab;
 
+import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class CreativeTabClockworkPhase2 extends CreativeTabs
 {
+    public static ItemStack hourglass;
     public CreativeTabClockworkPhase2(String label)
     {
         super(label);
@@ -15,6 +15,9 @@ public class CreativeTabClockworkPhase2 extends CreativeTabs
     @Override
     public ItemStack getTabIconItem()
     {
-        return new ItemStack(Items.CLOCK);
+        if(hourglass == null)
+            hourglass = new ItemStack(ModItems.temporalHourglass);
+
+        return hourglass;
     }
 }

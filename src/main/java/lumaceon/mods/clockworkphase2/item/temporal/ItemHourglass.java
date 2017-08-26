@@ -163,7 +163,7 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
 
     @Override
     public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-        return new HourglassCapabilityProvider(capacity);
+        return new HourglassCapabilityProvider(capacity, stack);
     }
 
     public static class HourglassCapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
@@ -171,25 +171,23 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
         ActivatableHandler activatableHandler = new ActivatableHandler();
         TimeStorage timeStorage;
 
-        public HourglassCapabilityProvider(long capacity) {
-            timeStorage = new TimeStorage(capacity);
+        public HourglassCapabilityProvider(long capacity, ItemStack stack) {
+            timeStorage = new TimeStorage(capacity, stack);
         }
 
         @Override
         public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-            return capability != null && capability == ACTIVATABLE || capability == TIME;
+            return capability == ACTIVATABLE || capability == TIME;
         }
 
         @Override
         public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
         {
-            if(capability != null)
-            {
-                if(capability == ACTIVATABLE)
-                    return ACTIVATABLE.cast(activatableHandler);
-                else if(capability == TIME)
-                    return TIME.cast(timeStorage);
-            }
+            if(capability == ACTIVATABLE)
+                return ACTIVATABLE.cast(activatableHandler);
+            else if(capability == TIME)
+                return TIME.cast(timeStorage);
+
             return null;
         }
 

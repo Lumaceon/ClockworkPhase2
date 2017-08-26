@@ -79,11 +79,10 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
     {
         if(!stack.isEmpty())
         {
-            IEnergyStorage cap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-            if(cap != null)
+            IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(energyCap != null)
             {
-                String color = InformationDisplay.getColorFromTension(cap.getEnergyStored(), cap.getMaxEnergyStored());
-                tooltip.add("Energy: " + color + cap.getEnergyStored() + "/" + cap.getMaxEnergyStored() + " fe");
+                InformationDisplay.addEnergyInformation(energyCap, tooltip);
             }
         }
     }
@@ -403,7 +402,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
 
         private TemporalExcavatorCapabilityProvider(ItemStack stack) {
             inventory = new ItemStackHandlerTemporalExcavator(13, stack);
-            energyStorage = new EnergyStorageModular(1);
+            energyStorage = new EnergyStorageModular(1, stack);
         }
 
         @Override

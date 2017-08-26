@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
 import lumaceon.mods.clockworkphase2.util.Colors;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class InformationDisplay
     public static int epic = 100;
 
     public static int defaultTensionPerBlock = 50;
+
+    public static void addEnergyInformation(IEnergyStorage energyStorage, List<String> tooltip)
+    {
+        String color = getColorFromTension(energyStorage.getEnergyStored(), energyStorage.getMaxEnergyStored());
+        tooltip.add("Energy: " + color + energyStorage.getEnergyStored() + " / " + energyStorage.getMaxEnergyStored() + " FE");
+    }
 
     /**
      * Adds information based on a simple tiles component (such as a gear).
@@ -44,51 +51,20 @@ public class InformationDisplay
         }
     }
 
-    /**
-     * Used as a conventional tool-tip for tiles itemstacks. Call during addInformation() in a custom Item class.
-     * @param construct Itemstack representing the construct.
-     * @param list A list of information to add to.
-     */
-    public static void addClockworkConstructInformation(ItemStack construct, List list, boolean displayTension)
+    public static void addQualityAndSpeed(ItemStack component, List list)
     {
-        /*if(construct.getItem() instanceof IClockworkConstruct)
+        if(component.getItem() instanceof IClockwork)
         {
-            IClockworkConstruct clockworkConstruct = (IClockworkConstruct) construct.getItem();
-            if(displayTension)
-            {
-                String color = getColorFromTension(clockworkConstruct.getTension(construct), clockworkConstruct.getMaxTension(construct));
-                list.add("Tension: " + color + clockworkConstruct.getTension(construct) + "/" + clockworkConstruct.getMaxTension(construct));
-            }
+            IClockwork clockworkComponent = (IClockwork) component.getItem();
+            int quality = clockworkComponent.getQuality(component);
+            int speed = clockworkComponent.getSpeed(component);
 
-            int quality = clockworkConstruct.getQuality(construct);
-            int speed = clockworkConstruct.getSpeed(construct);
+            String color = getColorFromComponentStat(quality);
+            list.add(Colors.WHITE + "Quality: " + color + quality);
 
-            if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
-            {
-                list.add("");
-                list.add(Colors.BLUE + "~/Construct Details\\~");
-                clockworkConstruct.addConstructInformation(construct, player, list);
-                list.add(Colors.BLUE + "~/Construct Details\\~");
-                list.add("");
-            }
-            else
-            {
-                list.add("");
-                list.add(Colors.BLUE + "Shift - Construct Details");
-            }
-
-            if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
-            {
-                list.add("");
-                list.add(Colors.BLUE + "~/Clockwork Stats\\~");
-                list.add(Colors.WHITE + "Quality: " + Colors.GOLD + quality);
-                list.add(Colors.WHITE + "Speed: " + Colors.GOLD + speed);
-                list.add(Colors.BLUE + "~/Clockwork Stats\\~");
-                list.add("");
-            }
-            else
-                list.add(Colors.BLUE + "Ctrl - Clockwork Stats");
-        }*/
+            color = getColorFromComponentStat(speed);
+            list.add(Colors.WHITE + "Speed: " + color + speed);
+        }
     }
 
     public static void addClockworkToolInformation(ItemStack tool, EntityPlayer player, List list)
@@ -108,7 +84,7 @@ public class InformationDisplay
         if(is.getItem() instanceof IMainspring)
         {
             IMainspring mainspring = (IMainspring) is.getItem();
-            list.add("Tension: " + mainspring.getCurrentCapacity(is));
+            list.add("Capacity: " + mainspring.getCurrentCapacity(is));
         }
     }
 
@@ -145,10 +121,6 @@ public class InformationDisplay
     {
         if(maxTension <= 0 || tension <= 0)
             return Colors.RED;
-        else if(tension >= (double) maxTension * 0.75)
-            return Colors.GREEN;
-        else if(tension >= (double) maxTension * 0.5)
-            return Colors.YELLOW;
         else if(tension >= (double) maxTension * 0.25)
             return Colors.GOLD;
         else

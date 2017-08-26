@@ -13,6 +13,7 @@ import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.lib.Textures;
+import lumaceon.mods.clockworkphase2.util.Colors;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -39,6 +40,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -68,7 +70,41 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        InformationDisplay.addClockworkConstructInformation(stack, tooltip, true);
+        IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyCap != null)
+        {
+            InformationDisplay.addEnergyInformation(energyCap, tooltip);
+        }
+
+        int quality = getQuality(stack);
+        int speed = getSpeed(stack);
+        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+        {
+            tooltip.add("");
+
+            tooltip.add(Colors.WHITE + "Attack Damage: " + Colors.GOLD + (int) (speed / 25.0F));
+            tooltip.add(Colors.WHITE + "Energy Per Attack: " + Colors.GOLD + ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed));
+        }
+        else
+        {
+            tooltip.add("");
+            tooltip.add(Colors.BLUE + "Shift - Construct Details");
+        }
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL))
+        {
+            tooltip.add("");
+
+            String color = InformationDisplay.getColorFromComponentStat(quality);
+            tooltip.add(Colors.WHITE + "Quality: " + color + quality);
+
+            color = InformationDisplay.getColorFromComponentStat(speed);
+            tooltip.add(Colors.WHITE + "Speed: " + color + speed);
+        }
+        else
+        {
+            tooltip.add(Colors.BLUE + "Ctrl - Clockwork Stats");
+        }
     }
 
     @Override
@@ -203,7 +239,7 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
 
         public ClockworkSwordCapabilityProvider(ItemStack stack) {
             inventory = new ItemStackHandlerClockworkConstruct(2, stack);
-            energyStorage = new EnergyStorageModular(1);
+            energyStorage = new EnergyStorageModular(1, stack);
         }
 
         @Override

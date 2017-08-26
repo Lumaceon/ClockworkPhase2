@@ -23,7 +23,7 @@ public class MapGenMineshaftDeadzone extends MapGenMineshaft
     @Override
     public void generate(World worldIn, int x, int z, ChunkPrimer primer)
     {
-        if((x > 500 || x < -500) && (z > 500 || z < -500))
+        if((x > 30 || x < -30) || (z > 30 || z < -30))
         {
             childGen.generate(worldIn, x, z, primer);
         }

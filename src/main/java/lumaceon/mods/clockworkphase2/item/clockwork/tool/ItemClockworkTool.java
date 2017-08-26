@@ -73,7 +73,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
         if(energyCap != null)
         {
-            tooltip.add("Energy: " + energyCap.getEnergyStored() + " fe");
+            InformationDisplay.addEnergyInformation(energyCap, tooltip);
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
@@ -349,7 +349,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
 
         public ClockworkToolCapabilityProvider(ItemStack stack) {
             inventory = new ItemStackHandlerClockworkConstruct(2, stack);
-            energyStorage = new EnergyStorageModular(1);
+            energyStorage = new EnergyStorageModular(1, stack);
         }
 
         @Override

@@ -36,6 +36,19 @@ public class BlockArmillaryRing extends BlockClockworkPhase implements ITileEnti
         return NULL_AABB;
     }
 
+    @SuppressWarnings("deprecation")
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    @Deprecated
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
     @Override
     public boolean isNormalCube(IBlockState state) {
         return false;

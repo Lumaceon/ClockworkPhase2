@@ -33,6 +33,9 @@ import java.util.List;
 
 public class ItemBlockMachine extends ItemBlock implements IAssemblable
 {
+    @CapabilityInject(IEnergyStorage.class)
+    static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
+
     public ItemBlockMachine(Block block) {
         super(block);
         this.setMaxStackSize(1);
@@ -41,8 +44,13 @@ public class ItemBlockMachine extends ItemBlock implements IAssemblable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        InformationDisplay.addClockworkConstructInformation(stack, tooltip, false);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyCap != null)
+        {
+            InformationDisplay.addEnergyInformation(energyCap, tooltip);
+        }
     }
 
     @Override
@@ -68,8 +76,6 @@ public class ItemBlockMachine extends ItemBlock implements IAssemblable
 
     private static class CapabilityProvider implements ICapabilitySerializable<NBTTagCompound>
     {
-        @CapabilityInject(IEnergyStorage.class)
-        static Capability<IEnergyStorage> ENERGY_STORAGE_CAPABILITY = null;
         @CapabilityInject(IItemHandler.class)
         static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
         @CapabilityInject(IMachineDataHandler.class)

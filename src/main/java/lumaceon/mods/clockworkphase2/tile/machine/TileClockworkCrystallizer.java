@@ -71,7 +71,7 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
         NonNullList<ItemStack> craftingInventory = NonNullList.withSize(6, ItemStack.EMPTY);
         for(int i = 1; i < 7; i++)
         {
-            craftingInventory.set(i-1, inventory.get(i-1));
+            craftingInventory.set(i-1, inventory.get(i));
         }
 
         FluidStack fluid = fluidTanks[0].getFluid();
@@ -93,7 +93,7 @@ public class TileClockworkCrystallizer extends TileClockworkMachine
         NonNullList<ItemStack> craftingInventory = NonNullList.withSize(6, ItemStack.EMPTY);
         for(int i = 1; i < 7; i++)
         {
-            craftingInventory.set(i-1, inventory.get(i-1));
+            craftingInventory.set(i-1, inventory.get(i));
         }
 
         FluidStack fluid = fluidTanks[0].getFluid();

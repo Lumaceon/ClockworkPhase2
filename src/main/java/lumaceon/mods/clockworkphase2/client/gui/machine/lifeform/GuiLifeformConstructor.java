@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.client.gui.components.GuiButtonInvisible;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.lifeform.ContainerLifeformConstructor;
+import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageEntityConstructorSetRecipe;
@@ -20,9 +21,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GuiLifeformConstructor extends GuiClockworkMachine
 {
@@ -44,6 +50,9 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
             Colors.GREY + "+Filled capsules output here"
     };
 
+    private HoverableLocation[] hoverableLocations;
+    private HoverableLocation[] hoverableLocationsEntitySelect;
+
     private float oldMouseX;
     private boolean isSelectingEntity = false;
     private boolean isSelectingEntityStateForNextTick = false; //For swapping values one tick late (otherwise we click things we shouldn't)
@@ -63,11 +72,15 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
                 189, 25,
                 BG,
                 te,
-                new HoverableLocation[] { new HoverableLocationEnergy(7, 22, 6, 76, te) },
+                new HoverableLocation[]
+                        {
+                            new HoverableLocationEnergy(7, 22, 6, 76, te),
+                            new HoverableLocationEntityConstruction(132, 182, 6, 76, null, (TileLifeformConstructor) te)
+                        },
                 new IOConfiguration[]
                         {
-                                new IOConfigurationSlot(te.slots[0], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[1], te, INPUT_TT),
+                                new IOConfigurationSlot(te.slots[0], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[2], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[3], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[4], te, INPUT_TT),
@@ -81,6 +94,7 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
         );
 
         entityRecipes = EntityConstructionRecipes.INSTANCE.getRecipes();
+        hoverableLocations = hoverables;
     }
 
     @Override
@@ -96,18 +110,29 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
             this.buttonList.add(new GuiButton(buttonIndex, this.guiLeft + xSize - 20, this.guiTop + (this.ySize / 2) - 10, 20, 20, ">"));
             ++buttonIndex;
 
+            ArrayList<HoverableLocation> hoverableList = new ArrayList<>(6);
+            EntityConstructionRecipes.EntityConstructionRecipe[] recipes = new EntityConstructionRecipes.EntityConstructionRecipe[entityRecipes.size()];
+            recipes = entityRecipes.values().toArray(recipes);
+
             int entityButtonIndex = 0;
             for(int i = page*6; i < entityRecipes.size() && buttonIndex < 8; i++)
             {
-                this.buttonList.add(new GuiButtonInvisible(buttonIndex, this.guiLeft + 25 + 57 * (entityButtonIndex%3), this.guiTop + 5 + 85 * (int) Math.floor(entityButtonIndex / 3), 52, 70));
+                int x = 25 + 57 * (entityButtonIndex%3);
+                int y = 5 + 85 * (int) Math.floor(entityButtonIndex / 3);
+                this.buttonList.add(new GuiButtonInvisible(buttonIndex, this.guiLeft + x, this.guiTop + y, 52, 70));
+                hoverableList.add(new HoverableLocationEntityConstruction(x, x + 52, y, y + 70, recipes[i], null));
                 ++buttonIndex;
                 ++entityButtonIndex;
             }
+
+            hoverables = new HoverableLocation[hoverableList.size()];
+            hoverables = hoverableList.toArray(hoverables);
         }
         else
         {
             super.initGui();
             this.buttonList.add(new GuiButtonInvisible(2, this.guiLeft + 132, this.guiTop + 6, 52, 70));
+            hoverables = hoverableLocations;
         }
     }
 
@@ -251,6 +276,74 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
         if(!isSelectingEntity)
         {
             super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+        }
+        else
+        {
+            for(HoverableLocation h : hoverables)
+            {
+                if(h != null && mouseX >= this.guiLeft + h.getMinX() && mouseX <= this.guiLeft + h.getMaxX() && mouseY >= this.guiTop + h.getMinY() && mouseY <= this.guiTop + h.getMaxY())
+                {
+                    this.renderToolTip(h.getTooltip(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)), mouseX - this.guiLeft, mouseY - this.guiTop);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static class HoverableLocationEntityConstruction extends HoverableLocation
+    {
+        public EntityConstructionRecipes.EntityConstructionRecipe recipe;
+        public TileLifeformConstructor te;
+
+        public HoverableLocationEntityConstruction(int minX, int maxX, int minY, int maxY, EntityConstructionRecipes.EntityConstructionRecipe entityConstructionRecipe, TileLifeformConstructor te) {
+            super(minX, maxX, minY, maxY);
+            this.recipe = entityConstructionRecipe;
+            this.te = te;
+        }
+
+        @Override
+        public List<String> getTooltip(boolean isShiftDown)
+        {
+            if(recipe != null)
+            {
+                String name = recipe.posterChild.getDisplayName().getFormattedText();
+                ArrayList<String> ret = new ArrayList<>();
+                ret.add(name);
+                ret.add("");
+                ret.add(Colors.GOLD + "Required Items:");
+
+                ItemStack is;
+                for(int i = 0; i < recipe.inputItems.size(); i++)
+                {
+                    is = recipe.inputItems.get(i);
+                    String line = is.getDisplayName() + " (" + is.getCount() + ")";
+                    ret.add(line);
+                }
+                return ret;
+            }
+            else if(te != null && te.activeRecipe != null)
+            {
+                String name = te.activeRecipe.posterChild.getDisplayName().getFormattedText();
+                ArrayList<String> ret = new ArrayList<>();
+                ret.add(name);
+                ret.add("");
+                ret.add(Colors.GOLD + "Required Items:");
+
+                ItemStack is;
+                for(int i = 0; i < te.activeRecipe.inputItems.size(); i++)
+                {
+                    is = te.activeRecipe.inputItems.get(i);
+                    String line = is.getDisplayName() + " (" + is.getCount() + ")";
+                    ret.add(line);
+                }
+                return ret;
+            }
+            else
+            {
+                ArrayList<String> ret = new ArrayList<>();
+                ret.add(Colors.RED + "Internal Error: No recipe found.");
+                return ret;
+            }
         }
     }
 }

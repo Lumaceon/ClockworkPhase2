@@ -1,5 +1,7 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
+import lumaceon.mods.clockworkphase2.entity.EntityAdvancedGolem;
+import lumaceon.mods.clockworkphase2.entity.EntityAndroid;
 import lumaceon.mods.clockworkphase2.init.ModBlocks;
 import lumaceon.mods.clockworkphase2.init.ModItems;
 import net.minecraft.block.BlockStoneBrick;
@@ -699,6 +701,41 @@ public class Recipes
         ItemStack input;
 
         //TODO - More sensable recipes...
+
+        inputStacks = NonNullList.withSize(9, ItemStack.EMPTY);
+        input = new ItemStack(Blocks.IRON_BLOCK);
+        input.setCount(8);
+        inputStacks.set(0, input);
+        input = new ItemStack(Blocks.IRON_BARS);
+        input.setCount(32);
+        inputStacks.set(1, input);
+        input = new ItemStack(Items.GOLD_NUGGET);
+        input.setCount(64);
+        inputStacks.set(2, input);
+        input = new ItemStack(Items.DIAMOND);
+        input.setCount(4);
+        inputStacks.set(3, input);
+        input = new ItemStack(Items.REDSTONE);
+        input.setCount(64);
+        inputStacks.set(4, input);
+        input = new ItemStack(Blocks.STONE);
+        input.setCount(64);
+        inputStacks.set(5, input);
+        input = new ItemStack(ModItems.gemSpinel);
+        input.setCount(4);
+        inputStacks.set(6, input);
+        input = new ItemStack(ModItems.gemChrysoberyl);
+        input.setCount(4);
+        inputStacks.set(7, input);
+        input = new ItemStack(ModItems.ingotTemporal);
+        input.setCount(16);
+        inputStacks.set(8, input);
+        EntityConstructionRecipes.INSTANCE.addRecipe("advanced_golem", inputStacks, EntityAdvancedGolem.class);
+
+        inputStacks = NonNullList.withSize(2, ItemStack.EMPTY);
+        inputStacks.set(0, new ItemStack(Items.FEATHER));
+        inputStacks.set(1, new ItemStack(Items.CHICKEN));
+        EntityConstructionRecipes.INSTANCE.addRecipe("android", inputStacks, EntityAndroid.class);
 
         inputStacks = NonNullList.withSize(2, ItemStack.EMPTY);
         inputStacks.set(0, new ItemStack(Items.FEATHER));

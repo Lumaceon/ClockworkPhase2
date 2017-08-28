@@ -158,7 +158,13 @@ public class TileLifeformConstructor extends TileClockworkMachine
     }
 
     @Override
-    public int temporalActions(int maxNumberOfActions) {
+    public int temporalActions(int maxNumberOfActions)
+    {
+        if(canWork())
+        {
+            completeAction();
+            return 1;
+        }
         return 0;
     }
 }

@@ -92,6 +92,7 @@ public class EntityConstructionRecipes
 
         public boolean matchesRecipe(NonNullList<ItemStack> inventory)
         {
+            //Spend the input items of the recipe.
             for(ItemStack is : inputItems)
             {
                 int targetNumber  = is.getCount();

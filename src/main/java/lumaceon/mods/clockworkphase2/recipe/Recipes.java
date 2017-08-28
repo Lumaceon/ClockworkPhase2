@@ -713,7 +713,7 @@ public class Recipes
         inputStacks = NonNullList.withSize(1, new ItemStack(Items.PORKCHOP));
         EntityConstructionRecipes.INSTANCE.addRecipe("pig", inputStacks, EntityPig.class);
 
-        inputStacks = NonNullList.withSize(1, new ItemStack(Items.DYE, 1, EnumDyeColor.BLACK.getMetadata()));
+        inputStacks = NonNullList.withSize(1, new ItemStack(Items.DYE, 1, EnumDyeColor.BLACK.getDyeDamage()));
         EntityConstructionRecipes.INSTANCE.addRecipe("squid", inputStacks, EntitySquid.class);
 
         inputStacks = NonNullList.withSize(1, new ItemStack(Blocks.WOOL));

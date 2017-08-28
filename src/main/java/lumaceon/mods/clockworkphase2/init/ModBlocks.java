@@ -205,9 +205,6 @@ public class ModBlocks
         register(ruinedLand);
 
         //TODO later....
-        lifeformConstructor.setCreativeTab(null);
-        lifeformReconstructor.setCreativeTab(null);
-        lifeformDeconstructor.setCreativeTab(null);
         temporalZoningMachine.setCreativeTab(null);
 
         postInit();

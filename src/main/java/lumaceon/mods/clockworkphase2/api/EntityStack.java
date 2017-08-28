@@ -35,8 +35,7 @@ public class EntityStack
     protected String customName = "";
 
     /**
-     * Used to load the data you need from nbt. Classes will always be instantiated via a constructor with
-     * NBTTagCompound as the sole parameter.
+     * Used to load the data you need from nbt. Call serializeNBT from the entity and pass this constructor the NBT.
      *
      * @param nbt The tag representing this entity.
      */

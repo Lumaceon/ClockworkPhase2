@@ -5,7 +5,6 @@ import lumaceon.mods.clockworkphase2.client.gui.components.GuiButtonInvisible;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.ContainerClockworkMachine;
 import lumaceon.mods.clockworkphase2.inventory.lifeform.ContainerLifeformConstructor;
-import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageEntityConstructorSetRecipe;
@@ -22,7 +21,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
@@ -51,7 +49,6 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
     };
 
     private HoverableLocation[] hoverableLocations;
-    private HoverableLocation[] hoverableLocationsEntitySelect;
 
     private float oldMouseX;
     private boolean isSelectingEntity = false;
@@ -79,8 +76,8 @@ public class GuiLifeformConstructor extends GuiClockworkMachine
                         },
                 new IOConfiguration[]
                         {
-                                new IOConfigurationSlot(te.slots[1], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[0], te, INPUT_TT),
+                                new IOConfigurationSlot(te.slots[1], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[2], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[3], te, INPUT_TT),
                                 new IOConfigurationSlot(te.slots[4], te, INPUT_TT),

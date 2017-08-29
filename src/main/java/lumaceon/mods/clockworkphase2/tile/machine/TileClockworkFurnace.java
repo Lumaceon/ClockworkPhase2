@@ -60,7 +60,7 @@ public class TileClockworkFurnace extends TileClockworkMachine implements ITicka
         int numberOfItemsToProcess = 1;
         result = FurnaceRecipes.instance().getSmeltingResult(smelt);
 
-        if(result == null)
+        if(result.isEmpty())
             return 0;
 
         int actualMaxActions;
@@ -87,13 +87,13 @@ public class TileClockworkFurnace extends TileClockworkMachine implements ITicka
 
         int remainingStack = 0;
         for(ItemStack s : outputStacks)
-            if(s != null)
+            if(!s.isEmpty())
                 remainingStack += s.getCount();
 
         int completeActions = (int) Math.ceil((double) (trueStackSize - remainingStack) / (double) result.getCount());
 
         smelt.shrink(completeActions * numberOfItemsToProcess);
-        if(smelt.getCount() <= 0) { smelt = null; }
+        if(smelt.getCount() <= 0) { smelt = ItemStack.EMPTY; }
         setInventorySlotContents(0, smelt);
 
         return completeActions;

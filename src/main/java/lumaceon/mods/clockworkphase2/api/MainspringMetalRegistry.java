@@ -91,8 +91,8 @@ public class MainspringMetalRegistry
         {
             MainspringMetalRegistry.registerMetal("ingotTin", tin);
             MainspringMetalRegistry.registerMetal("blockTin", tin * 9);
-            MainspringMetalRegistry.registerMetal("ingotAluminium", aluminium);
-            MainspringMetalRegistry.registerMetal("blockAluminium", aluminium * 9);
+            MainspringMetalRegistry.registerMetal("ingotAluminum", aluminium);
+            MainspringMetalRegistry.registerMetal("blockAluminum", aluminium * 9);
             MainspringMetalRegistry.registerMetal("ingotGold", gold);
             MainspringMetalRegistry.registerMetal("blockGold", gold * 9);
             MainspringMetalRegistry.registerMetal("ingotIron", iron);

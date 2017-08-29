@@ -5,7 +5,6 @@ import lumaceon.mods.clockworkphase2.capabilities.activatable.ActivatableHandler
 import lumaceon.mods.clockworkphase2.capabilities.coordinate.CoordinateHandler;
 import lumaceon.mods.clockworkphase2.capabilities.coordinate.ICoordinateHandler;
 import lumaceon.mods.clockworkphase2.util.Colors;
-import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

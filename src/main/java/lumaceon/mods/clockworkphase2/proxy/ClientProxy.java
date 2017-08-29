@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.capabilities.toolbelt.CapabilityTemporalToo
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
+import lumaceon.mods.clockworkphase2.client.handler.TooltipModificationHandler;
 import lumaceon.mods.clockworkphase2.client.particle.ModParticles;
 import lumaceon.mods.clockworkphase2.client.particle.ParticleTimestream;
 import lumaceon.mods.clockworkphase2.client.render.ModelRegistry;
@@ -22,7 +23,6 @@ import lumaceon.mods.clockworkphase2.tile.temporal.TileArmillaryRing;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,7 +39,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientProxy extends CommonProxy
@@ -109,6 +108,7 @@ public class ClientProxy extends CommonProxy
         MinecraftForge.EVENT_BUS.register(renderer);
         MinecraftForge.EVENT_BUS.register(new KeyHandler());
         MinecraftForge.EVENT_BUS.register(new MouseInputHandler());
+        MinecraftForge.EVENT_BUS.register(new TooltipModificationHandler());
     }
 
     @Override

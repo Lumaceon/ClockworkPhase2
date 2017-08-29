@@ -1,9 +1,9 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.api.EntityStack;
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.item.IHourglass;
+import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandler;
@@ -15,10 +15,7 @@ import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.entity.EntityTemporalFishHook;
 import lumaceon.mods.clockworkphase2.init.ModBiomes;
 import lumaceon.mods.clockworkphase2.init.ModFluids;
-import lumaceon.mods.clockworkphase2.item.mob.ItemMobCapsule;
-import lumaceon.mods.clockworkphase2.util.Colors;
-import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemToolUpgradeTemporalInfuser;
-import lumaceon.mods.clockworkphase2.item.temporal.excavator.ItemTemporalExcavator;
+import lumaceon.mods.clockworkphase2.init.ModItems;
 import lumaceon.mods.clockworkphase2.util.ExperienceHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -34,11 +31,11 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.items.IItemHandler;
 
 public class PlayerHandler
 {
@@ -59,6 +56,9 @@ public class PlayerHandler
 
     @CapabilityInject(IEntityContainer.class)
     public static final Capability<IEntityContainer> ENTITY_CONTAINER = null;
+
+    @CapabilityInject(IItemHandler.class)
+    static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
 
     /**
      * Copies data to the new player when respawning after death.
@@ -178,7 +178,7 @@ public class PlayerHandler
     {
         EntityPlayer player = event.getEntityPlayer();
         ItemStack heldItem = player.inventory.getCurrentItem();
-        if(!event.getWorld().isRemote && heldItem != null && heldItem.getItem() instanceof ItemMobCapsule)
+        if(!event.getWorld().isRemote && heldItem != null && heldItem.getItem().equals(ModItems.mobCapsule))
         {
             if(heldItem.hasCapability(ENTITY_CONTAINER, EnumFacing.DOWN))
             {
@@ -265,31 +265,24 @@ public class PlayerHandler
         if(player != null)
         {
             ItemStack currentItem = player.inventory.getCurrentItem();
-            if(!currentItem.isEmpty() && currentItem.getItem() instanceof ItemTemporalExcavator)
+            if(!currentItem.isEmpty() && currentItem.getItem().equals(ModItems.temporalExcavator))
             {
-                ItemTemporalExcavator.ItemStackHandlerTemporalExcavator inventory = ((ItemTemporalExcavator) currentItem.getItem()).getInventoryHandler(currentItem);
+                IItemHandler inventory = currentItem.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
                 if(inventory != null)
                 {
                     for(int n = 3; n < inventory.getSlots(); n++)
                     {
                         ItemStack component = inventory.getStackInSlot(n);
-                        if(!component.isEmpty() && component.getItem() instanceof ItemToolUpgradeTemporalInfuser)
-                            if(((ItemToolUpgradeTemporalInfuser) component.getItem()).getActive(component, currentItem))
+                        if(!component.isEmpty() && component.getItem() instanceof IToolUpgrade && component.getItem().equals(ModItems.toolUpgradeTemporalInfuser))
+                            if(((IToolUpgrade) component.getItem()).getActive(component, currentItem))
                             {
                                 ItemStack[] hourglasses = HourglassHelper.getHourglasses(player);
                                 if(HourglassHelper.getTimeFromHourglasses(hourglasses) < HourglassHelper.getTimeToBreakBlock(event.getEntity().world, event.getPos(), event.getState(), event.getEntityPlayer(), currentItem))
                                     event.setCanceled(true);
                             }
-
                     }
                 }
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onTooltipGet(ItemTooltipEvent event) {
-        if(!event.isCanceled() && event.getItemStack().getItem() instanceof IAssemblable)
-            event.getToolTip().add(Colors.AQUA + "~Assembly Item~");
     }
 }

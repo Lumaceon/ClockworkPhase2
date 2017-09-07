@@ -161,7 +161,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         int harvestLevel = -1;
 
         if(toolClass.equals(this.getHarvestType()))
-            return this.getTier(stack, SideHelper.isServerSide(player));
+            return this.getTier(stack, SideHelper.isServerSide());
 
         return harvestLevel;
     }

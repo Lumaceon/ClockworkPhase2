@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.item.clockwork.component;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
+import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkConstruct;
 import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkCore;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
@@ -9,6 +10,7 @@ import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotClockworkComponent;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Textures;
+import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -45,18 +47,39 @@ public class ItemClockworkCore extends ItemClockworkPhase implements IAssemblabl
     }
 
     @Override
-    public int getQuality(ItemStack item) {
-        return ClockworkHelper.getQuality(item);
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
+        {
+            nbt = new NBTTagCompound();
+        }
+
+        ItemStackHandlerClockworkCore cw = (ItemStackHandlerClockworkCore) stack.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if(cw != null)
+        {
+            nbt.setInteger("cw_speed", cw.getSpeed());
+            nbt.setInteger("cw_quality", cw.getQuality());
+            nbt.setInteger("cw_tier", cw.getTier());
+        }
+
+        return nbt;
     }
 
     @Override
-    public int getSpeed(ItemStack item) {
-        return ClockworkHelper.getSpeed(item);
+    public int getQuality(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getQuality(item, isServer);
     }
 
     @Override
-    public int getTier(ItemStack item) {
-        return ClockworkHelper.getTier(item);
+    public int getSpeed(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getSpeed(item, isServer);
+    }
+
+    @Override
+    public int getTier(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getTier(item, isServer);
     }
 
     @Override

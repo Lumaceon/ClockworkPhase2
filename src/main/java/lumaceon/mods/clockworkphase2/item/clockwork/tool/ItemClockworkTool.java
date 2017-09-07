@@ -70,10 +70,10 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-        if(energyCap != null)
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("energy") && nbt.hasKey("energy_max"))
         {
-            InformationDisplay.addEnergyInformation(energyCap, tooltip);
+            InformationDisplay.addEnergyInformation(nbt.getInteger("energy"), nbt.getInteger("energy_max"), tooltip);
         }
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
@@ -107,15 +107,52 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         //InformationDisplay.addClockworkConstructInformation(is, player, list, true);
     }
 
-    public int getQuality(ItemStack item) {
-        return ClockworkHelper.getQuality(item);
+    @Override
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
+        {
+            nbt = new NBTTagCompound();
+        }
+
+        ItemStackHandlerClockworkConstruct cw = getClockworkItemHandler(stack);
+        nbt.setInteger("cw_speed", cw.getSpeed());
+        nbt.setInteger("cw_quality", cw.getQuality());
+        nbt.setInteger("cw_tier", cw.getTier());
+
+        IEnergyStorage energyStorage = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyStorage != null)
+        {
+            nbt.setInteger("energy_max", energyStorage.getMaxEnergyStored());
+            nbt.setInteger("energy", energyStorage.getEnergyStored());
+        }
+
+        return nbt;
     }
 
-    public int getSpeed(ItemStack item) {
-        return ClockworkHelper.getSpeed(item);
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ClockworkHelper.getDamageFromEnergyForClient(stack);
     }
-    public int getTier(ItemStack item) {
-        return ClockworkHelper.getTier(item);
+
+    @Override
+    public int getMetadata(ItemStack stack) {
+        return ClockworkHelper.getDamageFromEnergyForClient(stack);
+    }
+
+    @Override
+    public int getQuality(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getQuality(item, isServer);
+    }
+    @Override
+    public int getSpeed(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getSpeed(item, isServer);
+    }
+    @Override
+    public int getTier(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getTier(item, isServer);
     }
 
     @Override
@@ -124,7 +161,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         int harvestLevel = -1;
 
         if(toolClass.equals(this.getHarvestType()))
-            return this.getTier(stack);
+            return this.getTier(stack, SideHelper.isServerSide(player));
 
         return harvestLevel;
     }
@@ -244,17 +281,37 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         if(!correctMaterial)
             return 1.0F;
 
-        IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-        if(energyStorage == null)
-            return 1.0F;
+        if(SideHelper.isServerSide())
+        {
+            IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(energyStorage == null)
+                return 1.0F;
 
-        int energy = energyStorage.getEnergyStored();
-        if(energy <= 0)
-            return 0.0F;
+            int energy = energyStorage.getEnergyStored();
+            if(energy <= 0)
+                return 0.0F;
+        }
+        else
+        {
+            if(!NBTHelper.hasTag(is, "energy") || NBTHelper.INT.get(is, "energy") <= 0)
+            {
+                IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+                if(energyStorage == null)
+                    return 1.0F;
 
-        int speed = getSpeed(is);
+                int energy = energyStorage.getEnergyStored();
+                if(energy <= 0)
+                    return 0.0F;
+            }
+        }
+
+        int speed = getSpeed(is, SideHelper.isServerSide());
         if(speed <= 0)
-            return 0.0F;
+        {
+            speed = getSpeed(is, !SideHelper.isServerSide());
+            if(speed <= 0)
+                return 0.0F;
+        }
 
         return (float) speed / 25;
     }
@@ -281,25 +338,28 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @Override
     public boolean onBlockDestroyed(ItemStack is, World world, IBlockState state, BlockPos pos, EntityLivingBase playerIn)
     {
-        if(state.getBlockHardness(world, pos) <= 0)
-            return true;
+        if(!world.isRemote)
+        {
+            if(state.getBlockHardness(world, pos) <= 0)
+                return true;
 
-        if(!isEffective(state))
-            return true;
+            if(!isEffective(state))
+                return true;
 
-        IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-        if(energyStorage == null)
-            return true;
+            IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(energyStorage == null)
+                return true;
 
-        int currentEnergy = energyStorage.getEnergyStored();
-        if(currentEnergy <= 0)
-            return true;
+            int currentEnergy = energyStorage.getEnergyStored();
+            if(currentEnergy <= 0)
+                return true;
 
-        int quality = getQuality(is);
-        int speed = getSpeed(is);
-        int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
+            int quality = getQuality(is, SideHelper.isServerSide(world));
+            int speed = getSpeed(is, SideHelper.isServerSide(world));
+            int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
 
-        energyStorage.extractEnergy(tensionCost, false);
+            energyStorage.extractEnergy(tensionCost, false);
+        }
 
         return true;
     }

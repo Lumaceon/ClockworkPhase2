@@ -1,21 +1,18 @@
-package lumaceon.mods.clockworkphase2.api.assembly;
+package lumaceon.mods.clockworkphase2.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentBase;
 
-public class InventoryUpdated implements IInventory
+public class InventorySimple implements IInventory
 {
     private NonNullList<ItemStack> inventory;
-    private Container eventHandler;
     private int stackLimit;
 
-    public InventoryUpdated(Container eventHandler, int size, int stackLimit) {
+    public InventorySimple(int size, int stackLimit) {
         this.inventory = NonNullList.withSize(size, ItemStack.EMPTY);
-        this.eventHandler = eventHandler;
         this.stackLimit = stackLimit;
     }
 
@@ -49,7 +46,6 @@ public class InventoryUpdated implements IInventory
         {
             itemstack = this.inventory.get(index);
             this.inventory.set(index, ItemStack.EMPTY);
-            this.eventHandler.onCraftMatrixChanged(this);
             return itemstack;
         }
         else
@@ -59,7 +55,6 @@ public class InventoryUpdated implements IInventory
             if (this.inventory.get(index).getCount() == 0)
                 this.inventory.set(index, ItemStack.EMPTY);
 
-            this.eventHandler.onCraftMatrixChanged(this);
             return itemstack;
         }
     }
@@ -68,14 +63,12 @@ public class InventoryUpdated implements IInventory
     public ItemStack removeStackFromSlot(int index) {
         ItemStack item = inventory.get(index);
         inventory.set(index, ItemStack.EMPTY);
-        this.eventHandler.onCraftMatrixChanged(this);
         return item;
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack item) {
         this.inventory.set(index, item);
-        this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override
@@ -125,7 +118,6 @@ public class InventoryUpdated implements IInventory
     public void clear() {
         for(int n = 0; n < inventory.size(); n++)
             inventory.set(n, ItemStack.EMPTY);
-        this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override

@@ -10,6 +10,7 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.api.util.HourglassHelper;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
+import lumaceon.mods.clockworkphase2.capabilities.itemstack.ItemStackHandlerMod;
 import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
@@ -18,10 +19,13 @@ import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotToolUpgrade;
 import lumaceon.mods.clockworkphase2.item.clockwork.tool.ItemClockworkTool;
 import lumaceon.mods.clockworkphase2.lib.Textures;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import lumaceon.mods.clockworkphase2.util.RayTraceHelper;
+import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -45,7 +49,6 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,24 +79,91 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if(!stack.isEmpty())
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("energy") && nbt.hasKey("energy_max"))
         {
-            IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-            if(energyCap != null)
+            InformationDisplay.addEnergyInformation(nbt.getInteger("energy"), nbt.getInteger("energy_max"), tooltip);
+        }
+    }
+
+    @Override
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
+        {
+            nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
+        }
+
+        IEnergyStorage energyStorage = stack.getCapability(ENERGY_STORAGE_CAPABILITY, null);
+        if(energyStorage != null)
+        {
+            nbt.setInteger("energy_max", energyStorage.getMaxEnergyStored());
+            nbt.setInteger("energy", energyStorage.getEnergyStored());
+        }
+
+        IItemHandler itemHandler = stack.getCapability(ITEM_HANDLER_CAPABILITY, null);
+        if(itemHandler != null)
+        {
+            ItemStack[] inventory = new ItemStack[itemHandler.getSlots()];
+            for(int i = 0; i < itemHandler.getSlots(); i++)
             {
-                InformationDisplay.addEnergyInformation(energyCap, tooltip);
+                inventory[i] = itemHandler.getStackInSlot(i);
+            }
+            NBTHelper.INVENTORY.set(stack, "cp2_inventory", inventory);
+        }
+
+        return nbt;
+    }
+
+    @Override
+    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
+    {
+        if(NBTHelper.hasTag(stack, "cp2_inventory"))
+        {
+            IItemHandler itemHandler = stack.getCapability(ITEM_HANDLER_CAPABILITY, null);
+            if(itemHandler != null)
+            {
+                ItemStack[] inventory = NBTHelper.INVENTORY.get(stack, "cp2_inventory");
+                for(int i = 0; i < inventory.length; i++)
+                {
+                    itemHandler.extractItem(i, 64, false);
+                    itemHandler.insertItem(i, inventory[i], false);
+                }
+
+                NBTHelper.removeTag(stack, "cp2_inventory");
             }
         }
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ClockworkHelper.getDamageFromEnergyForClient(stack);
+    }
+
+    @Override
+    public int getMetadata(ItemStack stack) {
+        return ClockworkHelper.getDamageFromEnergyForClient(stack);
     }
 
     @Override
     public float getStrVsBlock(ItemStack is, IBlockState state)
     {
         float strengthVsBlock = 0.0F;
+        if(SideHelper.isServerSide())
+        {
+            IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+            if(energyStorage == null || energyStorage.getEnergyStored() <= 0)
+                return 0.0F;
+        }
+        else
+        {
+            if(!NBTHelper.hasTag(is, "energy") || NBTHelper.INT.get(is, "energy") <= 0)
+                return 0.0F;
+        }
 
-        IEnergyStorage energyStorage = is.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-        if(energyStorage == null || energyStorage.getEnergyStored() <= 0)
-            return 0.0F;
 
         ItemStack item;
         ItemStackHandlerTemporalExcavator inventory = getInventoryHandler(is);
@@ -175,8 +245,8 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             if(currentEnergy <= 0)
                 return true;
 
-            int quality = clockworkConstruct.getQuality(mostSpeedyTool);
-            int speed = clockworkConstruct.getSpeed(mostSpeedyTool);
+            int quality = clockworkConstruct.getQuality(mostSpeedyTool, SideHelper.isServerSide(world));
+            int speed = clockworkConstruct.getSpeed(mostSpeedyTool, SideHelper.isServerSide(world));
             int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
 
             energyStorage.extractEnergy(energyCost, false);
@@ -441,7 +511,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
         }
     }
 
-    public static class ItemStackHandlerTemporalExcavator extends ItemStackHandler
+    public static class ItemStackHandlerTemporalExcavator extends ItemStackHandlerMod
     {
         ItemStack stack = ItemStack.EMPTY;
 

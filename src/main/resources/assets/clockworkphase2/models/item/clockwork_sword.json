@@ -1,5 +1,5 @@
 {
-    "parent": "clockworkphase2:item/cp_standard",
+    "parent": "clockworkphase2:item/cp_handheld",
     "textures": {
         "layer0": "clockworkphase2:item/clockwork_sword"
     }

@@ -71,10 +71,7 @@ public class WorldGenHandler
             {
                 event.setNewGen(new MapGenOceanMonumentDeadzone((StructureOceanMonument) event.getOriginalGen()));
             }
-            else
-            {
-                event.setNewGen(new MapGenDeadzone(event.getOriginalGen()));
-            }
+            //TODO Check InitMapGenEvent every major MC update
         }
     }
 

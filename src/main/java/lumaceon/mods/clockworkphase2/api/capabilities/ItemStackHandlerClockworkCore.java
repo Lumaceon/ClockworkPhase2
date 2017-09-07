@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.api.capabilities;
 
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
+import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.item.ItemStack;
 
 public class ItemStackHandlerClockworkCore extends ItemStackHandlerClockwork
@@ -17,9 +18,9 @@ public class ItemStackHandlerClockworkCore extends ItemStackHandlerClockwork
         {
             if(s != null && s.getItem() instanceof IClockwork)
             {
-                quality += ((IClockwork) s.getItem()).getQuality(s);
-                speed += ((IClockwork) s.getItem()).getSpeed(s);
-                tier = Math.max(tier, ((IClockwork) s.getItem()).getTier(s));
+                quality += ((IClockwork) s.getItem()).getQuality(s, SideHelper.isServerSide());
+                speed += ((IClockwork) s.getItem()).getSpeed(s, SideHelper.isServerSide());
+                tier = Math.max(tier, ((IClockwork) s.getItem()).getTier(s, SideHelper.isServerSide()));
             }
         }
     }

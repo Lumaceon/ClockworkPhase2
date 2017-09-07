@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.item.temporal;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
+import lumaceon.mods.clockworkphase2.capabilities.itemstack.ItemStackHandlerMod;
 import lumaceon.mods.clockworkphase2.entity.EntityTemporalFishHook;
 import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
@@ -10,14 +11,12 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemFishingRod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -103,7 +102,7 @@ public class ItemTemporalFishingRod extends ItemFishingRod implements ISimpleNam
         ItemStackHandler itemHandler;
 
         public Provider() {
-            itemHandler = new ItemStackHandler(1);
+            itemHandler = new ItemStackHandlerMod(1);
         }
 
         @Override

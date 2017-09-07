@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.item.temporal.excavator;
 
 import lumaceon.mods.clockworkphase2.api.item.IToolUpgrade;
 import lumaceon.mods.clockworkphase2.capabilities.activatable.ActivatableHandler;
+import lumaceon.mods.clockworkphase2.capabilities.activatable.IActivatableHandler;
 import lumaceon.mods.clockworkphase2.capabilities.coordinate.CoordinateHandler;
 import lumaceon.mods.clockworkphase2.capabilities.coordinate.ICoordinateHandler;
 import lumaceon.mods.clockworkphase2.util.Colors;
@@ -39,26 +40,61 @@ public class ItemToolUpgradeRelocate extends ItemToolUpgrade implements IToolUpg
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        ICoordinateHandler coordinateHandler = stack.getCapability(COORDINATE, EnumFacing.DOWN);
-        if(coordinateHandler != null)
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null)
         {
-            BlockPos pos = coordinateHandler.getCoordinate();
-            if(pos != null)
+            if(nbt.hasKey("x") && nbt.hasKey("y") && nbt.hasKey("z"))
             {
+                BlockPos pos = new BlockPos(nbt.getInteger("x"), nbt.getInteger("y"), nbt.getInteger("z"));
                 tooltip.add("Target: [" + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + "]");
             }
-
-            EnumFacing facing = coordinateHandler.getSide();
-            if(facing != null)
+            else
             {
+                tooltip.add("Shift-right-click on an inventory to set the target");
+                tooltip.add("Selection is side-sensitive");
+            }
+
+            EnumFacing facing;
+            if(nbt.hasKey("side"))
+            {
+                facing = EnumFacing.getFront(nbt.getInteger("side"));
                 tooltip.add("Target side: " + facing.getName());
             }
         }
-        else
+    }
+
+    @Override
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
         {
-            tooltip.add("Shift-right-click on an inventory to set the target");
-            tooltip.add("Selection is side-sensitive");
+            nbt = new NBTTagCompound();
         }
+
+        IActivatableHandler activatableHandler = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
+        if(activatableHandler != null)
+        {
+            nbt.setBoolean("is_active", activatableHandler.getActive());
+        }
+
+        ICoordinateHandler coordinateHandler = stack.getCapability(COORDINATE, EnumFacing.DOWN);
+        if(coordinateHandler != null)
+        {
+            EnumFacing side = coordinateHandler.getSide();
+            nbt.setInteger("side", side == null ? -1 : side.getIndex());
+
+            BlockPos pos = coordinateHandler.getCoordinate();
+            if(pos != null)
+            {
+                nbt.setInteger("x", pos.getX());
+                nbt.setInteger("y", pos.getY());
+                nbt.setInteger("z", pos.getZ());
+            }
+        }
+
+        return nbt;
     }
 
     @Override

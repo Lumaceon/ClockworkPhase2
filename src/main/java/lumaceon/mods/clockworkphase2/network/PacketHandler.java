@@ -3,37 +3,32 @@ package lumaceon.mods.clockworkphase2.network;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.message.*;
 import lumaceon.mods.clockworkphase2.network.message.handler.*;
-import lumaceon.mods.clockworkphase2.network.message.handler.dummy.DummyHandlerParticleSpawn;
-import lumaceon.mods.clockworkphase2.network.message.handler.dummy.DummyHandlerPlayerDataOnWorldJoin;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler
 {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
-    public static final int ACHIEVEMENT_SCORE_ID = 50;
-    public static final int PARTICLE_SPAWN_ID = 52;
-    public static final int MAINSPRING_BUTTON_ID = 53;
-    public static final int TOOL_UPGRADE_ACTIVATE_ID = 54;
-    public static final int TILE_MACHINE_CONFIGURATION = 55;
-    public static final int TILE_MACHINE_CONFIGURATION_TANK = 56;
-    public static final int MACHINE_MODE_ACTIVATE = 57;
-    public static final int TEMPORAL_TOOLBELT_SWAP = 58;
-    public static final int PLAYER_DATA_CLIENT_UPDATE = 59;
-    public static final int ENTITY_CONSTRUCTOR_SET_RECIPE = 60;
+    private static int messageID = 1;
 
     public static void init()
     {
         //Note: the side passed in is the RECEIVING side.
-        INSTANCE.registerMessage(DummyHandlerParticleSpawn.class, MessageParticleSpawn.class, PARTICLE_SPAWN_ID, Side.SERVER);
-        INSTANCE.registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, MAINSPRING_BUTTON_ID, Side.SERVER);
-        INSTANCE.registerMessage(HandlerToolUpgradeActivate.class, MessageToolUpgradeActivate.class, TOOL_UPGRADE_ACTIVATE_ID, Side.SERVER);
-        INSTANCE.registerMessage(HandlerTileMachineConfiguration.class, MessageTileMachineConfiguration.class, TILE_MACHINE_CONFIGURATION, Side.SERVER);
-        INSTANCE.registerMessage(HandlerTileMachineConfigurationTank.class, MessageTileMachineConfigurationTank.class, TILE_MACHINE_CONFIGURATION_TANK, Side.SERVER);
-        INSTANCE.registerMessage(HandlerMachineModeActivate.class, MessageMachineModeActivate.class, MACHINE_MODE_ACTIVATE, Side.SERVER);
-        INSTANCE.registerMessage(HandlerTemporalToolbeltSwap.class, MessageTemporalToolbeltSwap.class, TEMPORAL_TOOLBELT_SWAP, Side.SERVER);
-        INSTANCE.registerMessage(DummyHandlerPlayerDataOnWorldJoin.class, MessagePlayerDataOnWorldJoin.class, PLAYER_DATA_CLIENT_UPDATE, Side.SERVER);
-        INSTANCE.registerMessage(HandlerEntityConstructorSetRecipe.class, MessageEntityConstructorSetRecipe.class, ENTITY_CONSTRUCTOR_SET_RECIPE, Side.SERVER);
+        registerMessage(HandlerParticleSpawn.class, MessageParticleSpawn.class, Side.CLIENT);
+        registerMessage(HandlerMainspringButton.class, MessageMainspringButton.class, Side.SERVER);
+        registerMessage(HandlerToolUpgradeActivate.class, MessageToolUpgradeActivate.class, Side.SERVER);
+        registerMessage(HandlerTileMachineConfiguration.class, MessageTileMachineConfiguration.class, Side.SERVER);
+        registerMessage(HandlerTileMachineConfigurationTank.class, MessageTileMachineConfigurationTank.class, Side.SERVER);
+        registerMessage(HandlerMachineModeActivate.class, MessageMachineModeActivate.class, Side.SERVER);
+        registerMessage(HandlerTemporalToolbeltSwap.class, MessageTemporalToolbeltSwap.class, Side.SERVER);
+        registerMessage(HandlerPlayerDataOnWorldJoin.class, MessagePlayerDataOnWorldJoin.class, Side.CLIENT);
+        registerMessage(HandlerEntityConstructorSetRecipe.class, MessageEntityConstructorSetRecipe.class, Side.SERVER);
+    }
+
+    private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side) {
+        INSTANCE.registerMessage(messageHandler, requestMessageType, messageID++, side);
     }
 }

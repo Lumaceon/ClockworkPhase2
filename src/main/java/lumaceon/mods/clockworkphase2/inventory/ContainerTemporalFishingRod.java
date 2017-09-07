@@ -1,6 +1,5 @@
 package lumaceon.mods.clockworkphase2.inventory;
 
-import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.InventoryAssemblyTableComponents;
 import lumaceon.mods.clockworkphase2.api.item.IFishingRelic;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotFishingRelic;
@@ -42,7 +41,7 @@ public class ContainerTemporalFishingRod extends Container
                 if(ip.getStackInSlot(9 + y * 9 + x) != fishingRodStack)
                     this.addSlotToContainer(new Slot(ip, 9 + y * 9 + x, playerInventoryX + x * 18, playerInventoryY + y * 18));
 
-        internalObjectInventory = new InventoryAssemblyTableComponents(64, fishingRodStack);
+        internalObjectInventory = new InventoryAssemblyTableComponents(this, 64, fishingRodStack);
 
         this.addSlotToContainer(new SlotFishingRelic(internalObjectInventory, 0, 80, 20));
     }

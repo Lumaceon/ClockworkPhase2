@@ -14,9 +14,9 @@ import lumaceon.mods.clockworkphase2.client.handler.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.client.handler.MouseInputHandler;
+import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
-import lumaceon.mods.clockworkphase2.network.PacketHandlerClient;
 import lumaceon.mods.clockworkphase2.network.message.MessageTemporalToolbeltSwap;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileArmillaryRing;
@@ -28,6 +28,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -37,6 +38,7 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.io.File;
 import java.util.List;
@@ -55,7 +57,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void init()
     {
-        PacketHandlerClient.init();
+
     }
 
     @Override
@@ -66,6 +68,27 @@ public class ClientProxy extends CommonProxy
     @Override
     public EntityPlayer getClientPlayer() {
         return Minecraft.getMinecraft() == null ? null : Minecraft.getMinecraft().player;
+    }
+
+    @Override
+    public IThreadListener getThreadListener(MessageContext context)
+    {
+        if(context.side.isClient())
+        {
+            return Minecraft.getMinecraft();
+        }
+        return null;
+    }
+
+    @Override
+    public EntityPlayer getPlayer(MessageContext context)
+    {
+        if(context.side.isClient())
+        {
+            return Minecraft.getMinecraft().player;
+        }
+
+        return null;
     }
 
     @Override
@@ -131,7 +154,7 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop)
     {
         switch (id)
         {

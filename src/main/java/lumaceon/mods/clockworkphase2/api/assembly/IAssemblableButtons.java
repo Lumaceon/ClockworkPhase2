@@ -1,5 +1,7 @@
 package lumaceon.mods.clockworkphase2.api.assembly;
 
+import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
+
 import java.util.List;
 
 public interface IAssemblableButtons extends IAssemblable
@@ -9,7 +11,7 @@ public interface IAssemblableButtons extends IAssemblable
      * are imported into your universal item class (such as GuiButton).
      * @param buttonList The list of buttons from the GUI to be added on to.
      */
-    public void initButtons(List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop);
+    public void initButtons(List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop);
 
     public void onButtonClicked(int buttonID, List buttonList);
 }

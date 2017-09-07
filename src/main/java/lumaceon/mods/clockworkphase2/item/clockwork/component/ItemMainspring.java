@@ -5,15 +5,16 @@ import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblableButtons;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
-import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
+import lumaceon.mods.clockworkphase2.capabilities.itemstack.ItemStackHandlerMod;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
+import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
+import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageMainspringButton;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -27,7 +28,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -47,7 +47,27 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        InformationDisplay.addMainspringInformation(stack, tooltip);
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("capacity"))
+        {
+            int cap = nbt.getInteger("capacity");
+            tooltip.add("Capacity: " + cap + " " + Names.ENERGY_ACRONYM);
+        }
+    }
+
+    @Override
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
+        {
+            nbt = new NBTTagCompound();
+        }
+
+        nbt.setInteger("capacity", getCurrentCapacity(stack));
+
+        return nbt;
     }
 
     @Override
@@ -85,7 +105,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
     }
 
     @Override
-    public void initButtons(List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
+    public void initButtons(List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop)
     {
         ClockworkPhase2.proxy.initializeButtonsViaProxy(0, buttonList, container, guiLeft, guiTop);
     }
@@ -171,9 +191,9 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
         }
     }
 
-    private static class ItemStackHandlerMainspring extends ItemStackHandler
+    public static class ItemStackHandlerMainspring extends ItemStackHandlerMod
     {
-        int capacity = 1000;
+        int capacity = MainspringMetalRegistry.INTERNAL.iron * 17;
 
         private ItemStackHandlerMainspring(int size) {
             super(size);
@@ -201,6 +221,19 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
             super.deserializeNBT(nbt);
             if(nbt.hasKey("CP2_MS_capacity"))
                 capacity = nbt.getInteger("CP2_MS_capacity");
+        }
+
+        @Override
+        public boolean equals(@Nullable final Object obj)
+        {
+            boolean ret = super.equals(obj);
+            if(ret)
+            {
+                final ItemStackHandlerMainspring that = (ItemStackHandlerMainspring) obj;
+                return this.getCapacity() == that.getCapacity();
+            }
+
+            return false;
         }
     }
 }

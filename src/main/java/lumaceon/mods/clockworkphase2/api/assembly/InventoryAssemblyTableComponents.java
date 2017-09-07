@@ -2,6 +2,7 @@ package lumaceon.mods.clockworkphase2.api.assembly;
 
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -18,11 +19,13 @@ public class InventoryAssemblyTableComponents implements IInventory
     @CapabilityInject(IItemHandler.class)
     static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
 
+    private Container container;
     private IItemHandler itemHandler;
     private int stackLimit;
 
-    public InventoryAssemblyTableComponents(int stackLimit, ItemStack construct)
+    public InventoryAssemblyTableComponents(Container container, int stackLimit, ItemStack construct)
     {
+        this.container = container;
         if(construct.isEmpty())
         {
             itemHandler = new ItemStackHandler(0);
@@ -66,13 +69,17 @@ public class InventoryAssemblyTableComponents implements IInventory
     @Nullable
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return itemHandler == null ? ItemStack.EMPTY : itemHandler.extractItem(index, count, false);
+        ItemStack ret = itemHandler == null ? ItemStack.EMPTY : itemHandler.extractItem(index, count, false);
+        container.detectAndSendChanges();
+        return ret;
     }
 
     @Nullable
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return itemHandler == null ? ItemStack.EMPTY : itemHandler.extractItem(index, 64, false);
+        ItemStack ret = itemHandler == null ? ItemStack.EMPTY : itemHandler.extractItem(index, 64, false);
+        container.detectAndSendChanges();
+        return ret;
     }
 
     @Override
@@ -82,6 +89,7 @@ public class InventoryAssemblyTableComponents implements IInventory
         {
             itemHandler.extractItem(index, 64, false);
             itemHandler.insertItem(index, stack, false);
+            container.detectAndSendChanges();
         }
     }
 
@@ -130,6 +138,7 @@ public class InventoryAssemblyTableComponents implements IInventory
         if(itemHandler != null)
             for(int i = 0; i < itemHandler.getSlots(); i++)
                 itemHandler.extractItem(i, 64, false);
+        container.detectAndSendChanges();
     }
 
     @Override

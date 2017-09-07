@@ -9,6 +9,7 @@ import lumaceon.mods.clockworkphase2.capabilities.timestorage.TimeStorage;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.util.ExperienceHelper;
+import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,11 +47,65 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("time"))
+        {
+            tooltip.add("Time: " + TimeConverter.parseNumber(nbt.getLong("time"), 2));
+        }
+    }
+
+    @Override
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
+        {
+            nbt = new NBTTagCompound();
+        }
+
+        IActivatableHandler activatableHandler = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
+        if(activatableHandler != null)
+        {
+            nbt.setBoolean("is_active", activatableHandler.getActive());
+        }
+
         ITimeStorage timeStorage = stack.getCapability(TIME, EnumFacing.DOWN);
         if(timeStorage != null)
         {
-            tooltip.add("Time: " + TimeConverter.parseNumber(timeStorage.getTimeInTicks(), 2));
+            nbt.setLong("time_max", timeStorage.getMaxCapacity());
+            nbt.setLong("time", timeStorage.getTimeInTicks());
         }
+
+        return nbt;
+    }
+
+    @Override
+    public int getDamage(ItemStack stack)
+    {
+        return getDamageFromTime(stack);
+    }
+
+    @Override
+    public int getMetadata(ItemStack stack) {
+        return getDamageFromTime(stack);
+    }
+
+    private int getDamageFromTime(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("time_max") && nbt.hasKey("time"))
+        {
+            long maxTime = nbt.getLong("time_max");
+            long time = nbt.getLong("time");
+            int damage = stack.getMaxDamage() - (int) ( ((double) time / (double) maxTime) * stack.getMaxDamage() );
+            if(damage <= 0)
+            {
+                damage = 1;
+            }
+            return damage;
+        }
+        return stack.getMaxDamage();
     }
 
     @Override
@@ -59,10 +114,13 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
         if(player.isSneaking())
             return EnumActionResult.FAIL;
 
-        ItemStack stack = player.getHeldItem(hand);
-        IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
-        if(cap != null)
-            cap.setActive();
+        if(!worldIn.isRemote)
+        {
+            ItemStack stack = player.getHeldItem(hand);
+            IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
+            if(cap != null)
+                cap.setActive();
+        }
 
         return EnumActionResult.SUCCESS;
     }
@@ -82,14 +140,29 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack) {
-        return this.isActive(stack);
+    public boolean hasEffect(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        return nbt != null && nbt.hasKey("is_active") && nbt.getBoolean("is_active");
     }
 
     @Override
-    public boolean isActive(ItemStack stack) {
-        IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
-        return cap == null || cap.getActive();
+    public boolean isActive(ItemStack stack)
+    {
+        if(SideHelper.isServerSide())
+        {
+            IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
+            return cap == null || cap.getActive();
+        }
+        else
+        {
+            NBTTagCompound nbt = stack.getTagCompound();
+            if(nbt != null && nbt.hasKey("is_active"))
+            {
+                return nbt.getBoolean("is_active");
+            }
+        }
+        return false;
     }
 
     @Override

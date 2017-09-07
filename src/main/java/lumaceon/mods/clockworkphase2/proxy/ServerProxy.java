@@ -1,18 +1,19 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
-import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.handler.ChunkLoadingHandler;
+import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import net.minecraft.block.Block;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.io.File;
 import java.util.List;
@@ -36,6 +37,26 @@ public class ServerProxy extends CommonProxy
 
     @Override
     public EntityPlayer getClientPlayer() { return null; }
+
+    @Override
+    public IThreadListener getThreadListener(MessageContext context)
+    {
+        if(context.side.isServer())
+        {
+            return context.getServerHandler().player.mcServer;
+        }
+        return null;
+    }
+
+    @Override
+    public EntityPlayer getPlayer(MessageContext context)
+    {
+        if(context.side.isServer())
+        {
+            return context.getServerHandler().player;
+        }
+        return null;
+    }
 
     @Override
     public void registerTESR() {}
@@ -62,7 +83,7 @@ public class ServerProxy extends CommonProxy
     @Override
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) { return null; }
     @Override
-    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop) {}
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop) {}
     @Override
     public File getMinecraftDataDirectory() { return null; }
 

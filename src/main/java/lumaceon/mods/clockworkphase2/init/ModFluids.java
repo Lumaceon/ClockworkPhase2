@@ -23,7 +23,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Mostly copied from Choonster's TestMod3.
+ * Adapted from <a href="Choonster's TestMod3.">https://github.com/Choonster-Minecraft-Mods/TestMod3</a>
+ *
+ * @author Choonster
  */
 public class ModFluids
 {

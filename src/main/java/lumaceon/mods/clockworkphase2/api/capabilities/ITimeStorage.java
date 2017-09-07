@@ -34,4 +34,6 @@ public interface ITimeStorage
      * @return The amount of time that was removed due to downsizing, or 0 if no time was lost.
      */
     long setMaxCapacity(long maxCapacity);
+
+    void setTime(long newTime);
 }

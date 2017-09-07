@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.api.assembly;
 
+import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -16,7 +17,7 @@ public class ContainerAssemblyTable extends Container
     public InventoryAssemblyTableComponents componentInventory;
     public World world;
     public EntityPlayer player;
-    private ItemStack previousMainStack = ItemStack.EMPTY;
+    protected ItemStack previousMainStack = ItemStack.EMPTY;
     public List buttonList = null;
     public int guiLeft = -1;
     public int guiTop = -1;
@@ -37,6 +38,27 @@ public class ContainerAssemblyTable extends Container
     }
 
     @Override
+    public void detectAndSendChanges()
+    {
+        for (int i = 0; i < this.inventorySlots.size(); ++i)
+        {
+            ItemStack itemstack = this.inventorySlots.get(i).getStack();
+            ItemStack itemstack1 = this.inventoryItemStacks.get(i);
+
+            if (!ItemStack.areItemStacksEqual(itemstack1, itemstack))
+            {
+                itemstack1 = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack.copy();
+                this.inventoryItemStacks.set(i, itemstack1);
+
+                for (int j = 0; j < this.listeners.size(); ++j)
+                {
+                    this.listeners.get(j).sendSlotContents(this, i, itemstack1);
+                }
+            }
+        }
+    }
+
+    @Override
     public void onCraftMatrixChanged(IInventory p_75130_1_)
     {
         ItemStack item = mainInventory.getStackInSlot(0);
@@ -46,13 +68,13 @@ public class ContainerAssemblyTable extends Container
         if(mainItemChanged)
         {
             //Remove the component inventory if the change is removal of the main item.
-            if((item == null || !(item.getItem() instanceof IAssemblable)) && componentInventory != null)
+            if((item.isEmpty() || !(item.getItem() instanceof IAssemblable)) && componentInventory != null)
             {
                 cleanContainerAndGUI();
             }
 
             //Set up the new component inventory if the main item has changed from a separate main item.
-            if(item != null && componentInventory != null && item.getItem() instanceof IAssemblable)
+            if(!item.isEmpty() && componentInventory != null && item.getItem() instanceof IAssemblable)
             {
                 cleanContainerAndGUI();
 
@@ -60,13 +82,14 @@ public class ContainerAssemblyTable extends Container
             }
 
             //Set up a component inventory if the main item has been added from the default screen.
-            if(item != null && componentInventory == null && item.getItem() instanceof IAssemblable)
+            if(!item.isEmpty() && componentInventory == null && item.getItem() instanceof IAssemblable)
             {
                 setupNewContainerAndGUI(item);
             }
         }
 
         previousMainStack = item;
+        detectAndSendChanges();
     }
 
     @Override
@@ -77,7 +100,7 @@ public class ContainerAssemblyTable extends Container
         if(!this.world.isRemote)
         {
             ItemStack itemstack = this.mainInventory.getStackInSlot(0);
-            if(itemstack != null)
+            if(!itemstack.isEmpty())
                 p_75134_1_.dropItem(itemstack, false);
         }
     }
@@ -130,6 +153,7 @@ public class ContainerAssemblyTable extends Container
         if(copy.getCount() == inputStack.getCount())
             return ItemStack.EMPTY;
         sourceSlot.onTake(player, copy);
+        detectAndSendChanges();
         return inputStack;
     }
 
@@ -230,14 +254,17 @@ public class ContainerAssemblyTable extends Container
         ItemStack item = mainInventory.getStackInSlot(0);
         if(item != null && item.getItem() instanceof IAssemblableButtons && buttonList != null && guiLeft != -1 && guiTop != -1)
         {
-            ((IAssemblableButtons) item.getItem()).initButtons(buttonList, this, guiLeft, guiTop);
+            if(this instanceof ContainerAssemblyTableClient)
+            {
+                ((IAssemblableButtons) item.getItem()).initButtons(buttonList, (ContainerAssemblyTableClient) this, guiLeft, guiTop);
+            }
         }
     }
 
-    private void setupNewContainerAndGUI(ItemStack item)
+    protected void setupNewContainerAndGUI(ItemStack item)
     {
         IAssemblable constructGUI = (IAssemblable) item.getItem();
-        componentInventory = new InventoryAssemblyTableComponents(1, item);
+        componentInventory = new InventoryAssemblyTableComponents(this, 1, item);
         Slot[] slots = constructGUI.getContainerSlots(componentInventory);
         for(Slot slot : slots)
         {
@@ -247,12 +274,14 @@ public class ContainerAssemblyTable extends Container
         if(item.getItem() instanceof IAssemblableButtons && buttonList != null && guiLeft != -1 && guiTop != -1)
         {
             IAssemblableButtons buttonGUI = (IAssemblableButtons) item.getItem();
-
-            buttonGUI.initButtons(buttonList, this, guiLeft, guiTop);
+            if(this instanceof ContainerAssemblyTableClient)
+            {
+                buttonGUI.initButtons(buttonList, (ContainerAssemblyTableClient) this, guiLeft, guiTop);
+            }
         }
     }
 
-    private void cleanContainerAndGUI()
+    protected void cleanContainerAndGUI()
     {
         componentInventory = null;
         while (this.inventorySlots.size() > 37)

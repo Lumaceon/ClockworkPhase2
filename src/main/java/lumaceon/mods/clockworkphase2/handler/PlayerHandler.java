@@ -92,10 +92,10 @@ public class PlayerHandler
         EntityPlayer player = event.player;
 
         //Find first hourglass in the inventory and update it if found (and xp is high enough).
-        int playerXP = player.experienceLevel;
-        if(playerXP >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_1)
+        if(player.world != null && !player.world.isRemote)
         {
-            if(player.world != null)
+            int playerXP = player.experienceLevel;
+            if(playerXP >= ConfigValues.HOURGLASS_XP_LEVEL_TIER_1)
             {
                 for(int i = 0; i < player.inventory.getSizeInventory(); i++)
                 {

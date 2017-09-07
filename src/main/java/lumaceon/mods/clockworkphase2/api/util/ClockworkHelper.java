@@ -1,7 +1,9 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockwork;
+import lumaceon.mods.clockworkphase2.util.NBTHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -11,6 +13,28 @@ public class ClockworkHelper
 {
     @CapabilityInject(IItemHandler.class)
     static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+
+    /**
+     * Only really relevant for client-side, as it uses the nbt data.
+     * @param stack An item stack with energy in the nbt data.
+     * @return The damage for the stack.
+     */
+    public static int getDamageFromEnergyForClient(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("energy_max") && nbt.hasKey("energy"))
+        {
+            int maxEnergy = nbt.getInteger("energy_max");
+            int energy = nbt.getInteger("energy");
+            int damage = stack.getMaxDamage() - (int) ( ((double) energy / (double) maxEnergy) * stack.getMaxDamage() );
+            if(damage <= 0)
+            {
+                damage = 1;
+            }
+            return damage;
+        }
+        return stack.getMaxDamage();
+    }
 
     private static ItemStackHandlerClockwork getHandler(ItemStack item)
     {
@@ -24,19 +48,43 @@ public class ClockworkHelper
         return null;
     }
 
-    public static int getQuality(ItemStack item) {
-        ItemStackHandlerClockwork handler = getHandler(item);
-        return handler == null ? 0 : handler.getQuality();
+    public static int getQuality(ItemStack item, boolean isServer)
+    {
+        if(isServer)
+        {
+            ItemStackHandlerClockwork handler = getHandler(item);
+            return handler == null ? 0 : handler.getQuality();
+        }
+        else
+        {
+            return NBTHelper.INT.get(item, "cw_quality");
+        }
     }
 
-    public static int getSpeed(ItemStack item) {
-        ItemStackHandlerClockwork handler = getHandler(item);
-        return handler == null ? 0 : handler.getSpeed();
+    public static int getSpeed(ItemStack item, boolean isServer)
+    {
+        if(isServer)
+        {
+            ItemStackHandlerClockwork handler = getHandler(item);
+            return handler == null ? 0 : handler.getSpeed();
+        }
+        else
+        {
+            return NBTHelper.INT.get(item, "cw_speed");
+        }
     }
 
-    public static int getTier(ItemStack item) {
-        ItemStackHandlerClockwork handler = getHandler(item);
-        return handler == null ? 0 : handler.getTier();
+    public static int getTier(ItemStack item, boolean isServer)
+    {
+        if(isServer)
+        {
+            ItemStackHandlerClockwork handler = getHandler(item);
+            return handler == null ? 0 : handler.getTier();
+        }
+        else
+        {
+            return NBTHelper.INT.get(item, "cw_tier");
+        }
     }
 
     /**

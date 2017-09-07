@@ -8,12 +8,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 
-import java.util.concurrent.Callable;
-
 public class CapabilityTimeStorage
 {
     @CapabilityInject(ITimeStorage.class)
     public static final Capability<ITimeStorage> TIME_STORAGE_CAPABILITY = null;
+
+    public static final EnumFacing DEFAULT_FACING = null;
 
     public static void register()
     {
@@ -34,12 +34,6 @@ public class CapabilityTimeStorage
                 instance.setMaxCapacity(((NBTTagCompound) base).getLong("max_capacity"));
                 instance.insertTime(((NBTTagCompound) base).getLong("ticks_stored"));
             }
-        }, new Callable<ITimeStorage>()
-        {
-            @Override
-            public TimeStorage call() throws Exception {
-                return new TimeStorage();
-            }
-        });
+        }, TimeStorage::new);
     }
 }

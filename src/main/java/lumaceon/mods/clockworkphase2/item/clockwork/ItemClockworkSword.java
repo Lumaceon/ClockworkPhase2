@@ -15,6 +15,7 @@ import lumaceon.mods.clockworkphase2.inventory.slot.SlotItemSpecific;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import lumaceon.mods.clockworkphase2.util.Colors;
 import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
+import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +32,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -70,14 +70,14 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        IEnergyStorage energyCap = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
-        if(energyCap != null)
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("energy") && nbt.hasKey("energy_max"))
         {
-            InformationDisplay.addEnergyInformation(energyCap, tooltip);
+            InformationDisplay.addEnergyInformation(nbt.getInteger("energy"), nbt.getInteger("energy_max"), tooltip);
         }
 
-        int quality = getQuality(stack);
-        int speed = getSpeed(stack);
+        int quality = getQuality(stack, SideHelper.isServerSide(worldIn));
+        int speed = getSpeed(stack, SideHelper.isServerSide(worldIn));
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
         {
             tooltip.add("");
@@ -108,6 +108,40 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     }
 
     @Override
+    @Nullable
+    public NBTTagCompound getNBTShareTag(ItemStack stack)
+    {
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt == null)
+        {
+            nbt = new NBTTagCompound();
+        }
+
+        ItemStackHandlerClockworkConstruct cw = getClockworkItemHandler(stack);
+        nbt.setInteger("cw_speed", cw.getSpeed());
+        nbt.setInteger("cw_quality", cw.getQuality());
+
+        IEnergyStorage energyStorage = stack.getCapability(ENERGY_STORAGE_CAPABILITY, EnumFacing.DOWN);
+        if(energyStorage != null)
+        {
+            nbt.setInteger("energy_max", energyStorage.getMaxEnergyStored());
+            nbt.setInteger("energy", energyStorage.getEnergyStored());
+        }
+
+        return nbt;
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return ClockworkHelper.getDamageFromEnergyForClient(stack);
+    }
+
+    @Override
+    public int getMetadata(ItemStack stack) {
+        return ClockworkHelper.getDamageFromEnergyForClient(stack);
+    }
+
+    @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker)
     {
         if(attacker instanceof EntityPlayer)
@@ -121,8 +155,8 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
                     target.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) attacker), 0.0F);
                     return true;
                 }
-                int quality = getQuality(stack);
-                int speed = getSpeed(stack);
+                int quality = getQuality(stack, SideHelper.isServerSide());
+                int speed = getSpeed(stack, SideHelper.isServerSide());
                 int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed);
 
                 energyStorage.extractEnergy(energyCost, false);
@@ -157,23 +191,31 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
     }
 
     @Override
-    public int getTier(ItemStack item) {
-        return ClockworkHelper.getTier(item);
+    public int getTier(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getTier(item, isServer);
     }
 
     @Override
-    public int getQuality(ItemStack item) {
-        return ClockworkHelper.getQuality(item);
+    public int getQuality(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getQuality(item, isServer);
     }
 
     @Override
-    public int getSpeed(ItemStack item) {
-        return ClockworkHelper.getSpeed(item);
+    public int getSpeed(ItemStack item, boolean isServer) {
+        return ClockworkHelper.getSpeed(item, isServer);
     }
 
     @Override
     public String getSimpleName() {
         return simpleName;
+    }
+
+    private ItemStackHandlerClockworkConstruct getClockworkItemHandler(ItemStack is)
+    {
+        IItemHandler itemHandler = is.getCapability(ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if(itemHandler != null && itemHandler instanceof ItemStackHandlerClockworkConstruct)
+            return (ItemStackHandlerClockworkConstruct) itemHandler;
+        return null;
     }
 
     @Override
@@ -198,8 +240,8 @@ public class ItemClockworkSword extends ItemSword implements IAssemblable, ICloc
         else
             energy = energyStorage.getEnergyStored();
 
-        int quality = getQuality(stack);
-        int speed = getSpeed(stack);
+        int quality = getQuality(stack, SideHelper.isServerSide());
+        int speed = getSpeed(stack, SideHelper.isServerSide());
         int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_ATTACK, quality, speed);
         if(energyCost > energy)
         {

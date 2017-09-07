@@ -1,9 +1,9 @@
 package lumaceon.mods.clockworkphase2.api.capabilities;
 
+import lumaceon.mods.clockworkphase2.capabilities.itemstack.ItemStackHandlerMod;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemStackHandlerClockwork extends ItemStackHandler
+public class ItemStackHandlerClockwork extends ItemStackHandlerMod
 {
     protected int quality, speed, tier;
 

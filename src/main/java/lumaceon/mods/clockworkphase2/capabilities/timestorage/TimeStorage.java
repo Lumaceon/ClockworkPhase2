@@ -4,6 +4,8 @@ import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class TimeStorage implements ITimeStorage
 {
     long capacity;
@@ -68,6 +70,11 @@ public class TimeStorage implements ITimeStorage
         return 0;
     }
 
+    @Override
+    public void setTime(long newTime) {
+        this.timeStored = newTime;
+    }
+
     public void setTimeStored(long time) {
         timeStored = time;
         updateItemMetadata();
@@ -92,5 +99,16 @@ public class TimeStorage implements ITimeStorage
                 this.updateStack.setItemDamage(damage);
             }
         }
+    }
+
+    @Override
+    public boolean equals(@Nullable final Object obj)
+    {
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+
+        final TimeStorage that = (TimeStorage) obj;
+
+        return capacity == that.capacity && timeStored == that.timeStored;
     }
 }

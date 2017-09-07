@@ -4,7 +4,6 @@ import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
 import lumaceon.mods.clockworkphase2.api.util.InformationDisplay;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,17 +32,17 @@ public class ItemGear extends ItemClockworkPhase implements IClockwork
     }
 
     @Override
-    public int getQuality(ItemStack is) {
+    public int getQuality(ItemStack is, boolean isServer) {
         return quality;
     }
 
     @Override
-    public int getSpeed(ItemStack is) {
+    public int getSpeed(ItemStack is, boolean isServer) {
         return speed;
     }
 
     @Override
-    public int getTier(ItemStack is) {
+    public int getTier(ItemStack is, boolean isServer) {
         return harvestLevel;
     }
 }

@@ -2,6 +2,9 @@ package lumaceon.mods.clockworkphase2.api.capabilities;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.IEnergyStorage;
+
+import javax.annotation.Nullable;
 
 public class EnergyStorageModular extends EnergyStorage
 {
@@ -27,36 +30,13 @@ public class EnergyStorageModular extends EnergyStorage
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int previousRet = super.receiveEnergy(maxReceive, simulate);
-        setMetadataForItem();
         return previousRet;
     }
 
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         int previousRet = super.extractEnergy(maxExtract, simulate);
-        setMetadataForItem();
         return previousRet;
-    }
-
-    private void setMetadataForItem()
-    {
-        if(this.stack != null)
-        {
-            if(this.getMaxEnergyStored() <= 0)
-            {
-                this.stack.setItemDamage(stack.getMaxDamage());
-            }
-            else
-            {
-                int damage = this.stack.getMaxDamage() - (int) ( ((double) energy / (double) getMaxEnergyStored()) * stack.getMaxDamage() );
-                if(damage <= 0)
-                {
-                    damage = 1;
-                }
-
-                this.stack.setItemDamage(damage);
-            }
-        }
     }
 
     public void setEnergy(int energy) {
@@ -70,5 +50,21 @@ public class EnergyStorageModular extends EnergyStorage
         this.maxExtract = capacity;
         this.maxReceive = capacity;
         this.energy = Math.min(capacity, energy);
+    }
+
+    @Override
+    public boolean equals(@Nullable final Object obj)
+    {
+        if(this == obj) return true;
+        if(obj == null || getClass() != obj.getClass()) return false;
+
+        final IEnergyStorage that = (IEnergyStorage) obj;
+
+        return this.getMaxEnergyStored() == that.getMaxEnergyStored() && this.getEnergyStored() == that.getEnergyStored();
+    }
+
+    @Override
+    public int hashCode() {
+        return capacity + energy % 100;
     }
 }

@@ -3,6 +3,7 @@ package lumaceon.mods.clockworkphase2.client.gui;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblable;
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.api.assembly.IAssemblableButtons;
+import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import lumaceon.mods.clockworkphase2.lib.Textures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -18,7 +19,7 @@ public class GuiAssemblyTable extends GuiContainer
     public int x, y, z;
 
     public GuiAssemblyTable(InventoryPlayer ip, World world, int x, int y, int z) {
-        super(new ContainerAssemblyTable(ip, world));
+        super(new ContainerAssemblyTableClient(ip, world));
         this.world = world;
         this.x = x;
         this.y = y;

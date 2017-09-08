@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.handler.ChunkLoadingHandler;
-import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -73,7 +73,6 @@ public class ServerProxy extends CommonProxy
     @Override
     public void initSideHandlers() {
         MinecraftForge.EVENT_BUS.register(new ChunkLoadingHandler());
-        //MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenHandler());
     }
 
     @Override
@@ -83,7 +82,7 @@ public class ServerProxy extends CommonProxy
     @Override
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider) { return null; }
     @Override
-    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop) {}
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop) {}
     @Override
     public File getMinecraftDataDirectory() { return null; }
 

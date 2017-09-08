@@ -70,11 +70,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound nbt = stack.getTagCompound();
-        if(nbt != null && nbt.hasKey("energy") && nbt.hasKey("energy_max"))
-        {
-            InformationDisplay.addEnergyInformation(nbt.getInteger("energy"), nbt.getInteger("energy_max"), tooltip);
-        }
+        InformationDisplay.addEnergyInformation(stack, tooltip);
 
         if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
         {
@@ -143,16 +139,16 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
     }
 
     @Override
-    public int getQuality(ItemStack item, boolean isServer) {
-        return ClockworkHelper.getQuality(item, isServer);
+    public int getQuality(ItemStack item) {
+        return ClockworkHelper.getQuality(item);
     }
     @Override
-    public int getSpeed(ItemStack item, boolean isServer) {
-        return ClockworkHelper.getSpeed(item, isServer);
+    public int getSpeed(ItemStack item) {
+        return ClockworkHelper.getSpeed(item);
     }
     @Override
-    public int getTier(ItemStack item, boolean isServer) {
-        return ClockworkHelper.getTier(item, isServer);
+    public int getTier(ItemStack item) {
+        return ClockworkHelper.getTier(item);
     }
 
     @Override
@@ -161,7 +157,7 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
         int harvestLevel = -1;
 
         if(toolClass.equals(this.getHarvestType()))
-            return this.getTier(stack, SideHelper.isServerSide());
+            return this.getTier(stack);
 
         return harvestLevel;
     }
@@ -305,10 +301,10 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
             }
         }
 
-        int speed = getSpeed(is, SideHelper.isServerSide());
+        int speed = getSpeed(is);
         if(speed <= 0)
         {
-            speed = getSpeed(is, !SideHelper.isServerSide());
+            speed = getSpeed(is);
             if(speed <= 0)
                 return 0.0F;
         }
@@ -354,8 +350,8 @@ public abstract class ItemClockworkTool extends ItemTool implements IAssemblable
             if(currentEnergy <= 0)
                 return true;
 
-            int quality = getQuality(is, SideHelper.isServerSide(world));
-            int speed = getSpeed(is, SideHelper.isServerSide(world));
+            int quality = getQuality(is);
+            int speed = getSpeed(is);
             int tensionCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
 
             energyStorage.extractEnergy(tensionCost, false);

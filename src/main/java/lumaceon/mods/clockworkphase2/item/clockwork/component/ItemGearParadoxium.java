@@ -40,17 +40,17 @@ public class ItemGearParadoxium extends ItemGear
     }
 
     @Override
-    public int getQuality(ItemStack is, boolean isServer) {
+    public int getQuality(ItemStack is) {
         return NBTHelper.INT.get(is, "quality");
     }
 
     @Override
-    public int getSpeed(ItemStack is, boolean isServer) {
+    public int getSpeed(ItemStack is) {
         return NBTHelper.INT.get(is, "speed");
     }
 
     @Override
-    public int getTier(ItemStack is, boolean isServer) {
+    public int getTier(ItemStack is) {
         return NBTHelper.INT.get(is, "tier");
     }
 

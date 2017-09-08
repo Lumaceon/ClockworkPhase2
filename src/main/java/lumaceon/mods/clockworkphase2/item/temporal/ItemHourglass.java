@@ -9,7 +9,6 @@ import lumaceon.mods.clockworkphase2.capabilities.timestorage.TimeStorage;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.util.ExperienceHelper;
-import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -52,6 +51,14 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
         {
             tooltip.add("Time: " + TimeConverter.parseNumber(nbt.getLong("time"), 2));
         }
+        else
+        {
+            ITimeStorage timeStorage = stack.getCapability(TIME, null);
+            if(timeStorage != null)
+            {
+                tooltip.add("Time: " + TimeConverter.parseNumber(timeStorage.getTimeInTicks(), 2));
+            }
+        }
     }
 
     @Override
@@ -93,19 +100,36 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
 
     private int getDamageFromTime(ItemStack stack)
     {
+        long maxTime = 1;
+        long time = 0;
+
         NBTTagCompound nbt = stack.getTagCompound();
         if(nbt != null && nbt.hasKey("time_max") && nbt.hasKey("time"))
         {
-            long maxTime = nbt.getLong("time_max");
-            long time = nbt.getLong("time");
-            int damage = stack.getMaxDamage() - (int) ( ((double) time / (double) maxTime) * stack.getMaxDamage() );
-            if(damage <= 0)
-            {
-                damage = 1;
-            }
-            return damage;
+            maxTime = nbt.getLong("time_max");
+            time = nbt.getLong("time");
         }
-        return stack.getMaxDamage();
+        else
+        {
+            ITimeStorage timeStorage = stack.getCapability(TIME, null);
+            if(timeStorage != null)
+            {
+                maxTime = timeStorage.getMaxCapacity();
+                time = timeStorage.getTimeInTicks();
+            }
+        }
+
+        if(maxTime < 1)
+        {
+            return stack.getMaxDamage();
+        }
+
+        int damage = stack.getMaxDamage() - (int) ( ((double) time / (double) maxTime) * stack.getMaxDamage() );
+        if(damage <= 0)
+        {
+            damage = 1;
+        }
+        return damage;
     }
 
     @Override
@@ -140,29 +164,16 @@ public class ItemHourglass extends ItemClockworkPhase implements IHourglass
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack)
-    {
-        NBTTagCompound nbt = stack.getTagCompound();
-        return nbt != null && nbt.hasKey("is_active") && nbt.getBoolean("is_active");
+    public boolean hasEffect(ItemStack stack) {
+        return isActive(stack);
     }
 
     @Override
     public boolean isActive(ItemStack stack)
     {
-        if(SideHelper.isServerSide())
-        {
-            IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
-            return cap == null || cap.getActive();
-        }
-        else
-        {
-            NBTTagCompound nbt = stack.getTagCompound();
-            if(nbt != null && nbt.hasKey("is_active"))
-            {
-                return nbt.getBoolean("is_active");
-            }
-        }
-        return false;
+        IActivatableHandler cap = stack.getCapability(ACTIVATABLE, EnumFacing.DOWN);
+        NBTTagCompound nbt = stack.getTagCompound();
+        return (nbt != null && nbt.hasKey("is_active") && nbt.getBoolean("is_active") || (cap != null && cap.getActive()));
     }
 
     @Override

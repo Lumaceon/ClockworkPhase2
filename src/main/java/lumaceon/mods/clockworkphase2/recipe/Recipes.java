@@ -764,10 +764,10 @@ public class Recipes
         {
             firstItem = new ItemStack(ModItems.ingotCopper);
             firstItem.setCount(3);
-            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 3);
+            first = new AlloyRecipes.RecipeComponent(firstItem, "ingotCopper", (byte) 3);
 
             secondItem = new ItemStack(ModItems.ingotZinc);
-            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, "ingotZinc", (byte) 1);
 
             output = new ItemStack(ModItems.ingotBrass);
             output.setCount(4);
@@ -779,11 +779,11 @@ public class Recipes
         {
             firstItem = new ItemStack(ModItems.ingotCopper);
             firstItem.setCount(3);
-            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 3);
+            first = new AlloyRecipes.RecipeComponent(firstItem, "ingotCopper", (byte) 3);
 
             secondItem = OreDictionary.getOres("ingotTin").get(0).copy();
             secondItem.setCount(1);
-            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, "ingotTin", (byte) 1);
 
             output = OreDictionary.getOres("ingotBronze").get(0).copy();
             output.setCount(4);
@@ -794,11 +794,11 @@ public class Recipes
         {
             firstItem = new ItemStack(Items.IRON_INGOT);
             firstItem.setCount(2);
-            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 2);
+            first = new AlloyRecipes.RecipeComponent(firstItem, "ingotIron", (byte) 2);
 
             secondItem = OreDictionary.getOres("ingotNickel").get(0).copy();
             secondItem.setCount(1);
-            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, "ingotNickel", (byte) 1);
 
             output = OreDictionary.getOres("ingotInvar").get(0).copy();
             output.setCount(3);
@@ -809,11 +809,11 @@ public class Recipes
         {
             firstItem = new ItemStack(ModItems.ingotCopper);
             firstItem.setCount(1);
-            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 1);
+            first = new AlloyRecipes.RecipeComponent(firstItem, "ingotCopper", (byte) 1);
 
             secondItem = OreDictionary.getOres("ingotAluminum").get(0).copy();
             secondItem.setCount(3);
-            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 3);
+            second = new AlloyRecipes.RecipeComponent(secondItem, "ingotAluminum", (byte) 3);
 
             output = OreDictionary.getOres("ingotAluminumBrass").get(0).copy();
             output.setCount(4);
@@ -824,11 +824,11 @@ public class Recipes
         {
             firstItem = OreDictionary.getOres("ingotCobalt").get(0).copy();
             firstItem.setCount(1);
-            first = new AlloyRecipes.RecipeComponent(firstItem, (byte) 1);
+            first = new AlloyRecipes.RecipeComponent(firstItem, "ingotCobalt", (byte) 1);
 
             secondItem = OreDictionary.getOres("ingotArdite").get(0).copy();
             secondItem.setCount(1);
-            second = new AlloyRecipes.RecipeComponent(secondItem, (byte) 1);
+            second = new AlloyRecipes.RecipeComponent(secondItem, "ingotArdite", (byte) 1);
 
             output = OreDictionary.getOres("ingotManyullyn").get(0).copy();
             output.setCount(2);

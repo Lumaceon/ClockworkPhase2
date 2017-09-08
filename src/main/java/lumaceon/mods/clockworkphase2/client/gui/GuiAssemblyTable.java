@@ -19,7 +19,7 @@ public class GuiAssemblyTable extends GuiContainer
     public int x, y, z;
 
     public GuiAssemblyTable(InventoryPlayer ip, World world, int x, int y, int z) {
-        super(new ContainerAssemblyTableClient(ip, world));
+        super(Minecraft.getMinecraft().isIntegratedServerRunning() ? new ContainerAssemblyTable(ip, world) : new ContainerAssemblyTableClient(ip, world));
         this.world = world;
         this.x = x;
         this.y = y;

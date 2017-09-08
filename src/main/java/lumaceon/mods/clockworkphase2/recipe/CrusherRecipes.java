@@ -2,7 +2,9 @@ package lumaceon.mods.clockworkphase2.recipe;
 
 
 import lumaceon.mods.clockworkphase2.util.LogHelper;
+import lumaceon.mods.clockworkphase2.util.OreDictHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ public class CrusherRecipes
      */
     private boolean compareItemStacks(ItemStack stack1, ItemStack stack2)
     {
-        return stack2.getItem() == stack1.getItem() && (stack2.getMetadata() == 32767 || stack2.getMetadata() == stack1.getMetadata());
+        return OreDictHelper.itemsMatch(stack1, stack2);
     }
 
     public static class CrusherRecipe

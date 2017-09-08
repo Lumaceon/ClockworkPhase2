@@ -7,7 +7,6 @@ import lumaceon.mods.clockworkphase2.api.assembly.IAssemblableButtons;
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
 import lumaceon.mods.clockworkphase2.capabilities.itemstack.ItemStackHandlerMod;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
-import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotMainspringMetal;
 import lumaceon.mods.clockworkphase2.item.ItemClockworkPhase;
 import lumaceon.mods.clockworkphase2.lib.Names;
@@ -53,6 +52,14 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
             int cap = nbt.getInteger("capacity");
             tooltip.add("Capacity: " + cap + " " + Names.ENERGY_ACRONYM);
         }
+        else
+        {
+            ItemStackHandlerMainspring mainspring = (ItemStackHandlerMainspring) stack.getCapability(ITEM_HANDLER_CAPABILITY, null);
+            if(mainspring != null)
+            {
+                tooltip.add("Capacity: " + mainspring.getCapacity() + " " + Names.ENERGY_ACRONYM);
+            }
+        }
     }
 
     @Override
@@ -63,6 +70,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
         if(nbt == null)
         {
             nbt = new NBTTagCompound();
+            stack.setTagCompound(nbt);
         }
 
         nbt.setInteger("capacity", getCurrentCapacity(stack));
@@ -105,7 +113,7 @@ public class ItemMainspring extends ItemClockworkPhase implements IAssemblableBu
     }
 
     @Override
-    public void initButtons(List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop)
+    public void initButtons(List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
     {
         ClockworkPhase2.proxy.initializeButtonsViaProxy(0, buttonList, container, guiLeft, guiTop);
     }

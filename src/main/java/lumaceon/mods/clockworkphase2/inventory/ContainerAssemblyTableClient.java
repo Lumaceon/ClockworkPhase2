@@ -64,7 +64,6 @@ public class ContainerAssemblyTableClient extends ContainerAssemblyTable
         }
 
         previousMainStack = item;
-        detectAndSendChanges();
     }
 
     @Override

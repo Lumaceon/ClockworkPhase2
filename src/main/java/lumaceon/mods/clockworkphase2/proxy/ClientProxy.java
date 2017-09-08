@@ -154,7 +154,7 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop)
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop)
     {
         switch (id)
         {

@@ -1,11 +1,12 @@
 package lumaceon.mods.clockworkphase2.api.util;
 
 import lumaceon.mods.clockworkphase2.api.item.clockwork.IClockwork;
-import lumaceon.mods.clockworkphase2.api.item.clockwork.IMainspring;
+import lumaceon.mods.clockworkphase2.lib.Names;
 import lumaceon.mods.clockworkphase2.util.Colors;
-import lumaceon.mods.clockworkphase2.util.SideHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 import java.util.List;
@@ -22,10 +23,27 @@ public class InformationDisplay
 
     public static int defaultTensionPerBlock = 50;
 
-    public static void addEnergyInformation(int current, int max, List<String> tooltip)
+    public static void addEnergyInformation(ItemStack stack, List<String> tooltip)
     {
-        String color = getColorFromTension(current, max);
-        tooltip.add("Energy: " + color + current + " / " + max + " FE");
+        int currentEnergy = 0;
+        int maxEnergy = 0;
+        NBTTagCompound nbt = stack.getTagCompound();
+        if(nbt != null && nbt.hasKey("energy") && nbt.hasKey("energy_max"))
+        {
+            currentEnergy = nbt.getInteger("energy");
+            maxEnergy = nbt.getInteger("energy_max");
+        }
+        else
+        {
+            IEnergyStorage energyStorage = stack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(energyStorage != null)
+            {
+                currentEnergy = energyStorage.getEnergyStored();
+                maxEnergy = energyStorage.getMaxEnergyStored();
+            }
+        }
+        String color = getColorFromTension(currentEnergy, maxEnergy);
+        tooltip.add("Energy: " + color + currentEnergy + " / " + maxEnergy + " " + Names.ENERGY_ACRONYM);
     }
 
     /**
@@ -38,9 +56,9 @@ public class InformationDisplay
         if(component.getItem() instanceof IClockwork)
         {
             IClockwork clockworkComponent = (IClockwork) component.getItem();
-            int quality = clockworkComponent.getQuality(component, SideHelper.isServerSide());
-            int speed = clockworkComponent.getSpeed(component, SideHelper.isServerSide());
-            int harvestLevel = clockworkComponent.getTier(component, SideHelper.isServerSide());
+            int quality = clockworkComponent.getQuality(component);
+            int speed = clockworkComponent.getSpeed(component);
+            int harvestLevel = clockworkComponent.getTier(component);
 
             String color = getColorFromComponentStat(quality);
             list.add(Colors.WHITE + "Quality: " + color + quality);
@@ -57,8 +75,8 @@ public class InformationDisplay
         if(component.getItem() instanceof IClockwork)
         {
             IClockwork clockworkComponent = (IClockwork) component.getItem();
-            int quality = clockworkComponent.getQuality(component, SideHelper.isServerSide());
-            int speed = clockworkComponent.getSpeed(component, SideHelper.isServerSide());
+            int quality = clockworkComponent.getQuality(component);
+            int speed = clockworkComponent.getSpeed(component);
 
             String color = getColorFromComponentStat(quality);
             list.add(Colors.WHITE + "Quality: " + color + quality);
@@ -71,9 +89,9 @@ public class InformationDisplay
     public static void addClockworkToolInformation(ItemStack tool, EntityPlayer player, List list)
     {
         IClockwork clockworkComponent = (IClockwork) tool.getItem();
-        int quality = clockworkComponent.getQuality(tool, SideHelper.isServerSide());
-        int speed = clockworkComponent.getSpeed(tool, SideHelper.isServerSide());
-        int harvestLevel = clockworkComponent.getTier(tool, SideHelper.isServerSide());
+        int quality = clockworkComponent.getQuality(tool);
+        int speed = clockworkComponent.getSpeed(tool);
+        int harvestLevel = clockworkComponent.getTier(tool);
 
         list.add(Colors.WHITE + "Harvest Level: " + Colors.GOLD + harvestLevel + " " + getMaterialNameFromHarvestLevel(harvestLevel));
         list.add(Colors.WHITE + "Mining Speed: " + Colors.GOLD + speed / 25);
@@ -85,8 +103,8 @@ public class InformationDisplay
         if(is.getItem() instanceof IClockwork)
         {
             IClockwork clockwork = (IClockwork) is.getItem();
-            list.add("Quality: " + clockwork.getQuality(is, SideHelper.isServerSide()));
-            list.add("Speed: " + clockwork.getSpeed(is, SideHelper.isServerSide()));
+            list.add("Quality: " + clockwork.getQuality(is));
+            list.add("Speed: " + clockwork.getSpeed(is));
         }
     }
 

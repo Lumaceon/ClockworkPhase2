@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.recipe;
 
 import lumaceon.mods.clockworkphase2.util.LogHelper;
+import lumaceon.mods.clockworkphase2.util.OreDictHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.FluidStack;
@@ -115,7 +116,7 @@ public class CrystallizerRecipes
                 int currentNumber = 0;
                 for(ItemStack item : craftingInventory)
                 {
-                    if(!item.isEmpty() && OreDictionary.itemMatches(is, item, false))
+                    if(!item.isEmpty() && OreDictHelper.itemsMatch(is, item))
                     {
                         currentNumber += item.getCount();
                         if(currentNumber >= targetNumber)

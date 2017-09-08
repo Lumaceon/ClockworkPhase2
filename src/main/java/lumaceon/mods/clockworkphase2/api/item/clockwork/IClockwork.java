@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 
 public interface IClockwork
 {
-    public int getQuality(ItemStack item, boolean isServer);
-    public int getSpeed(ItemStack item, boolean isServer);
+    public int getQuality(ItemStack item);
+    public int getSpeed(ItemStack item);
 
     /**
      * Default tiles tools will take on the greatest 'tier' found in their components as their harvest level.
@@ -20,5 +20,5 @@ public interface IClockwork
      * 5 - Mod tools (Not used in vanilla, a good example is the Manyullyn pickaxe from Tinker's Construct).
      * @return This component's tier.
      */
-    public int getTier(ItemStack item, boolean isServer);
+    public int getTier(ItemStack item);
 }

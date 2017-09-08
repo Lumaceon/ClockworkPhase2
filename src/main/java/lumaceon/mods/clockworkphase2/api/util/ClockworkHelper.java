@@ -7,6 +7,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 
 public class ClockworkHelper
@@ -15,25 +17,41 @@ public class ClockworkHelper
     static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
 
     /**
-     * Only really relevant for client-side, as it uses the nbt data.
-     * @param stack An item stack with energy in the nbt data.
+     * @param stack An item stack with energy either in NBT or capabilities.
      * @return The damage for the stack.
      */
     public static int getDamageFromEnergyForClient(ItemStack stack)
     {
+        int maxEnergy = 1;
+        int energy = 0;
+
         NBTTagCompound nbt = stack.getTagCompound();
         if(nbt != null && nbt.hasKey("energy_max") && nbt.hasKey("energy"))
         {
-            int maxEnergy = nbt.getInteger("energy_max");
-            int energy = nbt.getInteger("energy");
-            int damage = stack.getMaxDamage() - (int) ( ((double) energy / (double) maxEnergy) * stack.getMaxDamage() );
-            if(damage <= 0)
-            {
-                damage = 1;
-            }
-            return damage;
+            maxEnergy = nbt.getInteger("energy_max");
+            energy = nbt.getInteger("energy");
         }
-        return stack.getMaxDamage();
+        else
+        {
+            IEnergyStorage energyStorage = stack.getCapability(CapabilityEnergy.ENERGY, null);
+            if(energyStorage != null)
+            {
+                maxEnergy = energyStorage.getMaxEnergyStored();
+                energy = energyStorage.getEnergyStored();
+            }
+        }
+
+        if(maxEnergy < 1)
+        {
+            return stack.getMaxDamage();
+        }
+
+        int damage = stack.getMaxDamage() - (int) ( ((double) energy / (double) maxEnergy) * stack.getMaxDamage() );
+        if(damage <= 0)
+        {
+            damage = 1;
+        }
+        return damage;
     }
 
     private static ItemStackHandlerClockwork getHandler(ItemStack item)
@@ -48,43 +66,41 @@ public class ClockworkHelper
         return null;
     }
 
-    public static int getQuality(ItemStack item, boolean isServer)
+    public static int getQuality(ItemStack item)
     {
-        if(isServer)
+        if(NBTHelper.hasTag(item, "cw_quality"))
         {
-            ItemStackHandlerClockwork handler = getHandler(item);
-            return handler == null ? 0 : handler.getQuality();
+            int quality = NBTHelper.INT.get(item, "cw_quality");
+            if(quality > 0)
+                return quality;
         }
-        else
-        {
-            return NBTHelper.INT.get(item, "cw_quality");
-        }
+
+        ItemStackHandlerClockwork handler = getHandler(item);
+        return handler == null ? 0 : handler.getQuality();
     }
 
-    public static int getSpeed(ItemStack item, boolean isServer)
+    public static int getSpeed(ItemStack item)
     {
-        if(isServer)
+        if(NBTHelper.hasTag(item, "cw_speed"))
         {
-            ItemStackHandlerClockwork handler = getHandler(item);
-            return handler == null ? 0 : handler.getSpeed();
+            int speed = NBTHelper.INT.get(item, "cw_speed");
+            if(speed > 0)
+                return speed;
         }
-        else
-        {
-            return NBTHelper.INT.get(item, "cw_speed");
-        }
+        ItemStackHandlerClockwork handler = getHandler(item);
+        return handler == null ? 0 : handler.getSpeed();
     }
 
-    public static int getTier(ItemStack item, boolean isServer)
+    public static int getTier(ItemStack item)
     {
-        if(isServer)
+        if(NBTHelper.hasTag(item, "cw_tier"))
         {
-            ItemStackHandlerClockwork handler = getHandler(item);
-            return handler == null ? 0 : handler.getTier();
+            int tier = NBTHelper.INT.get(item, "cw_tier");
+            if(tier > 0)
+                return tier;
         }
-        else
-        {
-            return NBTHelper.INT.get(item, "cw_tier");
-        }
+        ItemStackHandlerClockwork handler = getHandler(item);
+        return handler == null ? 0 : handler.getTier();
     }
 
     /**

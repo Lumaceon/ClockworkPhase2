@@ -1,7 +1,6 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
-import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -34,7 +33,7 @@ public interface IProxy
     public void spawnParticle(int modParticleID, double x, double y, double z);
     public void clearWorldRenderers(World world, int x, int y, int z);
     public IRenderHandler getSkyRendererForWorld(WorldProvider worldProvider);
-    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTableClient container, int guiLeft, int guiTop);
+    public void initializeButtonsViaProxy(int id, List buttonList, ContainerAssemblyTable container, int guiLeft, int guiTop);
     public File getMinecraftDataDirectory();
     public void sendBlockDestroyPacket(BlockPos pos);
     public void onClientTick(TickEvent.ClientTickEvent event);

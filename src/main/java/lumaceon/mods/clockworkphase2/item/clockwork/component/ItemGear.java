@@ -32,17 +32,17 @@ public class ItemGear extends ItemClockworkPhase implements IClockwork
     }
 
     @Override
-    public int getQuality(ItemStack is, boolean isServer) {
+    public int getQuality(ItemStack is) {
         return quality;
     }
 
     @Override
-    public int getSpeed(ItemStack is, boolean isServer) {
+    public int getSpeed(ItemStack is) {
         return speed;
     }
 
     @Override
-    public int getTier(ItemStack is, boolean isServer) {
+    public int getTier(ItemStack is) {
         return harvestLevel;
     }
 }

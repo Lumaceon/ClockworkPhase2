@@ -40,12 +40,12 @@ public class ContainerAssemblyTable extends Container
     @Override
     public void detectAndSendChanges()
     {
-        for (int i = 0; i < this.inventorySlots.size(); ++i)
+        for(int i = 0; i < this.inventorySlots.size(); ++i)
         {
             ItemStack itemstack = this.inventorySlots.get(i).getStack();
             ItemStack itemstack1 = this.inventoryItemStacks.get(i);
 
-            if (!ItemStack.areItemStacksEqual(itemstack1, itemstack))
+            if(!ItemStack.areItemStacksEqual(itemstack1, itemstack))
             {
                 itemstack1 = itemstack.isEmpty() ? ItemStack.EMPTY : itemstack.copy();
                 this.inventoryItemStacks.set(i, itemstack1);
@@ -178,6 +178,19 @@ public class ContainerAssemblyTable extends Container
                     int j = itemstack.getCount() + stack.getCount();
                     if(j <= stack.getMaxStackSize() && j <= slot.getSlotStackLimit())
                     {
+                        ItemStack replacementForOldStack = stack.copy();
+                        replacementForOldStack.setCount(0);
+                        for(Slot tempSlot : this.inventorySlots)
+                        {
+                            ItemStack is = tempSlot.getStack();
+                            if(!is.isEmpty() && is == stack) //The exact same stack...
+                            {
+                                tempSlot.putStack(replacementForOldStack); //...so we set it to a shrunk copy of itself.
+                                stack = replacementForOldStack;
+                                break;
+                            }
+                        }
+
                         stack.setCount(0);
                         itemstack.setCount(j);
                         slot.onSlotChanged();
@@ -185,6 +198,19 @@ public class ContainerAssemblyTable extends Container
                     }
                     else if(itemstack.getCount() < stack.getMaxStackSize() && itemstack.getCount() < slot.getSlotStackLimit())
                     {
+                        ItemStack replacementForOldStack = stack.copy();
+                        replacementForOldStack.shrink(stack.getMaxStackSize() - itemstack.getCount());
+                        for(Slot tempSlot : this.inventorySlots)
+                        {
+                            ItemStack is = tempSlot.getStack();
+                            if(!is.isEmpty() && is == stack) //The exact same stack...
+                            {
+                                tempSlot.putStack(replacementForOldStack); //...so we set it to a shrunk copy of itself.
+                                stack = replacementForOldStack;
+                                break;
+                            }
+                        }
+
                         stack.shrink(stack.getMaxStackSize() - itemstack.getCount());
                         itemstack.setCount(stack.getMaxStackSize());
                         slot.onSlotChanged();
@@ -254,10 +280,7 @@ public class ContainerAssemblyTable extends Container
         ItemStack item = mainInventory.getStackInSlot(0);
         if(item != null && item.getItem() instanceof IAssemblableButtons && buttonList != null && guiLeft != -1 && guiTop != -1)
         {
-            if(this instanceof ContainerAssemblyTableClient)
-            {
-                ((IAssemblableButtons) item.getItem()).initButtons(buttonList, (ContainerAssemblyTableClient) this, guiLeft, guiTop);
-            }
+            ((IAssemblableButtons) item.getItem()).initButtons(buttonList, this, guiLeft, guiTop);
         }
     }
 
@@ -274,10 +297,7 @@ public class ContainerAssemblyTable extends Container
         if(item.getItem() instanceof IAssemblableButtons && buttonList != null && guiLeft != -1 && guiTop != -1)
         {
             IAssemblableButtons buttonGUI = (IAssemblableButtons) item.getItem();
-            if(this instanceof ContainerAssemblyTableClient)
-            {
-                buttonGUI.initButtons(buttonList, (ContainerAssemblyTableClient) this, guiLeft, guiTop);
-            }
+            buttonGUI.initButtons(buttonList, this, guiLeft, guiTop);
         }
     }
 

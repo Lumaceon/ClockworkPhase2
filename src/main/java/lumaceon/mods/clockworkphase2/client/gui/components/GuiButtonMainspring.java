@@ -1,6 +1,7 @@
 package lumaceon.mods.clockworkphase2.client.gui.components;
 
 import lumaceon.mods.clockworkphase2.api.MainspringMetalRegistry;
+import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
 import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -10,9 +11,9 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiButtonMainspring extends GuiButton
 {
-    private ContainerAssemblyTableClient containerAssemblyTable;
+    private ContainerAssemblyTable containerAssemblyTable;
 
-    public GuiButtonMainspring(int p_i1021_1_, int p_i1021_2_, int p_i1021_3_, int p_i1021_4_, int p_i1021_5_, ContainerAssemblyTableClient container) {
+    public GuiButtonMainspring(int p_i1021_1_, int p_i1021_2_, int p_i1021_3_, int p_i1021_4_, int p_i1021_5_, ContainerAssemblyTable container) {
         super(p_i1021_1_, p_i1021_2_, p_i1021_3_, p_i1021_4_, p_i1021_5_, "+");
         this.containerAssemblyTable = container;
     }
@@ -49,8 +50,16 @@ public class GuiButtonMainspring extends GuiButton
             }
 
             int metalAddition = 0;
-            for(int n = 0; n < containerAssemblyTable.inventory.getSizeInventory(); n++)
-                metalAddition += MainspringMetalRegistry.getValue(containerAssemblyTable.inventory.getStackInSlot(n));
+            if(containerAssemblyTable instanceof ContainerAssemblyTableClient)
+            {
+                for(int n = 0; n < ((ContainerAssemblyTableClient) containerAssemblyTable).inventory.getSizeInventory(); n++)
+                    metalAddition += MainspringMetalRegistry.getValue(((ContainerAssemblyTableClient) containerAssemblyTable).inventory.getStackInSlot(n));
+            }
+            else
+            {
+                for(int n = 0; n <  containerAssemblyTable.componentInventory.getSizeInventory(); n++)
+                    metalAddition += MainspringMetalRegistry.getValue(containerAssemblyTable.componentInventory.getStackInSlot(n));
+            }
 
             this.drawCenteredString(fontrenderer, this.displayString + metalAddition + " Tension", this.x + this.width / 2, this.y + (this.height - 8) / 2, l);
         }

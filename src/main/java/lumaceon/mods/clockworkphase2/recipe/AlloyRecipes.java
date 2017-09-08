@@ -75,8 +75,8 @@ public class AlloyRecipes
 
         public boolean sameRecipe(AlloyRecipe anotherRecipe)
         {
-            if((this.first.itemMatches(anotherRecipe.first.item) || this.first.itemMatches(anotherRecipe.second.item))
-            && (this.second.itemMatches(anotherRecipe.first.item) || this.second.itemMatches(anotherRecipe.second.item)))
+            if((this.first.isSameComponent(anotherRecipe.first) || this.first.isSameComponent(anotherRecipe.second))
+            && (this.second.isSameComponent(anotherRecipe.first) || this.second.isSameComponent(anotherRecipe.second)))
                 return true;
             return false;
         }
@@ -85,10 +85,12 @@ public class AlloyRecipes
     public static class RecipeComponent
     {
         public ItemStack item;
+        public String oreName;
         public byte ratio = 1;
 
-        public RecipeComponent(ItemStack item, byte ratio) {
+        public RecipeComponent(ItemStack item, String oreName, byte ratio) {
             this.item = item;
+            this.oreName = oreName;
             this.ratio = ratio;
         }
 
@@ -100,11 +102,15 @@ public class AlloyRecipes
             if(item.isEmpty() || item.getCount() < ratio)
                 return false;
 
-            return this.item != null && OreDictionary.itemMatches(this.item, item, false);
+            return this.item != null && OreDictionary.containsMatch(false, OreDictionary.getOres(this.oreName), item);
         }
 
         public boolean metalExists() {
-            return ratio > 0 && ratio <= 64 && item != null;
+            return ratio > 0 && ratio <= 64 && oreName != null && item != null;
+        }
+
+        public boolean isSameComponent(RecipeComponent component) {
+            return component.oreName.equals(this.oreName) && component.ratio == this.ratio;
         }
     }
 }

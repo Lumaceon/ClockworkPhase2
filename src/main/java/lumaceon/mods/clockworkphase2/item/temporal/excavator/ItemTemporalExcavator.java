@@ -79,11 +79,7 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        NBTTagCompound nbt = stack.getTagCompound();
-        if(nbt != null && nbt.hasKey("energy") && nbt.hasKey("energy_max"))
-        {
-            InformationDisplay.addEnergyInformation(nbt.getInteger("energy"), nbt.getInteger("energy_max"), tooltip);
-        }
+        InformationDisplay.addEnergyInformation(stack, tooltip);
     }
 
     @Override
@@ -245,8 +241,8 @@ public class ItemTemporalExcavator extends ItemTool implements IAssemblable, IKe
             if(currentEnergy <= 0)
                 return true;
 
-            int quality = clockworkConstruct.getQuality(mostSpeedyTool, SideHelper.isServerSide(world));
-            int speed = clockworkConstruct.getSpeed(mostSpeedyTool, SideHelper.isServerSide(world));
+            int quality = clockworkConstruct.getQuality(mostSpeedyTool);
+            int speed = clockworkConstruct.getSpeed(mostSpeedyTool);
             int energyCost = ClockworkHelper.getTensionCostFromStats(ConfigValues.BASE_TENSION_COST_PER_BLOCK_BREAK, quality, speed);
 
             energyStorage.extractEnergy(energyCost, false);

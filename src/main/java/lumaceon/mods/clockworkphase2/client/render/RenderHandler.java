@@ -295,7 +295,7 @@ public class RenderHandler
                         j2 = i - 91 - 22;
                     }
 
-                    mc.getTextureManager().bindTexture(Gui.ICONS);
+                    mc.getTextureManager().bindTexture(Gui.MOD_ICONS);
                     int k1 = (int)(f1 * 19.0F);
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                     this.drawTexturedModalRectVanilla(j2, i2 - pixelsUp, 0, 94, 18, 18, 0.0F);
@@ -335,7 +335,7 @@ public class RenderHandler
 
     private void renderExpBar(ScaledResolution scaledRes, int x, EnumAchievementTier tier)
     {
-        mc.getTextureManager().bindTexture(Gui.ICONS);
+        mc.getTextureManager().bindTexture(Gui.MOD_ICONS);
         int i = mc.thePlayer.xpBarCap();
 
         if(i > 0)

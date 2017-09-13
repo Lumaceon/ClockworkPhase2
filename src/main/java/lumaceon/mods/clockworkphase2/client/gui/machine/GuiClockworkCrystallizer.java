@@ -70,7 +70,7 @@ public class GuiClockworkCrystallizer extends GuiClockworkMachine
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-        mc.renderEngine.bindTexture(ICONS);
+        mc.renderEngine.bindTexture(MOD_ICONS);
         int i = guiLeft;
         int j = guiTop;
 

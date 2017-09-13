@@ -39,7 +39,7 @@ public class GuiClockworkFurnace extends GuiClockworkMachine
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
-        Minecraft.getMinecraft().renderEngine.bindTexture(ICONS);
+        Minecraft.getMinecraft().renderEngine.bindTexture(MOD_ICONS);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
 

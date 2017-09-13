@@ -2,9 +2,9 @@ package lumaceon.mods.clockworkphase2.tile.machine;
 
 import lumaceon.mods.clockworkphase2.inventory.slot.SlotNever;
 import lumaceon.mods.clockworkphase2.recipe.AlloyRecipes;
+import lumaceon.mods.clockworkphase2.util.OreDictHelper;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
         //Recipes will always retain the same order but this may not be the way the player places the items.
         //If the second inventory slot matches the first item in the recipe, we'll consider it "flipped."
         boolean isRecipeFlipped = false;
-        if(OreDictionary.itemMatches(recipe.first.item, inventory.get(1), false))
+        if(OreDictHelper.itemsMatch(recipe.first.item, inventory.get(1)))
             isRecipeFlipped = true;
 
         //Stack cost is respective of the INVENTORY slot. So first item, here, is what to remove from index 0.
@@ -87,7 +87,7 @@ public class TileClockworkAlloyFurnace extends TileClockworkMachine
         //Recipes will always retain the same order but this may not be the way the player places the items.
         //If the second inventory slot matches the first item in the recipe, we'll consider it "flipped."
         boolean isRecipeFlipped = false;
-        if(OreDictionary.itemMatches(recipe.first.item, inventory.get(1), false))
+        if(OreDictHelper.itemsMatch(recipe.first.item, inventory.get(1)))
             isRecipeFlipped = true;
 
         //Stack cost is respective of the INVENTORY slot. So first item, here, is what to remove from index 0.

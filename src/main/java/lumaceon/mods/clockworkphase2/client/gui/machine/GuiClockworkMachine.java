@@ -41,7 +41,7 @@ public class GuiClockworkMachine extends GuiContainer
     protected static ResourceLocation PROGRESS_HAND = new ResourceLocation(Reference.MOD_ID, "textures/gui/progress_hand.png");
     protected static ResourceLocation POWER_BAR_RED = new ResourceLocation(Reference.MOD_ID, "textures/gui/red_power_bar.png");
     protected static ResourceLocation SIDE_CONFIG_ARROWS = new ResourceLocation(Reference.MOD_ID, "textures/gui/side_config_arrows.png");
-    public static ResourceLocation ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/icons.png");
+    public static ResourceLocation MOD_ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/icons.png");
     public static ResourceLocation OVERLAY = new ResourceLocation(Reference.MOD_ID, "textures/gui/overlayeffect.png");
 
     protected static ItemStack GEAR_STACK_FOR_DISPLAY = new ItemStack(ModItems.gearCreative);

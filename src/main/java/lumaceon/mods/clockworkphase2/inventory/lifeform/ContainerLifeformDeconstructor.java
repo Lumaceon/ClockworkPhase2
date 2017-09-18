@@ -11,7 +11,7 @@ public class ContainerLifeformDeconstructor extends ContainerClockworkMachine
 
     public ContainerLifeformDeconstructor(EntityPlayer player, TileClockworkMachine tile)
     {
-        super(tile, 28, 83);
+        super(tile, 28, 103);
 
         this.tile = tile;
         this.player = player;

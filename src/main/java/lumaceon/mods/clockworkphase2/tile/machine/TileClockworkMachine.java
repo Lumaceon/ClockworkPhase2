@@ -792,6 +792,11 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
 
     protected ArrayList<ItemStack> outputItems(ArrayList<ItemStack> items)
     {
+        return outputItems(items, EXPORT_SLOTS);
+    }
+
+    protected ArrayList<ItemStack> outputItems(ArrayList<ItemStack> items, int[] exportSlots)
+    {
         for(int i = 0; i < 6; i++)
         {
             if(items.isEmpty())
@@ -836,7 +841,7 @@ public abstract class TileClockworkMachine extends TileMod implements ISidedInve
             for(int n = 0; n < items.size(); n++)
             {
                 ItemStack temp = items.get(n);
-                ItemStack leftover = exportItem(temp, EXPORT_SLOTS, false);
+                ItemStack leftover = exportItem(temp, exportSlots, false);
                 if(!leftover.isEmpty())
                 {
                     items.set(n, leftover);

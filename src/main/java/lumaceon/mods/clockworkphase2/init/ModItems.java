@@ -5,6 +5,7 @@ import lumaceon.mods.clockworkphase2.api.RelicExcavationRegistry;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateArmillaryRing;
 import lumaceon.mods.clockworkphase2.block.multiblocktemplate.MultiblockTemplateCelestialCompass;
 import lumaceon.mods.clockworkphase2.config.ConfigValues;
+import lumaceon.mods.clockworkphase2.item.mob.ItemBrain;
 import lumaceon.mods.clockworkphase2.item.mob.ItemMobCapsule;
 import lumaceon.mods.clockworkphase2.item.multiblocktemplate.ItemMultiblockTemplate;
 import lumaceon.mods.clockworkphase2.item.temporal.*;
@@ -84,6 +85,7 @@ public class ModItems
     public static Item trowelDiamond;
     //LIFE MODIFICATION
     public static Item mobCapsule;
+    public static Item mobBrain;
     //TOOL UPGRADES
     public static Item toolUpgradeTemporalInfuser;
     public static Item toolUpgradeSilk;
@@ -309,6 +311,9 @@ public class ModItems
 
         mobCapsule = new ItemMobCapsule(1, 64, "mob_capsule");
         register(mobCapsule);
+
+        mobBrain = new ItemBrain(1, 64, "mob_brain");
+        register(mobBrain);
 
         //TOOL UPGRADES
         toolUpgradeTemporalInfuser = new ItemToolUpgradeTemporalInfuser(1, 100, "tool_upgrade_temporal_infusion");

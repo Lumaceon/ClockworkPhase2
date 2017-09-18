@@ -7,14 +7,17 @@ import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkCrusher;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.client.gui.machine.GuiClockworkFurnace;
 import lumaceon.mods.clockworkphase2.client.gui.machine.lifeform.GuiLifeformConstructor;
+import lumaceon.mods.clockworkphase2.client.gui.machine.lifeform.GuiLifeformDeconstructor;
 import lumaceon.mods.clockworkphase2.inventory.*;
 import lumaceon.mods.clockworkphase2.inventory.lifeform.ContainerLifeformConstructor;
+import lumaceon.mods.clockworkphase2.inventory.lifeform.ContainerLifeformDeconstructor;
 import lumaceon.mods.clockworkphase2.lib.GUIs;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkAlloyFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrusher;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.lifeform.TileLifeformConstructor;
+import lumaceon.mods.clockworkphase2.tile.machine.lifeform.TileLifeformDeconstructor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -70,6 +73,12 @@ public class GuiHandler implements IGuiHandler
             TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
             if(te != null && te instanceof TileLifeformConstructor)
                 return new ContainerLifeformConstructor(player, (TileLifeformConstructor) te);
+        }
+        else if(ID == GUIs.LIFEFORM_DECONSTRUCTOR.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileLifeformDeconstructor)
+                return new ContainerLifeformDeconstructor(player, (TileLifeformDeconstructor) te);
         }
         else if(ID == GUIs.TEMPORAL_FISHING_ROD.ordinal())
         {
@@ -137,6 +146,12 @@ public class GuiHandler implements IGuiHandler
             TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
             if(te != null && te instanceof TileLifeformConstructor)
                 return new GuiLifeformConstructor(player, (TileLifeformConstructor) te);
+        }
+        else if(ID == GUIs.LIFEFORM_DECONSTRUCTOR.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileLifeformDeconstructor)
+                return new GuiLifeformDeconstructor(player, (TileLifeformDeconstructor) te);
         }
         else if(ID == GUIs.TEMPORAL_FISHING_ROD.ordinal())
         {

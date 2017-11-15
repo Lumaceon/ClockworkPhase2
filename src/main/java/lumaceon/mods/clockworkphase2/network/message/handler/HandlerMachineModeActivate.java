@@ -1,6 +1,6 @@
 package lumaceon.mods.clockworkphase2.network.message.handler;
 
-import lumaceon.mods.clockworkphase2.api.temporal.ITemporalTile;
+import lumaceon.mods.clockworkphase2.tile.ITemporalTile;
 import lumaceon.mods.clockworkphase2.network.message.MessageMachineModeActivate;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;

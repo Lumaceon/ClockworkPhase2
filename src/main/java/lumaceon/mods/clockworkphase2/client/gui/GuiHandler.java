@@ -15,6 +15,7 @@ import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrusher;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkCrystallizer;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkFurnace;
 import lumaceon.mods.clockworkphase2.tile.machine.lifeform.TileLifeformConstructor;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneModulator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -78,6 +79,12 @@ public class GuiHandler implements IGuiHandler
             {
                 return new ContainerTemporalFishingRod(player, stackInHand);
             }
+        }
+        else if(ID == GUIs.TIMEZONE_MODULATOR_CONSTRUCTION.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileTimezoneModulator)
+                return new ContainerTimezoneModulatorConstruction(te);
         }
         return null;
     }
@@ -145,6 +152,12 @@ public class GuiHandler implements IGuiHandler
             {
                 return new GuiTemporalFishingRod(player, stackInHand);
             }
+        }
+        else if(ID == GUIs.TIMEZONE_MODULATOR_CONSTRUCTION.ordinal())
+        {
+            TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
+            if(te != null && te instanceof TileTimezoneModulator)
+                return new GuiTimezoneModulator(te);
         }
         return null;
     }

@@ -1,10 +1,8 @@
 package lumaceon.mods.clockworkphase2.item;
 
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITemporalRelay;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneInternalStorage;
-import lumaceon.mods.clockworkphase2.capabilities.toolbelt.CapabilityTemporalToolbelt;
-import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
+import lumaceon.mods.clockworkphase2.api.timezone.ITemporalRelay;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneInternalStorage;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
 import lumaceon.mods.clockworkphase2.util.FluidTankSided;
 import lumaceon.mods.clockworkphase2.util.LogHelper;

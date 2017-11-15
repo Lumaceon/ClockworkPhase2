@@ -1,8 +1,8 @@
 package lumaceon.mods.clockworkphase2.block.temporal;
 
 import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneInternalStorage;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneInternalStorage;
 import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalRelay;
 import lumaceon.mods.clockworkphase2.util.BlockStateUpdateHelper;
@@ -26,10 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockTemporalRelay extends BlockClockworkPhase implements ITileEntityProvider

@@ -65,6 +65,8 @@ public class ModBlocks
     public static Block celestialCompass;
     public static Block celestialCompassSB;
     public static Block temporalZoningMachine;
+    public static Block timezoneModulator;
+    public static Block timezoneModulatorBottom;
     public static Block armillaryRing;
     public static Block armillaryRingFrame;
     public static Block armillaryRingFrameBottom;
@@ -167,6 +169,12 @@ public class ModBlocks
         temporalZoningMachine = new BlockTemporalZoningMachine(Material.IRON, "temporal_zoning_machine");
         register(temporalZoningMachine);
 
+        timezoneModulator = new BlockTimezoneModulator(Material.WOOD, "timezone_modulator");
+        register(timezoneModulator);
+
+        timezoneModulatorBottom = new BlockTimezoneModulator.BlockTimezoneModulatorBottom(Material.WOOD, "timezone_modulator_bottom");
+        register(timezoneModulatorBottom);
+
         armillaryRing = new BlockArmillaryRing(Material.IRON, "armillary_ring");
         register(armillaryRing);
 
@@ -208,7 +216,6 @@ public class ModBlocks
         lifeformConstructor.setCreativeTab(null);
         lifeformReconstructor.setCreativeTab(null);
         lifeformDeconstructor.setCreativeTab(null);
-        temporalZoningMachine.setCreativeTab(null);
 
         postInit();
     }
@@ -235,6 +242,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileLifeformDeconstructor.class, lifeformDeconstructor.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalRelay.class, temporalRelay.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileTimezoneModulator.class, timezoneModulator.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileArmillaryRing.class, armillaryRing.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
 

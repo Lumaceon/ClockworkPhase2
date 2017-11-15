@@ -78,29 +78,10 @@ public class ParticleTimestream extends Particle
         int k = i & 65535;
         Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
 
-        /*if (this.particleAngle != 0.0F)
-        {
-            float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
-            float f9 = MathHelper.cos(f8 * 0.5F);
-            float f10 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.x;
-            float f11 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.y;
-            float f12 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.z;
-            Vec3d vec3d = new Vec3d((double)f10, (double)f11, (double)f12);
-
-            for (int l = 0; l < 4; ++l)
-            {
-                avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double)(f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double)(2.0F * f9)));
-            }
-        }*/
-
-        //GlStateManager.enableBlend();
-        //Tessellator tessellator = Tessellator.getInstance();
-        //buffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
         buffer.pos((double)f5 + avec3d[0].x, (double)f6 + avec3d[0].y, (double)f7 + avec3d[0].z).tex((double)f1, (double)f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
         buffer.pos((double)f5 + avec3d[1].x, (double)f6 + avec3d[1].y, (double)f7 + avec3d[1].z).tex((double)f1, (double)f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
         buffer.pos((double)f5 + avec3d[2].x, (double)f6 + avec3d[2].y, (double)f7 + avec3d[2].z).tex((double)f, (double)f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
         buffer.pos((double)f5 + avec3d[3].x, (double)f6 + avec3d[3].y, (double)f7 + avec3d[3].z).tex((double)f, (double)f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
-        //tessellator.draw();
     }
 
     @Override
@@ -109,7 +90,6 @@ public class ParticleTimestream extends Particle
         if(!isChild && particleAge % 4 == 0)
         {
             ModParticles.addParticle(new ParticleTimestream(world, posX, posY, posZ, true));
-            //Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleTimestream(world, posX, posY, posZ, true));
         }
         if(isChild)
         {

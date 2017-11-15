@@ -1,6 +1,9 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.*;
+import lumaceon.mods.clockworkphase2.api.timezone.ITemporalRelay;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneInternalStorage;
 import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
 import lumaceon.mods.clockworkphase2.util.BlockStateUpdateHelper;
 import net.minecraft.nbt.NBTTagCompound;

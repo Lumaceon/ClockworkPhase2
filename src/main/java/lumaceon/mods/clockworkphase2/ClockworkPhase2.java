@@ -70,9 +70,10 @@ public class ClockworkPhase2
         ModBlocks.init();
         ModBlocks.initTE();
         ModFluids.registerFluidContainers();
-        proxy.registerCustomModels();
-
         ModBiomes.init();
+        ModTZFunctions.init();
+
+        proxy.registerCustomModels();
 
         GameRegistry.registerWorldGenerator(oreGenerator, 0);
 

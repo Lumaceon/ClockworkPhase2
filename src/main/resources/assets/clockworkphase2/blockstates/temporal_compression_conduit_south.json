@@ -1,0 +1,78 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "clockworkphase2:temporal_compression_conduit",
+		"transform": "forge:default-block"
+    },
+	"variants": {
+		"normal": [{}],
+		"inventory": [{}],
+        "corner": {
+            "true": {
+                "submodel": {
+                    "main_conn": { "model": "clockworkphase2:temporal_compression_conduit_corner", "y": 0 }
+                },
+                "model": "clockworkphase2:empty"
+            },
+            "false": {
+               "y": 0
+            }
+        },
+        "north_c": {
+            "true": {
+                "submodel": {
+                    "s_conn": { "model": "clockworkphase2:temporal_compression_conduit_corner_sub", "y": 0 }
+                }
+            },
+            "false": {
+
+            }
+        },
+        "south_c": {
+            "true": {
+
+            },
+            "false": {
+
+            }
+        },
+        "west_c": {
+            "true": {
+                "submodel": {
+                    "e_conn": { "model": "clockworkphase2:temporal_compression_conduit_corner_sub", "y": 270 }
+                }
+            },
+            "false": {
+
+            }
+        },
+        "east_c": {
+            "true": {
+                "submodel": {
+                    "e_conn": { "model": "clockworkphase2:temporal_compression_conduit_corner_sub", "y": 90 }
+                }
+            },
+            "false": {
+
+            }
+        },
+        "down_c": {
+            "true": {
+                "submodel": {
+                    "down_conn": { "model": "clockworkphase2:temporal_compression_conduit_corner_sub", "x": 90 }
+                }
+            },
+            "false": {
+
+            }
+        },
+        "up_c": {
+            "true": {
+                "submodel": {
+                    "up_conn": { "model": "clockworkphase2:temporal_compression_conduit_corner_sub", "x": 270 }
+                }
+            },
+            "false": {}
+        }
+    }
+}

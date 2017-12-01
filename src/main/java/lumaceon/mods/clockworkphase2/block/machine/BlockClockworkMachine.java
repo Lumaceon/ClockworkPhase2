@@ -1,5 +1,6 @@
 package lumaceon.mods.clockworkphase2.block.machine;
 
+import lumaceon.mods.clockworkphase2.api.temporal.ITimeSink;
 import lumaceon.mods.clockworkphase2.block.BlockClockworkPhase;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
 import net.minecraft.block.BlockHorizontal;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 
 @SuppressWarnings("deprecation")
-public abstract class BlockClockworkMachine extends BlockClockworkPhase implements ITileEntityProvider
+public abstract class BlockClockworkMachine extends BlockClockworkPhase implements ITileEntityProvider, ITimeSink
 {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
     public static final PropertyBool TEMPORAL = PropertyBool.create("temporal");

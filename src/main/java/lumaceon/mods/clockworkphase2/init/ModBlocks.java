@@ -25,6 +25,7 @@ import lumaceon.mods.clockworkphase2.util.ISimpleNamed;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 
 public class ModBlocks
 {
-    public static ArrayList<Block> blocksForModel = new ArrayList<Block>(200);
+    public static ArrayList<Block> blocksForModel = new ArrayList<>(200);
 
     //ORES
     public static Block oreCopper;
@@ -69,6 +70,16 @@ public class ModBlocks
     public static Block armillaryRingFrame;
     public static Block armillaryRingFrameBottom;
     public static Block armillaryRingFrameBottomCorner;
+        //temporal conduits
+        public static BlockTemporalCompressionConduit temporalCompressionConduitUp;
+        public static BlockTemporalCompressionConduit temporalCompressionConduitDown;
+        public static BlockTemporalCompressionConduit temporalCompressionConduitWest;
+        public static BlockTemporalCompressionConduit temporalCompressionConduitEast;
+        public static BlockTemporalCompressionConduit temporalCompressionConduitNorth;
+        public static BlockTemporalCompressionConduit temporalCompressionConduitSouth;
+        public static BlockTemporalCompressionConduit temporalCompressionConduitEnd;
+    public static Block temporalCompressionCollector;
+    public static Block temporalCompressor;
     //MISC
     public static Block basicWindingBox;
     public static Block assemblyTable;
@@ -185,6 +196,25 @@ public class ModBlocks
         celestialCompassSB = new BlockCelestialCompassSB(Material.GLASS, "celestial_compass_sb");
         register(celestialCompassSB);
 
+            //temporal compression conduits
+            temporalCompressionConduitUp = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_up", EnumFacing.UP);
+            register(temporalCompressionConduitUp);
+            temporalCompressionConduitDown = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_down", EnumFacing.DOWN);
+            register(temporalCompressionConduitDown);
+            temporalCompressionConduitWest = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_west", EnumFacing.WEST);
+            register(temporalCompressionConduitWest);
+            temporalCompressionConduitEast = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_east", EnumFacing.EAST);
+            register(temporalCompressionConduitEast);
+            temporalCompressionConduitNorth = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_north", EnumFacing.NORTH);
+            register(temporalCompressionConduitNorth);
+            temporalCompressionConduitSouth = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_south", EnumFacing.SOUTH);
+            register(temporalCompressionConduitSouth);
+            temporalCompressionConduitEnd = new BlockTemporalCompressionConduit(Material.GLASS, "temporal_compression_conduit_end", null);
+            register(temporalCompressionConduitEnd);
+
+        temporalCompressor = new BlockTemporalCompressor(Material.IRON, "temporal_compressor");
+        register(temporalCompressor);
+
         //MISC
         basicWindingBox = new BlockBasicWindingBox(Material.IRON, "basic_winding_box");
         register(basicWindingBox);
@@ -237,6 +267,7 @@ public class ModBlocks
         GameRegistry.registerTileEntity(TileTemporalZoningMachine.class, temporalZoningMachine.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileArmillaryRing.class, armillaryRing.getUnlocalizedName());
         GameRegistry.registerTileEntity(TileCelestialCompass.class, celestialCompass.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileTemporalCompressor.class, temporalCompressor.getUnlocalizedName());
 
         //CLOCKWORK NETWORK
         /*GameRegistry.registerTileEntity(TileClockworkNetworkConnector.class, clockworkNetworkConnector.getUnlocalizedName());

@@ -1,9 +1,9 @@
 package lumaceon.mods.clockworkphase2.tile.temporal;
 
 import com.google.common.collect.ImmutableSet;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.Timezone;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.Timezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.tile.generic.TileMod;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.ChunkPos;
@@ -11,6 +11,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 
@@ -23,6 +25,8 @@ public class TileTemporalZoningMachine extends TileMod implements ITickable
     boolean hasRegistedTimezone = false;
 
     ITimezone timezone = new Timezone(this);
+
+
 
     @Override
     public void update()
@@ -71,5 +75,17 @@ public class TileTemporalZoningMachine extends TileMod implements ITickable
         if(capability != null && capability == TIMEZONE)
             return TIMEZONE.cast(timezone);
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public net.minecraft.util.math.AxisAlignedBB getRenderBoundingBox() {
+        return INFINITE_EXTENT_AABB;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 356D * 356D;
     }
 }

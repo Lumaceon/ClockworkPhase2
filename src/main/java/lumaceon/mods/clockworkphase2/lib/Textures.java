@@ -29,11 +29,16 @@ public class Textures
         public static ResourceLocation GUIDEBOOK_CRAFTING = new ResourceLocation(Reference.MOD_ID, "textures/gui/guidebook/crafting_table_guide.png");
 
         public static ResourceLocation TANK_LINES_10K = new ResourceLocation(Reference.MOD_ID, "textures/gui/misc/tank_lines_10k.png");
+
+        public static ResourceLocation TZF_CAPACITOR = new ResourceLocation(Reference.MOD_ID, "textures/gui/tzf/capacitor.png");
+        public static ResourceLocation TZF_COLONY = new ResourceLocation(Reference.MOD_ID, "textures/gui/tzf/colony.png");
+        public static ResourceLocation TZF_RESERVOIR = new ResourceLocation(Reference.MOD_ID, "textures/gui/tzf/reservoir.png");
     }
 
     public static class MISC
     {
         public static final ResourceLocation CELESTIAL_COMPASS_MAIN = new ResourceLocation(Reference.MOD_ID, "textures/blocks/celestial_compass/top.png");
         public static final ResourceLocation CELESTIAL_COMPASS_SIDE = new ResourceLocation(Reference.MOD_ID, "textures/blocks/celestial_compass/side.png");
+        public static final ResourceLocation GLYPH_MAIN = new ResourceLocation(Reference.MOD_ID, "textures/glyph/main_glyph.png");
     }
 }

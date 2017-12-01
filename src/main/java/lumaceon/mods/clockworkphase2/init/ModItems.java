@@ -101,7 +101,6 @@ public class ModItems
     public static Item bugSwatter;
     public static Item moonFlowerSeeds;
     public static Item assemblyTable;
-    public static Item temporalConduit;
     //CRAFTING ITEMS
     public static Item gizmoLife;
     public static Item gizmoLifeRelic;
@@ -350,9 +349,6 @@ public class ModItems
 
         assemblyTable = new ItemAssemblyTable(64, 100, "assembly_table_item");
         register(assemblyTable);
-
-        temporalConduit = new ItemTemporalCompressionConduit(64, 100, "temporal_conduit");
-        register(temporalConduit);
 
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         register(bugSwatter);

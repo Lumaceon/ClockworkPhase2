@@ -1,6 +1,8 @@
 package lumaceon.mods.clockworkphase2.proxy;
 
 import lumaceon.mods.clockworkphase2.api.assembly.ContainerAssemblyTable;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.CapabilityTemporalToolbelt;
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
 import lumaceon.mods.clockworkphase2.client.gui.ButtonInitializer;
@@ -8,18 +10,20 @@ import lumaceon.mods.clockworkphase2.client.gui.GuiHandler;
 import lumaceon.mods.clockworkphase2.client.handler.TooltipModificationHandler;
 import lumaceon.mods.clockworkphase2.client.particle.ModParticles;
 import lumaceon.mods.clockworkphase2.client.particle.ParticleTimestream;
+import lumaceon.mods.clockworkphase2.client.particle.ParticleTimezone;
 import lumaceon.mods.clockworkphase2.client.render.ModelRegistry;
 import lumaceon.mods.clockworkphase2.client.handler.keybind.KeyHandler;
 import lumaceon.mods.clockworkphase2.client.handler.keybind.Keybindings;
 import lumaceon.mods.clockworkphase2.client.render.RenderHandler;
 import lumaceon.mods.clockworkphase2.client.tesr.*;
 import lumaceon.mods.clockworkphase2.client.handler.MouseInputHandler;
-import lumaceon.mods.clockworkphase2.inventory.ContainerAssemblyTableClient;
 import lumaceon.mods.clockworkphase2.lib.Reference;
 import lumaceon.mods.clockworkphase2.network.PacketHandler;
 import lumaceon.mods.clockworkphase2.network.message.MessageTemporalToolbeltSwap;
 import lumaceon.mods.clockworkphase2.tile.TileCelestialCompass;
 import lumaceon.mods.clockworkphase2.tile.temporal.TileArmillaryRing;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTemporalZoningMachine;
+import lumaceon.mods.clockworkphase2.tile.temporal.TileTimezoneModulator;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -42,6 +46,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public class ClientProxy extends CommonProxy
 {
@@ -95,6 +100,8 @@ public class ClientProxy extends CommonProxy
     public void registerTESR() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileArmillaryRing.class, new TESRArmillaryRing());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCelestialCompass.class, new TESRTimezoneController());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTemporalZoningMachine.class, new TESRTemporalZoningMachine());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTimezoneModulator.class, new TESRTimezoneModulator());
     }
 
     @Override
@@ -137,10 +144,22 @@ public class ClientProxy extends CommonProxy
     @Override
     public void spawnParticle(int modParticleID, double x, double y, double z)
     {
-        if(ModParticles.canSpawnParticle(x, y, z, 20))
+        switch(modParticleID)
         {
-            ModParticles.addParticle(new ParticleTimestream(Minecraft.getMinecraft().world, x, y, z));
+            case 0:
+                if(ModParticles.canSpawnParticle(x, y, z, 20))
+                {
+                    ModParticles.addParticle(new ParticleTimestream(Minecraft.getMinecraft().world, x, y, z));
+                }
+                break;
+            case 1:
+                if(ModParticles.canSpawnParticle(x, y, z, 500))
+                {
+                    ModParticles.addParticle(new ParticleTimezone(Minecraft.getMinecraft().world, x, 254.59, z));
+                }
+                break;
         }
+
     }
 
     @Override
@@ -180,6 +199,8 @@ public class ClientProxy extends CommonProxy
     {
         if(event.phase.equals(TickEvent.Phase.END))
         {
+            Minecraft mc = Minecraft.getMinecraft();
+
             //Toolbelt updates.
             if(toolbeltRowSelectIndex > 0 && !Keybindings.toolbelt.isKeyDown())
             {
@@ -192,6 +213,25 @@ public class ClientProxy extends CommonProxy
                         PacketHandler.INSTANCE.sendToServer(new MessageTemporalToolbeltSwap(toolbeltRowSelectIndex - 1));
                         swapHotbarsClientside(player);
                         toolbeltRowSelectIndex = 0;
+                    }
+                }
+            }
+
+            if(mc.player != null)
+            {
+                //Spawn particles for nearby timezone glyphs.
+                double playerPosX = mc.player.posX;
+                double playerPosZ = mc.player.posZ;
+                for(Map.Entry<int[], ITimezone> entry : TimezoneHandler.timezones.entrySet())
+                {
+                    int[] pos = entry.getKey();
+                    double disX = playerPosX - pos[0];
+                    double disZ = playerPosZ - pos[2];
+
+                    //Is within range and in the same dimension?
+                    if(Math.sqrt(disX*disX + disZ*disZ) < 400 && pos[3] == mc.world.provider.getDimension())
+                    {
+                        this.spawnParticle(1, pos[0] + 0.5, 255, pos[2] + 0.5);
                     }
                 }
             }

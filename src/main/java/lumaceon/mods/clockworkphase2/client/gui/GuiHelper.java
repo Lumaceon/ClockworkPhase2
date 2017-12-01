@@ -51,6 +51,21 @@ public class GuiHelper
         tessellator.draw();
     }
 
+    /**
+     * Draws the bound texture by stretching it over the specified width and height.
+     */
+    public static void drawTexturedModalRectStretched(double x, double y, double zLevel, double width, double height)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder renderer = tessellator.getBuffer();
+        renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        renderer.pos(x, y + height, zLevel).tex(0, 1).endVertex();
+        renderer.pos(x + width, y + height, zLevel).tex(1, 1).endVertex();
+        renderer.pos(x + width, y, zLevel).tex(1, 0).endVertex();
+        renderer.pos(x, y, zLevel).tex(0, 0).endVertex();
+        tessellator.draw();
+    }
+
     public static void drawTexturedModalRectCutTop(int x, int y, double zLevel, int width, int fullHeight, int currentHeight)
     {
         float height = fullHeight - (currentHeight);

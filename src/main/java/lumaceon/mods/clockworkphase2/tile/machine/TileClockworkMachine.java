@@ -2,10 +2,10 @@ package lumaceon.mods.clockworkphase2.tile.machine;
 
 import lumaceon.mods.clockworkphase2.api.capabilities.EnergyStorageModular;
 import lumaceon.mods.clockworkphase2.api.capabilities.ItemStackHandlerClockworkConstruct;
-import lumaceon.mods.clockworkphase2.api.temporal.ITemporalTile;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITemporalRelay;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimeSink;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.tile.ITemporalTile;
+import lumaceon.mods.clockworkphase2.api.timezone.ITemporalRelay;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimeSink;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.util.ClockworkHelper;
 import lumaceon.mods.clockworkphase2.block.machine.BlockClockworkMachine;
 import lumaceon.mods.clockworkphase2.capabilities.machinedata.IMachineDataHandler;

@@ -118,7 +118,7 @@ public class ClockworkPhase2JEIPlugin implements IModPlugin
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.lifeformReconstructor)); //TODO
             blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.lifeformDeconstructor)); //TODO
             //blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.experienceExtractor)); //TODO
-            blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.temporalZoningMachine)); //TODO
+            //blacklist.addIngredientToBlacklist(new ItemStack(ModBlocks.temporalZoningMachine)); //TODO
         }
     }
 

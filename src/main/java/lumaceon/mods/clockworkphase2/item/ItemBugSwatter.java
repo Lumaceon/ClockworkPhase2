@@ -1,10 +1,8 @@
 package lumaceon.mods.clockworkphase2.item;
 
-import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITemporalRelay;
 import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
 import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneInternalStorage;
-import lumaceon.mods.clockworkphase2.capabilities.timestorage.CapabilityTimeStorage;
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.CapabilityTemporalToolbelt;
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
@@ -86,14 +84,6 @@ public class ItemBugSwatter extends ItemClockworkPhase
                         LogHelper.info(String.valueOf("Timezone " + index + ": " + timezone.getTimeInTicks()));
                     }
                     ++index;
-                }
-            }
-            else if(te != null && te.hasCapability(CapabilityTimeStorage.TIME_STORAGE_CAPABILITY, EnumFacing.DOWN))
-            {
-                ITimeStorage timeStorage = te.getCapability(CapabilityTimeStorage.TIME_STORAGE_CAPABILITY, EnumFacing.DOWN);
-                if(timeStorage != null)
-                {
-                    System.out.println(timeStorage.getTimeInTicks() + " / " + timeStorage.getMaxCapacity());
                 }
             }
         }

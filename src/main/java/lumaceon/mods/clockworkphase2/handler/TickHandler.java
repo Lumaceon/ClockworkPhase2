@@ -1,7 +1,7 @@
 package lumaceon.mods.clockworkphase2.handler;
 
 import lumaceon.mods.clockworkphase2.ClockworkPhase2;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 

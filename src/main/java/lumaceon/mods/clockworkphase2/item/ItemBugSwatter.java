@@ -1,8 +1,11 @@
 package lumaceon.mods.clockworkphase2.item;
 
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITemporalRelay;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneInternalStorage;
+import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
+import lumaceon.mods.clockworkphase2.api.timezone.ITemporalRelay;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneInternalStorage;
+import lumaceon.mods.clockworkphase2.capabilities.CapabilityTimezone;
+import lumaceon.mods.clockworkphase2.capabilities.timestorage.CapabilityTimeStorage;
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.CapabilityTemporalToolbelt;
 import lumaceon.mods.clockworkphase2.capabilities.toolbelt.ITemporalToolbeltHandler;
 import lumaceon.mods.clockworkphase2.tile.machine.TileClockworkMachine;
@@ -13,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -84,6 +88,22 @@ public class ItemBugSwatter extends ItemClockworkPhase
                         LogHelper.info(String.valueOf("Timezone " + index + ": " + timezone.getTimeInTicks()));
                     }
                     ++index;
+                }
+            }
+            else if(te != null && te.hasCapability(CapabilityTimeStorage.TIME_STORAGE_CAPABILITY, EnumFacing.DOWN))
+            {
+                ITimeStorage timeStorage = te.getCapability(CapabilityTimeStorage.TIME_STORAGE_CAPABILITY, EnumFacing.DOWN);
+                if(timeStorage != null)
+                {
+                    player.sendMessage(new TextComponentString(Long.toString(timeStorage.getTimeInTicks())));
+                }
+            }
+            else if(te != null && te.hasCapability(CapabilityTimezone.TIMEZONE_CAPABILITY, EnumFacing.DOWN))
+            {
+                ITimezone timezone = te.getCapability(CapabilityTimezone.TIMEZONE_CAPABILITY, EnumFacing.DOWN);
+                if(timezone != null)
+                {
+                    player.sendMessage(new TextComponentString(Long.toString(timezone.getTimeInTicks())));
                 }
             }
         }

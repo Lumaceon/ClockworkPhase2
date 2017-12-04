@@ -90,6 +90,12 @@ public abstract class TimezoneFunctionConstructor
     public abstract TimezoneFunction createTimezoneFunction(ITimezone timezone);
 
     /**
+     * Overloaded to construct the function straight from a provided NBT tag. Used to recreate functions on load. Note
+     * that deserializeNBT is called for the return value after this, so using the nbt may be unnecessary.
+     */
+    public abstract TimezoneFunction createTimezoneFunction(ITimezone timezone, NBTTagCompound nbt);
+
+    /**
      * For use in the function construction GUI to display what each layer actually does.
      *
      * @param layerIndex The index of the layer.
@@ -98,6 +104,20 @@ public abstract class TimezoneFunctionConstructor
      */
     public abstract String getLayerDisplayName(ITimezone timezone, int layerIndex, boolean detailed);
 
-    public abstract NBTTagCompound serializeNBT();
-    public abstract void deserializeNBT(NBTTagCompound nbt);
+    public NBTTagCompound serializeNBT()
+    {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type_id", type.getUniqueID());
+        nbt.setInteger("layer_count", numberOfLayers);
+        nbt.setInteger("layer", getActiveLayer());
+        nbt.setLong("progress", getProgress());
+        return nbt;
+    }
+
+    public void deserializeNBT(NBTTagCompound nbt)
+    {
+        numberOfLayers = nbt.getInteger("layer_count");
+        layer = nbt.getInteger("layer");
+        progress = nbt.getLong("progress");
+    }
 }

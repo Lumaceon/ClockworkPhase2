@@ -72,6 +72,15 @@ public class Timezone implements ITimezone
     }
 
     @Override
+    public boolean addTimezoneFunctionConstructor(TimezoneFunctionConstructor constructor)
+    {
+        if(functionConstructors.containsKey(constructor.getTimezoneFunctionType()))
+            return false;
+        functionConstructors.put(constructor.getTimezoneFunctionType(), constructor);
+        return true;
+    }
+
+    @Override
     public TimezoneFunction getTimezoneFunction(TimezoneFunctionType type) {
         return functions.get(type);
     }
@@ -82,14 +91,20 @@ public class Timezone implements ITimezone
     }
 
     @Override
+    public boolean addTimezoneFunction(TimezoneFunction function) {
+        if(functions.containsKey(function.getType()))
+            return false;
+        functions.put(function.getType(), function);
+        return true;
+    }
+
+    @Override
     public ItemStack insertFunctionConstructionStack(ItemStack stack, TimezoneFunctionType type)
     {
         TimezoneFunctionConstructor constructor = getTimezoneFunctionConstructor(type);
         if(constructor != null)
-        {
-
-        }
-        return null;
+            return constructor.insertStack(this, stack);
+        return stack;
     }
 
     @Override

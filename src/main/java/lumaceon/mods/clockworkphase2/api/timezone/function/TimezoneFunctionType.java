@@ -54,5 +54,5 @@ public abstract class TimezoneFunctionType<K extends TimezoneFunctionConstructor
      * Creates an instance of a TimezoneFunctionConstructor subclass, which handles the construction of this function.
      * @return A new instance of the appropriate timezone function constructor subclass.
      */
-    public abstract K cteateTimezoneFunctionConstructorInstance();
+    public abstract K createTimezoneFunctionConstructorInstance();
 }

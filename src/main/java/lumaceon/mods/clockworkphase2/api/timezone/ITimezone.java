@@ -48,9 +48,21 @@ public interface ITimezone
 
     public Collection<TimezoneFunctionConstructor> getTimezoneFunctionConstructors();
 
+    /**
+     * Generally timezone functions are stored in a hashmap and keyed to their respective type's unique ID. If one of
+     * the same type already exists, this should fail to do anything.
+     * @return True if successful, false if this failed because one already exists.
+     */
+    public boolean addTimezoneFunctionConstructor(TimezoneFunctionConstructor constructor);
+
     public TimezoneFunction getTimezoneFunction(TimezoneFunctionType type);
 
     public Collection<TimezoneFunction> getTimezoneFunctions();
+
+    /**
+     * @return True if successful, false if this failed because one already exists.
+     */
+    public boolean addTimezoneFunction(TimezoneFunction function);
 
     /**
      * Some timezone functions require items while constructing. This either consumes the item or returns it if it's

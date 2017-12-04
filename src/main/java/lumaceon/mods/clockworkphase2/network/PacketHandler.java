@@ -26,6 +26,7 @@ public class PacketHandler
         registerMessage(HandlerTemporalToolbeltSwap.class, MessageTemporalToolbeltSwap.class, Side.SERVER);
         registerMessage(HandlerPlayerDataOnWorldJoin.class, MessagePlayerDataOnWorldJoin.class, Side.CLIENT);
         registerMessage(HandlerEntityConstructorSetRecipe.class, MessageEntityConstructorSetRecipe.class, Side.SERVER);
+        registerMessage(HandlerTimezoneFunctionStart.class, MessageTimezoneFunctionStart.class, Side.SERVER);
     }
 
     private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side) {

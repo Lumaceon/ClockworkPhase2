@@ -21,7 +21,7 @@ public class TimezoneFunctionTypeColony extends TimezoneFunctionType<TimezoneFun
     }
 
     @Override
-    public TimezoneFunctionConstructorColony cteateTimezoneFunctionConstructorInstance() {
+    public TimezoneFunctionConstructorColony createTimezoneFunctionConstructorInstance() {
         return new TimezoneFunctionConstructorColony(this);
     }
 }

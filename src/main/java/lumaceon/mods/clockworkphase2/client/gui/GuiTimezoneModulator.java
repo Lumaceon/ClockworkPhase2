@@ -4,7 +4,10 @@ import lumaceon.mods.clockworkphase2.api.timezone.function.TimezoneFunctionRegis
 import lumaceon.mods.clockworkphase2.api.timezone.function.TimezoneFunctionType;
 import lumaceon.mods.clockworkphase2.inventory.ContainerTimezoneModulatorConstruction;
 import lumaceon.mods.clockworkphase2.lib.Reference;
+import lumaceon.mods.clockworkphase2.network.PacketHandler;
+import lumaceon.mods.clockworkphase2.network.message.MessageTimezoneFunctionStart;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.tileentity.TileEntity;
@@ -23,12 +26,35 @@ public class GuiTimezoneModulator extends GuiContainer
 
     TimezoneFunctionType[] types;
 
+    TileEntity te;
+
     public GuiTimezoneModulator(TileEntity te) {
         super(new ContainerTimezoneModulatorConstruction(te));
+        this.te = te;
         this.xSize = 236;
         this.ySize = 225;
         Collection<TimezoneFunctionType> c = TimezoneFunctionRegistry.getFunctionTypes();
         this.types = c.toArray(new TimezoneFunctionType[c.size()]);
+    }
+
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        this.guiLeft = (this.width - this.xSize) / 2;
+        this.guiTop = (this.height - this.ySize) / 2;
+        buttonList.clear();
+        buttonList.add(new GuiButton(0, guiLeft + xSize/2, guiTop + 120, 50, 20,  "Start Upgrade"));
+    }
+
+    @Override
+    public void actionPerformed(GuiButton button)
+    {
+        if(button.id == 0) //Start Upgrade...
+        {
+            int activeIndex = getActiveIndex();
+            PacketHandler.INSTANCE.sendToServer(new MessageTimezoneFunctionStart(te.getPos(), te.getWorld().provider.getDimension(), types[activeIndex].getUniqueID()));
+        }
     }
 
     @Override
@@ -88,7 +114,7 @@ public class GuiTimezoneModulator extends GuiContainer
             index++;
         }
 
-        int activeIndex = (int) Math.floor(slideWheelXCoordinate + 0.5F);
+        int activeIndex = getActiveIndex();
 
         if(activeIndex >= 0 && activeIndex < types.length)
         {
@@ -115,7 +141,7 @@ public class GuiTimezoneModulator extends GuiContainer
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state)
     {
-        int activeIndex = (int) Math.floor(slideWheelXCoordinate + 0.5F);
+        int activeIndex = getActiveIndex();
 
         if(isPointInRegion(8, 96, 50, 33, mouseX, mouseY)) //Two left
         {
@@ -148,5 +174,10 @@ public class GuiTimezoneModulator extends GuiContainer
                 activeIndex = types.length - 1;
             targetSlideWheel = activeIndex;
         }
+    }
+
+    private int getActiveIndex()
+    {
+        return (int) Math.floor(slideWheelXCoordinate + 0.5F);
     }
 }

@@ -41,6 +41,11 @@ public class TimezoneFunctionConstructorPurgatory extends TimezoneFunctionConstr
     }
 
     @Override
+    public TimezoneFunction createTimezoneFunction(ITimezone timezone, NBTTagCompound nbt) {
+        return null;
+    }
+
+    @Override
     public String getLayerDisplayName(ITimezone timezone, int layerIndex, boolean detailed)
     {
         return "";

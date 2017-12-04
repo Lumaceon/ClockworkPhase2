@@ -21,7 +21,7 @@ public class TimezoneFunctionTypeQuarry extends TimezoneFunctionType<TimezoneFun
     }
 
     @Override
-    public TimezoneFunctionConstructorQuarry cteateTimezoneFunctionConstructorInstance() {
+    public TimezoneFunctionConstructorQuarry createTimezoneFunctionConstructorInstance() {
         return new TimezoneFunctionConstructorQuarry(this);
     }
 }

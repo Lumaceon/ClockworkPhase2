@@ -21,7 +21,7 @@ public class TimezoneFunctionTypeReservoir extends TimezoneFunctionType<Timezone
     }
 
     @Override
-    public TimezoneFunctionConstructorReservoir cteateTimezoneFunctionConstructorInstance() {
+    public TimezoneFunctionConstructorReservoir createTimezoneFunctionConstructorInstance() {
         return new TimezoneFunctionConstructorReservoir(this);
     }
 }

@@ -21,7 +21,7 @@ public class TimezoneFunctionTypeCapacitor extends TimezoneFunctionType<Timezone
     }
 
     @Override
-    public TimezoneFunctionConstructorCapacitor cteateTimezoneFunctionConstructorInstance() {
+    public TimezoneFunctionConstructorCapacitor createTimezoneFunctionConstructorInstance() {
         return new TimezoneFunctionConstructorCapacitor(this);
     }
 }

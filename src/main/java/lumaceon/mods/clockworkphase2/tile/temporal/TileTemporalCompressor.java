@@ -2,8 +2,8 @@ package lumaceon.mods.clockworkphase2.tile.temporal;
 
 import lumaceon.mods.clockworkphase2.api.capabilities.ITimeStorage;
 import lumaceon.mods.clockworkphase2.api.temporal.ITimeSink;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.ITimezone;
-import lumaceon.mods.clockworkphase2.api.temporal.timezone.TimezoneHandler;
+import lumaceon.mods.clockworkphase2.api.timezone.ITimezone;
+import lumaceon.mods.clockworkphase2.api.timezone.TimezoneHandler;
 import lumaceon.mods.clockworkphase2.api.util.TimeConverter;
 import lumaceon.mods.clockworkphase2.block.temporal.BlockTemporalCompressionConduit;
 import lumaceon.mods.clockworkphase2.capabilities.timestorage.TimeStorage;

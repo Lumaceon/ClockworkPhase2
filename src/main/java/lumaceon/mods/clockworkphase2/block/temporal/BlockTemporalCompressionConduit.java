@@ -36,6 +36,7 @@ public class BlockTemporalCompressionConduit extends BlockClockworkPhase
         this.conduitOutputDirection = conduitOutputDirection;
         //noinspection ConstantConditions
         this.setCreativeTab(null);
+        this.setLightLevel(0.9F);
 
         this.setDefaultState(this.blockState.getBaseState().withProperty(CORNER, false).withProperty(NORTH_C, false).withProperty(SOUTH_C, false).withProperty(WEST_C, false).withProperty(EAST_C, false).withProperty(UP_C, false).withProperty(DOWN_C, false));
     }

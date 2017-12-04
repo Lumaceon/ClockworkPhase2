@@ -20,9 +20,14 @@ public class TimezoneFunctionReservoir extends TimezoneFunction
     }
 
     @Override
+    public void instabilityUpdate(ITimezone timezone) {
+
+    }
+
+    @Override
     public NBTTagCompound serializeNBT()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = super.serializeNBT();
         nbt.setLong("capacity", this.capacityInMillibuckets);
         return nbt;
     }
@@ -30,6 +35,7 @@ public class TimezoneFunctionReservoir extends TimezoneFunction
     @Override
     public void deserializeNBT(NBTTagCompound nbt)
     {
+        super.deserializeNBT(nbt);
         if(nbt.hasKey("capacity"))
         {
             this.capacityInMillibuckets = nbt.getLong("capacity");

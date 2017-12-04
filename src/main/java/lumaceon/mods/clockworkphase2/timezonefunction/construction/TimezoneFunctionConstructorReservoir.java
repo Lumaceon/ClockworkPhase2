@@ -9,13 +9,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TimezoneFunctionConstructorReservoir extends TimezoneFunctionConstructor
 {
     private int emptySpace = 0;
-    private int glassBlocks = 0;
 
     public TimezoneFunctionConstructorReservoir(TimezoneFunctionType type) {
         super(type, 2);
@@ -60,6 +60,15 @@ public class TimezoneFunctionConstructorReservoir extends TimezoneFunctionConstr
 
                 progress++;
             }
+
+            if(progress > getMaxProgressIndexForLayer(timezone, layer))
+            {
+                layer = 1;
+                progress = 0;
+            }
+
+            TileEntity te = timezone.getTile();
+            if(te != null) te.markDirty();
         }
     }
 
@@ -70,11 +79,16 @@ public class TimezoneFunctionConstructorReservoir extends TimezoneFunctionConstr
         {
             if(!stackToInsert.isEmpty() && stackToInsert.getItem().equals(Item.getItemFromBlock(Blocks.GLASS)))
             {
-                int maxAcceptable = emptySpace - glassBlocks;
+                int maxAcceptable = emptySpace - (int) progress;
                 if(maxAcceptable > 0)
                 {
                     int actuallyAccepted = Math.min(stackToInsert.getCount(), maxAcceptable);
                     stackToInsert.setCount(stackToInsert.getCount() - actuallyAccepted);
+                    progress += actuallyAccepted;
+
+                    TileEntity te = timezone.getTile();
+                    if(te != null) te.markDirty();
+
                     if(stackToInsert.getCount() <= 0)
                     {
                         return ItemStack.EMPTY;
@@ -88,12 +102,17 @@ public class TimezoneFunctionConstructorReservoir extends TimezoneFunctionConstr
 
     @Override
     public boolean canComplete(ITimezone timezone) {
-        return layer > 0 && glassBlocks > 0;
+        return layer > 0 && progress > 0;
     }
 
     @Override
     public TimezoneFunction createTimezoneFunction(ITimezone timezone) {
-        return new TimezoneFunctionReservoir(type, (long) glassBlocks * 1000L);
+        return new TimezoneFunctionReservoir(type, progress * 1000L);
+    }
+
+    @Override
+    public TimezoneFunction createTimezoneFunction(ITimezone timezone, NBTTagCompound nbt) {
+        return new TimezoneFunctionReservoir(type, 0);
     }
 
     @Override
@@ -110,7 +129,6 @@ public class TimezoneFunctionConstructorReservoir extends TimezoneFunctionConstr
     {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("space", this.emptySpace);
-        nbt.setInteger("glass_blocks", this.glassBlocks);
         return nbt;
     }
 
@@ -119,7 +137,5 @@ public class TimezoneFunctionConstructorReservoir extends TimezoneFunctionConstr
     {
         if(nbt.hasKey("space"))
             this.emptySpace = nbt.getInteger("space");
-        if(nbt.hasKey("glass_blocks"))
-            this.glassBlocks = nbt.getInteger("glass_blocks");
     }
 }

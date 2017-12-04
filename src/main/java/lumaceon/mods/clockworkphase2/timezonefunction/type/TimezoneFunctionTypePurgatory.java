@@ -21,7 +21,7 @@ public class TimezoneFunctionTypePurgatory extends TimezoneFunctionType<Timezone
     }
 
     @Override
-    public TimezoneFunctionConstructorPurgatory cteateTimezoneFunctionConstructorInstance() {
+    public TimezoneFunctionConstructorPurgatory createTimezoneFunctionConstructorInstance() {
         return new TimezoneFunctionConstructorPurgatory(this);
     }
 }

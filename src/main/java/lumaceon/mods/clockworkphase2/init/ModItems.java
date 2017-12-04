@@ -101,6 +101,7 @@ public class ModItems
     public static Item bugSwatter;
     public static Item moonFlowerSeeds;
     public static Item assemblyTable;
+    public static Item timezoneModulator;
     //CRAFTING ITEMS
     public static Item gizmoLife;
     public static Item gizmoLifeRelic;
@@ -352,6 +353,9 @@ public class ModItems
 
         bugSwatter = new ItemBugSwatter(1, 100, "bug_swatter");
         register(bugSwatter);
+
+        timezoneModulator = new ItemTimezoneModulator(64, 100, "timezone_modulator_item");
+        register(timezoneModulator);
 
         //CRAFTING ITEMS
         gizmoLife = new ItemClockworkPhase(64, 100, "gizmo_life");

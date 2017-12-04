@@ -41,21 +41,13 @@ public class TimezoneFunctionConstructorCapacitor extends TimezoneFunctionConstr
     }
 
     @Override
+    public TimezoneFunction createTimezoneFunction(ITimezone timezone, NBTTagCompound nbt) {
+        return null;
+    }
+
+    @Override
     public String getLayerDisplayName(ITimezone timezone, int layerIndex, boolean detailed)
     {
         return "";
-    }
-
-    @Override
-    public NBTTagCompound serializeNBT()
-    {
-        NBTTagCompound nbt = new NBTTagCompound();
-        return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(NBTTagCompound nbt)
-    {
-
     }
 }

@@ -1,55 +1,172 @@
 #Item
 
-clockworkphase2:ingot_copper=铜锭
-clockworkphase2:ingot_zinc=锌锭
-clockworkphase2:ingot_brass=黄铜锭
-clockworkphase2:ingot_aluminum=铝锭
-clockworkphase2:ingot_temporal=时空锭
+item.ingot_copper.name=铜锭
+item.ingot_zinc.name=锌锭
+item.ingot_brass.name=黄铜锭
+item.ingot_aluminum.name=铝锭
+item.ingot_temporal.name=时空锭
 
-clockworkphase2:dust_copper=铜粉
-clockworkphase2:dust_zinc=锌粉
-clockworkphase2:dust_brass=黄铜粉
-clockworkphase2:dust_aluminum=铝粉
-clockworkphase2:dust_temporal=时空粉末
+item.dust_copper.name=铜粉
+item.dust_zinc.name=锌粉
+item.dust_brass.name=黄铜粉
+item.dust_aluminum.name=铝粉
+item.matter_temporal.name=时空物质
 
-clockworkphase2:moonstone=月长石
-clockworkphase2:chrysoberyl=金绿玉
-clockworkphase2:pearl=珍珠
-clockworkphase2:spinel=尖晶石
+item.moonstone.name=月长石
+item.chrysoberyl.name=金绿玉
+item.pearl.name=珍珠
+item.spinel.name=尖晶石
 
-clockworkphase2:silicon=硅
+item.silicon.name=硅
 
-clockworkphase2:mainspring=动力发条
-clockworkphase2:clockwork_core=发条装置
+item.mainspring.name=动力发条
+item.clockwork_core.name=发条装置
 
-clockworkphase2:wood_gear=木制齿轮
-clockworkphase2:stone_gear=石制齿轮
-clockworkphase2:iron_gear=铁制齿轮
-clockworkphase2:gold_gear=金制齿轮
-clockworkphase2:diamond_gear=钻石齿轮
-clockworkphase2:emerald_gear=绿宝石齿轮
-clockworkphase2:quartz_gear=石英齿轮
-clockworkphase2:copper_gear=铜制齿轮
-clockworkphase2:zinc_gear=锌制齿轮
-clockworkphase2:brass_gear=黄铜齿轮
-clockworkphase2:creative_gear=创造齿轮
+item.gear_wood.name=木质齿轮
+item.gear_stone.name=石质齿轮
+item.gear_iron.name=铁质齿轮
+item.gear_gold.name=金质齿轮
+item.gear_diamond.name=钻石齿轮
+item.gear_emerald.name=绿宝石齿轮
+item.gear_quartz.name=石英齿轮
+item.gear_copper.name=铜齿轮
+item.gear_zinc.name=锌齿轮
+item.gear_brass.name=黄铜齿轮
+item.gear_chrysoberyl.name=金绿玉齿轮
+item.gear_pearl.name=钻石齿轮
+item.gear_spinel.name=尖晶石齿轮
+item.gear_moonstone.name=月长石齿轮
+item.gear_creative.name=创造齿轮
 
-clockworkphase2:clockwork_pickaxe=发条稿
-clockworkphase2:clockwork_axe=发条斧
-clockworkphase2:clockwork_shovel=发条铲
-clockworkphase2:clockwork_sword=发条剑
-clockworkphase2:temporal_excavator=时空粉碎者
-clockworkphase2:temporal_hourglass=时间沙漏
-clockworkphase2:iron_trowel=铁制泥铲
-clockworkphase2:diamond_trowele=钻石泥铲
-clockworkphase2:alloy_hammer=合金锤
+item.clockwork_pickaxe.name=发条镐
+item.clockwork_axe.name=发条斧
+item.clockwork_shovel.name=发条铲
+item.clockwork_sword.name=发条剑
+item.temporal_excavator.name=时空粉碎者
+item.temporal_hourglass.name=时间沙漏
+item.iron_trowel.name=铁质泥铲
+item.diamond_trowel.name=钻石泥铲
+item.alloy_hammer.name=合金锤
 
-clockworkphase2:tool_upgrade_temporal_infusion=粉碎者升级：超负荷
-clockworkphase2:tool_upgrade_silk=粉碎者升级：精准
-clockworkphase2:tool_upgrade_furnace=粉碎者升级：冶炼
-clockworkphase2:tool_upgrade_relocate=粉碎者升级：收容
-clockworkphase2:tool_upgrade_area=粉碎者升级：重锤
-clockworkphase2:tool_upgrade_fortune=粉碎者升级：时运
+item.tool_upgrade_temporal_infusion.name=粉碎者升级：超负荷
+item.tool_upgrade_silk.name=粉碎者升级：精准
+item.tool_upgrade_furnace.name=粉碎者升级：冶炼
+item.tool_upgrade_relocate.name=粉碎者升级：收容
+item.tool_upgrade_area.name=粉碎者升级：重锤
+item.tool_upgrade_fortune.name=粉碎者升级：幸运
+
+item.temporal_toolbelt.name=Temporal Toolbelt
+item.temporal_fishing_rod.name=Temporal Fishing Rod
+item.stasis_shield.name=Stasis Shield Generator
+item.aquatic_scepter.name=Aquatic Scepter
+
+item.mob_capsule.name=Mob Capsule
+item.machine_upgrade_temporal.name=Temporal Machine Conduit
+
+item.multiblock_template_celestial_compass.name=时空虚态框架：时空罗盘
+item.multiblock_template_armillary_ring.name=Multblock Template: Armillary Ring
+item.moon_flower_seeds.name=月亮花种子
+item.guidebook.name=时之沙指南
+item.assembly_table_item.name=齿轮组装台
+item.bug_swatter.name=苍蝇拍
+
+item.gizmo_life.name=Metabolic Stasis Container
+item.gizmo_life_relic.name=Gizmo
+item.gizmo_light.name=Luminator
+item.gizmo_light_relic.name=Thingamabob
+item.gizmo_water.name=Fluidc Space-time Compression Unit
+item.gizmo_water_relic.name=Doohickey
+item.gizmo_earth.name=Environmental Singularity
+item.gizmo_earth_relic.name=Thingamajig
+item.gizmo_air.name=Anti-gravitational Field Generator
+item.gizmo_air_relic.name=Whatchamacallit
+item.gizmo_fire.name=Dimensional Energy Conduit
+item.gizmo_fire_relic.name=Widget
+item.gizmo_aura.name=Hyper-compressed Memory Orb
+item.gizmo_aura_relic.name=Thingy
+item.split_timeline_matrix.name=Split-timeline Matrix
+item.split_timeline_matrix_relic.name=Junk
+
+item.temporal_drive.name=Temporal Drive
+
+
+#Block
+
+tile.celestial_compass.name=Celestial Compass
+tile.celestial_compass_sb.name=Celestial Compass
+tile.moon_flower.name=Moon Flower
+tile.assembly_table.name=Assembly Table
+tile.assembly_table_sb.name=Assembly Table
+
+tile.copper_ore.name=Copper Ore
+tile.zinc_ore.name=Zinc Ore
+tile.aluminum_ore.name=Aluminum Ore
+tile.moon_flower_relic.name=Moon Flower Relic
+tile.unknown_relic.name=Unknown Relic
+
+tile.copper_block.name=Copper Block
+tile.zinc_block.name=Zinc Block
+tile.brass_block.name=Brass Block
+tile.aluminum_block.name=Aluminum Block
+tile.temporal_block.name=Temporal Block
+
+tile.clockwork_furnace.name=Clockwork Furnace
+tile.clockwork_alloy_furnace.name=Clockwork Alloy Furance
+tile.clockwork_crusher.name=Clockwork Macerator
+tile.clockwork_crystallizer.name=Clockwork Crystallizer
+
+tile.experience_extractor.name=Memory Extractor
+
+tile.lifeform_constructor.name=Lifeform Constructor
+tile.lifeform_reconstructor.name=Lifeform Reconstructor
+tile.lifeform_deconstructor.name=Lifeform Deconstructor
+
+tile.temporal_relay.name=Temporal Relay
+tile.temporal_zoning_machine.name=Temporal Zoning Machine
+
+tile.basic_winding_box.name=Basic Winding Box
+tile.assembly_table.name=Assembly Table
+tile.multiblock_assembler.name=Multiblock Assembler
+tile.construction_block.name=Multiblock Construction Frame
+tile.ruined_land.name=Ruined Land
+tile.clockworkphase2:fluid.timestream.name=Timestream
+
+
+#Tutorial Info
+
+clockworkphase2:i_moon_flowers=Temporal matter is grown from an ancient, now-extinct plant called a moon flower, which can only be found in seed form as a relic underground.\n\nMoon flowers are the most self-entitled plants imaginable and only grow at night while the moon is showing. Even worse: their growth reverses during the day unless an opaque block is above them.
+clockworkphase2:i_clockwork=Clockwork consists of a series of gears and sometimes "not-gear"s. Each component usually adds to the overall stats of the clockwork. In most cases, speed determines how quickly the device will function, and higher quality results in a more energy-efficient tool.\n\nKeep in mind that quality's efficiency boost is relative to speed, so clockwork with 300 speed/500 quality is very efficient, but one with 600/500 will devour your energy.
+clockworkphase2:i_mainspring=The batteries of mechanical devices. Most common metals can be added on to a mainspring to increase its capacity, though stronger metals usually add a higher value per ingot. Remember the golden rule: rare items are always better at everything. Except gold; gold is terrible.
+clockworkphase2:i_temporal_excavator=Ever wanted a tool that could do everything? Well on it's own, the temporal excavator does nothing. However, it CAN be assembled with a full set of clockwork tools and several upgrades.\n\nAfter adding upgrades, press the General Activation Key (Default 'F') while holding the excavator.
+clockworkphase2:i_temporal_hourglass=To the average hourglass, living things are quite delicious. All those memories, all those experiences. Clearly, you don't need those, so you may as well let the hourglass eat them. At least you get time out of it.\n\nRight-click to active the hourglass, causing it to drain your xp to generate time energy. The more xp in that mind of yours, the faster they'll get yanked out to make time. This time energy can then be used by any tool that requests it.
+clockworkphase2:i_temporal_fishing_rod=Have you ever wanted to go fishing without having to wait ages for the fish to get their act together? With the temporal fishing rod and a bit of time in an hourglass, just toss the hook in the water and BAM: a fish is there, saving your hair from getting torn out in frustration again. Additionally, by shift-right-clicking, you can place relics in the rod to gain more control over what you yank out of an armillary ring.
+clockworkphase2:i_temporal_toolbelt=Sometimes, 9 hotbar slots just isn't enough to hold your collection of banana slicers. Through the power of timeline splitting, you can effectively store extra hotbars in an alternate timeline.\n\nRight-click with the temporal toolbelt to consume it and add another hotbar. By holding down the Temporal Toolbelt Swap key and scrolling the mouse wheel, you can select another hotbar to swap with. Up to 5 extra hotbars can be added this way.
+
+clockworkphase2:i_tool_upgrade_temporal=Mining obsidian is a pain. You spend several seconds hacking away at it, but a split-second twitch, and suddenly all that progress is undone.\n\nBy placing this upgrade in a temporal excavator and activating it, the excavator will automatically consume time from an hourglass to instantly break almost anything. Keep in mind, a slower tool and a harder block both increase the time cost.
+clockworkphase2:i_tool_upgrade_teleport=The age-old problem: you're Here and you need your ores There. You could, of course, walk all the way There, but you're Here and walking is hard. Wouldn't it be nice if the items could walk themselves There? Well now they can! Metaphorically.\n\nShift-right-click on a valid inventory with this upgrade to set a target block (and side). While this upgrade is active, any item the excavator harvests will automatically make their way to the inventory if possible.
+clockworkphase2:i_celestial_compass=WIP
+clockworkphase2:i_armillary_ring=The great fishbowl of occurrences great and small. A fully formed armillary ring will project events from across the timeline, allowing one to toss a fishing hook in and yank a random object out of its natural time and place. If you've ever inexplicably lost something, you may have had this happen to you... or you're just insane. Either way, if you're lucky you may even get something useful from the Ancients. Or just dirt. Then again, who has time for things like luck and dirt? Best use a temporal fishing rod.\n\n(Consult the Multiblock Assembler for more info)
+clockworkphase2:i_moon_flower_seeds=Once there were moon flowers. Now there aren't. Luckily for you, some seeds still exist, preserved underground. Just make sure to excavate them by right-clicking with a trowl.\n\nMoon flowers are the most self-entitled plants imaginable and only grow at night while the moon is showing. Even worse: their growth reverses during the day unless an opaque block is above them.
+
+clockworkphase2:i_temporal_relay=You know about your hourglass. Your items know about your hourglass. But what about this new machine you've upgraded with a temporal energy conduit? It could care less, and shoving the hourglass straight into a macerator sounds like a bad idea. Instead, introduce it to a temporal relay.\n\nBy placing an hourglass in a temporal relay, the machine attached to it will be able to drain time from the hourglass, provided the machine does, in fact, consume time.
+clockworkphase2:i_timezones=WIP
+clockworkphase2:i_basic_winding_box=Sometimes, you just need that quick burst of energy NOW. Rather than dumping black coffee on your tool, throw this down and right-click. Over and over again. Eventually you might build up enough energy to do something useful, though your fingers might be a bit sore.
+clockworkphase2:i_multiblock_assembler=5 blocks north and 3 west-- wait no, east. Yes, east. But did you go up a few blocks for that last one? Assembling custom multiblock structures is fun; assembling specific multblock structures is a pain. The multblock assembler removes all that pesky humanity from multiblock assembly. Just throw down the assembler, right-click with a multiblock template, and repeatedly right-click with several construction blocks. Once the final block is in place, the whole structure assembles for you.
+
+clockworkphase2:i_clockwork_tools=Clockwork tools require two components: a mainspring and a clockwork core. Mainsprings act like mechanical batteries, while the clockwork core determines the tool's effectiveness (speed) and energy efficiency (quality). These items can be customized and assembled in an assembly table. Finally, the tool needs energy. The simplest way to charge the tool is with a winding box.
+clockworkphase2:i_relics=Underground, you may come across several "relics" in the dirt. These must be right-clicked with a trowel to extract the relic.
+clockworkphase2:i_gizmos=The Ancients of the past had many incredible technologies not present today. Developing these yourself could take years, but why not just steal them from the past? If you're very lucky, you could chance upon one by fishing in an armillary ring. Alternatively, if you excavate a relic and recieve an artifact, you could throw it in a temporal fishing rod and use that to fish more selectively.
+clockworkphase2:i_clockwork_machines=Much like the clockwork tools, clockwork machines require assembly. Additionally, most of them can accept a temporal machine conduit, allowing them use time out of an adjacent temporal relay. This can be toggled with the hourglass button.\n\nFor more information on how clockwork works, see the clockwork tools.
+
+#Misc
+
+itemGroup.ClockworkPhase2=时之沙2
+key.clockworkphase2.category=时之沙2
+key.clockworkphase2.activate=General Activation Key
+key.clockworkphase2.toolbelt=Temporal Toolbelt Swap
+fluid.timestream=Timestream
+
+
 
 clockworkphase2:multiblock_template_celestial_compass=时空虚态框架：时空罗盘
 clockworkphase2:moon_flower_seeds=月亮花种子
